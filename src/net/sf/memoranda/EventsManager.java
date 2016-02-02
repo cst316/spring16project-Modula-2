@@ -179,6 +179,10 @@ public class EventsManager {
 			// ignore this event if it's a 'only working days' event and today is weekend.
 			if(ev.getWorkingDays() && (date.getCalendar().get(Calendar.DAY_OF_WEEK) == 1 ||
 				date.getCalendar().get(Calendar.DAY_OF_WEEK) == 7)) continue;
+			
+			// -- dchende2
+			if(ev.hasExceptionDate(date)) continue;
+			
 			// ---
 			/*
 			 * /if ( ((date.after(ev.getStartDate())) &&

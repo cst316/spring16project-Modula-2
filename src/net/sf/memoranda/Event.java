@@ -43,5 +43,6 @@ public interface Event {
     String getTimeString();
     
 	boolean getWorkingDays();
-    
+	
+	boolean hasExceptionDate(CalendarDate date);
 }

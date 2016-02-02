@@ -11,6 +11,8 @@ package net.sf.memoranda;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Vector;
+
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
 import nu.xom.Attribute;
@@ -31,7 +33,6 @@ public class EventImpl implements Event, Comparable {
         _elem = elem;
     }
 
-   
     /**
      * @see net.sf.memoranda.Event#getHour()
      */
@@ -143,6 +144,34 @@ public class EventImpl implements Event, Comparable {
 	public int compareTo(Object o) {
 		Event event = (Event) o;
 		return (getHour() * 60 + getMinute()) - (event.getHour() * 60 + event.getMinute());
+	}
+
+    /**
+     * @see net.sf.memoranda.Event#getExceptionDates()
+     */
+	public Vector<CalendarDate> getExceptionDates() {
+		Attribute a = _elem.getAttribute("exceptionDates");
+		Vector<CalendarDate> v = new Vector<CalendarDate>();
+
+		// TODO Turn XML element attribute into a vector of CalendarDates
+		a.getValue();
+		
+		return v;
+	}
+	
+	/**
+     * @see net.sf.memoranda.Event#hasExceptionDate()
+     */
+	public boolean hasExceptionDate(CalendarDate date) {
+		Vector<CalendarDate> v = this.getExceptionDates();
+		
+		for (int i = 0; i < v.size(); i++) {		
+			if(v.get(i).equals(date)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }
