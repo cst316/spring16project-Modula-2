@@ -9,6 +9,7 @@
  */
 package net.sf.memoranda;
 import java.util.Date;
+import java.util.Vector;
 
 import net.sf.memoranda.date.CalendarDate;
 
@@ -44,5 +45,11 @@ public interface Event {
     
 	boolean getWorkingDays();
 	
+	boolean addExceptionDate(CalendarDate date);
+	boolean addExceptionDates(Vector<CalendarDate> dates);
+	
+	boolean removeExceptionDate(CalendarDate date);
+	
+	Vector<CalendarDate> getExceptionDates();
 	boolean hasExceptionDate(CalendarDate date);
 }

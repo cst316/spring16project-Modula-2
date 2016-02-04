@@ -15,6 +15,7 @@ import java.util.Vector;
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
+import net.sf.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -145,16 +146,70 @@ public class EventImpl implements Event, Comparable {
 		Event event = (Event) o;
 		return (getHour() * 60 + getMinute()) - (event.getHour() * 60 + event.getMinute());
 	}
+	
+	public boolean addExceptionDate(CalendarDate date) {
+		Element elemDates = _elem.getFirstChildElement("exceptionDates");
+		
+		// Null check
+		if(elemDates == null) elemDates = new Element("exceptionDates");
 
+		// Check if it already exists
+		for(int i = 0; i < elemDates.getAttributeCount(); i++) {
+			Attribute a = elemDates.getAttribute(i);
+			CalendarDate elemDate = new CalendarDate(a.getValue());
+
+			if(elemDate.equals(date))
+				return false;
+		}
+		
+		Attribute a = new Attribute(Integer.toString(elemDates.getAttributeCount()+1),Util.getDateStamp(date));
+		elemDates.addAttribute(a);
+		
+		return true;
+	}
+
+	public boolean addExceptionDates(Vector<CalendarDate> dates) {
+		int success = 0;
+		
+		for(int i = 0; i < dates.size(); i++) {
+			boolean flag = addExceptionDate(dates.get(i));
+			if(flag) success++;
+		}
+		
+		return (success == dates.size());
+	}
+	
+	public boolean removeExceptionDate(CalendarDate date) {
+		Element elemDates = _elem.getFirstChildElement("exceptionDates");
+		
+		// Null check
+		if(elemDates == null) return true;
+		
+		for(int i = 0; i < elemDates.getAttributeCount()-1; i++) {
+			Attribute a = elemDates.getAttribute(i);
+			CalendarDate elemDate = new CalendarDate(a.getValue());
+
+			if(elemDate.equals(date)) {
+				elemDates.removeAttribute(a);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
     /**
      * @see net.sf.memoranda.Event#getExceptionDates()
      */
 	public Vector<CalendarDate> getExceptionDates() {
-		Attribute a = _elem.getAttribute("exceptionDates");
+		Element elemDates = _elem.getFirstChildElement("exceptionDates");
 		Vector<CalendarDate> v = new Vector<CalendarDate>();
 
-		// TODO Turn XML element attribute into a vector of CalendarDates
-		a.getValue();
+		if(elemDates == null) {return v;}
+		
+		for(int i = 0; i < elemDates.getAttributeCount()-1; i++) {
+			v.add( new CalendarDate(elemDates.getAttribute(i).getValue()) );
+		}
 		
 		return v;
 	}
@@ -165,7 +220,7 @@ public class EventImpl implements Event, Comparable {
 	public boolean hasExceptionDate(CalendarDate date) {
 		Vector<CalendarDate> v = this.getExceptionDates();
 		
-		for (int i = 0; i < v.size(); i++) {		
+		for (int i = 0; i < v.size()-1; i++) {		
 			if(v.get(i).equals(date)) {
 				return true;
 			}
