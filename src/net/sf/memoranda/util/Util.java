@@ -51,7 +51,6 @@ public class Util {
             + (cal.get(Calendar.MONTH))
             + "/"
             + new Integer(cal.get(Calendar.YEAR)).toString();
-
     }
 
     public static String getDateStamp(CalendarDate date) {
@@ -67,16 +66,6 @@ public class Util {
         date[1] = new Integer(s.substring(i1 + 1, i2)).intValue();
         date[2] = new Integer(s.substring(i2 + 1)).intValue();
         return date;
-        /*DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, currentLocale);
-        Date d = null;
-        try {
-            d = dateFormat.parse(s);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return new int[3];
-        }
-        int[] ret = {d.getDay(), d.getMonth(), d.getYear()};
-        return ret;*/
     }
 
     public static String getEnvDir() {

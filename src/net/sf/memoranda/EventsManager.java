@@ -98,7 +98,8 @@ public class EventsManager {
 	public static Collection getEventsForDate(CalendarDate date) {
 		Vector v = new Vector();
 		Day d = getDay(date);
-		if (d != null) {
+		
+		if (d != null) {			
 			Elements els = d.getElement().getChildElements("event");
 			for (int i = 0; i < els.size(); i++)
 				v.add(new EventImpl(els.get(i)));
@@ -125,7 +126,9 @@ public class EventsManager {
 		if (d == null)
 			d = createDay(date);
 		d.getElement().appendChild(el);
-		return new EventImpl(el);
+		
+		EventImpl event = new EventImpl(el);
+		return event;
 	}
 
 	public static Event createRepeatableEvent(
@@ -136,7 +139,10 @@ public class EventsManager {
 		int hh,
 		int mm,
 		String text,
-		boolean workDays) {
+		boolean workDays,
+		CalendarDate[] exceptionDates
+		)
+	{
 		Element el = new Element("event");
 		Element rep = _root.getFirstChildElement("repeatable");
 		if (rep == null) {
@@ -155,7 +161,16 @@ public class EventsManager {
 		el.addAttribute(new Attribute("workingDays",String.valueOf(workDays)));
 		el.appendChild(text);
 		rep.appendChild(el);
-		return new EventImpl(el);
+
+		EventImpl event = new EventImpl(el);
+		
+		if(exceptionDates != null && exceptionDates.length > 0) {
+			for(int i = 0; i < exceptionDates.length; i++) {
+				event.addExceptionDate(exceptionDates[i]);
+			}
+		}
+		
+		return event;
 	}
 
 	public static Collection getRepeatableEvents() {
@@ -181,7 +196,7 @@ public class EventsManager {
 				date.getCalendar().get(Calendar.DAY_OF_WEEK) == 7)) continue;
 			
 			// -- dchende2
-			if(ev.hasExceptionDate(date)) continue;
+			if(ev.hasExceptionDate( date )) continue;
 			
 			// ---
 			/*

@@ -53,7 +53,7 @@ public class EventsTable extends JTable {
         events = (Vector)EventsManager.getEventsForDate(d);
         getColumnModel().getColumn(0).setPreferredWidth(60);
         getColumnModel().getColumn(0).setMaxWidth(60);
-	clearSelection();
+        clearSelection();
         updateUI();
     }
 

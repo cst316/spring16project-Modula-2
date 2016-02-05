@@ -84,7 +84,7 @@ public class EventDialog extends JDialog implements WindowListener {
     JButton setExceptionDateB = new JButton();
     JButton addExceptionDate = new JButton();
     JButton removeExceptionDate = new JButton();
-    DefaultListModel exceptionModel = new DefaultListModel();
+    DefaultListModel<String> exceptionModel = new DefaultListModel<String>();
     JList exceptionList = new JList(exceptionModel);
     JScrollPane exceptionPane = new JScrollPane(exceptionList);
     
@@ -512,6 +512,20 @@ public class EventDialog extends JDialog implements WindowListener {
         ((JSpinner.DateEditor) timeSpin.getEditor()).getFormat().applyPattern("HH:mm");
         enableEndDateCB_actionPerformed(null);
     }
+    
+    public CalendarDate[] getExceptionDates() {
+    	if(exceptionModel.getSize() == 0) return null;
+    	
+    	CalendarDate[] dates = new CalendarDate[exceptionModel.getSize()];
+
+    	for(int i = 0; i < exceptionModel.getSize(); i++) {
+    		String str[] = exceptionModel.getElementAt(i).split("/");
+    		if(str[2].length() == 2) str[2] = "20"+str[2];
+    		dates[i] = new CalendarDate( str[1] + "/" + str[0] + "/" + str[2] );
+    	}
+    	
+    	return dates;
+    }
 
     void disableElements() {
         dayOfMonthSpin.setEnabled(false);
@@ -598,6 +612,7 @@ public class EventDialog extends JDialog implements WindowListener {
     }
 
     public void noRepeatRB_actionPerformed(ActionEvent e) {
+    	exceptionModel.removeAllElements();
         disableElements();
     }
 
@@ -640,8 +655,9 @@ public class EventDialog extends JDialog implements WindowListener {
     }
     
     void addExceptionDate_actionPerformed(ActionEvent e) {
-    	SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
-    	exceptionModel.addElement( sdf.format(exceptionDate.getModel().getValue()) );
+    	//SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
+    	SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
+    	exceptionModel.addElement( (String) sdf.format(exceptionDate.getModel().getValue()) );
     }
     
     void removeExceptionDate_actionPerformed(ActionEvent e) {

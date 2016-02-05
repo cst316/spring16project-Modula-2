@@ -18,6 +18,7 @@ import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Element;
+import nu.xom.Node;
 
 /**
  * 
@@ -149,9 +150,14 @@ public class EventImpl implements Event, Comparable {
 	
 	public boolean addExceptionDate(CalendarDate date) {
 		Element elemDates = _elem.getFirstChildElement("exceptionDates");
+		Node elemOriginal = null;
 		
 		// Null check
-		if(elemDates == null) elemDates = new Element("exceptionDates");
+		if(elemDates == null) {
+			elemDates = new Element("exceptionDates");
+		} else {
+			elemOriginal = elemDates.copy();
+		}
 
 		// Check if it already exists
 		for(int i = 0; i < elemDates.getAttributeCount(); i++) {
@@ -161,11 +167,25 @@ public class EventImpl implements Event, Comparable {
 			if(elemDate.equals(date))
 				return false;
 		}
-		
-		Attribute a = new Attribute(Integer.toString(elemDates.getAttributeCount()+1),Util.getDateStamp(date));
+
+		Attribute a = new Attribute("exception"+Integer.toString(elemDates.getAttributeCount()+1),Util.getDateStamp(date));
 		elemDates.addAttribute(a);
 		
-		return true;
+		// dchende2 So many returns...
+		if(elemOriginal != null) {
+			for(int i = 0; i < _elem.getChildCount(); i++) {
+				if(_elem.getChild(i) == _elem.getFirstChildElement("exceptionDates")) {
+					_elem.replaceChild(elemOriginal,elemDates); 
+					return true;
+				}
+				return false;
+			}
+		} else {
+			_elem.appendChild(elemDates);
+			return true;
+		}
+		
+		return false;
 	}
 
 	public boolean addExceptionDates(Vector<CalendarDate> dates) {
@@ -185,7 +205,7 @@ public class EventImpl implements Event, Comparable {
 		// Null check
 		if(elemDates == null) return true;
 		
-		for(int i = 0; i < elemDates.getAttributeCount()-1; i++) {
+		for(int i = 0; i < elemDates.getAttributeCount(); i++) {
 			Attribute a = elemDates.getAttribute(i);
 			CalendarDate elemDate = new CalendarDate(a.getValue());
 
@@ -207,7 +227,7 @@ public class EventImpl implements Event, Comparable {
 
 		if(elemDates == null) {return v;}
 		
-		for(int i = 0; i < elemDates.getAttributeCount()-1; i++) {
+		for(int i = 0; i < elemDates.getAttributeCount(); i++) {
 			v.add( new CalendarDate(elemDates.getAttribute(i).getValue()) );
 		}
 		
@@ -220,8 +240,10 @@ public class EventImpl implements Event, Comparable {
 	public boolean hasExceptionDate(CalendarDate date) {
 		Vector<CalendarDate> v = this.getExceptionDates();
 		
-		for (int i = 0; i < v.size()-1; i++) {		
-			if(v.get(i).equals(date)) {
+		for (int i = 0; i < v.size(); i++) {
+			// TODO dchende2 Why is the passed date from root <day>/1/2016 or whatever
+			//if(v.get(i).equals(date)) {
+			if(v.get(i).getDay() == date.getDay()) {
 				return true;
 			}
 		}

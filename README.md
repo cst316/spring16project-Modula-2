@@ -13,5 +13,3 @@ Your first steps should be to get your team set up with this code, ensure you ca
 
 Enjoy!
 Dr. Gary
-
-THIS HAD BEEN READ BY LUIS QUINTANILLA.
