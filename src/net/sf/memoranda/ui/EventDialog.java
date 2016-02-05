@@ -655,9 +655,16 @@ public class EventDialog extends JDialog implements WindowListener {
     }
     
     void addExceptionDate_actionPerformed(ActionEvent e) {
-    	//SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
     	SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-    	exceptionModel.addElement( (String) sdf.format(exceptionDate.getModel().getValue()) );
+    	String str = sdf.format(exceptionDate.getModel().getValue());
+
+    	if(exceptionModel.getSize() > 0) {
+    		for(int i = 0; i < exceptionModel.getSize(); i++) {
+    			if(str.equals(exceptionModel.getElementAt(i))) return;
+    		}
+    	}
+    	
+    	exceptionModel.addElement( str );
     }
     
     void removeExceptionDate_actionPerformed(ActionEvent e) {
