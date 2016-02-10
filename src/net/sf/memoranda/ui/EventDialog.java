@@ -19,14 +19,17 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
@@ -40,10 +43,11 @@ import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
 
 /*$Id: EventDialog.java,v 1.28 2005/02/19 10:06:25 rawsushi Exp $*/
-public class EventDialog extends JDialog implements WindowListener {	
+public class EventDialog extends JDialog implements WindowListener {
     public boolean CANCELLED = false;
     boolean ignoreStartChanged = false;
     boolean ignoreEndChanged = false;
+    boolean ignoreExceptionChanged = false;
     JPanel topPanel = new JPanel(new BorderLayout());
     JPanel bottomPanel = new JPanel(new BorderLayout());
     JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -73,12 +77,24 @@ public class EventDialog extends JDialog implements WindowListener {
     public JSpinner dayOfMonthSpin = new JSpinner(new SpinnerNumberModel(1,1,31,1));
     JLabel lblDoM = new JLabel();
     public JRadioButton yearlyRepeatRB = new JRadioButton();
+    
+    // dchende2 Exception GUI
+    public JLabel lblExceptions = new JLabel();
+    public JSpinner exceptionDate = new JSpinner(new SpinnerDateModel());
+    JButton setExceptionDateB = new JButton();
+    JButton addExceptionDate = new JButton();
+    JButton removeExceptionDate = new JButton();
+    DefaultListModel<String> exceptionModel = new DefaultListModel<String>();
+    JList exceptionList = new JList(exceptionModel);
+    JScrollPane exceptionPane = new JScrollPane(exceptionList);
+    
     ButtonGroup repeatRBGroup = new ButtonGroup();
     JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
     JButton okB = new JButton();
     JButton cancelB = new JButton();
     CalendarFrame endCalFrame = new CalendarFrame();
     CalendarFrame startCalFrame = new CalendarFrame();
+    CalendarFrame exceptionCalFrame = new CalendarFrame();
     private Date eventDate;
     
     public EventDialog(Frame frame, String title) {
@@ -351,6 +367,90 @@ public class EventDialog extends JDialog implements WindowListener {
 		gbc.insets = new Insets(5, 5, 5, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		repeatPanel.add(yearlyRepeatRB, gbc);
+
+		// Exception label
+        lblExceptions.setText("Specific days to not recur on (exceptions)");
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0; gbc.gridy = 5;
+		gbc.gridwidth = 2;
+		gbc.insets = new Insets(5, 5, 5, 10);
+		gbc.anchor = GridBagConstraints.WEST;
+        repeatPanel.add(lblExceptions, gbc);
+        
+        // Exception text field
+        exceptionDate.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                if (ignoreExceptionChanged)
+                    return;
+                ignoreExceptionChanged = true;
+                Date exd = (Date) exceptionDate.getModel().getValue();
+                
+                exceptionCalFrame.cal.set(new CalendarDate(exd));
+                ignoreExceptionChanged = false;
+            }
+        });
+        exceptionDate.setPreferredSize(new Dimension(80, 24));
+        exceptionDate.setEditor(new JSpinner.DateEditor(exceptionDate, 
+        	sdf.toPattern()));       
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 6;
+        gbc.insets = new Insets(5, 5, 5, 4);
+        gbc.anchor = GridBagConstraints.WEST;
+        repeatPanel.add(exceptionDate, gbc);
+        
+        // Exception Calendar Button
+        setExceptionDateB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setExceptionDateB_actionPerformed(e);
+            }
+        });
+        setExceptionDateB.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/calendar.png")));
+        setExceptionDateB.setText("");
+        setExceptionDateB.setPreferredSize(new Dimension(24, 24));
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1; gbc.gridy = 6;
+        gbc.insets = new Insets(5, 0, 5, 4);
+        gbc.anchor = GridBagConstraints.WEST;
+        repeatPanel.add(setExceptionDateB, gbc);
+        
+        // Exception date add button
+        addExceptionDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	addExceptionDate_actionPerformed(e);
+            }
+        });
+        addExceptionDate.setText("Add");
+        addExceptionDate.setPreferredSize(new Dimension(80, 24));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1; gbc.gridy = 6;
+        gbc.insets = new Insets(2, 36, 5, 2);
+        gbc.anchor = GridBagConstraints.WEST;
+        repeatPanel.add(addExceptionDate, gbc);
+        
+        // Exception List        
+        exceptionPane.setPreferredSize(new Dimension(136, 96));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2; gbc.gridy = 6;
+        gbc.gridwidth = 4; gbc.gridheight = 4;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+        repeatPanel.add(exceptionPane, gbc);
+
+        // Exception date remove button
+        removeExceptionDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	removeExceptionDate_actionPerformed(e);
+            }
+        });
+        removeExceptionDate.setText("Remove");
+        removeExceptionDate.setPreferredSize(new Dimension(80, 24));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1; gbc.gridy = 7;
+        gbc.insets = new Insets(2, 36, 5, 2);
+        gbc.anchor = GridBagConstraints.WEST;
+        repeatPanel.add(removeExceptionDate, gbc);
         
         repeatRBGroup.add(noRepeatRB);
         repeatRBGroup.add(dailyRepeatRB);
@@ -398,15 +498,33 @@ public class EventDialog extends JDialog implements WindowListener {
         });
         endCalFrame.cal.addSelectionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (ignoreEndChanged)
-                    return;
+                if (ignoreEndChanged) return;
                 endDate.getModel().setValue(endCalFrame.cal.get().getCalendar().getTime());
+            }
+        });
+        exceptionCalFrame.cal.addSelectionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (ignoreExceptionChanged) return;
+                exceptionDate.getModel().setValue(exceptionCalFrame.cal.get().getCalendar().getTime());
             }
         });
         disableElements();
         ((JSpinner.DateEditor) timeSpin.getEditor()).getFormat().applyPattern("HH:mm");
         enableEndDateCB_actionPerformed(null);
-        
+    }
+    
+    public CalendarDate[] getExceptionDates() {
+    	if(exceptionModel.getSize() == 0) return null;
+    	
+    	CalendarDate[] dates = new CalendarDate[exceptionModel.getSize()];
+
+    	for(int i = 0; i < exceptionModel.getSize(); i++) {
+    		String str[] = exceptionModel.getElementAt(i).split("/");
+    		if(str[2].length() == 2) str[2] = "20"+str[2];
+    		dates[i] = new CalendarDate( str[1] + "/" + str[0] + "/" + str[2] );
+    	}
+    	
+    	return dates;
     }
 
     void disableElements() {
@@ -421,11 +539,28 @@ public class EventDialog extends JDialog implements WindowListener {
         enableEndDateCB.setEnabled(false);
 		enableEndDateCB.setSelected(false);
 		workingDaysOnlyCB.setEnabled(false);
-		workingDaysOnlyCB.setSelected(false);		
+		workingDaysOnlyCB.setSelected(false);
+		
+		// Exception Dates
+	    exceptionDate.setEnabled(false);
+	    setExceptionDateB.setEnabled(false);
+	    addExceptionDate.setEnabled(false);
+	    removeExceptionDate.setEnabled(false);
+	    exceptionPane.setEnabled(false);
     }
+    
+    void enableExceptionElements() {
+	    exceptionDate.setEnabled(true);
+	    setExceptionDateB.setEnabled(true);
+	    addExceptionDate.setEnabled(true);
+	    removeExceptionDate.setEnabled(true);
+	    exceptionPane.setEnabled(true);
+	}
     
     public void yearlyRepeatRB_actionPerformed(ActionEvent e) {
 		disableElements();
+		enableExceptionElements();
+		
 		startDate.setEnabled(true);
 		setStartDateB.setEnabled(true);
 		lblSince.setEnabled(true);
@@ -437,6 +572,8 @@ public class EventDialog extends JDialog implements WindowListener {
 
     public void monthlyRepeatRB_actionPerformed(ActionEvent e) {
         disableElements();
+        enableExceptionElements();
+        
         dayOfMonthSpin.setEnabled(true);
         startDate.setEnabled(true);
         setStartDateB.setEnabled(true);
@@ -449,6 +586,8 @@ public class EventDialog extends JDialog implements WindowListener {
 
     public void dailyRepeatRB_actionPerformed(ActionEvent e) {
         disableElements();
+        enableExceptionElements();
+        
         daySpin.setEnabled(true);
         startDate.setEnabled(true);
         setStartDateB.setEnabled(true);
@@ -461,6 +600,8 @@ public class EventDialog extends JDialog implements WindowListener {
 
     public void weeklyRepeatRB_actionPerformed(ActionEvent e) {
         disableElements();
+        enableExceptionElements();
+        
         weekdaysCB.setEnabled(true);
         startDate.setEnabled(true);
         setStartDateB.setEnabled(true);
@@ -471,6 +612,7 @@ public class EventDialog extends JDialog implements WindowListener {
     }
 
     public void noRepeatRB_actionPerformed(ActionEvent e) {
+    	exceptionModel.removeAllElements();
         disableElements();
     }
 
@@ -490,7 +632,7 @@ public class EventDialog extends JDialog implements WindowListener {
         this.getLayeredPane().add(startCalFrame);
         startCalFrame.show();
     }
-
+    
     void setEndDateB_actionPerformed(ActionEvent e) {
         //endCalFrame.setLocation(setEndDateB.getLocation());
         endCalFrame.setSize(200, 190);
@@ -502,6 +644,33 @@ public class EventDialog extends JDialog implements WindowListener {
     public void enableEndDateCB_actionPerformed(ActionEvent e) {
         endDate.setEnabled(enableEndDateCB.isSelected());
         setEndDateB.setEnabled(enableEndDateCB.isSelected());        
+    }
+    
+    void setExceptionDateB_actionPerformed(ActionEvent e) {
+        //startCalFrame.setLocation(setStartDateB.getLocation());
+        exceptionCalFrame.setSize(200, 190);
+        exceptionCalFrame.setTitle(Local.getString("Exception date"));
+        this.getLayeredPane().add(exceptionCalFrame);
+        exceptionCalFrame.show();
+    }
+    
+    void addExceptionDate_actionPerformed(ActionEvent e) {
+    	SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
+    	String str = sdf.format(exceptionDate.getModel().getValue());
+
+    	if(exceptionModel.getSize() > 0) {
+    		for(int i = 0; i < exceptionModel.getSize(); i++) {
+    			if(str.equals(exceptionModel.getElementAt(i))) return;
+    		}
+    	}
+    	
+    	exceptionModel.addElement( str );
+    }
+    
+    void removeExceptionDate_actionPerformed(ActionEvent e) {
+    	int selectedIndex = exceptionList.getSelectedIndex();
+    	if(selectedIndex != -1)
+            exceptionModel.removeElementAt(selectedIndex);
     }
     
     public void windowOpened( WindowEvent e ) {}

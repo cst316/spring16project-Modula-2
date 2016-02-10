@@ -11,10 +11,14 @@ package net.sf.memoranda;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Vector;
+
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
+import net.sf.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Element;
+import nu.xom.Node;
 
 /**
  * 
@@ -31,7 +35,6 @@ public class EventImpl implements Event, Comparable {
         _elem = elem;
     }
 
-   
     /**
      * @see net.sf.memoranda.Event#getHour()
      */
@@ -143,6 +146,109 @@ public class EventImpl implements Event, Comparable {
 	public int compareTo(Object o) {
 		Event event = (Event) o;
 		return (getHour() * 60 + getMinute()) - (event.getHour() * 60 + event.getMinute());
+	}
+	
+	public boolean addExceptionDate(CalendarDate date) {
+		Element elemDates = _elem.getFirstChildElement("exceptionDates");
+		Node elemOriginal = null;
+		
+		// Null check
+		if(elemDates == null) {
+			elemDates = new Element("exceptionDates");
+		} else {
+			elemOriginal = elemDates.copy();
+		}
+
+		// Check if it already exists
+		for(int i = 0; i < elemDates.getAttributeCount(); i++) {
+			Attribute a = elemDates.getAttribute(i);
+			CalendarDate elemDate = new CalendarDate(a.getValue());
+
+			if(elemDate.equals(date))
+				return false;
+		}
+
+		Attribute a = new Attribute("exception"+Integer.toString(elemDates.getAttributeCount()+1),Util.getDateStamp(date));
+		elemDates.addAttribute(a);
+		
+		// dchende2 So many returns...
+		if(elemOriginal != null) {
+			for(int i = 0; i < _elem.getChildCount(); i++) {
+				if(_elem.getChild(i) == _elem.getFirstChildElement("exceptionDates")) {
+					_elem.replaceChild(elemOriginal,elemDates); 
+					return true;
+				}
+				return false;
+			}
+		} else {
+			_elem.appendChild(elemDates);
+			return true;
+		}
+		
+		return false;
+	}
+
+	public boolean addExceptionDates(Vector<CalendarDate> dates) {
+		int success = 0;
+		
+		for(int i = 0; i < dates.size(); i++) {
+			boolean flag = addExceptionDate(dates.get(i));
+			if(flag) success++;
+		}
+		
+		return (success == dates.size());
+	}
+	
+	public boolean removeExceptionDate(CalendarDate date) {
+		Element elemDates = _elem.getFirstChildElement("exceptionDates");
+		
+		// Null check
+		if(elemDates == null) return true;
+		
+		for(int i = 0; i < elemDates.getAttributeCount(); i++) {
+			Attribute a = elemDates.getAttribute(i);
+			CalendarDate elemDate = new CalendarDate(a.getValue());
+
+			if(elemDate.equals(date)) {
+				elemDates.removeAttribute(a);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+    /**
+     * @see net.sf.memoranda.Event#getExceptionDates()
+     */
+	public Vector<CalendarDate> getExceptionDates() {
+		Element elemDates = _elem.getFirstChildElement("exceptionDates");
+		Vector<CalendarDate> v = new Vector<CalendarDate>();
+
+		if(elemDates == null) {return v;}
+		
+		for(int i = 0; i < elemDates.getAttributeCount(); i++) {
+			v.add( new CalendarDate(elemDates.getAttribute(i).getValue()) );
+		}
+		
+		return v;
+	}
+	
+	/**
+     * @see net.sf.memoranda.Event#hasExceptionDate()
+     */
+	public boolean hasExceptionDate(CalendarDate date) {
+		Vector<CalendarDate> v = this.getExceptionDates();
+		
+		for (int i = 0; i < v.size(); i++) {
+			// TODO dchende2 Why is the passed date from root <day>/1/2016 or whatever
+			//if(v.get(i).equals(date)) {
+			if(v.get(i).getDay() == date.getDay()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }

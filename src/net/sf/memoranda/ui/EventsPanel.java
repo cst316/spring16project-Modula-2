@@ -9,9 +9,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -248,11 +251,11 @@ public class EventsPanel extends JPanel {
             else if (rep == EventsManager.REPEAT_WEEKLY) {
                 dlg.weeklyRepeatRB.setSelected(true);
                 dlg.weeklyRepeatRB_actionPerformed(null);
-		int d = ev.getPeriod() - 1;
-		if(Configuration.get("FIRST_DAY_OF_WEEK").equals("mon")) {
-		    d--;
-		    if(d<0) d=6;
-		}
+				int d = ev.getPeriod() - 1;
+				if(Configuration.get("FIRST_DAY_OF_WEEK").equals("mon")) {
+				    d--;
+				    if(d<0) d=6;
+				}
                 dlg.weekdaysCB.setSelectedIndex(d);
             }
             else if (rep == EventsManager.REPEAT_MONTHLY) {
@@ -260,20 +263,28 @@ public class EventsPanel extends JPanel {
                 dlg.monthlyRepeatRB_actionPerformed(null);
                 dlg.dayOfMonthSpin.setValue(new Integer(ev.getPeriod()));
             }
-	    else if (rep == EventsManager.REPEAT_YEARLY) {
-		dlg.yearlyRepeatRB.setSelected(true);
-		dlg.yearlyRepeatRB_actionPerformed(null);
-		dlg.dayOfMonthSpin.setValue(new Integer(ev.getPeriod()));
-	    }
-        if (ev.getEndDate() != null) {
-           dlg.endDate.getModel().setValue(ev.getEndDate().getDate());
-           dlg.enableEndDateCB.setSelected(true);
-           dlg.enableEndDateCB_actionPerformed(null);
-        }
-		if(ev.getWorkingDays()) {
-			dlg.workingDaysOnlyCB.setSelected(true);
-		}
-		
+		    else if (rep == EventsManager.REPEAT_YEARLY) {
+				dlg.yearlyRepeatRB.setSelected(true);
+				dlg.yearlyRepeatRB_actionPerformed(null);
+				dlg.dayOfMonthSpin.setValue(new Integer(ev.getPeriod()));
+		    }
+	        if (ev.getEndDate() != null) {
+	           dlg.endDate.getModel().setValue(ev.getEndDate().getDate());
+	           dlg.enableEndDateCB.setSelected(true);
+	           dlg.enableEndDateCB_actionPerformed(null);
+	        }
+			if(ev.getWorkingDays()) {
+				dlg.workingDaysOnlyCB.setSelected(true);
+			}
+			
+			Vector<CalendarDate> exceptionDates = ev.getExceptionDates();
+			if(exceptionDates.size() > 0) {
+				for(int i = 0; i < exceptionDates.size(); i++ ) {
+			    	SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
+			    	CalendarDate exceptionDate = exceptionDates.get(i);
+			    	dlg.exceptionModel.addElement( exceptionDate.getMonth() + "/" + exceptionDate.getDay() + "/" + exceptionDate.getYear() );
+				}
+			}
         }
 
         Dimension frmSize = App.getFrame().getSize();
@@ -297,10 +308,10 @@ public class EventsPanel extends JPanel {
         //int mm = ((Date) dlg.timeSpin.getModel().getValue()).getMinutes();
         String text = dlg.textField.getText();
         if (dlg.noRepeatRB.isSelected())
-   	    EventsManager.createEvent(CurrentDate.get(), hh, mm, text);
+        	EventsManager.createEvent(CurrentDate.get(), hh, mm, text);
         else {
-	    updateEvents(dlg,hh,mm,text);
-	}    
+        	updateEvents(dlg,hh,mm,text);
+        }    
 	saveEvents();
     }
 
@@ -329,6 +340,7 @@ public class EventsPanel extends JPanel {
 		dlg.setVisible(true);
     	if (dlg.CANCELLED)
     		return;
+    	
     	Calendar calendar = new GregorianCalendar(Local.getCurrentLocale()); //Fix deprecated methods to get hours
     	//by (jcscoobyrs) 14-Nov-2003 at 10:24:38 AM
     	calendar.setTime(((Date)dlg.timeSpin.getModel().getValue()));//Fix deprecated methods to get hours
@@ -361,7 +373,7 @@ public class EventsPanel extends JPanel {
     }
 
     private void updateEvents(EventDialog dlg, int hh, int mm, String text) {
-	int rtype;
+		int rtype;
         int period;
         CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
         CalendarDate ed = null;
@@ -374,21 +386,21 @@ public class EventsPanel extends JPanel {
         else if (dlg.weeklyRepeatRB.isSelected()) {
             rtype = EventsManager.REPEAT_WEEKLY;
             period = dlg.weekdaysCB.getSelectedIndex() + 1;
-	    if (Configuration.get("FIRST_DAY_OF_WEEK").equals("mon")) {
-		if(period==7) period=1;
-		else period++;
+		    if (Configuration.get("FIRST_DAY_OF_WEEK").equals("mon")) {
+				if(period==7) period=1;
+				else period++;
+		    }
+        }
+		else if (dlg.yearlyRepeatRB.isSelected()) {
+		    rtype = EventsManager.REPEAT_YEARLY;
+		    period = sd.getCalendar().get(Calendar.DAY_OF_YEAR);
+		    if((sd.getYear() % 4) == 0 && sd.getCalendar().get(Calendar.DAY_OF_YEAR) > 60) period--;
+		}
+	    else {
+	        rtype = EventsManager.REPEAT_MONTHLY;
+	        period = ((Integer) dlg.dayOfMonthSpin.getModel().getValue()).intValue();
 	    }
-        }
-	else if (dlg.yearlyRepeatRB.isSelected()) {
-	    rtype = EventsManager.REPEAT_YEARLY;
-	    period = sd.getCalendar().get(Calendar.DAY_OF_YEAR);
-	    if((sd.getYear() % 4) == 0 && sd.getCalendar().get(Calendar.DAY_OF_YEAR) > 60) period--;
-	}
-        else {
-            rtype = EventsManager.REPEAT_MONTHLY;
-            period = ((Integer) dlg.dayOfMonthSpin.getModel().getValue()).intValue();
-        }
-        EventsManager.createRepeatableEvent(rtype, sd, ed, period, hh, mm, text, dlg.workingDaysOnlyCB.isSelected());
+        EventsManager.createRepeatableEvent(rtype, sd, ed, period, hh, mm, text, dlg.workingDaysOnlyCB.isSelected(),dlg.getExceptionDates());
     }
 
     void removeEventB_actionPerformed(ActionEvent e) {
