@@ -165,7 +165,7 @@ public class CalendarPanel extends JPanel {
         gc.add(Calendar.MONTH, 1);
         gc.add(Calendar.DAY_OF_MONTH, -1);
         int lastMonthDay = gc.get(Calendar.DAY_OF_MONTH);
-        int cellOffset = -1;
+        int cellOffset = -99999;
         
         Collection<Task> tasks = (Collection<Task>) CurrentProject.getTaskList().getTopLevelTasks();
         
@@ -174,13 +174,13 @@ public class CalendarPanel extends JPanel {
     			cellOffset = i-1;
     		
     		CalendarPanelCell panelCell = panelCells[i];
-    		if(cellOffset != -1 & i-cellOffset <= lastMonthDay) {
+    		panelCell.getCalendarNode().clear();
+    		
+    		if(cellOffset != -99999 & i-cellOffset <= lastMonthDay) {
     			// Set the label and date
     			CalendarDate date = new CalendarDate(i-cellOffset,gc.get(Calendar.MONTH),gc.get(Calendar.YEAR));
     			panelCell.getLabel().setText(Integer.toString(i-cellOffset));
     			panelCell.setCalendarDate(date);
-    			
-    			panelCell.getCalendarNode().clear();
     			
     			// Add events
                 if(taskPanel.isShowEvents()) {
@@ -202,6 +202,7 @@ public class CalendarPanel extends JPanel {
     			if(date.equals(CurrentDate.get())) {
     				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
     			} else {
+    				// Why do we need this redundant red border? I dunno, but it fixes it
     				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
     				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
     			}
