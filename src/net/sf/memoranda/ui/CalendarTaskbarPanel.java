@@ -126,16 +126,36 @@ public class CalendarTaskbarPanel extends JToolBar {
 			lblDay.setText(this.getDay());
 			lblYear.setText(this.getYear());
 			lblMonth.setText(this.getMonth());
+			
+			parentPanel.populateDays();
 		}
 		
 		void changeToPreviousDate_actionPerformed(ActionEvent e){
-			CurrentDate.set(getCurrentYesterday());
+			// Decrement by day
+			//CurrentDate.set(getCurrentYesterday());
+			//date = CurrentDate.get();
+			//updateCalendar();
+			
+			// Decrement by month
+			Calendar cal = CalendarDate.toCalendar(date.getDay(), date.getMonth(), date.getYear());
+			cal.add(Calendar.MONTH, -1);
+			cal.set(Calendar.DAY_OF_MONTH, 1);
+			CurrentDate.set(new CalendarDate(cal));
 			date = CurrentDate.get();
 			updateCalendar();
 		}
 		
 		void changeToNextDate_actionPerformed(ActionEvent e){
-			CurrentDate.set(getCurrentTomorrow());
+			// Increments by day
+			//CurrentDate.set(getCurrentTomorrow());
+			//date = CurrentDate.get();
+			//updateCalendar();
+			
+			// Increments by month
+			Calendar cal = CalendarDate.toCalendar(date.getDay(), date.getMonth(), date.getYear());
+			cal.add(Calendar.MONTH, 1);
+			cal.set(Calendar.DAY_OF_MONTH, 1);
+			CurrentDate.set(new CalendarDate(cal));
 			date = CurrentDate.get();
 			updateCalendar();
 		}
@@ -150,13 +170,13 @@ public class CalendarTaskbarPanel extends JToolBar {
 
 		protected CalendarDate getCurrentYesterday() {
 	        Calendar cal = CalendarDate.toCalendar(date.getDay(), date.getMonth(), date.getYear());
-	        cal.roll(Calendar.DATE, false);
+	        cal.add(Calendar.DATE, -1);
 	        return new CalendarDate(cal);
 	    }
 		
 		protected CalendarDate getCurrentTomorrow() {
 	        Calendar cal = CalendarDate.toCalendar(date.getDay(), date.getMonth(), date.getYear());
-	        cal.roll(Calendar.DATE, true);
+	        cal.add(Calendar.DATE, 1);
 	        return new CalendarDate(cal);
 	    }
 

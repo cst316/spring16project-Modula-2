@@ -209,6 +209,7 @@ public class CalendarPanel extends JPanel {
     			panelCell.setActive(true);
     			
     		} else {
+    			panelCell.getCell().setBorder(null);
     			panelCell.setActive(false);
     		}
     	}
