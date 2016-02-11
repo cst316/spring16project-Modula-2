@@ -13,17 +13,12 @@ import javax.swing.JPanel;
 
 public class CalendarPanel extends JPanel {
 	WorkPanel parentPanel = null;
-<<<<<<< HEAD
-	JPanel mainPanel = new JPanel(new BorderLayout());
-	CalendarTaskbarPanel taskPanel = new CalendarTaskbarPanel(this);
-	JPanel periodPanel = new JPanel(new GridBagLayout());
-=======
+
 	JPanel mainPanel = new JPanel(new GridBagLayout());
 	CalendarTaskbarPanel taskPanel = new CalendarTaskbarPanel(this);
 	JPanel gridPanel = new JPanel(new GridBagLayout());
 	
 	GridBagConstraints gbc;
->>>>>>> 226068d124a6871b937557cd468821e888d487c3
 	
     public CalendarPanel(WorkPanel _parentPanel) {
         try {
