@@ -31,6 +31,10 @@ public class CalendarNode extends JPanel {
 		add(Box.createRigidArea(new Dimension(12, 12)));
 	}
 	
+	public void clear() {
+		this.removeAll();
+	}
+	
 	private class CalendarNodeItem extends JPanel {
 		private GridBagConstraints c;
 		private Event event;

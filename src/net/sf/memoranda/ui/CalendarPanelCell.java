@@ -15,6 +15,7 @@ public class CalendarPanelCell extends JPanel {
 	private JLabel gridLabel = new JLabel();
 	private CalendarNode calendarNode = new CalendarNode();
 	private CalendarDate _date = new CalendarDate(0,0,0);
+	private boolean isActive = false;
 	
 	GridBagConstraints gbc;
 	
@@ -34,6 +35,21 @@ public class CalendarPanelCell extends JPanel {
 	    gbc.gridy = 1;
 	    gbc.weighty = 1.0;
 		gridCell.add(calendarNode,gbc);
+	}
+	
+	public boolean isActive() {
+		return isActive;
+	}
+	
+	public void setActive(boolean active) {
+		isActive = active;
+		
+		if(active) {
+			gridCell.setBackground(Color.WHITE);
+		} else {
+			gridLabel.setText("");
+			gridCell.setBackground(Color.LIGHT_GRAY);
+		}
 	}
 	
 	public JPanel getCell() {

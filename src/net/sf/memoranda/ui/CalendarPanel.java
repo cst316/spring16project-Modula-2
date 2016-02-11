@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Calendar;
@@ -58,6 +60,22 @@ public class CalendarPanel extends JPanel {
     			if(row != 0) {
     				CalendarPanelCell panelCell = new CalendarPanelCell();
     				panelCells[weekday+7*(row-1)] = panelCell;
+
+    				panelCell.getCell().addMouseListener(new MouseListener() {
+    					@Override
+                        public void mouseClicked(MouseEvent e) {
+                            click(e, panelCell);
+                        }
+
+						@Override
+						public void mouseEntered(MouseEvent e) {}
+						@Override
+						public void mouseExited(MouseEvent e) {}
+						@Override
+						public void mousePressed(MouseEvent e) {}
+						@Override
+						public void mouseReleased(MouseEvent e) {}
+                    });
     				
         	        gbc = new GridBagConstraints();
         	        gbc.gridx = weekday; gbc.gridy = row;
@@ -114,7 +132,16 @@ public class CalendarPanel extends JPanel {
     	this.add(mainPanel,gbc);
     }
     
-    protected void populateDays() {       
+    protected void click(MouseEvent e, CalendarPanelCell panelCell) {
+    	if(!panelCell.isActive()) return;
+    	
+    	if(panelCell.getCalendarDate().equals(CurrentDate.get())) return;
+    	
+		CurrentDate.set(panelCell.getCalendarDate());
+		populateDays();
+	}
+
+	protected void populateDays() {
 		Calendar gc = new GregorianCalendar();
         gc.set(Calendar.MONTH, CurrentDate.get().getMonth());
         gc.set(Calendar.YEAR, CurrentDate.get().getYear());
@@ -129,16 +156,17 @@ public class CalendarPanel extends JPanel {
         Collection<Task> tasks = (Collection<Task>) CurrentProject.getTaskList().getTopLevelTasks();
         
     	for(int i = 0; i < 42; i++) {
-    		if(i == firstMonthWeekday-1) {
+    		if(i == firstMonthWeekday-1)
     			cellOffset = i-1;
-    		}
-
+    		
+    		CalendarPanelCell panelCell = panelCells[i];
     		if(cellOffset != -1 & i-cellOffset <= lastMonthDay) {
     			// Set the label and date
-    			CalendarPanelCell panelCell = panelCells[i];
     			CalendarDate date = new CalendarDate(i-cellOffset,gc.get(Calendar.MONTH),gc.get(Calendar.YEAR));
     			panelCell.getLabel().setText(Integer.toString(i-cellOffset));
     			panelCell.setCalendarDate(date);
+    			
+    			panelCell.getCalendarNode().clear();
     			
     			// Add events
     	        Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
@@ -159,8 +187,11 @@ public class CalendarPanel extends JPanel {
     			} else {
     				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
     			}
+    			
+    			panelCell.setActive(true);
+    			
     		} else {
-    			panelCells[i].getCell().setBackground(Color.LIGHT_GRAY);
+    			panelCell.setActive(false);
     		}
     	}
     }
