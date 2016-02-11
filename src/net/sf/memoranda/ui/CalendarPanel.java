@@ -21,8 +21,16 @@ import javax.swing.JPanel;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Event;
+import net.sf.memoranda.EventNotificationListener;
 import net.sf.memoranda.EventsManager;
+import net.sf.memoranda.EventsScheduler;
+import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectListener;
+import net.sf.memoranda.ResourcesList;
 import net.sf.memoranda.Task;
+import net.sf.memoranda.TaskList;
+import net.sf.memoranda.TaskListListener;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 
@@ -130,7 +138,24 @@ public class CalendarPanel extends JPanel {
         
         this.setLayout(new GridBagLayout());
     	this.add(mainPanel,gbc);
-    }
+    	
+    	// Event listeners
+    	EventsScheduler.addListener(new EventNotificationListener() {
+			public void eventIsOccured(Event ev) {
+				populateDays();
+			}
+
+			public void eventsChanged() {
+				populateDays();
+			}
+		});
+		
+		TaskPanel.addTaskListListener(new TaskListListener() {
+			public void taskListModified() {
+				populateDays();
+			}
+		});
+	}
     
     protected void click(MouseEvent e, CalendarPanelCell panelCell) {
     	if(!panelCell.isActive()) return;
