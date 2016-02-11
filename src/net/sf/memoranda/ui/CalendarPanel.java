@@ -1,18 +1,12 @@
 package net.sf.memoranda.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
@@ -24,12 +18,7 @@ import net.sf.memoranda.Event;
 import net.sf.memoranda.EventNotificationListener;
 import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.EventsScheduler;
-import net.sf.memoranda.NoteList;
-import net.sf.memoranda.Project;
-import net.sf.memoranda.ProjectListener;
-import net.sf.memoranda.ResourcesList;
 import net.sf.memoranda.Task;
-import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskListListener;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
@@ -194,16 +183,19 @@ public class CalendarPanel extends JPanel {
     			panelCell.getCalendarNode().clear();
     			
     			// Add events
-    	        Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
-                for (Event event : events) {
-                    panelCell.getCalendarNode().addEvent(event);
+                if(taskPanel.isShowEvents()) {
+                    Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
+                    for (Event event : events) {
+                        panelCell.getCalendarNode().addEvent(event);
+                    }
                 }
                 
                 // Add tasks
-                for (Task task : tasks) {
-                	if(task.getStartDate().equals(date)) {
-                		panelCell.getCalendarNode().addTask(task);
-                	}
+                if(taskPanel.isShowTasks()) {
+                    for (Task task : tasks) {
+                        if(task.getStartDate().equals(date))
+                            panelCell.getCalendarNode().addTask(task);
+                    }
                 }
 
     			// Highlight if date is the current date

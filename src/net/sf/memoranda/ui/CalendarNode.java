@@ -23,12 +23,12 @@ public class CalendarNode extends JPanel {
 	
 	public void addTask(Task task) {
 		add(new CalendarNodeItem(task));
-		add(Box.createRigidArea(new Dimension(12, 12)));
+		//add(Box.createRigidArea(new Dimension(12, 12)));
 	}
 	
 	public void addEvent(Event event) {
 		add(new CalendarNodeItem(event));
-		add(Box.createRigidArea(new Dimension(12, 12)));
+		//add(Box.createRigidArea(new Dimension(12, 12)));
 	}
 	
 	public void clear() {

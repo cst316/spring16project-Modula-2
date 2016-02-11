@@ -5,10 +5,7 @@ import javax.swing.JToolBar;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 
-import java.awt.EventQueue;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -25,6 +22,9 @@ public class CalendarTaskbarPanel extends JToolBar {
 		JLabel lblDay = new JLabel("New label");
 		JLabel lblMonth = new JLabel("New label");
 		JLabel lblYear = new JLabel("New label");
+
+		JCheckBox chckbxTasks = new JCheckBox("Show Tasks");
+		JCheckBox chckbxEvents = new JCheckBox("Show Events");
 	
 		CalendarPanel parentPanel = null;
 		CalendarDate date;
@@ -91,12 +91,20 @@ public class CalendarTaskbarPanel extends JToolBar {
 			});
 			add(btnNextMonth);
 			
-			JCheckBox chckbxTasks = new JCheckBox("Show Tasks");
 			chckbxTasks.setSelected(true);
+			chckbxTasks.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg1) {
+					changeShowTasks_actionPerformed(arg1);
+				}
+			});
 			add(chckbxTasks);
 			
-			JCheckBox chckbxEvents = new JCheckBox("Show Events");
 			chckbxEvents.setSelected(true);
+			chckbxEvents.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg1) {
+					changeShowEvents_actionPerformed(arg1);
+				}
+			});
 			add(chckbxEvents);
 		}
 		public String getDay(){
@@ -131,7 +139,15 @@ public class CalendarTaskbarPanel extends JToolBar {
 			date = CurrentDate.get();
 			updateCalendar();
 		}
-		
+
+		void changeShowTasks_actionPerformed(ActionEvent e){
+			parentPanel.populateDays();
+		}
+
+		void changeShowEvents_actionPerformed(ActionEvent e){
+			parentPanel.populateDays();			
+		}
+
 		protected CalendarDate getCurrentYesterday() {
 	        Calendar cal = CalendarDate.toCalendar(date.getDay(), date.getMonth(), date.getYear());
 	        cal.roll(Calendar.DATE, false);
@@ -144,4 +160,11 @@ public class CalendarTaskbarPanel extends JToolBar {
 	        return new CalendarDate(cal);
 	    }
 
+		public boolean isShowEvents() {
+			return chckbxEvents.isSelected();
+		}
+		
+		public boolean isShowTasks() {
+			return chckbxTasks.isSelected();
+		}
 	}
