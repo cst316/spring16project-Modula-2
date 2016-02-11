@@ -51,13 +51,14 @@ public class CalendarNode extends JPanel {
 			
 			c.gridx = 0;
 			c.gridy = 0;
-			
-			JLabel taskName = new JLabel(task.getText());
-			taskName.setFont(new Font(taskName.getFont().getName(), Font.BOLD, 14));
-			
-			add(taskName, c);
-			
+						
 			if(task.getStartDate() != null && task.getEndDate() != null && !task.getStartDate().equals(task.getEndDate())) {
+				c.gridwidth = 2;
+				JLabel taskName = new JLabel(task.getText());
+				taskName.setFont(new Font(taskName.getFont().getName(), Font.BOLD, 14));
+				add(taskName, c);
+
+				c.gridwidth = 1;
 				c.gridy = 1;
 				c.gridx = 0;
 				add(new JLabel("Start Date: " + task.getStartDate().getShortDateString()), c);
@@ -68,6 +69,10 @@ public class CalendarNode extends JPanel {
 				c.gridy = 2;
 				add(new JLabel(task.getProgress() + "% complete"), c);
 			} else {
+				JLabel taskName = new JLabel(task.getText());
+				taskName.setFont(new Font(taskName.getFont().getName(), Font.BOLD, 14));
+				add(taskName, c);
+
 				c.gridy = 1;
 				add(new JLabel(task.getProgress() + "% complete"), c);
 			}
@@ -79,13 +84,14 @@ public class CalendarNode extends JPanel {
 			
 			c.gridx = 0;
 			c.gridy = 0;
-			
-			JLabel eventName = new JLabel(event.getText());
-			eventName.setFont(new Font(eventName.getFont().getName(), Font.BOLD, 14));
-			
-			add(eventName, c);
-			
+						
 			if (event.getStartDate() != null && event.getEndDate() != null && !event.getStartDate().equals(event.getEndDate())) {
+				c.gridwidth = 2;
+				JLabel eventName = new JLabel(event.getText());
+				eventName.setFont(new Font(eventName.getFont().getName(), Font.BOLD, 14));
+				add(eventName, c);
+
+				c.gridwidth = 1;
 				c.gridy = 1;
 				c.gridx = 0;
 				add(new JLabel("Start Date: " + event.getStartDate().getShortDateString()), c);
@@ -98,6 +104,10 @@ public class CalendarNode extends JPanel {
 				c.gridx = 1;
 				add(new JLabel(event.getTimeString()), c);
 			} else {
+				JLabel eventName = new JLabel(event.getText());
+				eventName.setFont(new Font(eventName.getFont().getName(), Font.BOLD, 14));
+				add(eventName, c);
+
 				c.gridy = 1;
 				add(new JLabel(event.getTimeString()), c);
 			}
