@@ -38,21 +38,24 @@ public class CalendarPanel extends JPanel {
 	
     	for(int weekday = 0; weekday < 7; weekday++) {
     		for(int row = 0; row < 6; row++) {
-    			JPanel gridCell = new JPanel();
+    			JPanel gridCell = new JPanel(new GridBagLayout());
     			gridCell.setBackground(Color.WHITE);
     	        
     			if(row != 0) {
 	    			gridCell.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         	        gbc = new GridBagConstraints();
-        	        gbc.gridy = 0;       	        
+        	        gbc.anchor = GridBagConstraints.NORTH;
+        	        gbc.gridy = 0;
     				JLabel gridLabel = new JLabel();
     				gridLabel.setText(Integer.toString(weekday+7*(row-1)));
     				gridLabel.setFont(gridLabel.getFont().deriveFont(12.0f));
     				gridCell.add(gridLabel,gbc);
 
+        	        gbc.anchor = GridBagConstraints.CENTER;
     				gbc = new GridBagConstraints();
         	        gbc.gridy = 1;
+        	        gbc.weighty = 1.0;
 	    			CalendarNode calendarNode = new CalendarNode();
 	    			gridCell.add(calendarNode,gbc);
 
