@@ -57,7 +57,7 @@ public class CalendarNode extends JPanel {
 			
 			add(taskName, c);
 			
-			if(task.getStartDate() != null & task.getEndDate() != null & !task.getStartDate().equals(task.getEndDate())) {
+			if(task.getStartDate() != null && task.getEndDate() != null && !task.getStartDate().equals(task.getEndDate())) {
 				c.gridy = 1;
 				c.gridx = 0;
 				add(new JLabel("Start Date: " + task.getStartDate().getShortDateString()), c);
@@ -85,7 +85,7 @@ public class CalendarNode extends JPanel {
 			
 			add(eventName, c);
 			
-			if (event.getStartDate() != null & event.getEndDate() != null & !event.getStartDate().equals(event.getEndDate())) {
+			if (event.getStartDate() != null && event.getEndDate() != null && !event.getStartDate().equals(event.getEndDate())) {
 				c.gridy = 1;
 				c.gridx = 0;
 				add(new JLabel("Start Date: " + event.getStartDate().getShortDateString()), c);

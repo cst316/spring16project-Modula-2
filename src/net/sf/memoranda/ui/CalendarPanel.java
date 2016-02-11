@@ -155,7 +155,7 @@ public class CalendarPanel extends JPanel {
 
     			// Highlight if date is the current date
     			if(date.equals(CurrentDate.get())) {
-    				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+    				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
     			} else {
     				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
     			}
