@@ -202,6 +202,7 @@ public class CalendarPanel extends JPanel {
     			if(date.equals(CurrentDate.get())) {
     				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
     			} else {
+    				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
     				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
     			}
     			
