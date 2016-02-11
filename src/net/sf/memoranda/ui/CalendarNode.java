@@ -1,16 +1,20 @@
 package net.sf.memoranda.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import net.sf.memoranda.Event;
 import net.sf.memoranda.Task;
@@ -36,6 +40,7 @@ public class CalendarNode extends JPanel {
 	}
 	
 	private class CalendarNodeItem extends JPanel {
+		private CalendarItemPopupMenu itemPopupMenu = new CalendarItemPopupMenu();
 		private GridBagConstraints c;
 		private Event event;
 		private Task task;
@@ -47,6 +52,24 @@ public class CalendarNode extends JPanel {
 			
 			c = new GridBagConstraints();
 			c.insets = new Insets(3, 3, 3, 3);
+			
+			addMouseListener(new MouseListener() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					if (SwingUtilities.isRightMouseButton(e)) {
+						itemPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+					}
+				}
+				
+				@Override
+				public void mouseClicked(MouseEvent arg0) { }
+				@Override
+				public void mouseEntered(MouseEvent arg0) { }
+				@Override
+				public void mouseExited(MouseEvent arg0) { }
+				@Override
+				public void mouseReleased(MouseEvent arg0) { } 
+			});
 		}
 		
 		private CalendarNodeItem(Task task) {

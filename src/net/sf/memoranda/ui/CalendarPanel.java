@@ -37,7 +37,6 @@ public class CalendarPanel extends JPanel {
 	CalendarDate endDate;
 	
 	CalendarCellPopupMenu cellPopupMenu = new CalendarCellPopupMenu();
-	CalendarItemPopupMenu itemPopupMenu = new CalendarItemPopupMenu();
 	
 	GridBagConstraints gbc;
 	
