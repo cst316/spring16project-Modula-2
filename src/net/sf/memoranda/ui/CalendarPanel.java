@@ -1,6 +1,7 @@
 package net.sf.memoranda.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
@@ -12,6 +13,7 @@ import java.util.GregorianCalendar;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Event;
@@ -33,6 +35,9 @@ public class CalendarPanel extends JPanel {
 	CalendarPanelCell[] panelCells = new CalendarPanelCell[42];
 	CalendarDate startDate;
 	CalendarDate endDate;
+	
+	CalendarCellPopupMenu cellPopupMenu = new CalendarCellPopupMenu();
+	CalendarItemPopupMenu itemPopupMenu = new CalendarItemPopupMenu();
 	
 	GridBagConstraints gbc;
 	
@@ -63,13 +68,18 @@ public class CalendarPanel extends JPanel {
                         public void mouseClicked(MouseEvent e) {
                             click(e, panelCell);
                         }
+    					
+    					@Override
+						public void mousePressed(MouseEvent e) {
+    						if (SwingUtilities.isRightMouseButton(e)) {
+    							cellPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+    						}
+    					}
 
 						@Override
 						public void mouseEntered(MouseEvent e) {}
 						@Override
 						public void mouseExited(MouseEvent e) {}
-						@Override
-						public void mousePressed(MouseEvent e) {}
 						@Override
 						public void mouseReleased(MouseEvent e) {}
                     });
