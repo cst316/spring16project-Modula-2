@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 public class CalendarPanel extends JPanel {
 	WorkPanel parentPanel = null;
 	JPanel mainPanel = new JPanel(new BorderLayout());
-	CalendarTaskbarPanel taskPanel = new CalendarTaskbarPanel();
+	CalendarTaskbarPanel taskPanel = new CalendarTaskbarPanel(this);
 	JPanel periodPanel = new JPanel(new GridBagLayout());
 	
     public CalendarPanel(WorkPanel _parentPanel) {
