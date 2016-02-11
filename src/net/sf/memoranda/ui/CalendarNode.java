@@ -15,36 +15,28 @@ import javax.swing.JPanel;
 import net.sf.memoranda.Event;
 import net.sf.memoranda.Task;
 
-public class CalendarNode extends JPanel
-{	
-	public CalendarNode() { }
+public class CalendarNode extends JPanel {	
 	
-	public CalendarNode(String day)
-	{
+	public CalendarNode() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(new JLabel(day));
 	}
 	
-	public void addTask(Task task)
-	{
+	public void addTask(Task task) {
 		add(new CalendarNodeItem(task));
 		add(Box.createRigidArea(new Dimension(12, 12)));
 	}
 	
-	public void addEvent(Event event)
-	{
+	public void addEvent(Event event) {
 		add(new CalendarNodeItem(event));
 		add(Box.createRigidArea(new Dimension(12, 12)));
 	}
 	
-	private class CalendarNodeItem extends JPanel
-	{
+	private class CalendarNodeItem extends JPanel {
 		private GridBagConstraints c;
 		private Event event;
 		private Task task;
 		
-		private CalendarNodeItem()
-		{
+		private CalendarNodeItem() {
 			this.setLayout(new GridBagLayout());
 			this.setOpaque(true);
 			this.setBackground(Color.WHITE);
@@ -53,8 +45,7 @@ public class CalendarNode extends JPanel
 			c.insets = new Insets(3, 3, 3, 3);
 		}
 		
-		private CalendarNodeItem(Task task)
-		{
+		private CalendarNodeItem(Task task) {
 			this();
 			this.task = task;
 			
@@ -66,23 +57,23 @@ public class CalendarNode extends JPanel
 			
 			add(taskName, c);
 			
-			c.gridy = 1;
-			
-			if (task.getStartDate() != null)
-			{
+			if(task.getStartDate() != null & task.getEndDate() != null & !task.getStartDate().equals(task.getEndDate())) {
+				c.gridy = 1;
+				c.gridx = 0;
 				add(new JLabel("Start Date: " + task.getStartDate().getShortDateString()), c);
-			}
-			
-			c.gridy = 2;
-			
-			if (task.getEndDate() != null)
-			{
+				c.gridx = 1;
 				add(new JLabel("End Date: " + task.getEndDate().getShortDateString()), c);
+				
+				c.gridwidth = 2;
+				c.gridy = 2;
+				add(new JLabel(task.getProgress() + "% complete"), c);
+			} else {
+				c.gridy = 1;
+				add(new JLabel(task.getProgress() + "% complete"), c);
 			}
 		}
 		
-		private CalendarNodeItem(Event event)
-		{
+		private CalendarNodeItem(Event event) {
 			this();
 			this.event = event;
 			
@@ -94,18 +85,21 @@ public class CalendarNode extends JPanel
 			
 			add(eventName, c);
 			
-			c.gridy = 1;
-			
-			if (event.getStartDate() != null)
-			{
+			if (event.getStartDate() != null & event.getEndDate() != null & !event.getStartDate().equals(event.getEndDate())) {
+				c.gridy = 1;
+				c.gridx = 0;
 				add(new JLabel("Start Date: " + event.getStartDate().getShortDateString()), c);
-			}
-			
-			c.gridy = 2;
-			
-			if (event.getEndDate() != null)
-			{
+				c.gridx = 1;
 				add(new JLabel("End Date: " + event.getEndDate().getShortDateString()), c);
+				
+				c.gridy = 2;
+				c.gridx = 0; 
+				add(new JLabel(event.getTimeString()), c);
+				c.gridx = 1;
+				add(new JLabel(event.getTimeString()), c);
+			} else {
+				c.gridy = 1;
+				add(new JLabel(event.getTimeString()), c);
 			}
 		}
 	}
