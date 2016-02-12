@@ -160,7 +160,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 			lblYear.setText(this.getYear());
 			lblMonth.setText(this.getMonth());
 			
-			parentPanel.populateDays();
+			parentPanel.updateCalendarPanelView();
 		}
 		
 		void changeToPreviousDate_actionPerformed(ActionEvent e){
@@ -194,11 +194,11 @@ public class CalendarTaskbarPanel extends JToolBar {
 		}
 
 		void changeShowTasks_actionPerformed(ActionEvent e){
-			parentPanel.populateDays();
+			parentPanel.updateCalendarPanelView();
 		}
 
 		void changeShowEvents_actionPerformed(ActionEvent e){
-			parentPanel.populateDays();			
+			parentPanel.updateCalendarPanelView();		
 		}
 
 		protected CalendarDate getCurrentYesterday() {
