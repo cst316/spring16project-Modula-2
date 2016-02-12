@@ -30,7 +30,7 @@ public class CalendarPanel extends JPanel {
 
 	JPanel mainPanel = new JPanel(new GridBagLayout());
 	CalendarTaskbarPanel taskPanel = new CalendarTaskbarPanel(this);
-	JPanel gridPanel = new JPanel(new GridBagLayout());
+	CalendarPanelView viewPanel = new CalendarPanelView(CalendarPanelView.VIEW_INVALID,this);
 	
 	CalendarPanelCell[] panelCells = new CalendarPanelCell[42];
 	CalendarDate startDate;
@@ -51,67 +51,7 @@ public class CalendarPanel extends JPanel {
     }
     
     void jbInit() throws Exception {
-    	
-		String[] namesOfDays = new String[] {
-			    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-		};
-        
-    	for(int weekday = 0; weekday < 7; weekday++) {
-    		for(int row = 0; row < 7; row++) {    			
-    			if(row != 0) {
-    				CalendarPanelCell panelCell = new CalendarPanelCell();
-    				panelCells[weekday+7*(row-1)] = panelCell;
-
-    				panelCell.getCell().addMouseListener(new MouseListener() {
-    					@Override
-                        public void mouseClicked(MouseEvent e) {
-                            click(e, panelCell);
-                        }
-    					
-    					@Override
-						public void mousePressed(MouseEvent e) {
-    						if (SwingUtilities.isRightMouseButton(e)) {
-    							cellPopupMenu.show(e.getComponent(), e.getX(), e.getY());
-    						}
-    					}
-
-						@Override
-						public void mouseEntered(MouseEvent e) {}
-						@Override
-						public void mouseExited(MouseEvent e) {}
-						@Override
-						public void mouseReleased(MouseEvent e) {}
-                    });
-    				
-        	        gbc = new GridBagConstraints();
-        	        gbc.gridx = weekday; gbc.gridy = row;
-        	        gbc.anchor = GridBagConstraints.CENTER;
-	    			gbc.fill = GridBagConstraints.BOTH;
-	    	        gbc.weightx = 1.0;
-	    	        gbc.weighty = 1.0;
-	    	        gridPanel.add(panelCell.getCell(), gbc);
-    			} else {
-        			JPanel gridCell = new JPanel(new GridBagLayout());
-        			gridCell.setBackground(Color.WHITE);
-        			
-        	        gbc = new GridBagConstraints();
-    				JLabel gridLabel = new JLabel();
-    				gridLabel.setText(namesOfDays[weekday]);
-    				gridLabel.setFont(gridLabel.getFont().deriveFont(12.0f));
-    				gridCell.add(gridLabel,gbc);
-    				
-        	        gbc = new GridBagConstraints();
-        	        gbc.gridx = weekday; gbc.gridy = row;
-        	        gbc.anchor = GridBagConstraints.CENTER;
-    				gbc.fill = GridBagConstraints.HORIZONTAL;
-    				gbc.weightx = 1.0;
-    				
-	    	        gridPanel.add(gridCell, gbc);
-    			}
-    		}
-    	}
-    	
-    	populateDays();
+		viewPanel.changeViewType(CalendarPanelView.VIEW_MONTH);
 
     	// TaskBar
         gbc = new GridBagConstraints();
@@ -126,7 +66,7 @@ public class CalendarPanel extends JPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-    	mainPanel.add(gridPanel,gbc);
+    	mainPanel.add(viewPanel.getView(),gbc);
 
     	// CalendarPanel
         gbc = new GridBagConstraints();
@@ -140,88 +80,31 @@ public class CalendarPanel extends JPanel {
     	// Event listeners
     	EventsScheduler.addListener(new EventNotificationListener() {
 			public void eventIsOccured(Event ev) {
-				populateDays();
+				updateCalendarPanelView();
 			}
 
 			public void eventsChanged() {
-				populateDays();
+				updateCalendarPanelView();
 			}
 		});
 		
 		TaskPanel.addTaskListListener(new TaskListListener() {
 			public void taskListModified() {
-				populateDays();
+				updateCalendarPanelView();
 			}
 		});
 	}
     
-    protected void click(MouseEvent e, CalendarPanelCell panelCell) {
+    public void updateCalendarPanelView() {
+    	viewPanel.updateView();
+    }
+    
+    protected void calendarPanelCellClick(MouseEvent e, CalendarPanelCell panelCell) {
     	if(!panelCell.isActive()) return;
     	
     	if(panelCell.getCalendarDate().equals(CurrentDate.get())) return;
     	
 		CurrentDate.set(panelCell.getCalendarDate());
-		populateDays();
+		updateCalendarPanelView();
 	}
-
-	protected void populateDays() {
-		Calendar gc = new GregorianCalendar();
-        gc.set(Calendar.MONTH, CurrentDate.get().getMonth());
-        gc.set(Calendar.YEAR, CurrentDate.get().getYear());
-        gc.set(Calendar.DAY_OF_MONTH, 1);
-        int firstMonthWeekday = gc.get(Calendar.DAY_OF_WEEK);
-        
-        gc.add(Calendar.MONTH, 1);
-        gc.add(Calendar.DAY_OF_MONTH, -1);
-        int lastMonthDay = gc.get(Calendar.DAY_OF_MONTH);
-        int cellOffset = -99999;
-        
-        Collection<Task> tasks = (Collection<Task>) CurrentProject.getTaskList().getTopLevelTasks();
-        
-    	for(int i = 0; i < 42; i++) {
-    		if(i == firstMonthWeekday-1)
-    			cellOffset = i-1;
-    		
-    		CalendarPanelCell panelCell = panelCells[i];
-    		panelCell.getCalendarNode().clear();
-    		
-    		if(cellOffset != -99999 & i-cellOffset <= lastMonthDay) {
-    			// Set the label and date
-    			CalendarDate date = new CalendarDate(i-cellOffset,gc.get(Calendar.MONTH),gc.get(Calendar.YEAR));
-    			panelCell.getLabel().setText(Integer.toString(i-cellOffset));
-    			panelCell.setCalendarDate(date);
-    			
-    			// Add events
-                if(taskPanel.isShowEvents()) {
-                    Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
-                    for (Event event : events) {
-                        panelCell.getCalendarNode().addEvent(event);
-                    }
-                }
-                
-                // Add tasks
-                if(taskPanel.isShowTasks()) {
-                    for (Task task : tasks) {
-                        if(task.getStartDate().equals(date))
-                            panelCell.getCalendarNode().addTask(task);
-                    }
-                }
-
-    			// Highlight if date is the current date
-    			if(date.equals(CurrentDate.get())) {
-    				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-    			} else {
-    				// Why do we need this redundant red border? I dunno, but it fixes it
-    				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-    				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-    			}
-    			
-    			panelCell.setActive(true);
-    			
-    		} else {
-    			panelCell.getCell().setBorder(null);
-    			panelCell.setActive(false);
-    		}
-    	}
-    }
 }
