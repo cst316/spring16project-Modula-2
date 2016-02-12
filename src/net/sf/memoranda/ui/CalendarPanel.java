@@ -99,6 +99,10 @@ public class CalendarPanel extends JPanel {
     	viewPanel.updateView();
     }
     
+    public void changeCalendarPanelView(int inViewType) {
+    	viewPanel.changeViewType(inViewType);
+    }
+    
     protected void calendarPanelCellClick(MouseEvent e, CalendarPanelCell panelCell) {
     	if(!panelCell.isActive()) return;
     	

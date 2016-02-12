@@ -39,7 +39,17 @@ public class CalendarTaskbarPanel extends JToolBar {
 		CalendarPanel parentPanel = null;
 		CalendarDate date;
 		
+		private int currentView = CalendarPanelView.VIEW_INVALID;
+		
+		public int getCurrentView() {
+			return currentView;
+		}
+		
 		private final JPanel panel = new JPanel();
+		private final JPanel panel_1 = new JPanel();
+		private final JButton btnLittleStepBack = new JButton();
+		private final JPanel panel_2 = new JPanel();
+		private final JButton btnLittleStepForward = new JButton();
 
 		/**
 		 * Create the application.
@@ -69,32 +79,56 @@ public class CalendarTaskbarPanel extends JToolBar {
 		private void jbInit () throws Exception {
 			
 			JButton btnMonthly = new JButton("Month");
+			btnMonthly.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					changeToMonthlyView_actionPerformed(arg0);
+				}
+			});
 			btnMonthly.setBackground(UIManager.getColor("Button.light"));
 			btnMonthly.setMargin(new Insets(5, 14, 5, 14));
 			btnMonthly.setSize(new Dimension(5, 5));
 			add(btnMonthly);
 			
 			JButton btnWeekly = new JButton("Week");
+			btnWeekly.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					changeToWeeklyView_actionPerformed(arg0);
+				}
+			});
 			btnWeekly.setBackground(UIManager.getColor("Button.light"));
 			btnWeekly.setMargin(new Insets(5, 14, 5, 14));
 			add(btnWeekly);
 			
 			JButton btnDaily = new JButton("Day");
+			btnDaily.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					changeToDailyView_actionPerformed(arg0);
+				}
+			});
 			btnDaily.setBackground(UIManager.getColor("Button.light"));
 			btnDaily.setMargin(new Insets(5, 14, 5, 14));
 			add(btnDaily);
-			
-			JButton btnPreviousMonth = new JButton();
 			Image leftArrow = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow.gif"));
 			Image resizedLeftArrow = leftArrow.getScaledInstance(20, 20, 0);
+			
+			add(panel_1);
+			btnLittleStepBack.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					changeSmallStepBackward_actionPerformed(arg0);
+				}
+			});
+			
+			panel_1.add(btnLittleStepBack);
+			
+			JButton btnPreviousMonth = new JButton();
+			panel_1.add(btnPreviousMonth);
 			
 			btnPreviousMonth.setIcon(new ImageIcon(resizedLeftArrow));
 			btnPreviousMonth.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					changeToPreviousDate_actionPerformed(arg0);
+					changeLargeStepBackward_actionPerformed(arg0);
 				}
 			});
-			add(btnPreviousMonth);
 			panel.setPreferredSize(new Dimension(500, 40));
 			
 			add(panel);
@@ -111,23 +145,32 @@ public class CalendarTaskbarPanel extends JToolBar {
 			
 			lblYear.setFont(new Font("Tahoma", Font.PLAIN, 29));
 			lblYear.setText(this.getYear());
-			
-			JButton btnNextMonth = new JButton();
 			Image rightArrow = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow.gif"));
 			Image resizedRightArrow = rightArrow.getScaledInstance(20, 20, 0);
-			
-			btnNextMonth.setIcon(new ImageIcon(resizedRightArrow));
-			btnNextMonth.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg1) {
-					changeToNextDate_actionPerformed(arg1);
-				}
-			});
-			add(btnNextMonth);
 			
 			chckbxTasks.setSelected(true);
 			chckbxTasks.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg1) {
 					changeShowTasks_actionPerformed(arg1);
+				}
+			});
+			
+			add(panel_2);
+			
+			JButton btnNextMonth = new JButton();
+			panel_2.add(btnNextMonth);
+			
+			btnNextMonth.setIcon(new ImageIcon(resizedRightArrow));
+			btnLittleStepForward.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					changeSmallStepForward_actionPerformed(arg0);
+				}
+			});
+			
+			panel_2.add(btnLittleStepForward);
+			btnNextMonth.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg1) {
+					changeLargeStepForward_actionPerformed(arg1);
 				}
 			});
 			add(chckbxTasks);
@@ -162,37 +205,46 @@ public class CalendarTaskbarPanel extends JToolBar {
 			
 			parentPanel.updateCalendarPanelView();
 		}
-		
-		void changeToPreviousDate_actionPerformed(ActionEvent e){
-			// Decrement by day
-			//CurrentDate.set(getCurrentYesterday());
-			//date = CurrentDate.get();
-			//updateCalendar();
-			
-			// Decrement by month
-			Calendar cal = CalendarDate.toCalendar(date.getDay(), date.getMonth(), date.getYear());
-			cal.add(Calendar.MONTH, -1);
-			cal.set(Calendar.DAY_OF_MONTH, 1);
-			CurrentDate.set(new CalendarDate(cal));
-			date = CurrentDate.get();
-			updateCalendar();
-		}
-		
-		void changeToNextDate_actionPerformed(ActionEvent e){
-			// Increments by day
-			//CurrentDate.set(getCurrentTomorrow());
-			//date = CurrentDate.get();
-			//updateCalendar();
-			
-			// Increments by month
-			Calendar cal = CalendarDate.toCalendar(date.getDay(), date.getMonth(), date.getYear());
-			cal.add(Calendar.MONTH, 1);
-			cal.set(Calendar.DAY_OF_MONTH, 1);
-			CurrentDate.set(new CalendarDate(cal));
-			date = CurrentDate.get();
-			updateCalendar();
+
+		void changeToMonthlyView_actionPerformed(ActionEvent e) {
+			currentView = CalendarPanelView.VIEW_MONTH;
+			parentPanel.changeCalendarPanelView(currentView);
 		}
 
+		void changeToWeeklyView_actionPerformed(ActionEvent e) {
+			currentView = CalendarPanelView.VIEW_WEEK;
+			parentPanel.changeCalendarPanelView(currentView);
+		}
+
+		void changeToDailyView_actionPerformed(ActionEvent e) {
+			currentView = CalendarPanelView.VIEW_DAY;
+			parentPanel.changeCalendarPanelView(currentView);
+		}
+			
+		void changeLargeStepBackward_actionPerformed(ActionEvent e){
+			parentPanel.viewPanel.stepLargeBackward();
+			date = CurrentDate.get();
+			updateCalendar();
+		}
+		
+		void changeLargeStepForward_actionPerformed(ActionEvent e){
+			parentPanel.viewPanel.stepLargeForward();
+			date = CurrentDate.get();
+			updateCalendar();
+		}
+		
+		void changeSmallStepBackward_actionPerformed(ActionEvent e){
+			parentPanel.viewPanel.stepSmallBackward();
+			date = CurrentDate.get();
+			updateCalendar();
+		}
+		
+		void changeSmallStepForward_actionPerformed(ActionEvent e){
+			parentPanel.viewPanel.stepSmallForward();
+			date = CurrentDate.get();
+			updateCalendar();
+		}
+		
 		void changeShowTasks_actionPerformed(ActionEvent e){
 			parentPanel.updateCalendarPanelView();
 		}
