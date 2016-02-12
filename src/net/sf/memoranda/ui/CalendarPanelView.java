@@ -195,6 +195,39 @@ public class CalendarPanelView extends JPanel {
 		else if(_type == VIEW_WEEK) {
 	        Collection<Task> tasks = (Collection<Task>) CurrentProject.getTaskList().getTopLevelTasks();
 			
+	        Calendar gc = new GregorianCalendar();
+	        gc.set(Calendar.MONTH, CurrentDate.get().getMonth());
+	        gc.set(Calendar.YEAR, CurrentDate.get().getYear());
+	        gc.set(Calendar.DAY_OF_MONTH, CurrentDate.get().getDay());
+	        int currentMonth = gc.get(Calendar.MONTH);
+	        
+	        for(int i = 7; i > 0; i--) {
+	        	gc.add(Calendar.DATE, -1);
+	        	if(gc.get(Calendar.DAY_OF_WEEK) == 1) break;
+	        }
+	        
+	        for(int i = 0; i < 7; i++) {
+	        	CalendarPanelCell panelCell = _cells[i];
+	        	panelCell.getCalendarNode().clear();
+
+    			CalendarDate date = new CalendarDate(gc);
+    			generateDay(panelCell,date,tasks);
+        		panelCell.setActive(true);
+
+        		/*
+	        	if(gc.get(Calendar.MONTH) == currentMonth) {
+	    			CalendarDate date = new CalendarDate(gc);
+	    			generateDay(panelCell,date,tasks);
+
+	        		panelCell.setActive(true);
+	        	} else {
+	    			panelCell.getCell().setBorder(null);
+	    			panelCell.setActive(false);
+	        	}
+	        	*/
+	        	
+	        	gc.add(Calendar.DATE, 1);
+	        }
 		}
 		
 		else if(_type == VIEW_DAY) {
@@ -206,7 +239,12 @@ public class CalendarPanelView extends JPanel {
 	}
 	
 	private void generateDay(CalendarPanelCell panelCell, CalendarDate date, Collection<Task> tasks) {
-		panelCell.getLabel().setText(Integer.toString(date.getDay()));
+		if(_type != CalendarPanelView.VIEW_WEEK) {
+			panelCell.getLabel().setText(Integer.toString(date.getDay()));
+		} else {
+			panelCell.getLabel().setText(Integer.toString(date.getMonth()+1) + "/" + Integer.toString(date.getDay()));
+		}
+
 		panelCell.setCalendarDate(date);
 		
 		// Add events
@@ -245,7 +283,10 @@ public class CalendarPanelView extends JPanel {
 			updateView();
 		}
 		else if(_type == VIEW_WEEK) {
-			
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 		else if(_type == VIEW_DAY) {    		
 			Calendar cal = CurrentDate.get().getCalendar();
@@ -263,7 +304,10 @@ public class CalendarPanelView extends JPanel {
 			updateView();
 		}
 		else if(_type == VIEW_WEEK) {
-			
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.DAY_OF_MONTH, 7);
+			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 		else if(_type == VIEW_DAY) {
 			Calendar cal = CurrentDate.get().getCalendar();
@@ -280,7 +324,10 @@ public class CalendarPanelView extends JPanel {
 			updateView();
 		}
 		else if(_type == VIEW_WEEK) {
-			
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.DAY_OF_MONTH, -1);
+			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 		else if(_type == VIEW_DAY) {
 			Calendar cal = CurrentDate.get().getCalendar();
@@ -298,7 +345,10 @@ public class CalendarPanelView extends JPanel {
 			updateView();
 		}
 		else if(_type == VIEW_WEEK) {
-			
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.DAY_OF_MONTH, -7);
+			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 		else if(_type == VIEW_DAY) {
 			Calendar cal = CurrentDate.get().getCalendar();
