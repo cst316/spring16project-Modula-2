@@ -161,7 +161,9 @@ public class CalendarPanelView extends JPanel {
 	
 	public void updateView() {
 		if(_type == VIEW_MONTH) { 
-			Calendar gc = new GregorianCalendar();
+	        Collection<Task> tasks = (Collection<Task>) CurrentProject.getTaskList().getTopLevelTasks();
+
+	        Calendar gc = new GregorianCalendar();
 	        gc.set(Calendar.MONTH, CurrentDate.get().getMonth());
 	        gc.set(Calendar.YEAR, CurrentDate.get().getYear());
 	        gc.set(Calendar.DAY_OF_MONTH, 1);
@@ -171,8 +173,6 @@ public class CalendarPanelView extends JPanel {
 	        gc.add(Calendar.DAY_OF_MONTH, -1);
 	        int lastMonthDay = gc.get(Calendar.DAY_OF_MONTH);
 	        int cellOffset = -99999;
-	        
-	        Collection<Task> tasks = (Collection<Task>) CurrentProject.getTaskList().getTopLevelTasks();
 	        
 	    	for(int i = 0; i < 42; i++) {
 	    		if(i == firstMonthWeekday-1)
@@ -184,36 +184,7 @@ public class CalendarPanelView extends JPanel {
 	    		if(cellOffset != -99999 & i-cellOffset <= lastMonthDay) {
 	    			// Set the label and date
 	    			CalendarDate date = new CalendarDate(i-cellOffset,gc.get(Calendar.MONTH),gc.get(Calendar.YEAR));
-	    			panelCell.getLabel().setText(Integer.toString(i-cellOffset));
-	    			panelCell.setCalendarDate(date);
-	    			
-	    			// Add events
-	                if(_parent.taskPanel.isShowEvents()) {
-	                    Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
-	                    for (Event event : events) {
-	                        panelCell.getCalendarNode().addEvent(event);
-	                    }
-	                }
-	                
-	                // Add tasks
-	                if(_parent.taskPanel.isShowTasks()) {
-	                    for (Task task : tasks) {
-	                        if(task.getStartDate().equals(date))
-	                            panelCell.getCalendarNode().addTask(task);
-	                    }
-	                }
-
-	    			// Highlight if date is the current date
-	    			if(date.equals(CurrentDate.get())) {
-	    				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-	    			} else {
-	    				// Why do we need this redundant red border? I dunno, but it fixes it
-	    				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-	    				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-	    			}
-	    			
-	    			panelCell.setActive(true);
-	    			
+	    			generateDay(panelCell,date,tasks);
 	    		} else {
 	    			panelCell.getCell().setBorder(null);
 	    			panelCell.setActive(false);
@@ -222,12 +193,48 @@ public class CalendarPanelView extends JPanel {
 		}
 		
 		else if(_type == VIEW_WEEK) {
+	        Collection<Task> tasks = (Collection<Task>) CurrentProject.getTaskList().getTopLevelTasks();
 			
 		}
 		
 		else if(_type == VIEW_DAY) {
-			
+	        Collection<Task> tasks = (Collection<Task>) CurrentProject.getTaskList().getTopLevelTasks();
+    		CalendarPanelCell panelCell = _cells[0];
+    		panelCell.getCalendarNode().clear();
+	        generateDay(panelCell,CurrentDate.get(),tasks);
 		}
+	}
+	
+	private void generateDay(CalendarPanelCell panelCell, CalendarDate date, Collection<Task> tasks) {
+		panelCell.getLabel().setText(Integer.toString(date.getDay()));
+		panelCell.setCalendarDate(date);
+		
+		// Add events
+        if(_parent.taskPanel.isShowEvents()) {
+            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
+            for (Event event : events) {
+                panelCell.getCalendarNode().addEvent(event);
+            }
+        }
+        
+        // Add tasks
+        if(_parent.taskPanel.isShowTasks()) {
+            for (Task task : tasks) {
+                if(task.getStartDate().equals(date))
+                    panelCell.getCalendarNode().addTask(task);
+            }
+        }
+
+		// Highlight if date is the current date
+		if(date.equals(CurrentDate.get())) {
+			panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+		} else {
+			// Why do we need this redundant red border? I dunno, but it fixes it
+			panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+			panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+		}
+		
+		panelCell.setActive(true);
 	}
 	
 	public void stepSmallForward() {
@@ -235,12 +242,16 @@ public class CalendarPanelView extends JPanel {
 			Calendar cal = CurrentDate.get().getCalendar();
 			cal.add(Calendar.DAY_OF_MONTH, 1);
 			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 		else if(_type == VIEW_WEEK) {
 			
 		}
-		else if(_type == VIEW_DAY) {
-			
+		else if(_type == VIEW_DAY) {    		
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.DATE, 1);
+			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 	}
 	public void stepLargeForward() {
@@ -249,12 +260,16 @@ public class CalendarPanelView extends JPanel {
 			cal.add(Calendar.MONTH, 1);
 			cal.set(Calendar.DAY_OF_MONTH, 1);
 			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 		else if(_type == VIEW_WEEK) {
 			
 		}
 		else if(_type == VIEW_DAY) {
-			
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.DATE, 1);
+			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 	}
 	public void stepSmallBackward() {
@@ -262,12 +277,16 @@ public class CalendarPanelView extends JPanel {
 			Calendar cal = CurrentDate.get().getCalendar();
 			cal.add(Calendar.DAY_OF_MONTH, -1);
 			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 		else if(_type == VIEW_WEEK) {
 			
 		}
 		else if(_type == VIEW_DAY) {
-			
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.DATE, -1);
+			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 	}
 	public void stepLargeBackward() {
@@ -276,12 +295,16 @@ public class CalendarPanelView extends JPanel {
 			cal.add(Calendar.MONTH, -1);
 			cal.set(Calendar.DAY_OF_MONTH, 1);
 			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 		else if(_type == VIEW_WEEK) {
 			
 		}
 		else if(_type == VIEW_DAY) {
-			
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.DATE, -1);
+			CurrentDate.set(new CalendarDate(cal));
+			updateView();
 		}
 	}
 	
