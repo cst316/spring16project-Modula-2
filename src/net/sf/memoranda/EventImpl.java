@@ -241,11 +241,8 @@ public class EventImpl implements Event, Comparable {
 		Vector<CalendarDate> v = this.getExceptionDates();
 		
 		for (int i = 0; i < v.size(); i++) {
-			// TODO dchende2 Why is the passed date from root <day>/1/2016 or whatever
-			//if(v.get(i).equals(date)) {
-			if(v.get(i).getDay() == date.getDay()) {
+			if(v.get(i).equals(date))
 				return true;
-			}
 		}
 
 		return false;

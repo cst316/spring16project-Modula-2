@@ -32,6 +32,7 @@ import net.sf.memoranda.ProjectListener;
 import net.sf.memoranda.ResourcesList;
 import net.sf.memoranda.Task;
 import net.sf.memoranda.TaskList;
+import net.sf.memoranda.TaskListListener;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
@@ -66,6 +67,8 @@ public class TaskPanel extends JPanel {
 	JMenuItem ppAddSubTask = new JMenuItem();
 	JMenuItem ppCalcTask = new JMenuItem();
 	DailyItemsPanel parentPanel = null;
+	
+	private static Vector<TaskListListener> taskListListeners = new Vector<TaskListListener>();
 
     public TaskPanel(DailyItemsPanel _parentPanel) {
         try {
@@ -486,6 +489,8 @@ public class TaskPanel extends JPanel {
         taskTable.tableChanged();
         parentPanel.updateIndicators();
         //taskTable.updateUI();
+        
+        notifyTaskListListeners();
     }
 
     void newTaskB_actionPerformed(ActionEvent e) {
@@ -517,6 +522,8 @@ public class TaskPanel extends JPanel {
         taskTable.tableChanged();
         parentPanel.updateIndicators();
         //taskTable.updateUI();
+        
+        notifyTaskListListeners();
     }
 
     void addSubTask_actionPerformed(ActionEvent e) {
@@ -642,7 +649,7 @@ public class TaskPanel extends JPanel {
         if (taskTable.getSelectedRows().length > 1)
             msg = Local.getString("Remove")+" "+taskTable.getSelectedRows().length +" "+Local.getString("tasks")+"?"
              + "\n"+Local.getString("Are you sure?");
-        else {        	
+        else {
         	Task t = CurrentProject.getTaskList().getTask(thisTaskId);
         	// check if there are subtasks
 			if(CurrentProject.getTaskList().hasSubTasks(thisTaskId)) {
@@ -675,6 +682,8 @@ public class TaskPanel extends JPanel {
         CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
         parentPanel.updateIndicators();
         //taskTable.updateUI();
+        
+        notifyTaskListListeners();
 
     }
 
@@ -758,5 +767,14 @@ public class TaskPanel extends JPanel {
   void ppCalcTask_actionPerformed(ActionEvent e) {
       calcTask_actionPerformed(e);
   }
+  
+  public static void addTaskListListener(TaskListListener listener) {
+	  taskListListeners.add(listener);
+  }
 
+  static void notifyTaskListListeners() {
+	  for (TaskListListener listener : taskListListeners) {
+		  listener.taskListModified();
+	  }
+  }
 }

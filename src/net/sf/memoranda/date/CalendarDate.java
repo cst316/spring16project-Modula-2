@@ -76,7 +76,7 @@ public class CalendarDate {
         cal.roll(Calendar.DATE, false);
         return new CalendarDate(cal);
     }
-
+    
     public static CalendarDate tomorrow() {
         Calendar cal = Calendar.getInstance();
         cal.roll(Calendar.DATE, true);

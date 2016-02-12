@@ -519,9 +519,14 @@ public class EventDialog extends JDialog implements WindowListener {
     	CalendarDate[] dates = new CalendarDate[exceptionModel.getSize()];
 
     	for(int i = 0; i < exceptionModel.getSize(); i++) {
-    		String str[] = exceptionModel.getElementAt(i).split("/");
-    		if(str[2].length() == 2) str[2] = "20"+str[2];
-    		dates[i] = new CalendarDate( str[1] + "/" + str[0] + "/" + str[2] );
+    		int exceptionDay[] = new int[3];
+    		String exceptionString[] = exceptionModel.getElementAt(i).split("/");
+    		
+    		for(int j = 0; j < 3; j++)
+    			exceptionDay[j] = Integer.parseInt(exceptionString[j]);
+    		
+    		if(exceptionDay[2] < 100) exceptionDay[2] = 2000+exceptionDay[2];
+    		dates[i] = new CalendarDate( exceptionDay[1], exceptionDay[0]-1, exceptionDay[2] );
     	}
     	
     	return dates;
@@ -608,7 +613,7 @@ public class EventDialog extends JDialog implements WindowListener {
         lblSince.setEnabled(true);
         enableEndDateCB.setEnabled(true);
 		startDate.getModel().setValue(
-			startCalFrame.cal.get().getCalendar().getTime());        
+			startCalFrame.cal.get().getCalendar().getTime());
     }
 
     public void noRepeatRB_actionPerformed(ActionEvent e) {
@@ -697,5 +702,4 @@ public class EventDialog extends JDialog implements WindowListener {
 	public void windowActivated( WindowEvent e ) {}
 
 	public void windowDeactivated( WindowEvent e ) {}
-
 }

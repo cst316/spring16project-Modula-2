@@ -234,11 +234,7 @@ public class EventsPanel extends JPanel {
                 EventsTable.EVENT);
         
         dlg.timeSpin.getModel().setValue(ev.getTime());
-        /*if (new CalendarDate(ev.getTime()).equals(CalendarDate.today())) 
-            ((SpinnerDateModel)dlg.timeSpin.getModel()).setStart(new Date());
-        else
-        ((SpinnerDateModel)dlg.timeSpin.getModel()).setStart(CalendarDate.today().getDate());
-        ((SpinnerDateModel)dlg.timeSpin.getModel()).setEnd(CalendarDate.tomorrow().getDate());*/    
+ 
         dlg.textField.setText(ev.getText());
         int rep = ev.getRepeat();
         if (rep > 0) {
@@ -295,24 +291,19 @@ public class EventsPanel extends JPanel {
             return;
         EventsManager.removeEvent(ev);
         
-		Calendar calendar = new GregorianCalendar(Local.getCurrentLocale()); //Fix deprecated methods to get hours
-		//by (jcscoobyrs) 14-Nov-2003 at 10:24:38 AM
-		calendar.setTime(((Date)dlg.timeSpin.getModel().getValue()));//Fix deprecated methods to get hours
-		//by (jcscoobyrs) 14-Nov-2003 at 10:24:38 AM
-		int hh = calendar.get(Calendar.HOUR_OF_DAY);//Fix deprecated methods to get hours
-		//by (jcscoobyrs) 14-Nov-2003 at 10:24:38 AM
-		int mm = calendar.get(Calendar.MINUTE);//Fix deprecated methods to get hours
-		//by (jcscoobyrs) 14-Nov-2003 at 10:24:38 AM
-        
-        //int hh = ((Date) dlg.timeSpin.getModel().getValue()).getHours();
-        //int mm = ((Date) dlg.timeSpin.getModel().getValue()).getMinutes();
+		Calendar calendar = new GregorianCalendar(Local.getCurrentLocale());
+		calendar.setTime(((Date)dlg.timeSpin.getModel().getValue()));
+		int hh = calendar.get(Calendar.HOUR_OF_DAY);
+		int mm = calendar.get(Calendar.MINUTE);
+
         String text = dlg.textField.getText();
-        if (dlg.noRepeatRB.isSelected())
+        if (dlg.noRepeatRB.isSelected()) {
         	EventsManager.createEvent(CurrentDate.get(), hh, mm, text);
-        else {
+    	} else {
         	updateEvents(dlg,hh,mm,text);
-        }    
-	saveEvents();
+        }
+        
+        saveEvents();
     }
 
     void newEventB_actionPerformed(ActionEvent e) {
@@ -365,7 +356,7 @@ public class EventsPanel extends JPanel {
     }
 
     private void saveEvents() {
-	CurrentStorage.get().storeEventsManager();
+    	CurrentStorage.get().storeEventsManager();
         eventsTable.refresh();
         EventsScheduler.init();
         parentPanel.calendar.jnCalendar.updateUI();
