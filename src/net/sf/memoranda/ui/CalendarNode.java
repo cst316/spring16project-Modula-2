@@ -56,7 +56,13 @@ public class CalendarNode extends JPanel {
 			addMouseListener(new MouseListener() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					if (SwingUtilities.isRightMouseButton(e)) {
+					if (SwingUtilities.isLeftMouseButton(e)) {
+						if (event != null)
+							new EventInformationDialog(App.getFrame(), "Event Information", event).setVisible(true);
+						else if (task != null)
+							new TaskInformationDialog(App.getFrame(), "Task Information", task).setVisible(true);
+					}
+					else if (SwingUtilities.isRightMouseButton(e)) {
 						itemPopupMenu.show(e.getComponent(), e.getX(), e.getY());
 					}
 				}
