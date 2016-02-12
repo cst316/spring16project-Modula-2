@@ -202,8 +202,8 @@ public class CalendarPanelView extends JPanel {
 	        int currentMonth = gc.get(Calendar.MONTH);
 	        
 	        for(int i = 7; i > 0; i--) {
-	        	gc.add(Calendar.DATE, -1);
 	        	if(gc.get(Calendar.DAY_OF_WEEK) == 1) break;
+	        	gc.add(Calendar.DATE, -1);
 	        }
 	        
 	        for(int i = 0; i < 7; i++) {

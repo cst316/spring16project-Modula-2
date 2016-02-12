@@ -109,6 +109,7 @@ public class CalendarPanel extends JPanel {
     	if(panelCell.getCalendarDate().equals(CurrentDate.get())) return;
     	
 		CurrentDate.set(panelCell.getCalendarDate());
+		taskPanel.updateCalendar();
 		updateCalendarPanelView();
 	}
 }

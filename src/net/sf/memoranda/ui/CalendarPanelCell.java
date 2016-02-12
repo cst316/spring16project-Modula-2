@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.sf.memoranda.date.CalendarDate;
+import net.sf.memoranda.date.CurrentDate;
 
 public class CalendarPanelCell extends JPanel {
 	private JPanel gridCell = new JPanel(new GridBagLayout());
@@ -45,10 +46,15 @@ public class CalendarPanelCell extends JPanel {
 		isActive = active;
 		
 		if(active) {
-			gridCell.setBackground(Color.WHITE);
+			CalendarDate today = new CalendarDate();
+			if(today.before(this._date) | today.equals(this._date)) {
+				gridCell.setBackground(Color.WHITE);
+			} else {
+				gridCell.setBackground(new Color(225,225,225));
+			}
 		} else {
 			gridLabel.setText("");
-			gridCell.setBackground(Color.LIGHT_GRAY);
+			gridCell.setBackground(new Color(150,150,150));
 		}
 	}
 	

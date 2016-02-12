@@ -205,7 +205,8 @@ public class CalendarTaskbarPanel extends JToolBar {
 			
 			parentPanel.updateCalendarPanelView();
 		}
-
+		
+		// Change views
 		void changeToMonthlyView_actionPerformed(ActionEvent e) {
 			currentView = CalendarPanelView.VIEW_MONTH;
 			parentPanel.changeCalendarPanelView(currentView);
@@ -221,6 +222,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 			parentPanel.changeCalendarPanelView(currentView);
 		}
 			
+		// Date stepping
 		void changeLargeStepBackward_actionPerformed(ActionEvent e){
 			parentPanel.viewPanel.stepLargeBackward();
 			date = CurrentDate.get();
@@ -245,6 +247,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 			updateCalendar();
 		}
 		
+		// Show/hide tasks
 		void changeShowTasks_actionPerformed(ActionEvent e){
 			parentPanel.updateCalendarPanelView();
 		}
