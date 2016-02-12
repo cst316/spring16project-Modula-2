@@ -46,11 +46,15 @@ public class CalendarTaskbarPanel extends JToolBar {
 		}
 		
 		private final JPanel panel = new JPanel();
+		
 		private final JPanel panel_1 = new JPanel();
 		private final JButton btnLittleStepBack = new JButton();
+		private final JButton btnBigStepBack = new JButton();
+		
 		private final JPanel panel_2 = new JPanel();
 		private final JButton btnLittleStepForward = new JButton();
-
+		private final JButton btnBigStepForward = new JButton();
+		
 		/**
 		 * Create the application.
 		 */
@@ -108,29 +112,30 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnDaily.setBackground(UIManager.getColor("Button.light"));
 			btnDaily.setMargin(new Insets(5, 14, 5, 14));
 			add(btnDaily);
-			Image leftArrow = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow.gif"));
-			Image resizedLeftArrow = leftArrow.getScaledInstance(20, 20, 0);
 			
-			add(panel_1);
+			Image leftArrowSmall = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow_small.gif"));
+			Image resizedLeftArrowSmall = leftArrowSmall.getScaledInstance(20, 20, 0);
+			btnLittleStepBack.setIcon(new ImageIcon(resizedLeftArrowSmall));
 			btnLittleStepBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					changeSmallStepBackward_actionPerformed(arg0);
 				}
 			});
-			
 			panel_1.add(btnLittleStepBack);
 			
-			JButton btnPreviousMonth = new JButton();
-			panel_1.add(btnPreviousMonth);
-			
-			btnPreviousMonth.setIcon(new ImageIcon(resizedLeftArrow));
-			btnPreviousMonth.addActionListener(new ActionListener() {
+			Image leftArrowBig = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow.gif"));
+			Image resizedLeftArrowBig = leftArrowBig.getScaledInstance(20, 20, 0);
+			btnBigStepBack.setIcon(new ImageIcon(resizedLeftArrowBig));
+			btnBigStepBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					changeLargeStepBackward_actionPerformed(arg0);
 				}
 			});
-			panel.setPreferredSize(new Dimension(500, 40));
-			
+			panel_1.add(btnBigStepBack);
+
+			add(panel_1);
+
+			panel.setPreferredSize(new Dimension(500, 40));	
 			add(panel);
 			panel.add(lblDay);
 			
@@ -145,8 +150,6 @@ public class CalendarTaskbarPanel extends JToolBar {
 			
 			lblYear.setFont(new Font("Tahoma", Font.PLAIN, 29));
 			lblYear.setText(this.getYear());
-			Image rightArrow = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow.gif"));
-			Image resizedRightArrow = rightArrow.getScaledInstance(20, 20, 0);
 			
 			chckbxTasks.setSelected(true);
 			chckbxTasks.addActionListener(new ActionListener() {
@@ -157,22 +160,26 @@ public class CalendarTaskbarPanel extends JToolBar {
 			
 			add(panel_2);
 			
-			JButton btnNextMonth = new JButton();
-			panel_2.add(btnNextMonth);
-			
-			btnNextMonth.setIcon(new ImageIcon(resizedRightArrow));
+			Image rightArrowSmall = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow_small.gif"));
+			Image resizedRightArrowSmall = rightArrowSmall.getScaledInstance(20, 20, 0);
+			btnLittleStepForward.setIcon(new ImageIcon(resizedRightArrowSmall));
 			btnLittleStepForward.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					changeSmallStepForward_actionPerformed(arg0);
 				}
 			});
+			panel_2.add(btnBigStepForward);
 			
-			panel_2.add(btnLittleStepForward);
-			btnNextMonth.addActionListener(new ActionListener() {
+			Image rightArrowBig = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow.gif"));
+			Image resizedRightArrowBig = rightArrowBig.getScaledInstance(20, 20, 0);
+			btnBigStepForward.setIcon(new ImageIcon(resizedRightArrowBig));
+			btnBigStepForward.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg1) {
 					changeLargeStepForward_actionPerformed(arg1);
 				}
 			});
+			panel_2.add(btnLittleStepForward);
+
 			add(chckbxTasks);
 			
 			chckbxEvents.setSelected(true);
