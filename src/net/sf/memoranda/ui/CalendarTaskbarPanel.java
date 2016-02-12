@@ -7,6 +7,7 @@ import net.sf.memoranda.date.CurrentDate;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Insets;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -22,6 +23,7 @@ import java.awt.Rectangle;
 import java.awt.Color;
 import javax.swing.UIManager;
 import javax.swing.JPanel;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 
@@ -82,8 +84,11 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnDaily.setMargin(new Insets(5, 14, 5, 14));
 			add(btnDaily);
 			
-			JButton btnPreviousMonth = new JButton("<-----");
-			btnPreviousMonth.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+			JButton btnPreviousMonth = new JButton();
+			Image leftArrow = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow.gif"));
+			Image resizedLeftArrow = leftArrow.getScaledInstance(20, 20, 0);
+			
+			btnPreviousMonth.setIcon(new ImageIcon(resizedLeftArrow));
 			btnPreviousMonth.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					changeToPreviousDate_actionPerformed(arg0);
@@ -107,9 +112,11 @@ public class CalendarTaskbarPanel extends JToolBar {
 			lblYear.setFont(new Font("Tahoma", Font.PLAIN, 29));
 			lblYear.setText(this.getYear());
 			
-			JButton btnNextMonth = new JButton("----->");
-			btnNextMonth.setIcon(new ImageIcon(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/Arrow-1.gif")));
-			btnNextMonth.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+			JButton btnNextMonth = new JButton();
+			Image rightArrow = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow.gif"));
+			Image resizedRightArrow = rightArrow.getScaledInstance(20, 20, 0);
+			
+			btnNextMonth.setIcon(new ImageIcon(resizedRightArrow));
 			btnNextMonth.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg1) {
 					changeToNextDate_actionPerformed(arg1);
