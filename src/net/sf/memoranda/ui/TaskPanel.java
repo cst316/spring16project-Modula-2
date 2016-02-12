@@ -649,7 +649,7 @@ public class TaskPanel extends JPanel {
         if (taskTable.getSelectedRows().length > 1)
             msg = Local.getString("Remove")+" "+taskTable.getSelectedRows().length +" "+Local.getString("tasks")+"?"
              + "\n"+Local.getString("Are you sure?");
-        else {        	
+        else {
         	Task t = CurrentProject.getTaskList().getTask(thisTaskId);
         	// check if there are subtasks
 			if(CurrentProject.getTaskList().hasSubTasks(thisTaskId)) {
@@ -772,7 +772,7 @@ public class TaskPanel extends JPanel {
 	  taskListListeners.add(listener);
   }
 
-  private static void notifyTaskListListeners() {
+  static void notifyTaskListListeners() {
 	  for (TaskListListener listener : taskListListeners) {
 		  listener.taskListModified();
 	  }

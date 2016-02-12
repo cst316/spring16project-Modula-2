@@ -40,7 +40,6 @@ public class CalendarNode extends JPanel {
 	}
 	
 	private class CalendarNodeItem extends JPanel {
-		private CalendarItemPopupMenu itemPopupMenu = new CalendarItemPopupMenu();
 		private GridBagConstraints c;
 		private Event event;
 		private Task task;
@@ -63,7 +62,10 @@ public class CalendarNode extends JPanel {
 							new TaskInformationDialog(App.getFrame(), "Task Information", task).setVisible(true);
 					}
 					else if (SwingUtilities.isRightMouseButton(e)) {
-						itemPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+						if (event != null)
+							new CalendarItemPopupMenu(event).show(e.getComponent(), e.getX(), e.getY());
+						else if (task != null)
+							new CalendarItemPopupMenu(task).show(e.getComponent(), e.getX(), e.getY());
 					}
 				}
 				

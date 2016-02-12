@@ -90,13 +90,13 @@ public class EventsScheduler {
     public static boolean isEventScheduled() {
         return _timers.size() > 0;
     }
-        
+    
     private static void notifyListeners(Event ev) {
         for (int i = 0; i < _listeners.size(); i++)
             ((EventNotificationListener)_listeners.get(i)).eventIsOccured(ev);
     }
 
-    private static void notifyChanged() {
+    public static void notifyChanged() {
         for (int i = 0; i < _listeners.size(); i++)
             ((EventNotificationListener)_listeners.get(i)).eventsChanged();
     }
