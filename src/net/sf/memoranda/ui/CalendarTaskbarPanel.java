@@ -7,14 +7,22 @@ import net.sf.memoranda.date.CurrentDate;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Insets;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
-
+import javax.swing.border.*;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Color;
+import javax.swing.UIManager;
+import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 
 
 public class CalendarTaskbarPanel extends JToolBar {
@@ -25,9 +33,11 @@ public class CalendarTaskbarPanel extends JToolBar {
 
 		JCheckBox chckbxTasks = new JCheckBox("Show Tasks");
 		JCheckBox chckbxEvents = new JCheckBox("Show Events");
-	
+		
 		CalendarPanel parentPanel = null;
 		CalendarDate date;
+		
+		private final JPanel panel = new JPanel();
 
 		/**
 		 * Create the application.
@@ -35,7 +45,10 @@ public class CalendarTaskbarPanel extends JToolBar {
 		 public CalendarTaskbarPanel(CalendarPanel _parentPanel) {
 			 
 			 super();
+			 setFloatable(false);
+			 super.setBorder(new EmptyBorder(new Insets(10,10,10,2)));
 			 setAlignmentX(Component.LEFT_ALIGNMENT);
+			 setLayout(new FlowLayout(FlowLayout.CENTER));
 			
 		        try {
 		            parentPanel = _parentPanel;
@@ -54,36 +67,49 @@ public class CalendarTaskbarPanel extends JToolBar {
 		private void jbInit () throws Exception {
 			
 			JButton btnMonthly = new JButton("Month");
+			btnMonthly.setBackground(UIManager.getColor("Button.light"));
+			btnMonthly.setMargin(new Insets(5, 14, 5, 14));
+			btnMonthly.setSize(new Dimension(5, 5));
 			add(btnMonthly);
 			
 			JButton btnWeekly = new JButton("Week");
+			btnWeekly.setBackground(UIManager.getColor("Button.light"));
+			btnWeekly.setMargin(new Insets(5, 14, 5, 14));
 			add(btnWeekly);
 			
 			JButton btnDaily = new JButton("Day");
+			btnDaily.setBackground(UIManager.getColor("Button.light"));
+			btnDaily.setMargin(new Insets(5, 14, 5, 14));
 			add(btnDaily);
 			
 			JButton btnPreviousMonth = new JButton("<-----");
+			btnPreviousMonth.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 			btnPreviousMonth.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					changeToPreviousDate_actionPerformed(arg0);
 				}
 			});
 			add(btnPreviousMonth);
+			panel.setPreferredSize(new Dimension(500, 40));
+			
+			add(panel);
+			panel.add(lblDay);
 			
 			
 			lblDay.setFont(new Font("Tahoma", Font.PLAIN, 29));
 			lblDay.setText(this.getDay());
-			add(lblDay);
+			panel.add(lblMonth);
 			
 			lblMonth.setFont(new Font("Tahoma", Font.PLAIN, 29));
 			lblMonth.setText(this.getMonth());
-			add(lblMonth);
+			panel.add(lblYear);
 			
 			lblYear.setFont(new Font("Tahoma", Font.PLAIN, 29));
 			lblYear.setText(this.getYear());
-			add(lblYear);
 			
 			JButton btnNextMonth = new JButton("----->");
+			btnNextMonth.setIcon(new ImageIcon(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/Arrow-1.gif")));
+			btnNextMonth.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 			btnNextMonth.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg1) {
 					changeToNextDate_actionPerformed(arg1);

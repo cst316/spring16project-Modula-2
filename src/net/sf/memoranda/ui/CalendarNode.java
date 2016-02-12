@@ -78,6 +78,14 @@ public class CalendarNode extends JPanel {
 			});
 		}
 		
+		public Event getEvent() {
+			return event;
+		}
+		
+		public Task getTask() {
+			return task;
+		}
+		
 		private CalendarNodeItem(Task task) {
 			this();
 			this.task = task;
