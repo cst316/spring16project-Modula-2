@@ -58,7 +58,7 @@ public class CalendarPanelView extends JPanel {
 		_view.removeAll();
 		
 		// Header creation
-		if(_type == VIEW_MONTH | _type == VIEW_DAY) {
+		if(_type == VIEW_MONTH | _type == VIEW_WEEK) {
 			String[] namesOfDays = new String[] {
 				    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
 			};
@@ -225,6 +225,61 @@ public class CalendarPanelView extends JPanel {
 			
 		}
 		
+		else if(_type == VIEW_DAY) {
+			
+		}
+	}
+	
+	public void stepSmallForward() {
+		if(_type == VIEW_MONTH) {
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+			CurrentDate.set(new CalendarDate(cal));
+		}
+		else if(_type == VIEW_WEEK) {
+			
+		}
+		else if(_type == VIEW_DAY) {
+			
+		}
+	}
+	public void stepLargeForward() {
+		if(_type == VIEW_MONTH) {
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.MONTH, 1);
+			cal.set(Calendar.DAY_OF_MONTH, 1);
+			CurrentDate.set(new CalendarDate(cal));
+		}
+		else if(_type == VIEW_WEEK) {
+			
+		}
+		else if(_type == VIEW_DAY) {
+			
+		}
+	}
+	public void stepSmallBackward() {
+		if(_type == VIEW_MONTH) {
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.DAY_OF_MONTH, -1);
+			CurrentDate.set(new CalendarDate(cal));
+		}
+		else if(_type == VIEW_WEEK) {
+			
+		}
+		else if(_type == VIEW_DAY) {
+			
+		}
+	}
+	public void stepLargeBackward() {
+		if(_type == VIEW_MONTH) {
+			Calendar cal = CurrentDate.get().getCalendar();
+			cal.add(Calendar.MONTH, -1);
+			cal.set(Calendar.DAY_OF_MONTH, 1);
+			CurrentDate.set(new CalendarDate(cal));
+		}
+		else if(_type == VIEW_WEEK) {
+			
+		}
 		else if(_type == VIEW_DAY) {
 			
 		}
