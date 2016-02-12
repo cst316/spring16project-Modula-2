@@ -613,7 +613,7 @@ public class EventDialog extends JDialog implements WindowListener {
         lblSince.setEnabled(true);
         enableEndDateCB.setEnabled(true);
 		startDate.getModel().setValue(
-			startCalFrame.cal.get().getCalendar().getTime());        
+			startCalFrame.cal.get().getCalendar().getTime());
     }
 
     public void noRepeatRB_actionPerformed(ActionEvent e) {
@@ -702,5 +702,4 @@ public class EventDialog extends JDialog implements WindowListener {
 	public void windowActivated( WindowEvent e ) {}
 
 	public void windowDeactivated( WindowEvent e ) {}
-
 }
