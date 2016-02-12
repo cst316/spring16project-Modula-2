@@ -46,6 +46,10 @@ public class CalendarTaskbarPanel extends JToolBar {
 		}
 		
 		private final JPanel panel = new JPanel();
+		private final JPanel panel_1 = new JPanel();
+		private final JButton btnLittleStepBack = new JButton();
+		private final JPanel panel_2 = new JPanel();
+		private final JButton btnLittleStepForward = new JButton();
 
 		/**
 		 * Create the application.
@@ -104,10 +108,20 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnDaily.setBackground(UIManager.getColor("Button.light"));
 			btnDaily.setMargin(new Insets(5, 14, 5, 14));
 			add(btnDaily);
-			
-			JButton btnPreviousMonth = new JButton();
 			Image leftArrow = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow.gif"));
 			Image resizedLeftArrow = leftArrow.getScaledInstance(20, 20, 0);
+			
+			add(panel_1);
+			btnLittleStepBack.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					changeSmallStepBackward_actionPerformed(arg0);
+				}
+			});
+			
+			panel_1.add(btnLittleStepBack);
+			
+			JButton btnPreviousMonth = new JButton();
+			panel_1.add(btnPreviousMonth);
 			
 			btnPreviousMonth.setIcon(new ImageIcon(resizedLeftArrow));
 			btnPreviousMonth.addActionListener(new ActionListener() {
@@ -115,7 +129,6 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeLargeStepBackward_actionPerformed(arg0);
 				}
 			});
-			add(btnPreviousMonth);
 			panel.setPreferredSize(new Dimension(500, 40));
 			
 			add(panel);
@@ -132,23 +145,32 @@ public class CalendarTaskbarPanel extends JToolBar {
 			
 			lblYear.setFont(new Font("Tahoma", Font.PLAIN, 29));
 			lblYear.setText(this.getYear());
-			
-			JButton btnNextMonth = new JButton();
 			Image rightArrow = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow.gif"));
 			Image resizedRightArrow = rightArrow.getScaledInstance(20, 20, 0);
-			
-			btnNextMonth.setIcon(new ImageIcon(resizedRightArrow));
-			btnNextMonth.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg1) {
-					changeLargeStepForward_actionPerformed(arg1);
-				}
-			});
-			add(btnNextMonth);
 			
 			chckbxTasks.setSelected(true);
 			chckbxTasks.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg1) {
 					changeShowTasks_actionPerformed(arg1);
+				}
+			});
+			
+			add(panel_2);
+			
+			JButton btnNextMonth = new JButton();
+			panel_2.add(btnNextMonth);
+			
+			btnNextMonth.setIcon(new ImageIcon(resizedRightArrow));
+			btnLittleStepForward.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					changeSmallStepForward_actionPerformed(arg0);
+				}
+			});
+			
+			panel_2.add(btnLittleStepForward);
+			btnNextMonth.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg1) {
+					changeLargeStepForward_actionPerformed(arg1);
 				}
 			});
 			add(chckbxTasks);
