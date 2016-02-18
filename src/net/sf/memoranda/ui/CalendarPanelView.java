@@ -58,6 +58,8 @@ public class CalendarPanelView extends JPanel {
 		if(_type == VIEW_INVALID) return;
 
 		_view.removeAll();
+		_view.revalidate();
+		_view.repaint();
 		
 		// Header creation
 		if(_type == VIEW_MONTH | _type == VIEW_WEEK) {
@@ -336,7 +338,6 @@ public class CalendarPanelView extends JPanel {
 	        if(_parent.taskPanel.isShowEvents()) {
 	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
 	            for (Event event : events) {
-	            	System.out.println(start.get(Calendar.HOUR_OF_DAY) + ":" + start.get(Calendar.MINUTE) + " -> " + event.getTimeString() + " -> " + end.get(Calendar.HOUR_OF_DAY) + ":" + end.get(Calendar.MINUTE) + " = " + inTimespan(event, start, end));
 	            	if(inTimespan(event, start, end))
 	            		panelCell.getCalendarNode().addEvent(event);
 	            }
