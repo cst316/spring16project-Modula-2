@@ -29,6 +29,8 @@ public class CalendarPanelView extends JPanel {
 	
 	GridBagConstraints gbc;
 	
+	private int _currentHour = -1;
+	
 	private CalendarPanel _parent;
 	private int _type = VIEW_INVALID;
 	private JPanel _view = new JPanel(new GridBagLayout());
@@ -54,11 +56,13 @@ public class CalendarPanelView extends JPanel {
 	
 	public void createView() {
 		if(_type == VIEW_INVALID) return;
-		
+
 		_view.removeAll();
 		
 		// Header creation
 		if(_type == VIEW_MONTH | _type == VIEW_WEEK) {
+			_currentHour = -1;
+			
 			String[] namesOfDays = new String[] {
 				    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
 			};
@@ -81,49 +85,85 @@ public class CalendarPanelView extends JPanel {
 				
     	        _view.add(gridCell, gbc);
 			}
+			
+			if(_type == VIEW_MONTH) {
+				_rows = 6;
+				_columns = 7;
+			}
+			
+			else if(_type == VIEW_WEEK) {
+				_rows = 1;
+				_columns = 7;
+			}
+			
+			_cells = new CalendarPanelCell[_rows*_columns];
+			
+			// Main panel creation
+	    	for(int col = 0; col < _columns; col++) {
+	    		for(int row = 0; row < _rows; row++) {
+					CalendarPanelCell panelCell = new CalendarPanelCell();
+					_cells[col+7*row] = panelCell;
+
+					panelCell.getCell().addMouseListener(new MouseListener() {
+						@Override
+	                    public void mouseClicked(MouseEvent e) {
+	                        _parent.calendarPanelCellClick(e, panelCell);
+	                    }
+						
+						@Override
+						public void mousePressed(MouseEvent e) {
+							if (SwingUtilities.isRightMouseButton(e)) {
+								_parent.cellPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+							}
+						}
+
+						@Override
+						public void mouseEntered(MouseEvent e) {}
+						@Override
+						public void mouseExited(MouseEvent e) {}
+						@Override
+						public void mouseReleased(MouseEvent e) {}
+	                });
+					
+	    	        gbc = new GridBagConstraints();
+	    	        gbc.gridx = col; gbc.gridy = row+1;
+	    	        gbc.anchor = GridBagConstraints.CENTER;
+	    			gbc.fill = GridBagConstraints.BOTH;
+	    	        gbc.weightx = 1.0;
+	    	        gbc.weighty = 1.0;
+	    	        _view.add(panelCell.getCell(), gbc);
+	    		}
+	    	}
 		}
 		else if(_type == VIEW_DAY) {
-			JPanel gridCell = new JPanel(new GridBagLayout());
-			gridCell.setBackground(Color.WHITE);
+			_currentHour = 0;
 			
-	        gbc = new GridBagConstraints();
-			JLabel gridLabel = new JLabel();
-			gridLabel.setText("");
-			gridLabel.setFont(gridLabel.getFont().deriveFont(12.0f));
-			gridCell.add(gridLabel,gbc);
+			// Text
+			for(int hour = 1; hour <= 24; hour++) {
+    			JPanel gridCell = new JPanel(new GridBagLayout());
+    			gridCell.setBackground(Color.WHITE);
+    			
+    	        gbc = new GridBagConstraints();
+				JLabel gridLabel = new JLabel();
+				gridLabel.setText(hour-1 + ":00");
+				gridLabel.setFont(gridLabel.getFont().deriveFont(12.0f));
+				gridCell.add(gridLabel,gbc);
+				
+    	        gbc = new GridBagConstraints();
+    	        gbc.gridx = 0; gbc.gridy = hour-1;
+    	        gbc.anchor = GridBagConstraints.CENTER;
+				gbc.fill = GridBagConstraints.HORIZONTAL;
+				gbc.weightx = 0.1;
+				gbc.weighty = 1.0;
+				
+    	        _view.add(gridCell, gbc);
+			}
 			
-	        gbc = new GridBagConstraints();
-	        gbc.gridx = 0; gbc.gridy = 0;
-	        gbc.anchor = GridBagConstraints.CENTER;
-			gbc.fill = GridBagConstraints.HORIZONTAL;
-			gbc.weightx = 1.0;
-			
-	        _view.add(gridCell, gbc);
-		}
-		
-		// Rows/columns for main view
-		if(_type == VIEW_MONTH) {
-			_rows = 6;
-			_columns = 7;
-		}
-		
-		else if(_type == VIEW_WEEK) {
-			_rows = 1;
-			_columns = 7;
-		}
-		
-		else if(_type == VIEW_DAY) {
-			_rows = 1;
-			_columns = 1;
-		}
-	
-		_cells = new CalendarPanelCell[_rows*_columns];
-		
-		// Main panel creation
-    	for(int col = 0; col < _columns; col++) {
-    		for(int row = 0; row < _rows; row++) {    			
+			// Cells
+			_cells = new CalendarPanelCell[24];
+			for(int hour = 0; hour <= 23; hour++) {
 				CalendarPanelCell panelCell = new CalendarPanelCell();
-				_cells[col+7*row] = panelCell;
+				_cells[hour] = panelCell;
 
 				panelCell.getCell().addMouseListener(new MouseListener() {
 					@Override
@@ -147,20 +187,20 @@ public class CalendarPanelView extends JPanel {
                 });
 				
     	        gbc = new GridBagConstraints();
-    	        gbc.gridx = col; gbc.gridy = row+1;
+    	        gbc.gridx = 1; gbc.gridy = hour;
     	        gbc.anchor = GridBagConstraints.CENTER;
     			gbc.fill = GridBagConstraints.BOTH;
     	        gbc.weightx = 1.0;
     	        gbc.weighty = 1.0;
     	        _view.add(panelCell.getCell(), gbc);
-    		}
-    	}
+			}
+		}
     	
     	updateView();
 	}
 	
 	public void updateView() {
-		if(_type == VIEW_MONTH) { 
+		if(_type == VIEW_MONTH) {
 	        Collection<Task> tasks = (Collection<Task>) CurrentProject.getTaskList().getTopLevelTasks();
 
 	        Calendar gc = new GregorianCalendar();
@@ -184,7 +224,7 @@ public class CalendarPanelView extends JPanel {
 	    		if(cellOffset != -99999 & i-cellOffset <= lastMonthDay) {
 	    			// Set the label and date
 	    			CalendarDate date = new CalendarDate(i-cellOffset,gc.get(Calendar.MONTH),gc.get(Calendar.YEAR));
-	    			generateDay(panelCell,date,tasks);
+	    			generateDay(panelCell,date.getCalendar(),tasks);
 	    		} else {
 	    			panelCell.getCell().setBorder(null);
 	    			panelCell.setActive(false);
@@ -211,7 +251,7 @@ public class CalendarPanelView extends JPanel {
 	        	panelCell.getCalendarNode().clear();
 
     			CalendarDate date = new CalendarDate(gc);
-    			generateDay(panelCell,date,tasks);
+    			generateDay(panelCell,date.getCalendar(),tasks);
         		panelCell.setActive(true);
 
         		/*
@@ -232,49 +272,108 @@ public class CalendarPanelView extends JPanel {
 		
 		else if(_type == VIEW_DAY) {
 	        Collection<Task> tasks = (Collection<Task>) CurrentProject.getTaskList().getTopLevelTasks();
-    		CalendarPanelCell panelCell = _cells[0];
-    		panelCell.getCalendarNode().clear();
-	        generateDay(panelCell,CurrentDate.get(),tasks);
+	        
+	        Calendar dayCal = CurrentDate.get().getCalendar();
+	        dayCal.set(Calendar.MINUTE, 0);
+	        
+	        for(int i = 0; i <= 23; i++) {
+	    		CalendarPanelCell panelCell = _cells[i];
+	    		panelCell.getCalendarNode().clear();
+	    		dayCal.set(Calendar.HOUR_OF_DAY, i);
+		        generateDay(panelCell,(Calendar) dayCal.clone(),tasks);
+	        }
 		}
 	}
 	
-	private void generateDay(CalendarPanelCell panelCell, CalendarDate date, Collection<Task> tasks) {
-		if(_type != CalendarPanelView.VIEW_WEEK) {
-			panelCell.getLabel().setText(Integer.toString(date.getDay()));
-		} else {
-			panelCell.getLabel().setText(Integer.toString(date.getMonth()+1) + "/" + Integer.toString(date.getDay()));
-		}
-
-		panelCell.setCalendarDate(date);
+	private void generateDay(CalendarPanelCell panelCell, Calendar calendar, Collection<Task> tasks) {
+		CalendarDate date = new CalendarDate(calendar);
 		
-		// Add events
-        if(_parent.taskPanel.isShowEvents()) {
-            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
-            for (Event event : events) {
-                panelCell.getCalendarNode().addEvent(event);
-            }
-        }
-        
-        // Add tasks
-        if(_parent.taskPanel.isShowTasks()) {
-            for (Task task : tasks) {
-                if(task.getStartDate().equals(date))
-                    panelCell.getCalendarNode().addTask(task);
-            }
-        }
-
-		// Highlight if date is the current date
-		if(date.equals(CurrentDate.get())) {
-			panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-		} else {
-			// Why do we need this redundant red border? I dunno, but it fixes it
-			panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-			panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+		if(_type == CalendarPanelView.VIEW_WEEK || _type == CalendarPanelView.VIEW_MONTH) { 
+			if(_type != CalendarPanelView.VIEW_WEEK) {
+				panelCell.getLabel().setText(Integer.toString(date.getDay()));
+			} else {
+				panelCell.getLabel().setText(Integer.toString(date.getMonth()+1) + "/" + Integer.toString(date.getDay()));
+			}
+	
+			panelCell.setCalendarDate(date);
+			
+			// Add events
+	        if(_parent.taskPanel.isShowEvents()) {
+	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
+	            for (Event event : events) {
+	                panelCell.getCalendarNode().addEvent(event);
+	            }
+	        }
+	        
+	        // Add tasks
+	        if(_parent.taskPanel.isShowTasks()) {
+	            for (Task task : tasks) {
+	                if(task.getStartDate().equals(date))
+	                    panelCell.getCalendarNode().addTask(task);
+	            }
+	        }
+	
+			// Highlight if date is the current date
+			if(date.equals(CurrentDate.get())) {
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+			} else {
+				// Why do we need this redundant red border? I dunno, but it fixes it
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+			}
+			
+			panelCell.setActive(true);
 		}
-		
-		panelCell.setActive(true);
+		else if(_type == CalendarPanelView.VIEW_DAY) {
+			panelCell.setCalendar(calendar);
+			
+			Calendar start = (Calendar) calendar.clone();
+
+			Calendar end = (Calendar) calendar.clone();
+			end.add(Calendar.HOUR_OF_DAY, 1);
+			
+			// Add events
+	        if(_parent.taskPanel.isShowEvents()) {
+	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
+	            for (Event event : events) {
+	            	System.out.println(start.get(Calendar.HOUR_OF_DAY) + ":" + start.get(Calendar.MINUTE) + " -> " + event.getTimeString() + " -> " + end.get(Calendar.HOUR_OF_DAY) + ":" + end.get(Calendar.MINUTE) + " = " + inTimespan(event, start, end));
+	            	if(inTimespan(event, start, end))
+	            		panelCell.getCalendarNode().addEvent(event);
+	            }
+	        }
+	        
+	        // Add tasks
+	        if(_parent.taskPanel.isShowTasks()) {
+	            for (Task task : tasks) {
+	                if(task.getStartDate().equals(date) && inTimespan(task))
+	                    panelCell.getCalendarNode().addTask(task);
+	            }
+	        }
+	        
+			if(_currentHour == calendar.get(Calendar.HOUR_OF_DAY)) {
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+			} else {
+				// Why do we need this redundant red border? I dunno, but it fixes it
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+			}
+			
+	        panelCell.setActive(true);
+		}
 	}
 	
+	private boolean inTimespan(Event event, Calendar startCal, Calendar endCal) {
+		Calendar eventCal = CurrentDate.get().getCalendar();
+		eventCal.set(Calendar.HOUR_OF_DAY, event.getHour());
+		eventCal.set(Calendar.MINUTE, event.getMinute());
+		
+		return (startCal.equals(eventCal) || (startCal.before(eventCal) && endCal.after(eventCal)));
+	}
+	
+	private boolean inTimespan(Task task) {
+		return false;
+	}
+
 	public void stepSmallForward() {
 		if(_type == VIEW_MONTH) {
 			Calendar cal = CurrentDate.get().getCalendar();
@@ -288,11 +387,15 @@ public class CalendarPanelView extends JPanel {
 			CurrentDate.set(new CalendarDate(cal));
 			updateView();
 		}
-		else if(_type == VIEW_DAY) {    		
-			Calendar cal = CurrentDate.get().getCalendar();
-			cal.add(Calendar.DATE, 1);
-			CurrentDate.set(new CalendarDate(cal));
-			updateView();
+		else if(_type == VIEW_DAY) {
+			_currentHour++;
+			if(_currentHour >= 24) {
+				_currentHour = 0;
+				Calendar cal = CurrentDate.get().getCalendar();
+				cal.add(Calendar.DATE, 1);
+				CurrentDate.set(new CalendarDate(cal));
+				updateView();
+			}
 		}
 	}
 	public void stepLargeForward() {
@@ -330,10 +433,14 @@ public class CalendarPanelView extends JPanel {
 			updateView();
 		}
 		else if(_type == VIEW_DAY) {
-			Calendar cal = CurrentDate.get().getCalendar();
-			cal.add(Calendar.DATE, -1);
-			CurrentDate.set(new CalendarDate(cal));
-			updateView();
+			_currentHour--;
+			if(_currentHour < 0) {
+				_currentHour = 23;
+				Calendar cal = CurrentDate.get().getCalendar();
+				cal.add(Calendar.DATE, 1);
+				CurrentDate.set(new CalendarDate(cal));
+				updateView();
+			}
 		}
 	}
 	public void stepLargeBackward() {
@@ -356,6 +463,14 @@ public class CalendarPanelView extends JPanel {
 			CurrentDate.set(new CalendarDate(cal));
 			updateView();
 		}
+	}
+	
+	public int getCurrentHour() {
+		return _currentHour;
+	}
+	
+	public void setCurrentHour(int currentHour) {
+		_currentHour = currentHour;
 	}
 	
 	public JPanel getView() {
