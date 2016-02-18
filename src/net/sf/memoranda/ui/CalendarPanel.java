@@ -106,9 +106,15 @@ public class CalendarPanel extends JPanel {
     protected void calendarPanelCellClick(MouseEvent e, CalendarPanelCell panelCell) {
     	if(!panelCell.isActive()) return;
     	
-    	if(panelCell.getCalendarDate().equals(CurrentDate.get())) return;
+    	if(viewPanel.getViewType() == CalendarPanelView.VIEW_DAY) {
+    		if(panelCell.getCalendar().get(Calendar.HOUR_OF_DAY) == viewPanel.getCurrentHour()) return;
+    		viewPanel.setCurrentHour(panelCell.getCalendar().get(Calendar.HOUR_OF_DAY));
+    	}
+    	else if(viewPanel.getViewType() == CalendarPanelView.VIEW_MONTH || viewPanel.getViewType() == CalendarPanelView.VIEW_WEEK) {
+	    	if(panelCell.getCalendarDate().equals(CurrentDate.get())) return;
+			CurrentDate.set(panelCell.getCalendarDate());
+    	}
     	
-		CurrentDate.set(panelCell.getCalendarDate());
 		taskPanel.updateCalendar();
 		updateCalendarPanelView();
 	}
