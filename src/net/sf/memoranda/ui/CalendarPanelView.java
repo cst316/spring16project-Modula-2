@@ -88,24 +88,19 @@ public class CalendarPanelView extends JPanel {
 				gbc.weightx = 1.0;
 				
     	        _view.add(gridCell, gbc);
-			}
-		}
-		else if(_type == VIEW_DAY) {
-			JPanel gridCell = new JPanel(new GridBagLayout());
-			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
-			gridCell.setBorder(null);
-
+			}			
 			if(_type == VIEW_MONTH) {
 				_rows = 6;
 				_columns = 7;
-			}			
+			}
+			
 			else if(_type == VIEW_WEEK) {
 				_rows = 1;
 				_columns = 7;
 			}
 			
 			_cells = new CalendarPanelCell[_rows*_columns];
-			
+
 			// Main panel creation
 	    	for(int col = 0; col < _columns; col++) {
 	    		for(int row = 0; row < _rows; row++) {
@@ -336,6 +331,7 @@ public class CalendarPanelView extends JPanel {
 			panelCell.setCalendar(calendar);
 			
 			Calendar start = (Calendar) calendar.clone();
+
 			Calendar end = (Calendar) calendar.clone();
 			end.add(Calendar.HOUR_OF_DAY, 1);
 			
@@ -343,6 +339,7 @@ public class CalendarPanelView extends JPanel {
 	        if(_parent.taskPanel.isShowEvents()) {
 	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
 	            for (Event event : events) {
+	            	System.out.println(start.get(Calendar.HOUR_OF_DAY) + ":" + start.get(Calendar.MINUTE) + " -> " + event.getTimeString() + " -> " + end.get(Calendar.HOUR_OF_DAY) + ":" + end.get(Calendar.MINUTE) + " = " + inTimespan(event, start, end));
 	            	if(inTimespan(event, start, end))
 	            		panelCell.getCalendarNode().addEvent(event);
 	            }
