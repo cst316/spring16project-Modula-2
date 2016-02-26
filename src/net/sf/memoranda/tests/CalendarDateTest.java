@@ -52,5 +52,4 @@ public class CalendarDateTest {
 		assertFalse(cd1.after(cd2));
 		assertTrue(cd2.after(cd1));
 	}
-
 }
