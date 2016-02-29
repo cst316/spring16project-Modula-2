@@ -33,6 +33,9 @@ public class ColorScheme {
 			currentScheme.put("frame_highlight", Color.RED);
 			currentScheme.put("frame_text", Color.BLACK);
 			currentScheme.put("button_primary", Color.WHITE);
+			currentScheme.put("taskbar_primary", Color.WHITE);
+			currentScheme.put("taskbar_highlight", new Color(215, 225, 250));
+			currentScheme.put("taskbar_text", Color.BLACK);
 		} else {
 			float hue = (input/360f);
 			currentScheme.put("frame_primary", Color.getHSBColor(hue, 1f, 1f));
@@ -43,6 +46,9 @@ public class ColorScheme {
 			currentScheme.put("frame_highlight", Color.getHSBColor(hue, 1f, 1f));
 			currentScheme.put("frame_text", Color.BLACK);
 			currentScheme.put("button_primary", Color.getHSBColor(hue, 0.5f, 1f));
+			currentScheme.put("taskbar_primary", Color.getHSBColor(hue, 0.75f, 0.5f));
+			currentScheme.put("taskbar_highlight", Color.getHSBColor(hue, 0.75f, 0.75f));
+			currentScheme.put("taskbar_text", Color.WHITE);
 		}
 	}
 }

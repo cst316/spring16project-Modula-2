@@ -204,6 +204,7 @@ public class CalendarPanelView extends JPanel {
 			}
 		}
     	
+    	_view.setBorder(null);
     	updateView();
 	}
 	
