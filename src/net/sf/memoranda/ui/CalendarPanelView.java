@@ -98,7 +98,6 @@ public class CalendarPanelView extends JPanel {
 				_rows = 1;
 				_columns = 7;
 			}
-			
 			_cells = new CalendarPanelCell[_rows*_columns];
 
 			// Main panel creation
@@ -331,7 +330,6 @@ public class CalendarPanelView extends JPanel {
 			panelCell.setCalendar(calendar);
 			
 			Calendar start = (Calendar) calendar.clone();
-
 			Calendar end = (Calendar) calendar.clone();
 			end.add(Calendar.HOUR_OF_DAY, 1);
 			

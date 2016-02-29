@@ -141,6 +141,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeLargeStepBackward_actionPerformed(arg0);
 				}
 			});
+
 			btnBigStepBack.setBackground(ColorScheme.getColor("button_primary"));
 			btnBigStepBack.setBorder(null);
 			panel_1.add(btnBigStepBack);
@@ -170,7 +171,6 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeShowTasks_actionPerformed(arg1);
 				}
 			});
-			
 			panel_2.setBackground(ColorScheme.getColor("frame_secondary"));
 			add(panel_2);
 			
@@ -207,7 +207,6 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeShowEvents_actionPerformed(arg1);
 				}
 			});
-			
 			chckbxEvents.setBackground(ColorScheme.getColor("frame_secondary"));
 			add(chckbxEvents);
 			this.setBackground(ColorScheme.getColor("frame_secondary"));
