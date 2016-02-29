@@ -45,8 +45,8 @@ public class DefectDialog extends JDialog {
 	JPanel mPanel = new JPanel(new BorderLayout());
     JPanel areaPanel = new JPanel(new BorderLayout());
     JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-    JButton cancelB = new JButton();
-    JButton okB = new JButton();
+    JButton btnCancel = new JButton();
+    JButton btnOK = new JButton();
     Border border1;
     Border border2;
     JPanel dialogTitlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -62,6 +62,8 @@ public class DefectDialog extends JDialog {
     JTextField txtEstFixTime = new JTextField();
     JTextArea txtaDescription = new JTextArea();
     JScrollPane descriptionScrollPane = new JScrollPane(txtaDescription);
+	JLabel lblActFixTime = new JLabel("Act Fix Time(mins)");
+	JTextField txtActFixTime = new JTextField();
     
     Border border8;
     CalendarFrame startCalFrame = new CalendarFrame();
@@ -82,6 +84,7 @@ public class DefectDialog extends JDialog {
     JButton btnSetDateFound = new JButton();
     JPanel jpDateFixed = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     JLabel lblDateFixed = new JLabel();
+    
     JSpinner spnDateFound;
     JSpinner spnDateFixed;
     JButton btnSetDateFixed = new JButton();
@@ -105,16 +108,18 @@ public class DefectDialog extends JDialog {
 	CalendarDate startDateMax = CurrentProject.get().getEndDate();
 	CalendarDate endDateMin = startDateMin;
 	CalendarDate endDateMax = startDateMax;
-	private final JCheckBox chkActFixTime = new JCheckBox("");
-	private final JLabel lblActFixTime = new JLabel("Act Fix Time(mins)");
-	private final JTextField txtActFixTime = new JTextField();
+	JLabel lblInjection = new JLabel("Injection");
+	JTextField txtInjection = new JTextField();
+	JLabel lblFixReference = new JLabel("Fix Reference");
+	JTextField txtFixReference = new JTextField();
+	JCheckBox chkFixReference = new JCheckBox("");
+	
     
 	
 	public DefectDialog(Frame frame, String title) {
         
 		super(frame, title, true);
-		lblActFixTime.setLabelFor(txtActFixTime);
-		txtActFixTime.setColumns(10);
+		
         try {
             jbInit();            
             pack();
@@ -129,259 +134,282 @@ public class DefectDialog extends JDialog {
 
 		this.setResizable(false);
 		this.setSize(new Dimension(430,300));
-	        border1 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-	        border2 = BorderFactory.createEtchedBorder(Color.white, 
-	            new Color(142, 142, 142));
-	        border3 = new TitledBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0), 
-	        Local.getString("Defect Number (FILL IN SEQUENTIALLY FOR NOW!!!)"), TitledBorder.LEFT, TitledBorder.BELOW_TOP);
-	        border4 = BorderFactory.createEmptyBorder(0, 5, 0, 5);
-	        border8 = BorderFactory.createEtchedBorder(Color.white, 
-	            new Color(178, 178, 178));
-	        cancelB.setMaximumSize(new Dimension(100, 26));
-	        cancelB.setMinimumSize(new Dimension(100, 26));
-	        cancelB.setPreferredSize(new Dimension(100, 26));
-	        cancelB.setText(Local.getString("Cancel"));
-	        cancelB.addActionListener(new java.awt.event.ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                cancelB_actionPerformed(e);
-	            }
-	        });
+        border1 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+        border2 = BorderFactory.createEtchedBorder(Color.white, 
+            new Color(142, 142, 142));
+        border3 = new TitledBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0), 
+        Local.getString("Defect Number (FILL IN SEQUENTIALLY FOR NOW!!!)"), TitledBorder.LEFT, TitledBorder.BELOW_TOP);
+        border4 = BorderFactory.createEmptyBorder(0, 5, 0, 5);
+        border8 = BorderFactory.createEtchedBorder(Color.white, 
+            new Color(178, 178, 178));
+        btnCancel.setMaximumSize(new Dimension(100, 26));
+        btnCancel.setMinimumSize(new Dimension(100, 26));
+        btnCancel.setPreferredSize(new Dimension(100, 26));
+        btnCancel.setText(Local.getString("Cancel"));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cancelB_actionPerformed(e);
+            }
+        });
 
-	        spnDateFound = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
-	        spnDateFixed = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
-			
-	        chkDateFixed.setSelected(false);
-			chkEndDate_actionPerformed(null);
-			chkDateFixed.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					chkEndDate_actionPerformed(e);
+        spnDateFound = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
+        spnDateFixed = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
+		
+        chkDateFixed.setSelected(false);
+		chkDateFixed.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chkDateFixed_actionPerformed(e);
+			}
+		});
+		
+		chkFixReference.setSelected(false);
+		chkFixReference.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chkFixReference_actionPerformed(e);
+			}
+		});
+		
+        btnOK.setMaximumSize(new Dimension(100, 26));
+        btnOK.setMinimumSize(new Dimension(100, 26));
+        btnOK.setPreferredSize(new Dimension(100, 26));
+        btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                okB_actionPerformed(e);
+            }
+        });
+        
+        this.getRootPane().setDefaultButton(btnOK);
+        mPanel.setBorder(border1);
+        areaPanel.setBorder(border2);
+        dialogTitlePanel.setBackground(Color.WHITE);
+        dialogTitlePanel.setBorder(border4);
+        header.setFont(new java.awt.Font("Dialog", 0, 20));
+        header.setForeground(new Color(0, 0, 124));
+        header.setText(Local.getString("Record New Defect"));
+        header.setIcon(new ImageIcon(DefectDialog.class.getResource("/net/sf/memoranda/ui/resources/icons/mimetypes/application/default.png")));
+        
+        GridBagLayout gbLayout = (GridBagLayout) jpNumberDescription.getLayout();
+        jpNumberDescription.setBorder(border3);
+				
+        tfNumber.setBorder(border8);
+        tfNumber.setPreferredSize(new Dimension(24, 24));
+        GridBagConstraints gbCon = new GridBagConstraints();
+        gbCon.gridwidth = GridBagConstraints.REMAINDER;
+        gbCon.weighty = 1;
+        gbLayout.setConstraints(tfNumber,gbCon);
+        
+        lblDescription.setMaximumSize(new Dimension(100, 16));
+        lblDescription.setMinimumSize(new Dimension(60, 16));
+        lblDescription.setText(Local.getString("Description"));
+        gbCon = new GridBagConstraints();
+        gbCon.gridwidth = GridBagConstraints.REMAINDER;
+        gbCon.weighty = 1;
+        gbCon.anchor = GridBagConstraints.WEST;
+        gbLayout.setConstraints(lblDescription,gbCon);
+
+        txtaDescription.setBorder(border8);
+        txtaDescription.setPreferredSize(new Dimension(375, 387)); // 3 additional pixels from 384 so that the last line is not cut off
+        txtaDescription.setLineWrap(true);
+        txtaDescription.setWrapStyleWord(true);
+        gbCon = new GridBagConstraints();
+        gbCon.gridwidth = GridBagConstraints.REMAINDER;
+        gbCon.weighty = 3;
+        descriptionScrollPane.setPreferredSize(new Dimension(375,96));
+        gbLayout.setConstraints(descriptionScrollPane,gbCon);
+
+        lblEstFixTime.setMaximumSize(new Dimension(100, 16));
+        lblEstFixTime.setMinimumSize(new Dimension(60, 16));
+        lblEstFixTime.setText("Est Fix Time(mins)");
+        txtEstFixTime.setBorder(border8);
+        txtEstFixTime.setPreferredSize(new Dimension(30, 24));
+        lblActFixTime.setEnabled(false);
+        lblActFixTime.setLabelFor(txtActFixTime);
+		txtActFixTime.setEnabled(false);
+		txtActFixTime.setColumns(10);
+
+        spnDateFound.setBorder(border8);
+        spnDateFound.setPreferredSize(new Dimension(80, 24));                
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		sdf = (SimpleDateFormat)DateFormat.getDateInstance(DateFormat.SHORT);
+		// //Added by (jcscoobyrs) on 14-Nov-2003 at 10:45:16 PM
+		spnDateFound.setEditor(new JSpinner.DateEditor(spnDateFound, sdf.toPattern()));
+
+        spnDateFound.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+            	// it's an ugly hack so that the spinner can increase day by day
+            	SpinnerDateModel sdm = new SpinnerDateModel((Date)spnDateFound.getModel().getValue(),null,null,Calendar.DAY_OF_WEEK);
+            	spnDateFound.setModel(sdm);
+
+                if (ignoreStartChanged)
+                    return;
+                ignoreStartChanged = true;
+                Date sd = (Date) spnDateFound.getModel().getValue();
+                Date ed = (Date) spnDateFixed.getModel().getValue();
+                if (sd.after(ed) && chkDateFixed.isSelected()) {
+                    spnDateFound.getModel().setValue(ed);
+                    sd = ed;
+                }
+				if ((startDateMax != null) && sd.after(startDateMax.getDate())) {
+					spnDateFound.getModel().setValue(startDateMax.getDate());
+                    sd = startDateMax.getDate();
 				}
-			});
-	        okB.setMaximumSize(new Dimension(100, 26));
-	        okB.setMinimumSize(new Dimension(100, 26));
-	        okB.setPreferredSize(new Dimension(100, 26));
-	        okB.setText(Local.getString("Ok"));
-	        okB.addActionListener(new java.awt.event.ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                okB_actionPerformed(e);
-	            }
-	        });
-	        
-	        this.getRootPane().setDefaultButton(okB);
-	        mPanel.setBorder(border1);
-	        areaPanel.setBorder(border2);
-	        dialogTitlePanel.setBackground(Color.WHITE);
-	        dialogTitlePanel.setBorder(border4);
-	        header.setFont(new java.awt.Font("Dialog", 0, 20));
-	        header.setForeground(new Color(0, 0, 124));
-	        header.setText(Local.getString("Record New Defect"));
-	        header.setIcon(new ImageIcon(DefectDialog.class.getResource("/net/sf/memoranda/ui/resources/icons/mimetypes/application/default.png")));
-	        
-	        GridBagLayout gbLayout = (GridBagLayout) jpNumberDescription.getLayout();
-	        jpNumberDescription.setBorder(border3);
-					
-	        tfNumber.setBorder(border8);
-	        tfNumber.setPreferredSize(new Dimension(24, 24));
-	        GridBagConstraints gbCon = new GridBagConstraints();
-	        gbCon.gridwidth = GridBagConstraints.REMAINDER;
-	        gbCon.weighty = 1;
-	        gbLayout.setConstraints(tfNumber,gbCon);
-	        
-	        lblDescription.setMaximumSize(new Dimension(100, 16));
-	        lblDescription.setMinimumSize(new Dimension(60, 16));
-	        lblDescription.setText(Local.getString("Description"));
-	        gbCon = new GridBagConstraints();
-	        gbCon.gridwidth = GridBagConstraints.REMAINDER;
-	        gbCon.weighty = 1;
-	        gbCon.anchor = GridBagConstraints.WEST;
-	        gbLayout.setConstraints(lblDescription,gbCon);
+                if ((startDateMin != null) && sd.before(startDateMin.getDate())) {
+                    spnDateFound.getModel().setValue(startDateMin.getDate());
+                    sd = startDateMin.getDate();
+                }
+                startCalFrame.cal.set(new CalendarDate(sd));
+                ignoreStartChanged = false;
+            }
+        });
 
-	        txtaDescription.setBorder(border8);
-	        txtaDescription.setPreferredSize(new Dimension(375, 387)); // 3 additional pixels from 384 so that the last line is not cut off
-	        txtaDescription.setLineWrap(true);
-	        txtaDescription.setWrapStyleWord(true);
-	        gbCon = new GridBagConstraints();
-	        gbCon.gridwidth = GridBagConstraints.REMAINDER;
-	        gbCon.weighty = 3;
-	        descriptionScrollPane.setPreferredSize(new Dimension(375,96));
-	        gbLayout.setConstraints(descriptionScrollPane,gbCon);
-
-	        lblEstFixTime.setMaximumSize(new Dimension(100, 16));
-	        lblEstFixTime.setMinimumSize(new Dimension(60, 16));
-	        lblEstFixTime.setText("Est Fix Time(mins)");
-	        txtEstFixTime.setBorder(border8);
-	        txtEstFixTime.setPreferredSize(new Dimension(30, 24));
-
-	        spnDateFound.setBorder(border8);
-	        spnDateFound.setPreferredSize(new Dimension(80, 24));                
-			SimpleDateFormat sdf = new SimpleDateFormat();
-			sdf = (SimpleDateFormat)DateFormat.getDateInstance(DateFormat.SHORT);
-			// //Added by (jcscoobyrs) on 14-Nov-2003 at 10:45:16 PM
-			spnDateFound.setEditor(new JSpinner.DateEditor(spnDateFound, sdf.toPattern()));
-
-	        spnDateFound.addChangeListener(new ChangeListener() {
-	            public void stateChanged(ChangeEvent e) {
-	            	// it's an ugly hack so that the spinner can increase day by day
-	            	SpinnerDateModel sdm = new SpinnerDateModel((Date)spnDateFound.getModel().getValue(),null,null,Calendar.DAY_OF_WEEK);
-	            	spnDateFound.setModel(sdm);
-
-	                if (ignoreStartChanged)
-	                    return;
-	                ignoreStartChanged = true;
-	                Date sd = (Date) spnDateFound.getModel().getValue();
-	                Date ed = (Date) spnDateFixed.getModel().getValue();
-	                if (sd.after(ed) && chkDateFixed.isSelected()) {
-	                    spnDateFound.getModel().setValue(ed);
-	                    sd = ed;
-	                }
-					if ((startDateMax != null) && sd.after(startDateMax.getDate())) {
-						spnDateFound.getModel().setValue(startDateMax.getDate());
-	                    sd = startDateMax.getDate();
-					}
-	                if ((startDateMin != null) && sd.before(startDateMin.getDate())) {
-	                    spnDateFound.getModel().setValue(startDateMin.getDate());
-	                    sd = startDateMin.getDate();
-	                }
-	                startCalFrame.cal.set(new CalendarDate(sd));
-	                ignoreStartChanged = false;
-	            }
-	        });
-
-	        lblDateFound.setText(Local.getString("Date Found"));
-	        lblDateFound.setMinimumSize(new Dimension(60, 16));
-	        lblDateFound.setMaximumSize(new Dimension(100, 16));
-	        btnSetDateFound.setMinimumSize(new Dimension(24, 24));
-	        btnSetDateFound.setPreferredSize(new Dimension(24, 24));
-	        btnSetDateFound.setText("");
-	        btnSetDateFound.setIcon(
-	            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/calendar.png")));
-	        btnSetDateFound.addActionListener(new java.awt.event.ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                setStartDateB_actionPerformed(e);
-	            }
-	        });
-	        lblDateFixed.setMaximumSize(new Dimension(270, 16));
-	        lblDateFixed.setHorizontalAlignment(SwingConstants.RIGHT);
-	        lblDateFixed.setText("Date Fixed");
-	        spnDateFixed.setBorder(border8);
-	        spnDateFixed.setPreferredSize(new Dimension(80, 24));
-	        
-			spnDateFixed.setEditor(new JSpinner.DateEditor(spnDateFixed, sdf.toPattern())); //Added by (jcscoobyrs) on
-			//14-Nov-2003 at 10:45:16PM
-	        
-	        spnDateFixed.addChangeListener(new ChangeListener() {
-	            public void stateChanged(ChangeEvent e) {
-	            	// it's an ugly hack so that the spinner can increase day by day
-	            	SpinnerDateModel sdm = new SpinnerDateModel((Date)spnDateFixed.getModel().getValue(),null,null,Calendar.DAY_OF_WEEK);
-	            	spnDateFixed.setModel(sdm);
-	            	
-	                if (ignoreEndChanged)
-	                    return;
-	                ignoreEndChanged = true;
-	                Date sd = (Date) spnDateFound.getModel().getValue();
-	                Date ed = (Date) spnDateFixed.getModel().getValue();				
-					if (ed.before(sd)) {
-	                    spnDateFixed.getModel().setValue(ed);
-	                    ed = sd;
-	                }
-					if ((endDateMax != null) && ed.after(endDateMax.getDate())) {
-						spnDateFixed.getModel().setValue(endDateMax.getDate());
-	                    ed = endDateMax.getDate();
-					}
-	                if ((endDateMin != null) && ed.before(endDateMin.getDate())) {
-	                    spnDateFixed.getModel().setValue(endDateMin.getDate());
-	                    ed = endDateMin.getDate();
-	                }
-					endCalFrame.cal.set(new CalendarDate(ed));
-	                ignoreEndChanged = false;
-	            }
-	        });
-	        btnSetDateFixed.setMinimumSize(new Dimension(24, 24));
-	        btnSetDateFixed.setPreferredSize(new Dimension(24, 24));
-	        btnSetDateFixed.setText("");
-	        btnSetDateFixed.setIcon(
-	            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/calendar.png")));
-	        btnSetDateFixed.addActionListener(new java.awt.event.ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                setEndDateB_actionPerformed(e);
-	            }
-	        });
-	        
-	        btnSetNotification.setText(Local.getString("Set notification"));
-	        btnSetNotification.setIcon(
-	            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/notify.png")));
-	        btnSetNotification.addActionListener(new java.awt.event.ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                setNotifB_actionPerformed(e);
-	            }
-	        });
-	        lblType.setMaximumSize(new Dimension(100, 16));
-	        lblType.setMinimumSize(new Dimension(60, 16));
-	        lblType.setText("Type");
-	        cmbType.setModel(new DefaultComboBoxModel(new String[] {"10 Documentation", "20 Syntax", "30 Build, Package", "40 Assignment", "50 Interface", "60 Checking", "70 Data", "80 Function", "90 System", "100 Environment"}));
-
-	        cmbType.setFont(new java.awt.Font("Dialog", 0, 11));
-	        jpType.add(lblType, null);
-	        getContentPane().add(mPanel);
-	        mPanel.add(areaPanel, BorderLayout.CENTER);
-	        mPanel.add(buttonsPanel, BorderLayout.SOUTH);
-	        buttonsPanel.add(okB, null);
-	        buttonsPanel.add(cancelB, null);
-	        this.getContentPane().add(dialogTitlePanel, BorderLayout.NORTH);
-	        dialogTitlePanel.add(header, null);
-	        areaPanel.add(jpNumberDescription, BorderLayout.NORTH);
-	        jpNumberDescription.add(tfNumber, null);
-	        jpNumberDescription.add(lblDescription);
-	        jpNumberDescription.add(descriptionScrollPane, null);
-	        areaPanel.add(jPanel2, BorderLayout.CENTER);
-	        jPanel2.add(jpDateFound, null);
-	        jpDateFound.add(lblDateFound, null);
-	        jpDateFound.add(spnDateFound, null);
-	        jpDateFound.add(btnSetDateFound, null);
-	        jPanel2.add(jpDateFixed, null);
-			jpDateFixed.add(chkDateFixed, null);
-	        jpDateFixed.add(lblDateFixed, null);
-	        jpDateFixed.add(spnDateFixed, null);
-	        jpDateFixed.add(btnSetDateFixed, null);
-	        // added by rawsushi
-	        jPanel2.add(jpFixTime, null);
-	        jpFixTime.add(lblEstFixTime, null);
-	        jpFixTime.add(txtEstFixTime, null);
-	        
-	        jpFixTime.add(chkActFixTime);
-	        
-	        jpFixTime.add(lblActFixTime);
-	        
-	        jpFixTime.add(txtActFixTime);
-	        
-	        
-	        jPanel2.add(jpType, null);
-	        jpType.add(cmbType, null);
-	        jPanel2.add(jpSetNotification, null);
-	        
-	        jpSetNotification.add(btnSetNotification, null);
-	        
-	        jLabelProgress.setText(Local.getString("Progress"));
-	        jPanelProgress.add(jLabelProgress, null);
-	        jPanelProgress.add(progress, null);
-	        jPanel2.add(jPanelProgress);
-	        
-	        cmbType.setSelectedItem(Local.getString("Normal"));
-	        startCalFrame.cal.addSelectionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                if (ignoreStartChanged)
-	                    return;
-	                spnDateFound.getModel().setValue(startCalFrame.cal.get().getCalendar().getTime());
-	            }
-	        });
-	        
-	        endCalFrame.cal.addSelectionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                if (ignoreEndChanged)
-	                    return;
-	                spnDateFixed.getModel().setValue(endCalFrame.cal.get().getCalendar().getTime());
-	            }
-	        });
+        lblDateFound.setText(Local.getString("Date Found"));
+        lblDateFound.setMinimumSize(new Dimension(60, 16));
+        lblDateFound.setMaximumSize(new Dimension(100, 16));
+        btnSetDateFound.setMinimumSize(new Dimension(24, 24));
+        btnSetDateFound.setPreferredSize(new Dimension(24, 24));
+        btnSetDateFound.setText("");
+        btnSetDateFound.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/calendar.png")));
+        btnSetDateFound.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setStartDateB_actionPerformed(e);
+            }
+        });
+        lblDateFixed.setMaximumSize(new Dimension(270, 16));
+        lblDateFixed.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblDateFixed.setText("Date Fixed");
+        spnDateFixed.setBorder(border8);
+        spnDateFixed.setPreferredSize(new Dimension(80, 24));
+        
+		spnDateFixed.setEditor(new JSpinner.DateEditor(spnDateFixed, sdf.toPattern())); //Added by (jcscoobyrs) on
+		//14-Nov-2003 at 10:45:16PM
+        
+        spnDateFixed.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+            	// it's an ugly hack so that the spinner can increase day by day
+            	SpinnerDateModel sdm = new SpinnerDateModel((Date)spnDateFixed.getModel().getValue(),null,null,Calendar.DAY_OF_WEEK);
+            	spnDateFixed.setModel(sdm);
+            	
+                if (ignoreEndChanged)
+                    return;
+                ignoreEndChanged = true;
+                Date sd = (Date) spnDateFound.getModel().getValue();
+                Date ed = (Date) spnDateFixed.getModel().getValue();				
+				if (ed.before(sd)) {
+                    spnDateFixed.getModel().setValue(ed);
+                    ed = sd;
+                }
+				if ((endDateMax != null) && ed.after(endDateMax.getDate())) {
+					spnDateFixed.getModel().setValue(endDateMax.getDate());
+                    ed = endDateMax.getDate();
+				}
+                if ((endDateMin != null) && ed.before(endDateMin.getDate())) {
+                    spnDateFixed.getModel().setValue(endDateMin.getDate());
+                    ed = endDateMin.getDate();
+                }
+				endCalFrame.cal.set(new CalendarDate(ed));
+                ignoreEndChanged = false;
+            }
+        });
+        btnSetDateFixed.setMinimumSize(new Dimension(24, 24));
+        btnSetDateFixed.setPreferredSize(new Dimension(24, 24));
+        btnSetDateFixed.setText("");
+        btnSetDateFixed.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/calendar.png")));
+        btnSetDateFixed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setEndDateB_actionPerformed(e);
+            }
+        });
+        
+        btnSetNotification.setText(Local.getString("Set notification"));
+        btnSetNotification.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/notify.png")));
+        btnSetNotification.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setNotifB_actionPerformed(e);
+            }
+        });
+        lblType.setMaximumSize(new Dimension(100, 16));
+        lblType.setMinimumSize(new Dimension(60, 16));
+        lblType.setText("Type");
+        jpType.add(lblType, null);
+        cmbType.setModel(new DefaultComboBoxModel(new String[] {"10 Documentation", "20 Syntax", "30 Build, Package", "40 Assignment", "50 Interface", "60 Checking", "70 Data", "80 Function", "90 System", "100 Environment"}));
+        
+                cmbType.setFont(new java.awt.Font("Dialog", 0, 11));
+                jpType.add(cmbType, null);
+                
+                cmbType.setSelectedItem(Local.getString("Normal"));
+       
+        txtFixReference.setColumns(10);
+		txtInjection.setColumns(10);
+        jpType.add(lblInjection);
+        
+        jpType.add(txtInjection);
+        getContentPane().add(mPanel);
+        mPanel.add(areaPanel, BorderLayout.CENTER);
+        mPanel.add(buttonsPanel, BorderLayout.SOUTH);
+        buttonsPanel.add(btnOK, null);
+        buttonsPanel.add(btnCancel, null);
+        this.getContentPane().add(dialogTitlePanel, BorderLayout.NORTH);
+        dialogTitlePanel.add(header, null);
+        areaPanel.add(jpNumberDescription, BorderLayout.NORTH);
+        jpNumberDescription.add(tfNumber, null);
+        jpNumberDescription.add(lblDescription);
+        jpNumberDescription.add(descriptionScrollPane, null);
+        areaPanel.add(jPanel2, BorderLayout.CENTER);
+        jPanel2.add(jpDateFound, null);
+        jpDateFound.add(lblDateFound, null);
+        jpDateFound.add(spnDateFound, null);
+        jpDateFound.add(btnSetDateFound, null);
+        jPanel2.add(jpDateFixed, null);
+		jpDateFixed.add(chkDateFixed, null);
+        jpDateFixed.add(lblDateFixed, null);
+        jpDateFixed.add(spnDateFixed, null);
+        jpDateFixed.add(btnSetDateFixed, null);
+        // added by rawsushi
+        jPanel2.add(jpFixTime, null);
+        jpFixTime.add(lblEstFixTime, null);
+        jpFixTime.add(txtEstFixTime, null);
+        
+        jpFixTime.add(lblActFixTime);
+        
+        jpFixTime.add(txtActFixTime);
+        
+        
+        jPanel2.add(jpType, null);
+        jPanel2.add(jpSetNotification, null);
+        
+        jpSetNotification.add(btnSetNotification, null);
+        
+        jPanelProgress.add(chkFixReference);
+        lblFixReference.setEnabled(false);
+        
+        
+        jPanelProgress.add(lblFixReference);
+        
+        jPanelProgress.add(txtFixReference);
+        
+        jLabelProgress.setText(Local.getString("Progress"));
+        jPanelProgress.add(jLabelProgress, null);
+        jPanelProgress.add(progress, null);
+        jPanel2.add(jPanelProgress);
+        startCalFrame.cal.addSelectionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (ignoreStartChanged)
+                    return;
+                spnDateFound.getModel().setValue(startCalFrame.cal.get().getCalendar().getTime());
+            }
+        });
+        
+        endCalFrame.cal.addSelectionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (ignoreEndChanged)
+                    return;
+                spnDateFixed.getModel().setValue(endCalFrame.cal.get().getCalendar().getTime());
+            }
+        });
 	}
 	
 	
@@ -413,10 +441,12 @@ public class DefectDialog extends JDialog {
         this.dispose();
     }
 	
-	void chkEndDate_actionPerformed(ActionEvent e) {
+	void chkDateFixed_actionPerformed(ActionEvent e) {
 		spnDateFixed.setEnabled(chkDateFixed.isSelected());
 		btnSetDateFixed.setEnabled(chkDateFixed.isSelected());
 		lblDateFixed.setEnabled(chkDateFixed.isSelected());
+		lblActFixTime.setEnabled(chkDateFixed.isSelected());
+		txtActFixTime.setEnabled(chkDateFixed.isSelected());
 		if(chkDateFixed.isSelected()) {
 			Date currentEndDate = (Date) spnDateFixed.getModel().getValue();
 			Date currentStartDate = (Date) spnDateFound.getModel().getValue();
@@ -425,7 +455,12 @@ public class DefectDialog extends JDialog {
 			}
 		}
 	}
-
+	
+	void chkFixReference_actionPerformed(ActionEvent e) {
+		lblFixReference.setEnabled(chkFixReference.isSelected());
+		txtFixReference.setEnabled(chkFixReference.isSelected());
+	}
+	
     void setStartDateB_actionPerformed(ActionEvent e) {
         startCalFrame.setLocation(btnSetDateFound.getLocation());
         startCalFrame.setSize(200, 200);
