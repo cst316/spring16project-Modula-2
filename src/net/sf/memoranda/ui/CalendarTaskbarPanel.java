@@ -115,6 +115,9 @@ public class CalendarTaskbarPanel extends JToolBar {
 			
 			Image leftArrowSmall = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow_small.gif"));
 			Image resizedLeftArrowSmall = leftArrowSmall.getScaledInstance(20, 20, 0);
+			
+			Image leftArrowBig = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow.gif"));
+			Image resizedLeftArrowBig = leftArrowBig.getScaledInstance(20, 20, 0);
 			btnLittleStepBack.setIcon(new ImageIcon(resizedLeftArrowSmall));
 			btnLittleStepBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -122,9 +125,6 @@ public class CalendarTaskbarPanel extends JToolBar {
 				}
 			});
 			panel_1.add(btnLittleStepBack);
-			
-			Image leftArrowBig = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow.gif"));
-			Image resizedLeftArrowBig = leftArrowBig.getScaledInstance(20, 20, 0);
 			btnBigStepBack.setIcon(new ImageIcon(resizedLeftArrowBig));
 			btnBigStepBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -132,8 +132,8 @@ public class CalendarTaskbarPanel extends JToolBar {
 				}
 			});
 			panel_1.add(btnBigStepBack);
-
-			add(panel_1);
+			
+						add(panel_1);
 
 			panel.setPreferredSize(new Dimension(500, 40));	
 			add(panel);
