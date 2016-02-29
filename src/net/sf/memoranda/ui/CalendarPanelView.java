@@ -72,7 +72,7 @@ public class CalendarPanelView extends JPanel {
 			
 			for(int weekday = 0; weekday < 7; weekday++) {
     			JPanel gridCell = new JPanel(new GridBagLayout());
-    			gridCell.setBackground(ColorScheme.getCurrentScheme().headerColor);
+    			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
     			gridCell.setBorder(null);
     			
     	        gbc = new GridBagConstraints();
@@ -89,6 +89,11 @@ public class CalendarPanelView extends JPanel {
 				
     	        _view.add(gridCell, gbc);
 			}
+		}
+		else if(_type == VIEW_DAY) {
+			JPanel gridCell = new JPanel(new GridBagLayout());
+			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
+			gridCell.setBorder(null);
 
 			if(_type == VIEW_MONTH) {
 				_rows = 6;
@@ -317,11 +322,11 @@ public class CalendarPanelView extends JPanel {
 	
 			// Highlight if date is the current date
 			if(date.equals(CurrentDate.get())) {
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getCurrentScheme().highlightColor, 2));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
 			} else {
 				// Why do we need this redundant red border? I dunno, but it fixes it
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getCurrentScheme().secondaryColor, 1));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_secondary"), 1));
 			}
 			
 			panelCell.setActive(true);
@@ -351,11 +356,11 @@ public class CalendarPanelView extends JPanel {
 	        }
 	        
 			if(_currentHour == calendar.get(Calendar.HOUR_OF_DAY)) {
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getCurrentScheme().highlightColor, 2));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
 			} else {
 				// Why do we need this redundant red border? I dunno, but it fixes it
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getCurrentScheme().secondaryColor, 1));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_secondary"), 1));
 			}
 			
 	        panelCell.setActive(true);
