@@ -3,7 +3,12 @@ package net.sf.memoranda.util;
 import java.awt.Color;
 
 public class ColorScheme {
-	private static ColorSchemeEnum currentScheme = ColorSchemeEnum.BASIC;
+	//private static ColorSchemeEnum currentScheme = ColorSchemeEnum.ORIGINAL;
+	private static ColorSchemeEnum currentScheme = ColorSchemeEnum.HSB;
+	
+	public static ColorSchemeEnum getCurrentScheme() {
+        return currentScheme;
+    }
 	
 	public static enum ColorEnum {
         LIGHT_RED(255,0,0), RED(192,0,0), DARK_RED(128,0,0),
@@ -12,7 +17,7 @@ public class ColorScheme {
         LIGHT_ORANGE(255,102,0), ORANGE(255,102,0), DARK_ORANGE(192,88,0),
         LIGHT_YELLOW(255,204,0), YELLOW(255,204,0), DARK_YELLOW(192,150,0),
         LIGHT_PURPLE(136,0,182), PURPLE(102,0,153), DARK_PURPLE(78,0,124),
-        BLACK(0,0,0), WHITE(255,255,255), GREY(127,127,127);
+        BLACK(0,0,0), WHITE(255,255,255), GRAY(127,127,127), LIGHT_GRAY(192,192,192);
 
         private int red;
         private int green;
@@ -29,31 +34,38 @@ public class ColorScheme {
         }
     }
 
-	public static enum ColorSchemeEnum {
-		BASIC(ColorEnum.RED.getColor(), ColorEnum.GREEN.getColor(), ColorEnum.DARK_GREEN.getColor(), ColorEnum.DARK_YELLOW.getColor(), ColorEnum.BLUE.getColor(),ColorEnum.BLACK.getColor());
+	public enum ColorSchemeEnum {
+		ORIGINAL(ColorEnum.WHITE.getColor(), ColorEnum.GRAY.getColor(), ColorEnum.LIGHT_GRAY.getColor(), ColorEnum.WHITE.getColor(), ColorEnum.BLUE.getColor(),ColorEnum.BLACK.getColor(),ColorEnum.WHITE.getColor()),
+		HSB(ColorEnum.WHITE.getColor(), ColorEnum.GRAY.getColor(), ColorEnum.LIGHT_GRAY.getColor(), ColorEnum.WHITE.getColor(), ColorEnum.BLUE.getColor(),ColorEnum.BLACK.getColor(),ColorEnum.WHITE.getColor());
 		
-	    public Color mainColor;
+	    public Color primaryColor;
 	    public Color secondaryColor;
 	    public Color tertiaryColor;
 	    public Color headerColor;
 	    public Color highlightColor;
 	    public Color textColor;
+	    public Color buttonSolidColor;
+	    
+	    private ColorSchemeEnum(int hue) {
+	    	
+	    }
 	    
 	    private ColorSchemeEnum(
-	    		Color mainColor, 
+	    		Color primaryColor, 
 	    		Color secondaryColor, 
 	    		Color tertiaryColor,
 	    		Color headerColor,
 	    		Color highlightColor,
-	    		Color textColor
+	    		Color textColor,
+	    		Color buttonSolidColor
 	    ) {
-	        this.mainColor = mainColor;
+	        this.primaryColor = primaryColor;
 	        this.secondaryColor = secondaryColor;
 	        this.tertiaryColor = tertiaryColor;
 	        this.headerColor = headerColor;
 	        this.highlightColor = highlightColor;
 	        this.textColor = textColor;
+	        this.buttonSolidColor = buttonSolidColor;
 	    }
-	}	
-
+	}
 }
