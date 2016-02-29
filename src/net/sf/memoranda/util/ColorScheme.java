@@ -24,7 +24,7 @@ public class ColorScheme {
 	public static float modHue(float hue, float amt) {
 		return ( ((hue*360)+amt)%360 / 360);
 	}
-	
+
 	public static int getColor() {
 		return color;
 	}
@@ -34,7 +34,7 @@ public class ColorScheme {
 		else if(input > 359) input = 359;
 		
 		color = input;
-		
+
 		if(input == -1) {
 			currentScheme.put("frame_primary", Color.WHITE);
 			currentScheme.put("frame_secondary", Color.GRAY);

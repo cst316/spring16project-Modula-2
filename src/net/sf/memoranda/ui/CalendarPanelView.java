@@ -92,8 +92,7 @@ public class CalendarPanelView extends JPanel {
 			if(_type == VIEW_MONTH) {
 				_rows = 6;
 				_columns = 7;
-			}
-			
+			}	
 			else if(_type == VIEW_WEEK) {
 				_rows = 1;
 				_columns = 7;
@@ -289,7 +288,7 @@ public class CalendarPanelView extends JPanel {
 	
 	private void generateDay(CalendarPanelCell panelCell, Calendar calendar, Collection<Task> tasks) {
 		CalendarDate date = new CalendarDate(calendar);
-		
+
 		if(_type == CalendarPanelView.VIEW_WEEK || _type == CalendarPanelView.VIEW_MONTH) { 
 			if(_type != CalendarPanelView.VIEW_WEEK) {
 				panelCell.getLabel().setText(Integer.toString(date.getDay()));
