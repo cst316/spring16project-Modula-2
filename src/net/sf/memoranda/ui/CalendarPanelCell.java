@@ -49,13 +49,13 @@ public class CalendarPanelCell extends JPanel {
 		if(active) {
 			CalendarDate today = new CalendarDate();
 			if(today.before(this._date) | today.equals(this._date)) {
-				gridCell.setBackground(ColorScheme.getCurrentScheme().primaryColor);
+				gridCell.setBackground(ColorScheme.getColor("frame_background"));
 			} else {
-				gridCell.setBackground(ColorScheme.getCurrentScheme().tertiaryColor);
+				gridCell.setBackground(ColorScheme.getColor("frame_tertiary"));
 			}
 		} else {
 			gridLabel.setText("");
-			gridCell.setBackground(ColorScheme.getCurrentScheme().secondaryColor);
+			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
 		}
 	}
 	
