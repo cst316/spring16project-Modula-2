@@ -24,6 +24,7 @@ import net.sf.memoranda.Task;
 import net.sf.memoranda.TaskListListener;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
+import java.awt.Insets;
 
 public class CalendarPanel extends JPanel {
 	WorkPanel parentPanel = null;
@@ -39,6 +40,7 @@ public class CalendarPanel extends JPanel {
 	CalendarCellPopupMenu cellPopupMenu = new CalendarCellPopupMenu();
 	
 	GridBagConstraints gbc;
+	private GridBagConstraints gbc_1;
 	
     public CalendarPanel(WorkPanel _parentPanel) {
         try {
@@ -52,13 +54,6 @@ public class CalendarPanel extends JPanel {
     
     void jbInit() throws Exception {
 		viewPanel.changeViewType(CalendarPanelView.VIEW_MONTH);
-
-    	// TaskBar
-        gbc = new GridBagConstraints();
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
-    	mainPanel.add(taskPanel,gbc);
 
     	// GridPanel
         gbc = new GridBagConstraints();
@@ -76,6 +71,15 @@ public class CalendarPanel extends JPanel {
         
         this.setLayout(new GridBagLayout());
     	this.add(mainPanel,gbc);
+    	
+    	    	// TaskBar
+    	        gbc_1 = new GridBagConstraints();
+    	        gbc_1.insets = new Insets(0, 0, 5, 0);
+    	        gbc_1.gridx = 0;
+    	        gbc_1.gridy = 0;
+    	        gbc_1.fill = GridBagConstraints.HORIZONTAL;
+    	        gbc_1.weightx = 1.0;
+    	        mainPanel.add(taskPanel,gbc_1);
     	
     	// Event listeners
     	EventsScheduler.addListener(new EventNotificationListener() {
