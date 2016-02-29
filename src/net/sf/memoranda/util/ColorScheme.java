@@ -1,71 +1,48 @@
 package net.sf.memoranda.util;
 
 import java.awt.Color;
+import java.awt.color.ColorSpace;
+import java.util.HashMap;
 
 public class ColorScheme {
-	//private static ColorSchemeEnum currentScheme = ColorSchemeEnum.ORIGINAL;
-	private static ColorSchemeEnum currentScheme = ColorSchemeEnum.HSB;
-	
-	public static ColorSchemeEnum getCurrentScheme() {
-        return currentScheme;
-    }
-	
-	public static enum ColorEnum {
-        LIGHT_RED(255,0,0), RED(192,0,0), DARK_RED(128,0,0),
-        LIGHT_GREEN(0,256,0), GREEN(0,192,0), DARK_GREEN(0,128,0),
-        LIGHT_BLUE(0,0,256), BLUE(0,0,192), DARK_BLUE(0,0,128),
-        LIGHT_ORANGE(255,102,0), ORANGE(255,102,0), DARK_ORANGE(192,88,0),
-        LIGHT_YELLOW(255,204,0), YELLOW(255,204,0), DARK_YELLOW(192,150,0),
-        LIGHT_PURPLE(136,0,182), PURPLE(102,0,153), DARK_PURPLE(78,0,124),
-        BLACK(0,0,0), WHITE(255,255,255), GRAY(127,127,127), LIGHT_GRAY(192,192,192);
-
-        private int red;
-        private int green;
-        private int blue;
-
-        private ColorEnum(int r, int g, int b) {
-            this.red = r;
-            this.green = g;
-            this.blue = b;
-        }
-
-        public Color getColor() {
-            return new Color(red, green, blue);
-        }
-    }
-
-	public enum ColorSchemeEnum {
-		ORIGINAL(ColorEnum.WHITE.getColor(), ColorEnum.GRAY.getColor(), ColorEnum.LIGHT_GRAY.getColor(), ColorEnum.WHITE.getColor(), ColorEnum.BLUE.getColor(),ColorEnum.BLACK.getColor(),ColorEnum.WHITE.getColor()),
-		HSB(ColorEnum.WHITE.getColor(), ColorEnum.GRAY.getColor(), ColorEnum.LIGHT_GRAY.getColor(), ColorEnum.WHITE.getColor(), ColorEnum.BLUE.getColor(),ColorEnum.BLACK.getColor(),ColorEnum.WHITE.getColor());
+	private static HashMap<String,Color> currentScheme = new HashMap<String,Color>();
 		
-	    public Color primaryColor;
-	    public Color secondaryColor;
-	    public Color tertiaryColor;
-	    public Color headerColor;
-	    public Color highlightColor;
-	    public Color textColor;
-	    public Color buttonSolidColor;
-	    
-	    private ColorSchemeEnum(int hue) {
-	    	
-	    }
-	    
-	    private ColorSchemeEnum(
-	    		Color primaryColor, 
-	    		Color secondaryColor, 
-	    		Color tertiaryColor,
-	    		Color headerColor,
-	    		Color highlightColor,
-	    		Color textColor,
-	    		Color buttonSolidColor
-	    ) {
-	        this.primaryColor = primaryColor;
-	        this.secondaryColor = secondaryColor;
-	        this.tertiaryColor = tertiaryColor;
-	        this.headerColor = headerColor;
-	        this.highlightColor = highlightColor;
-	        this.textColor = textColor;
-	        this.buttonSolidColor = buttonSolidColor;
-	    }
+	public static Color getColor(String color) {
+		if(!currentScheme.containsKey("frame_primary")) {
+			//ColorScheme.changeColor(220);
+			ColorScheme.changeColor(220);
+		}
+		if(!currentScheme.containsKey(color)) {
+			return Color.MAGENTA;
+		}
+		
+        return currentScheme.get(color);
+    }
+	
+	public static float modHue(float hue, float amt) {
+		return ( ((hue*360)+amt)%360 / 360);
+	}
+	
+	public static void changeColor(int input) {
+		if(input == -1) {
+			currentScheme.put("frame_primary", Color.WHITE);
+			currentScheme.put("frame_secondary", Color.GRAY);
+			currentScheme.put("frame_tertiary", Color.LIGHT_GRAY);
+			currentScheme.put("frame_background", Color.WHITE);
+			currentScheme.put("frame_header_text", Color.WHITE);
+			currentScheme.put("frame_highlight", Color.RED);
+			currentScheme.put("frame_text", Color.BLACK);
+			currentScheme.put("button_primary", Color.WHITE);
+		} else {
+			float hue = (input/360f);
+			currentScheme.put("frame_primary", Color.getHSBColor(hue, 1f, 1f));
+			currentScheme.put("frame_secondary", Color.getHSBColor(hue, 0.25f, 1f));
+			currentScheme.put("frame_tertiary", Color.getHSBColor(hue, 0.125f, 1f));
+			currentScheme.put("frame_background", Color.WHITE);
+			currentScheme.put("frame_header_text", Color.BLACK);
+			currentScheme.put("frame_highlight", Color.getHSBColor(hue, 1f, 1f));
+			currentScheme.put("frame_text", Color.BLACK);
+			currentScheme.put("button_primary", Color.getHSBColor(hue, 0.5f, 1f));
+		}
 	}
 }

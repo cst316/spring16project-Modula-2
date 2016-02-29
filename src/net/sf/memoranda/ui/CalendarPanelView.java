@@ -72,7 +72,7 @@ public class CalendarPanelView extends JPanel {
 			
 			for(int weekday = 0; weekday < 7; weekday++) {
     			JPanel gridCell = new JPanel(new GridBagLayout());
-    			gridCell.setBackground(ColorScheme.getCurrentScheme().headerColor);
+    			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
     			gridCell.setBorder(null);
     			
     	        gbc = new GridBagConstraints();
@@ -92,7 +92,7 @@ public class CalendarPanelView extends JPanel {
 		}
 		else if(_type == VIEW_DAY) {
 			JPanel gridCell = new JPanel(new GridBagLayout());
-			gridCell.setBackground(ColorScheme.getCurrentScheme().headerColor);
+			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
 			gridCell.setBorder(null);
 
 	        gbc = new GridBagConstraints();
@@ -292,7 +292,7 @@ public class CalendarPanelView extends JPanel {
 	
 	private void generateDay(CalendarPanelCell panelCell, Calendar calendar, Collection<Task> tasks) {
 		CalendarDate date = new CalendarDate(calendar);
-		
+
 		if(_type == CalendarPanelView.VIEW_WEEK || _type == CalendarPanelView.VIEW_MONTH) { 
 			if(_type != CalendarPanelView.VIEW_WEEK) {
 				panelCell.getLabel().setText(Integer.toString(date.getDay()));

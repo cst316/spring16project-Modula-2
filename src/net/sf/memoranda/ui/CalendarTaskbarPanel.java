@@ -93,7 +93,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeToMonthlyView_actionPerformed(arg0);
 				}
 			});
-			btnMonthly.setBackground(ColorScheme.getCurrentScheme().buttonSolidColor);
+			btnMonthly.setBackground(ColorScheme.getColor("button_primary"));
 			btnMonthly.setBorder(null);
 			btnMonthly.setMargin(new Insets(5, 14, 5, 14));
 			btnMonthly.setSize(new Dimension(5, 5));
@@ -105,7 +105,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeToWeeklyView_actionPerformed(arg0);
 				}
 			});
-			btnWeekly.setBackground(ColorScheme.getCurrentScheme().buttonSolidColor);
+			btnWeekly.setBackground(ColorScheme.getColor("button_primary"));
 			btnWeekly.setBorder(null);
 			btnWeekly.setMargin(new Insets(5, 14, 5, 14));
 			add(btnWeekly);
@@ -116,7 +116,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeToDailyView_actionPerformed(arg0);
 				}
 			});
-			btnDaily.setBackground(ColorScheme.getCurrentScheme().buttonSolidColor);
+			btnDaily.setBackground(ColorScheme.getColor("button_primary"));
 			btnDaily.setBorder(null);
 			btnDaily.setMargin(new Insets(5, 14, 5, 14));
 			add(btnDaily);
@@ -129,7 +129,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeSmallStepBackward_actionPerformed(arg0);
 				}
 			});
-			btnLittleStepBack.setBackground(ColorScheme.getCurrentScheme().buttonSolidColor);
+			btnLittleStepBack.setBackground(ColorScheme.getColor("button_primary"));
 			btnLittleStepBack.setBorder(null);
 			panel_1.add(btnLittleStepBack);
 			
@@ -141,14 +141,14 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeLargeStepBackward_actionPerformed(arg0);
 				}
 			});
-			btnBigStepBack.setBackground(ColorScheme.getCurrentScheme().buttonSolidColor);
+			btnBigStepBack.setBackground(ColorScheme.getColor("button_primary"));
 			btnBigStepBack.setBorder(null);
 			panel_1.add(btnBigStepBack);
-			panel_1.setBackground(ColorScheme.getCurrentScheme().headerColor);
+			panel_1.setBackground(ColorScheme.getColor("frame_secondary"));
 			add(panel_1);
 
 			panel.setPreferredSize(new Dimension(500, 40));	
-			panel.setBackground(ColorScheme.getCurrentScheme().headerColor);
+			panel.setBackground(ColorScheme.getColor("frame_secondary"));
 			panel.setBorder(null);
 			add(panel);
 			panel.add(lblDay);
@@ -171,7 +171,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 				}
 			});
 			
-			panel_2.setBackground(ColorScheme.getCurrentScheme().headerColor);
+			panel_2.setBackground(ColorScheme.getColor("frame_secondary"));
 			add(panel_2);
 			
 			Image rightArrowSmall = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow_small.gif"));
@@ -182,7 +182,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeSmallStepForward_actionPerformed(arg0);
 				}
 			});
-			btnLittleStepForward.setBackground(ColorScheme.getCurrentScheme().buttonSolidColor);
+			btnLittleStepForward.setBackground(ColorScheme.getColor("button_primary"));
 			btnLittleStepForward.setBorder(null);
 			panel_2.add(btnBigStepForward);
 			
@@ -194,11 +194,11 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeLargeStepForward_actionPerformed(arg1);
 				}
 			});
-			btnBigStepForward.setBackground(ColorScheme.getCurrentScheme().buttonSolidColor);
+			btnBigStepForward.setBackground(ColorScheme.getColor("button_primary"));
 			btnBigStepForward.setBorder(null);
 			panel_2.add(btnLittleStepForward);
 
-			chckbxTasks.setBackground(ColorScheme.getCurrentScheme().headerColor);
+			chckbxTasks.setBackground(ColorScheme.getColor("frame_secondary"));
 			add(chckbxTasks);
 			
 			chckbxEvents.setSelected(true);
@@ -208,9 +208,9 @@ public class CalendarTaskbarPanel extends JToolBar {
 				}
 			});
 			
-			chckbxEvents.setBackground(ColorScheme.getCurrentScheme().headerColor);
+			chckbxEvents.setBackground(ColorScheme.getColor("frame_secondary"));
 			add(chckbxEvents);
-			this.setBackground(ColorScheme.getCurrentScheme().headerColor);
+			this.setBackground(ColorScheme.getColor("frame_secondary"));
 			this.setBorder(null);
 		}
 		public String getDay(){
