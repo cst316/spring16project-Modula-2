@@ -20,6 +20,7 @@ import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.Task;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.util.ColorScheme;
 
 public class CalendarPanelView extends JPanel {
 	public static final int VIEW_INVALID = -1;
@@ -71,7 +72,8 @@ public class CalendarPanelView extends JPanel {
 			
 			for(int weekday = 0; weekday < 7; weekday++) {
     			JPanel gridCell = new JPanel(new GridBagLayout());
-    			gridCell.setBackground(Color.WHITE);
+    			gridCell.setBackground(ColorScheme.getCurrentScheme().headerColor);
+    			gridCell.setBorder(null);
     			
     	        gbc = new GridBagConstraints();
 				JLabel gridLabel = new JLabel();
@@ -87,17 +89,18 @@ public class CalendarPanelView extends JPanel {
 				
     	        _view.add(gridCell, gbc);
 			}
-			
-			if(_type == VIEW_MONTH) {
-				_rows = 6;
-				_columns = 7;
-			}
-			
-			else if(_type == VIEW_WEEK) {
-				_rows = 1;
-				_columns = 7;
-			}
-			
+		}
+		else if(_type == VIEW_DAY) {
+			JPanel gridCell = new JPanel(new GridBagLayout());
+			gridCell.setBackground(ColorScheme.getCurrentScheme().headerColor);
+			gridCell.setBorder(null);
+
+	        gbc = new GridBagConstraints();
+			JLabel gridLabel = new JLabel();
+			gridLabel.setText("");
+			gridLabel.setFont(gridLabel.getFont().deriveFont(12.0f));
+			gridCell.add(gridLabel,gbc);
+
 			_cells = new CalendarPanelCell[_rows*_columns];
 			
 			// Main panel creation
@@ -330,7 +333,6 @@ public class CalendarPanelView extends JPanel {
 			panelCell.setCalendar(calendar);
 			
 			Calendar start = (Calendar) calendar.clone();
-
 			Calendar end = (Calendar) calendar.clone();
 			end.add(Calendar.HOUR_OF_DAY, 1);
 			
