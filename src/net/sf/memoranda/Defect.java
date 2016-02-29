@@ -1,0 +1,49 @@
+package net.sf.memoranda;
+
+import java.util.Date;
+import java.util.Vector;
+
+import net.sf.memoranda.date.CalendarDate;
+
+public interface Defect {
+	
+	void setDateFound();
+	
+    Date getDateFound();
+    
+    void setNumber();
+  
+    int getNumber();
+    
+    void setType();
+    
+    String getType();
+    
+    void setInjection();
+    
+    String getInjection();
+
+    void setRemoval();
+    
+    String getRemoval();
+    
+    void setApproximateFixTimeInMinutes();
+    
+    int getApproximateFixTimeInMinutes();
+    
+    void setFixTimeInMinutes();
+    
+    int getFixTimeInMinutes();
+    
+    void setDateRemoved();
+	
+    Date getDateRemoved();
+    
+    void setFixReference();
+    
+    String getFixReference();
+    
+    void setDescription();
+    
+    String getDescription();
+}
