@@ -412,6 +412,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 			(frmSize.width - dlgSize.width) / 2 + loc.x,
 			(frmSize.height - dlgSize.height) / 2 + loc.y);
 		dlg.prTitleField.setText(prj.getTitle());
+		dlg.descriptionTextArea.setText(prj.getDescription());
 		dlg.startDate.getModel().setValue(
 			prj.getStartDate().getCalendar().getTime());
 		if (prj.getEndDate() != null) {
@@ -432,6 +433,8 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 		prj.setStartDate(
 			new CalendarDate((Date) dlg.startDate.getModel().getValue()));
 
+		prj.setDescription((dlg.descriptionTextArea.getText()));
+		
 		if (dlg.endDateChB.isSelected())
 			prj.setEndDate(
 				new CalendarDate((Date) dlg.endDate.getModel().getValue()));

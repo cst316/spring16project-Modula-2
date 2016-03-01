@@ -27,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.AbstractTableModel;
 
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectManager;
@@ -38,6 +39,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JList;
 import javax.swing.JTextPane;
+import javax.swing.JTable;
 //
 /*$Id: ProjectDialog.java,v 1.26 2004/10/18 19:09:10 ivanrise Exp $*/
 public class ProjectDialog extends JDialog {
@@ -64,16 +66,13 @@ public class ProjectDialog extends JDialog {
     JButton okButton = new JButton();
     JButton cancelButton = new JButton();
     private final JLabel descriptionLabel = new JLabel("Description");
-    private final JScrollPane desciptionScrollPane = new JScrollPane();
-    private final JTextArea descriptionTextArea = new JTextArea();
-    private final JLabel languagesLabel = new JLabel("Languages");
-    private final JTextPane languageTextPane = new JTextPane();
+    public final JScrollPane desciptionScrollPane = new JScrollPane();
+    public final JTextArea descriptionTextArea = new JTextArea();
     private final JLabel teamLabel = new JLabel("Team");
-    private final JTextPane teamTextPane = new JTextPane();
-    private final JButton buttonAddLanguage = new JButton("Add");
-    private final JButton buttonRemoveLanguages = new JButton("Remove");
     private final JButton buttonAddTeam = new JButton("Add");
     private final JButton buttonRemoveTeam = new JButton("Remove");
+    private final JPanel teamPanel = new JPanel();
+    private final JTable tableTeam = new JTable();
     
     public ProjectDialog(Frame frame, String title) {
         super(frame, title, true);
@@ -293,42 +292,26 @@ public class ProjectDialog extends JDialog {
         gbc.insets = new Insets(5, 5, 5, 5);
         getContentPane().add(centerPanel, gbc);
         
-        GridBagConstraints gbc_languagesLabel = new GridBagConstraints();
-        gbc_languagesLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_languagesLabel.gridx = 0;
-        gbc_languagesLabel.gridy = 5;
-        centerPanel.add(languagesLabel, gbc_languagesLabel);
-        
         GridBagConstraints gbc_teamLabel = new GridBagConstraints();
         gbc_teamLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_teamLabel.gridx = 3;
+        gbc_teamLabel.gridx = 0;
         gbc_teamLabel.gridy = 5;
         centerPanel.add(teamLabel, gbc_teamLabel);
         
-        GridBagConstraints gbc_languageTextPane = new GridBagConstraints();
-        gbc_languageTextPane.gridheight = 3;
-        gbc_languageTextPane.gridwidth = 2;
-        gbc_languageTextPane.insets = new Insets(0, 0, 0, 5);
-        gbc_languageTextPane.fill = GridBagConstraints.BOTH;
-        gbc_languageTextPane.gridx = 0;
-        gbc_languageTextPane.gridy = 6;
-        centerPanel.add(languageTextPane, gbc_languageTextPane);
+        GridBagConstraints gbc_teamPanel = new GridBagConstraints();
+        gbc_teamPanel.gridheight = 3;
+        gbc_teamPanel.gridwidth = 5;
+        gbc_teamPanel.insets = new Insets(0, 0, 5, 5);
+        gbc_teamPanel.fill = GridBagConstraints.BOTH;
+        gbc_teamPanel.gridx = 0;
+        gbc_teamPanel.gridy = 6;
+        centerPanel.add(teamPanel, gbc_teamPanel);
         
-        GridBagConstraints gbc_teamTextPane = new GridBagConstraints();
-        gbc_teamTextPane.gridheight = 3;
-        gbc_teamTextPane.gridwidth = 2;
-        gbc_teamTextPane.insets = new Insets(0, 0, 0, 5);
-        gbc_teamTextPane.fill = GridBagConstraints.BOTH;
-        gbc_teamTextPane.gridx = 3;
-        gbc_teamTextPane.gridy = 6;
-        centerPanel.add(teamTextPane, gbc_teamTextPane);
         
-        GridBagConstraints gbc_buttonAddLanguage = new GridBagConstraints();
-        gbc_buttonAddLanguage.anchor = GridBagConstraints.WEST;
-        gbc_buttonAddLanguage.insets = new Insets(0, 0, 5, 5);
-        gbc_buttonAddLanguage.gridx = 2;
-        gbc_buttonAddLanguage.gridy = 7;
-        centerPanel.add(buttonAddLanguage, gbc_buttonAddLanguage);
+        
+        //Settings for the teamTable
+       
+        teamPanel.add(tableTeam);
         
         GridBagConstraints gbc_buttonAddTeam = new GridBagConstraints();
         gbc_buttonAddTeam.anchor = GridBagConstraints.WEST;
@@ -336,12 +319,6 @@ public class ProjectDialog extends JDialog {
         gbc_buttonAddTeam.gridx = 5;
         gbc_buttonAddTeam.gridy = 7;
         centerPanel.add(buttonAddTeam, gbc_buttonAddTeam);
-        
-        GridBagConstraints gbc_buttonRemoveLanguages = new GridBagConstraints();
-        gbc_buttonRemoveLanguages.insets = new Insets(0, 0, 0, 5);
-        gbc_buttonRemoveLanguages.gridx = 2;
-        gbc_buttonRemoveLanguages.gridy = 8;
-        centerPanel.add(buttonRemoveLanguages, gbc_buttonRemoveLanguages);
         
         GridBagConstraints gbc_buttonRemoveTeam = new GridBagConstraints();
         gbc_buttonRemoveTeam.gridx = 5;
@@ -369,6 +346,11 @@ public class ProjectDialog extends JDialog {
             }
         });
     }
+    
+    /** Used to generate team stats
+     * 
+     * @param e
+     */
     
     void okButton_actionPerformed(ActionEvent e) {
         CANCELLED = false;
@@ -420,13 +402,15 @@ public class ProjectDialog extends JDialog {
         if (dlg.CANCELLED)
             return;
         String title = dlg.prTitleField.getText();
+        String description = dlg.descriptionTextArea.getText();
         CalendarDate startD = new CalendarDate((Date) dlg.startDate.getModel().getValue());
         CalendarDate endD = null;
         if (dlg.endDateChB.isSelected())
             endD = new CalendarDate((Date) dlg.endDate.getModel().getValue());
-        Project prj = ProjectManager.createProject(title, startD, endD);
+        Project prj = ProjectManager.createProject(title, description, startD, endD);
         /*if (dlg.freezeChB.isSelected())
             prj.freeze();*/
         CurrentStorage.get().storeProjectManager();
     }
 }
+
