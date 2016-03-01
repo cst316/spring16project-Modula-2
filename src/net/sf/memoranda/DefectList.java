@@ -13,8 +13,8 @@ public interface DefectList {
 	
 	int getNextDefectNumber();
 
-    Defect createDefect(Date datefound, int number, String type, String injection, String removal, int approximatefixtime, int fixtime,
-			String fixreference, String description);
+    Defect createDefect(Date datefound, int number, String type, String injection, long approximatefixtime, long fixtime,
+			Date datefixed, String fixremoval, String fixreference, String description, boolean isCompleted);
 
     void removeDefect(Defect defect);
     

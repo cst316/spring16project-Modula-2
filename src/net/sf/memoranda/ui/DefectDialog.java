@@ -78,7 +78,7 @@ public class DefectDialog extends JDialog {
 	*/
     boolean ignoreStartChanged = false;
     boolean ignoreEndChanged = false;
-    JPanel jpType = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    JPanel jpActFixTime = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     JPanel jpDateFound = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JLabel lblDateFound = new JLabel();
     JButton btnSetDateFound = new JButton();
@@ -89,7 +89,7 @@ public class DefectDialog extends JDialog {
     JSpinner spnDateFixed;
     JButton btnSetDateFixed = new JButton();
     JPanel jpSetNotification = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    JPanel jpFixTime = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel jpEstFixTime = new JPanel(new FlowLayout(FlowLayout.LEFT));
     
     JButton btnSetNotification = new JButton();
     JComboBox cmbType = new JComboBox(/*type*/);
@@ -99,9 +99,7 @@ public class DefectDialog extends JDialog {
     JLabel lblDescription = new JLabel();
 	JCheckBox chkDateFixed = new JCheckBox();
 	
-	JPanel jPanelProgress = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-	JLabel jLabelProgress = new JLabel();
-	JSpinner progress = new JSpinner(new SpinnerNumberModel(0, 0, 100, 5));
+	JPanel jPanelRemovalandFix = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 	
 	//Forbid to set dates outside the bounds
 	CalendarDate startDateMin = CurrentProject.get().getStartDate();
@@ -113,6 +111,8 @@ public class DefectDialog extends JDialog {
 	JLabel lblFixReference = new JLabel("Fix Reference");
 	JTextField txtFixReference = new JTextField();
 	JCheckBox chkFixReference = new JCheckBox("");
+	JLabel lblRemoval = new JLabel("Removal");
+	JTextField txtRemoval = new JTextField();
 	
     
 	
@@ -223,10 +223,6 @@ public class DefectDialog extends JDialog {
         lblEstFixTime.setText("Est Fix Time(mins)");
         txtEstFixTime.setBorder(border8);
         txtEstFixTime.setPreferredSize(new Dimension(30, 24));
-        lblActFixTime.setEnabled(false);
-        lblActFixTime.setLabelFor(txtActFixTime);
-		txtActFixTime.setEnabled(false);
-		txtActFixTime.setColumns(10);
 
         spnDateFound.setBorder(border8);
         spnDateFound.setPreferredSize(new Dimension(80, 24));                
@@ -331,22 +327,8 @@ public class DefectDialog extends JDialog {
                 setNotifB_actionPerformed(e);
             }
         });
-        lblType.setMaximumSize(new Dimension(100, 16));
-        lblType.setMinimumSize(new Dimension(60, 16));
-        lblType.setText("Type");
-        jpType.add(lblType, null);
-        cmbType.setModel(new DefaultComboBoxModel(new String[] {"10 Documentation", "20 Syntax", "30 Build, Package", "40 Assignment", "50 Interface", "60 Checking", "70 Data", "80 Function", "90 System", "100 Environment"}));
-        
-                cmbType.setFont(new java.awt.Font("Dialog", 0, 11));
-                jpType.add(cmbType, null);
-                
-                cmbType.setSelectedItem(Local.getString("Normal"));
        
         txtFixReference.setColumns(10);
-		txtInjection.setColumns(10);
-        jpType.add(lblInjection);
-        
-        jpType.add(txtInjection);
         getContentPane().add(mPanel);
         mPanel.add(areaPanel, BorderLayout.CENTER);
         mPanel.add(buttonsPanel, BorderLayout.SOUTH);
@@ -363,38 +345,55 @@ public class DefectDialog extends JDialog {
         jpDateFound.add(lblDateFound, null);
         jpDateFound.add(spnDateFound, null);
         jpDateFound.add(btnSetDateFound, null);
+        jpDateFound.add(lblType);
+        lblType.setMaximumSize(new Dimension(100, 16));
+        lblType.setMinimumSize(new Dimension(60, 16));
+        lblType.setText("Type");
+        jpDateFound.add(cmbType);
+        cmbType.setModel(new DefaultComboBoxModel(new String[] {"10 Documentation", "20 Syntax", "30 Build, Package", "40 Assignment", "50 Interface", "60 Checking", "70 Data", "80 Function", "90 System", "100 Environment"}));
+        
+                cmbType.setFont(new java.awt.Font("Dialog", 0, 11));
+                
+                cmbType.setSelectedItem(Local.getString("Normal"));
         jPanel2.add(jpDateFixed, null);
 		jpDateFixed.add(chkDateFixed, null);
         jpDateFixed.add(lblDateFixed, null);
         jpDateFixed.add(spnDateFixed, null);
         jpDateFixed.add(btnSetDateFixed, null);
         // added by rawsushi
-        jPanel2.add(jpFixTime, null);
-        jpFixTime.add(lblEstFixTime, null);
-        jpFixTime.add(txtEstFixTime, null);
+        jPanel2.add(jpEstFixTime, null);
+        jpEstFixTime.add(lblEstFixTime, null);
+        jpEstFixTime.add(txtEstFixTime, null);
+                jpEstFixTime.add(lblInjection);
+                jpEstFixTime.add(txtInjection);
+                txtInjection.setColumns(10);
+       
+        jPanel2.add(jpActFixTime, null);
+        jpActFixTime.add(lblActFixTime);
+        lblActFixTime.setEnabled(false);
+        lblActFixTime.setLabelFor(txtActFixTime);
+        jpActFixTime.add(txtActFixTime);
+        txtActFixTime.setEnabled(false);
+        txtActFixTime.setColumns(10);
+        jpActFixTime.add(lblRemoval);
+        lblRemoval.setEnabled(false);
+        jpActFixTime.add(txtRemoval);
+        txtRemoval.setEnabled(false);
+        txtRemoval.setColumns(10);
         
-        jpFixTime.add(lblActFixTime);
-        
-        jpFixTime.add(txtActFixTime);
-        
-        
-        jPanel2.add(jpType, null);
+        lblRemoval.setLabelFor(txtRemoval);
         jPanel2.add(jpSetNotification, null);
         
         jpSetNotification.add(btnSetNotification, null);
         
-        jPanelProgress.add(chkFixReference);
+        jPanelRemovalandFix.add(chkFixReference);
         lblFixReference.setEnabled(false);
         
         
-        jPanelProgress.add(lblFixReference);
+        jPanelRemovalandFix.add(lblFixReference);
         
-        jPanelProgress.add(txtFixReference);
-        
-        jLabelProgress.setText(Local.getString("Progress"));
-        jPanelProgress.add(jLabelProgress, null);
-        jPanelProgress.add(progress, null);
-        jPanel2.add(jPanelProgress);
+        jPanelRemovalandFix.add(txtFixReference);
+        jPanel2.add(jPanelRemovalandFix);
         startCalFrame.cal.addSelectionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (ignoreStartChanged)

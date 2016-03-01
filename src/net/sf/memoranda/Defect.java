@@ -7,9 +7,9 @@ import net.sf.memoranda.date.CalendarDate;
 
 public interface Defect {
 	
-	void setDateFound();
+	void setDateFound(CalendarDate date);
 	
-    Date getDateFound();
+    CalendarDate getDateFound();
     
     void setNumber();
   
@@ -35,9 +35,9 @@ public interface Defect {
     
     int getFixTimeInMinutes();
     
-    void setDateRemoved();
+    void setDateRemoved(CalendarDate date);
 	
-    Date getDateRemoved();
+    CalendarDate getDateRemoved();
     
     void setFixReference();
     
@@ -46,4 +46,8 @@ public interface Defect {
     void setDescription();
     
     String getDescription();
+    
+    void setCompleted();
+    
+    boolean getCompleted();
 }

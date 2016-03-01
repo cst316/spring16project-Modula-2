@@ -2,43 +2,35 @@ package net.sf.memoranda;
 
 import java.util.Date;
 
-public class DefectImpl implements Defect {
-	
-	private Date datefound;
-	private int number;
-	private String type;
-	private String injection;
-	private String removal;
-	private int approximatefixtime;
-	private int fixtime;
-	private String fixreference;
-	private String description;
-	
-	protected DefectImpl(Date df, int n, String t, String i, String r, int aft, int ft,
-			String fr, String des) {
-		datefound = df;
-		number = n;
-		type = t;
-		injection = i;
-		removal = r;
-		approximatefixtime = aft;
-		fixtime = ft;
-		fixreference = fr;
-		description = des;
-	}
+import net.sf.memoranda.date.CalendarDate;
+import nu.xom.Attribute;
+import nu.xom.Element;
 
+public class DefectImpl implements Defect, Comparable {
+	
+	private Element _element = null;
+    private DefectList _dl = null;
+
+    /**
+     * Constructor for DefaultDefect.
+     */
+    public DefectImpl(Element defectElement, DefectList dl) {
+        _element = defectElement;
+        _dl = dl;
+    }
+
+    public Element getContent() {
+        return _element;
+    }
 
 	@Override
-	public void setDateFound() {
-		// TODO Auto-generated method stub
-		
+	public void setDateFound(CalendarDate date) {
+		setAttr("startDate", date.toString());
 	}
 
-
 	@Override
-	public Date getDateFound() {
-		// TODO Auto-generated method stub
-		return null;
+	public CalendarDate getDateFound() {
+		return new CalendarDate(_element.getAttribute("dateFound").getValue());
 	}
 
 
@@ -127,14 +119,14 @@ public class DefectImpl implements Defect {
 
 
 	@Override
-	public void setDateRemoved() {
+	public void setDateRemoved(CalendarDate date) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public Date getDateRemoved() {
+	public CalendarDate getDateRemoved() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -167,4 +159,32 @@ public class DefectImpl implements Defect {
 		return null;
 	}
 
+
+	@Override
+	public void setCompleted() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public boolean getCompleted() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private void setAttr(String a, String value) {
+        Attribute attr = _element.getAttribute(a);
+        if (attr == null)
+           _element.addAttribute(new Attribute(a, value));
+        else
+            attr.setValue(value);
+    }
 }

@@ -15,6 +15,7 @@ import javax.swing.ListSelectionModel;
 
 import net.sf.memoranda.CurrentNote;
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.DefectList;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.NoteList;
 import net.sf.memoranda.NoteListener;
@@ -61,7 +62,7 @@ public class NotesList extends JList {
         });
 
         CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl) {
+            public void projectChange(Project p, NoteList nl, TaskList tl, DefectList dl, ResourcesList rl) {
             }
             public void projectWasChanged() {
                 update();

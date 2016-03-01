@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -20,7 +21,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.Defect;
+import net.sf.memoranda.DefectListListener;
 import net.sf.memoranda.Task;
+import net.sf.memoranda.TaskListListener;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.util.CurrentStorage;
@@ -33,11 +37,13 @@ import javax.swing.JFrame;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class PSPPanel extends JPanel {
+public class PSPDefectPanel extends JPanel {
 	
 	WorkPanel parentPanel = null;
 	
-	public PSPPanel(WorkPanel _parentPanel) {
+	private static Vector<DefectListListener> defectListListeners = new Vector<DefectListListener>();
+	
+	public PSPDefectPanel(WorkPanel _parentPanel) {
 		setLayout(null);
         try {
             parentPanel = _parentPanel;
@@ -79,18 +85,28 @@ public class PSPPanel extends JPanel {
         
         if (defectdialog.CANCELLED)
             return;
-        CalendarDate sd = new CalendarDate((Date) defectdialog.spnDateFound.getModel().getValue());
-        CalendarDate ed;
- 		if(defectdialog.chkDateFixed.isSelected())
- 			ed = new CalendarDate((Date) defectdialog.spnDateFixed.getModel().getValue());
+        
+        Date sd = new Date((long) defectdialog.spnDateFound.getModel().getValue());
+        Date ed;
+ 		
+        if(defectdialog.chkDateFixed.isSelected())
+ 			ed = new Date((long) defectdialog.spnDateFixed.getModel().getValue());
  		else
  			ed = null;
+        
         long esttime = Util.getMillisFromMinutes(defectdialog.txtEstFixTime.getText());
+        
         long acttime;
-        if(defectdialog.chkDateFixed.isSelected())
+        boolean iscompleted;
+        if(defectdialog.chkDateFixed.isSelected()) {
         	acttime = Util.getMillisFromMinutes(defectdialog.txtActFixTime.getText());
-        else
+        	iscompleted = true;
+        }
+        else {
         	acttime = 0;
+        	iscompleted = false;
+        }
+        
         String fixref;
         if(defectdialog.chkFixReference.isSelected())
         	fixref = defectdialog.txtFixReference.getText();
@@ -98,17 +114,30 @@ public class PSPPanel extends JPanel {
         	fixref = null;
         	
 		//SO FAR SO GOOD
+        Defect newDefect = CurrentProject.getDefectList().createDefect(sd, Integer.parseInt(defectdialog.tfNumber.getText()), 
+        		defectdialog.cmbType.getSelectedItem().toString(), defectdialog.txtInjection.getText(), 
+        		esttime, acttime, ed, defectdialog.txtRemoval.getText(), fixref, defectdialog.txtaDescription.getText(), iscompleted);
         /*
-        Defect newDefect = CurrentProject.getDefectList().createDefect(INSERT STUFF HERE);
-		newDefect.setProgress(((Integer)defectdialog.progress.getValue()).intValue());
+        newDefect.setProgress(((Integer)defectdialog.progress.getValue()).intValue());
         CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
         defectTable.tableChanged();
         parentPanel.updateIndicators();
         */
+        notifyDefectListListeners();
 	}
 
 	protected void opendefectsB_actionPerformed(ActionEvent arg0) {
 		//OPEN DEFECT PANEL HERE
 		
 	}
+	
+	public static void addDefectListListener(DefectListListener listener) {
+		  defectListListeners.add(listener);
+	}
+	
+	static void notifyDefectListListeners() {
+		  for (DefectListListener listener : defectListListeners) {
+			  listener.defectListModified();
+		  }
+	  }
 }

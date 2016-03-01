@@ -37,7 +37,7 @@ public class WorkPanel extends JPanel {
 	public CalendarPanel calendarPanel = new CalendarPanel(this);
 	public DailyItemsPanel dailyItemsPanel = new DailyItemsPanel(this);
 	public ResourcesPanel filesPanel = new ResourcesPanel();
-	public PSPPanel pspPanel = new PSPPanel(this);
+	public PSPDefectPanel pspDefectPanel = new PSPDefectPanel(this);
 	public JButton calendarB = new JButton();
 	public JButton tasksB = new JButton();
 	public JButton eventsB = new JButton();
@@ -208,7 +208,7 @@ public class WorkPanel extends JPanel {
 		panel.add(calendarPanel, "CALENDAR");
 		panel.add(dailyItemsPanel, "DAILYITEMS");
 		panel.add(filesPanel, "FILES");
-		panel.add(pspPanel, "PSP");
+		panel.add(pspDefectPanel, "PSP_DEFECTS");
 		toolBar.add(calendarB, null);
 		toolBar.add(eventsB, null);
 		toolBar.add(tasksB, null);
@@ -230,7 +230,7 @@ public class WorkPanel extends JPanel {
  		pspB.setIcon(new ImageIcon(WorkPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/agenda.png")));
  		pspB.setVerticalTextPosition(SwingConstants.BOTTOM);
  		pspB.setVerticalAlignment(SwingConstants.TOP);
- 		pspB.setText("PSP");
+ 		pspB.setText("PSP Defects");
  		pspB.setSelected(true);
  		pspB.setPreferredSize(new Dimension(50, 50));
  		pspB.setOpaque(false);
@@ -249,7 +249,7 @@ public class WorkPanel extends JPanel {
 		calendarPanel.setBorder(null);
 		dailyItemsPanel.setBorder(null);
 		filesPanel.setBorder(null);
-		pspPanel.setBorder(null);
+		pspDefectPanel.setBorder(null);
 
 		
 		
@@ -265,7 +265,7 @@ public class WorkPanel extends JPanel {
 				eventsB_actionPerformed(null);
 			else if (pan.equals("FILES"))
 				filesB_actionPerformed(null);
-			else if (pan.equals("PSP"))
+			else if (pan.equals("PSP_DEFECTS"))
 				pspB_actionPerformed(null);
 		}
 	}
