@@ -1,7 +1,6 @@
 package net.sf.memoranda.util;
 
 import java.awt.Color;
-import java.awt.color.ColorSpace;
 import java.util.HashMap;
 
 public class ColorScheme {
