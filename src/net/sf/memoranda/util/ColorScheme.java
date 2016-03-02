@@ -6,7 +6,8 @@ import java.util.HashMap;
 
 public class ColorScheme {
 	private static HashMap<String,Color> currentScheme = new HashMap<String,Color>();
-		
+	private static int color;
+	
 	public static Color getColor(String color) {
 		if(!currentScheme.containsKey("frame_primary")) {
 			//ColorScheme.changeColor(220);
@@ -23,13 +24,21 @@ public class ColorScheme {
 		return ( ((hue*360)+amt)%360 / 360);
 	}
 	
+	public static int getColor() {
+		return color;
+	}
+	
 	public static void changeColor(int input) {
+		if(input < -1) input = -1;
+		else if(input > 359) input = 359;
+		
+		color = input;
+		
 		if(input == -1) {
 			currentScheme.put("frame_primary", Color.WHITE);
 			currentScheme.put("frame_secondary", Color.GRAY);
 			currentScheme.put("frame_tertiary", Color.LIGHT_GRAY);
 			currentScheme.put("frame_background", Color.WHITE);
-			currentScheme.put("frame_header_text", Color.WHITE);
 			currentScheme.put("frame_highlight", Color.RED);
 			currentScheme.put("frame_text", Color.BLACK);
 			currentScheme.put("button_primary", Color.WHITE);
@@ -42,7 +51,6 @@ public class ColorScheme {
 			currentScheme.put("frame_secondary", Color.getHSBColor(hue, 0.25f, 1f));
 			currentScheme.put("frame_tertiary", Color.getHSBColor(hue, 0.125f, 1f));
 			currentScheme.put("frame_background", Color.WHITE);
-			currentScheme.put("frame_header_text", Color.BLACK);
 			currentScheme.put("frame_highlight", Color.getHSBColor(hue, 1f, 1f));
 			currentScheme.put("frame_text", Color.BLACK);
 			currentScheme.put("button_primary", Color.getHSBColor(hue, 0.5f, 1f));
