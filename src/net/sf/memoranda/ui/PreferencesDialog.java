@@ -3,14 +3,21 @@ package net.sf.memoranda.ui;
 import java.io.File;
 import java.util.Vector;
 
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.MimeTypesList;
+
 import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import java.awt.event.*;
 
 /*$Id: PreferencesDialog.java,v 1.16 2006/06/28 22:58:31 alexeya Exp $*/
@@ -137,6 +144,14 @@ public class PreferencesDialog extends JDialog {
 	JLabel headerFontLabel = new JLabel();
 	JLabel monoFontLabel = new JLabel();
 	JLabel baseFontSizeLabel = new JLabel();
+	
+	JPanel appearPanel = new JPanel(new GridBagLayout());
+	JLabel appearDefaultLabel = new JLabel();
+	JRadioButton appearDefaultB = new JRadioButton();
+	JLabel appearHueLabel = new JLabel();
+	JRadioButton appearHueB = new JRadioButton();
+	JLabel appearHueValue = new JLabel();
+	JSlider appearHueSlider = new JSlider();
 
 	public PreferencesDialog(Frame frame) {
 		super(frame, Local.getString("Preferences"), true);
@@ -289,11 +304,77 @@ public class PreferencesDialog extends JDialog {
 		((GridLayout)econfPanel.getLayout()).setHgap(10);
 		((GridLayout)econfPanel.getLayout()).setVgap(5);
 		editorConfigPanel.add(econfPanel, BorderLayout.NORTH);
+		
+		// Build appearance
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		appearDefaultLabel.setText("Default");
+		appearPanel.add(appearDefaultLabel,gbc);
+
+		appearDefaultB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	appearDefaultB_actionPerformed(e);
+            }
+        });
+		gbc = new GridBagConstraints();
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		appearPanel.add(appearDefaultB,gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		appearHueLabel.setText("Color");
+		appearPanel.add(appearHueLabel,gbc);
+
+		appearHueB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	appearHueB_actionPerformed(e);
+            }
+        });
+		gbc = new GridBagConstraints();
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		appearPanel.add(appearHueB,gbc);
+		
+		appearHueSlider = new JSlider(JSlider.HORIZONTAL, 0, 359, ColorScheme.getColor());
+		appearHueSlider.setPaintTicks(false);
+		appearHueSlider.setPaintLabels(false);
+		appearHueSlider.addChangeListener(new ChangeListener() {
+	         public void stateChanged(ChangeEvent e) {
+	        	 appearHueSlider_stateChanged(e);
+	         }
+	    });
+		gbc = new GridBagConstraints();
+		gbc.gridx = 2;
+		gbc.gridy = 1;
+		appearPanel.add(appearHueSlider,gbc);
+		
+		appearHueValue.setMinimumSize(new Dimension(48,24));
+		appearHueValue.setPreferredSize(new Dimension(48,24));
+		appearHueValue.setText(Integer.toString(Math.max(ColorScheme.getColor(),0)));
+		appearHueValue.setForeground(Color.getHSBColor(appearHueSlider.getValue()/360f, 1f, 1f));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 3;
+		gbc.gridy = 1;
+		appearPanel.add(appearHueValue,gbc);
+		
+		if(ColorScheme.getColor() == -1) {
+			appearDefaultB.setSelected(true);
+			appearHueB.setSelected(false);
+			appearHueSlider.setEnabled(false);
+		} else {
+			appearDefaultB.setSelected(false);
+			appearHueB.setSelected(true);
+		}
+		
 		// Build TabbedPanel
 		tabbedPanel.add(GeneralPanel, Local.getString("General"));
 		tabbedPanel.add(resourcePanel, Local.getString("Resource types"));
 		tabbedPanel.add(soundPanel, Local.getString("Sound"));
 		tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+		tabbedPanel.add(appearPanel, "Appearance");
 
 		// Build TopPanel
 		topPanel.add(tabbedPanel, BorderLayout.CENTER);
@@ -686,7 +767,40 @@ public class PreferencesDialog extends JDialog {
 	void soundCustomRB_actionPerformed(ActionEvent e) {
 		this.enableCustomSound(true);
 	}
-	
+
+    public void appearDefaultB_actionPerformed(ActionEvent e) {
+    	appearHueSlider.setEnabled(false);
+    	appearDefaultB.setSelected(true);
+    	appearHueB.setSelected(false);
+    }
+    
+    public void appearHueB_actionPerformed(ActionEvent e) {
+    	appearHueSlider.setEnabled(true);
+    	appearDefaultB.setSelected(false);
+    	appearHueB.setSelected(true);
+    }
+    
+    public void appearHueSlider_stateChanged(ChangeEvent e) {
+    	appearHueValue.setText(Integer.toString(appearHueSlider.getValue()));
+    	appearHueValue.setForeground(Color.getHSBColor(appearHueSlider.getValue()/360f, 1f, 1f));
+    }
+    
+	public void appearHueValue_changed(DocumentEvent e) {
+		int value = 0;
+		try {
+			value = Integer.parseInt(appearHueValue.getText());
+			
+			if(value > 359) value = 359;
+			else if(value < 0) value = 0;
+			
+		} catch(Exception ex) {
+
+		}
+		
+		appearHueValue.setText(Integer.toString(value));
+		appearHueSlider.setValue(value);
+	}
+    
 	Vector getFontNames() {
 		GraphicsEnvironment gEnv = 
         	GraphicsEnvironment.getLocalGraphicsEnvironment();
