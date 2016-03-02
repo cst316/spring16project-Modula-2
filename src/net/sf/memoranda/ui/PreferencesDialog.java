@@ -338,7 +338,7 @@ public class PreferencesDialog extends JDialog {
 		gbc.gridy = 1;
 		appearPanel.add(appearHueB,gbc);
 		
-		appearHueSlider = new JSlider(JSlider.HORIZONTAL, 0, 359, ColorScheme.getColor());
+		appearHueSlider = new JSlider(JSlider.HORIZONTAL, 0, 359, Math.max(0,ColorScheme.getColor()));
 		appearHueSlider.setPaintTicks(false);
 		appearHueSlider.setPaintLabels(false);
 		appearHueSlider.addChangeListener(new ChangeListener() {
