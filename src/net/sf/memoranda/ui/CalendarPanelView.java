@@ -97,6 +97,7 @@ public class CalendarPanelView extends JPanel {
 				_rows = 1;
 				_columns = 7;
 			}
+
 			_cells = new CalendarPanelCell[_rows*_columns];
 
 			// Main panel creation
@@ -142,7 +143,7 @@ public class CalendarPanelView extends JPanel {
 			// Text
 			for(int hour = 1; hour <= 24; hour++) {
     			JPanel gridCell = new JPanel(new GridBagLayout());
-    			gridCell.setBackground(Color.WHITE);
+    			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
     			
     	        gbc = new GridBagConstraints();
 				JLabel gridLabel = new JLabel();
@@ -197,7 +198,6 @@ public class CalendarPanelView extends JPanel {
 			}
 		}
     	
-    	_view.setBorder(null);
     	updateView();
 	}
 	
@@ -259,7 +259,6 @@ public class CalendarPanelView extends JPanel {
 	        	if(gc.get(Calendar.MONTH) == currentMonth) {
 	    			CalendarDate date = new CalendarDate(gc);
 	    			generateDay(panelCell,date,tasks);
-
 	        		panelCell.setActive(true);
 	        	} else {
 	    			panelCell.getCell().setBorder(null);
@@ -288,7 +287,7 @@ public class CalendarPanelView extends JPanel {
 	
 	private void generateDay(CalendarPanelCell panelCell, Calendar calendar, Collection<Task> tasks) {
 		CalendarDate date = new CalendarDate(calendar);
-
+		
 		if(_type == CalendarPanelView.VIEW_WEEK || _type == CalendarPanelView.VIEW_MONTH) { 
 			if(_type != CalendarPanelView.VIEW_WEEK) {
 				panelCell.getLabel().setText(Integer.toString(date.getDay()));
@@ -329,6 +328,7 @@ public class CalendarPanelView extends JPanel {
 			panelCell.setCalendar(calendar);
 			
 			Calendar start = (Calendar) calendar.clone();
+
 			Calendar end = (Calendar) calendar.clone();
 			end.add(Calendar.HOUR_OF_DAY, 1);
 			
