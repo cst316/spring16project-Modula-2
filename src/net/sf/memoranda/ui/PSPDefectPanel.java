@@ -23,7 +23,9 @@ import javax.swing.SwingUtilities;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Defect;
 import net.sf.memoranda.DefectListListener;
+import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.Task;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskListListener;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
@@ -86,11 +88,11 @@ public class PSPDefectPanel extends JPanel {
         if (defectdialog.CANCELLED)
             return;
         
-        Date sd = new Date((long) defectdialog.spnDateFound.getModel().getValue());
-        Date ed;
+        CalendarDate sd = new CalendarDate((Date) defectdialog.spnDateFound.getModel().getValue());
+        CalendarDate ed;
  		
         if(defectdialog.chkDateFixed.isSelected())
- 			ed = new Date((long) defectdialog.spnDateFixed.getModel().getValue());
+ 			ed = new CalendarDate((Date) defectdialog.spnDateFixed.getModel().getValue());
  		else
  			ed = null;
         
@@ -117,12 +119,12 @@ public class PSPDefectPanel extends JPanel {
         Defect newDefect = CurrentProject.getDefectList().createDefect(sd, Integer.parseInt(defectdialog.tfNumber.getText()), 
         		defectdialog.cmbType.getSelectedItem().toString(), defectdialog.txtInjection.getText(), 
         		esttime, acttime, ed, defectdialog.txtRemoval.getText(), fixref, defectdialog.txtaDescription.getText(), iscompleted);
-        /*
+       
         newDefect.setProgress(((Integer)defectdialog.progress.getValue()).intValue());
         CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
-        defectTable.tableChanged();
+        //defectTable.tableChanged();
         parentPanel.updateIndicators();
-        */
+       
         notifyDefectListListeners();
 	}
 
@@ -139,5 +141,21 @@ public class PSPDefectPanel extends JPanel {
 		  for (DefectListListener listener : defectListListeners) {
 			  listener.defectListModified();
 		  }
-	  }
+	}
+	
+	/* FUTURE ALARM FEATURE ON THE PANEL FOR NOTIFICATIONS ON THE DEFECT FIX
+	public void updateIndicators(CalendarDate date, TaskList tl) {
+        indicatorsPanel.removeAll();
+        if (date.equals(CalendarDate.today())) {
+            if (tl.getActiveSubTasks(null,date).size() > 0)
+                indicatorsPanel.add(taskB, null);
+            if (EventsScheduler.isEventScheduled()) {
+                net.sf.memoranda.Event ev = EventsScheduler.getFirstScheduledEvent();
+                alarmB.setToolTipText(ev.getTimeString() + " - " + ev.getText());
+                indicatorsPanel.add(alarmB, null);
+            }
+        }
+        indicatorsPanel.updateUI();
+    }
+    */
 }

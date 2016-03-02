@@ -11,43 +11,43 @@ public interface Defect {
 	
     CalendarDate getDateFound();
     
-    void setNumber();
+    void setNumber(int number);
   
     int getNumber();
     
-    void setType();
+    void setType(String type);
     
     String getType();
     
-    void setInjection();
+    void setInjection(String injection);
     
     String getInjection();
 
-    void setRemoval();
+    void setRemoval(String removal);
     
     String getRemoval();
     
-    void setApproximateFixTimeInMinutes();
+    void setApproximateFixTimeInMinutes(long approx);
     
-    int getApproximateFixTimeInMinutes();
+    long getApproximateFixTimeInMinutes();
     
-    void setFixTimeInMinutes();
+    void setFixTimeInMinutes(long fixtime);
     
-    int getFixTimeInMinutes();
+    long getFixTimeInMinutes();
     
     void setDateRemoved(CalendarDate date);
 	
     CalendarDate getDateRemoved();
     
-    void setFixReference();
+    void setFixReference(String reference);
     
     String getFixReference();
     
-    void setDescription();
+    void setDescription(String description);
     
     String getDescription();
     
-    void setCompleted();
+    void setCompleted(boolean isCompleted);
     
     boolean getCompleted();
 }

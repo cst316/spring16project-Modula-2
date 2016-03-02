@@ -5,6 +5,7 @@ import java.util.Date;
 import net.sf.memoranda.date.CalendarDate;
 import nu.xom.Attribute;
 import nu.xom.Element;
+import nu.xom.Node;
 
 public class DefectImpl implements Defect, Comparable {
 	
@@ -22,24 +23,21 @@ public class DefectImpl implements Defect, Comparable {
     public Element getContent() {
         return _element;
     }
-
+	
 	@Override
 	public void setDateFound(CalendarDate date) {
-		setAttr("startDate", date.toString());
 	}
 
 	@Override
 	public CalendarDate getDateFound() {
-		return new CalendarDate(_element.getAttribute("dateFound").getValue());
+        return new CalendarDate(_element.getFirstChildElement("dateFound").getValue());
 	}
 
-
 	@Override
-	public void setNumber() {
+	public void setNumber(int number) {
 		// TODO Auto-generated method stub
 		
 	}
-
 
 	@Override
 	public int getNumber() {
@@ -47,13 +45,11 @@ public class DefectImpl implements Defect, Comparable {
 		return 0;
 	}
 
-
 	@Override
-	public void setType() {
+	public void setType(String type) {
 		// TODO Auto-generated method stub
 		
 	}
-
 
 	@Override
 	public String getType() {
@@ -61,13 +57,11 @@ public class DefectImpl implements Defect, Comparable {
 		return null;
 	}
 
-
 	@Override
-	public void setInjection() {
+	public void setInjection(String injection) {
 		// TODO Auto-generated method stub
 		
 	}
-
 
 	@Override
 	public String getInjection() {
@@ -75,13 +69,11 @@ public class DefectImpl implements Defect, Comparable {
 		return null;
 	}
 
-
 	@Override
-	public void setRemoval() {
+	public void setRemoval(String removal) {
 		// TODO Auto-generated method stub
 		
 	}
-
 
 	@Override
 	public String getRemoval() {
@@ -89,34 +81,29 @@ public class DefectImpl implements Defect, Comparable {
 		return null;
 	}
 
-
 	@Override
-	public void setApproximateFixTimeInMinutes() {
+	public void setApproximateFixTimeInMinutes(long approx) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
 	@Override
-	public int getApproximateFixTimeInMinutes() {
+	public long getApproximateFixTimeInMinutes() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-
 	@Override
-	public void setFixTimeInMinutes() {
+	public void setFixTimeInMinutes(long fixtime) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
 	@Override
-	public int getFixTimeInMinutes() {
+	public long getFixTimeInMinutes() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
 
 	@Override
 	public void setDateRemoved(CalendarDate date) {
@@ -124,20 +111,17 @@ public class DefectImpl implements Defect, Comparable {
 		
 	}
 
-
 	@Override
 	public CalendarDate getDateRemoved() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	@Override
-	public void setFixReference() {
+	public void setFixReference(String reference) {
 		// TODO Auto-generated method stub
 		
 	}
-
 
 	@Override
 	public String getFixReference() {
@@ -145,13 +129,11 @@ public class DefectImpl implements Defect, Comparable {
 		return null;
 	}
 
-
 	@Override
-	public void setDescription() {
+	public void setDescription(String description) {
 		// TODO Auto-generated method stub
 		
 	}
-
 
 	@Override
 	public String getDescription() {
@@ -159,32 +141,15 @@ public class DefectImpl implements Defect, Comparable {
 		return null;
 	}
 
-
 	@Override
-	public void setCompleted() {
+	public void setCompleted(boolean isCompleted) {
 		// TODO Auto-generated method stub
 		
 	}
-
 
 	@Override
 	public boolean getCompleted() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	private void setAttr(String a, String value) {
-        Attribute attr = _element.getAttribute(a);
-        if (attr == null)
-           _element.addAttribute(new Attribute(a, value));
-        else
-            attr.setValue(value);
-    }
 }
