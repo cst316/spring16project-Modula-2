@@ -146,6 +146,7 @@ public class PreferencesDialog extends JDialog {
 	JLabel baseFontSizeLabel = new JLabel();
 	
 	JPanel appearPanel = new JPanel(new GridBagLayout());
+	JLabel appearRestartLabel = new JLabel();
 	JLabel appearDefaultLabel = new JLabel();
 	JRadioButton appearDefaultB = new JRadioButton();
 	JLabel appearHueLabel = new JLabel();
@@ -176,7 +177,7 @@ public class PreferencesDialog extends JDialog {
 		jLabel4.setText(Local.getString("Startup:"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
-		gbc.gridy = 0;
+		gbc.gridy = 1;
 		gbc.insets = new Insets(2, 10, 0, 15);
 		gbc.anchor = GridBagConstraints.EAST;
 		GeneralPanel.add(jLabel4, gbc);
@@ -189,7 +190,7 @@ public class PreferencesDialog extends JDialog {
 		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 0;
+		gbc.gridy = 1;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(enSplashChB, gbc);
@@ -202,7 +203,7 @@ public class PreferencesDialog extends JDialog {
 		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 1;
+		gbc.gridy = 2;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(enL10nChB, gbc);
@@ -214,7 +215,7 @@ public class PreferencesDialog extends JDialog {
 		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 2;
+		gbc.gridy = 3;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(firstdow, gbc);
@@ -223,7 +224,7 @@ public class PreferencesDialog extends JDialog {
 		lblExit.setText(Local.getString("Exit") + ":");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		gbc.insets = new Insets(2, 10, 10, 15);
 		gbc.anchor = GridBagConstraints.EAST;
 		GeneralPanel.add(lblExit, gbc);
@@ -236,7 +237,7 @@ public class PreferencesDialog extends JDialog {
 		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		gbc.insets = new Insets(2, 0, 10, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(askConfirmChB, gbc);
@@ -309,7 +310,7 @@ public class PreferencesDialog extends JDialog {
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		appearDefaultLabel.setText("Default");
+		appearDefaultLabel.setText("Classic");
 		appearPanel.add(appearDefaultLabel,gbc);
 
 		appearDefaultB.addActionListener(new java.awt.event.ActionListener() {
@@ -368,6 +369,13 @@ public class PreferencesDialog extends JDialog {
 			appearDefaultB.setSelected(false);
 			appearHueB.setSelected(true);
 		}
+		
+		appearRestartLabel.setText("Color scheme changes are applied on restart.");
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridwidth = 4;
+		gbc.gridy = 4;
+		appearPanel.add(appearRestartLabel,gbc);
 		
 		// Build TabbedPanel
 		tabbedPanel.add(GeneralPanel, Local.getString("General"));
