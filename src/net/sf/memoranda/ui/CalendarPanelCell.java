@@ -3,6 +3,7 @@ package net.sf.memoranda.ui;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ public class CalendarPanelCell extends JPanel {
 	private JLabel gridLabel = new JLabel();
 	private CalendarNode calendarNode = new CalendarNode();
 	private CalendarDate _date = new CalendarDate(0,0,0);
+	private Calendar _calendar = Calendar.getInstance();
 	private boolean isActive = false;
 	
 	GridBagConstraints gbc;
@@ -47,7 +49,7 @@ public class CalendarPanelCell extends JPanel {
 		
 		if(active) {
 			CalendarDate today = new CalendarDate();
-			if(today.before(this._date) | today.equals(this._date)) {
+			if(today.before(this._date) || today.equals(this._date)) {
 				gridCell.setBackground(Color.WHITE);
 			} else {
 				gridCell.setBackground(new Color(225,225,225));
@@ -74,7 +76,23 @@ public class CalendarPanelCell extends JPanel {
 		return _date;
 	}
 	
+	public Calendar getCalendar() {
+		return _calendar;
+	}
+	
 	public void setCalendarDate(CalendarDate date) {
 		_date = date;
+		_calendar = date.getCalendar();
+	}
+	
+	public void setCalendar(Calendar calendar) {
+		_calendar = calendar;
+		_date = new CalendarDate(calendar);
+	}
+	
+	public void setTime(int hour, int minute, int second) {
+		_calendar.set(Calendar.HOUR, hour);
+		_calendar.set(Calendar.MINUTE, minute);
+		_calendar.set(Calendar.SECOND, second);
 	}
 }
