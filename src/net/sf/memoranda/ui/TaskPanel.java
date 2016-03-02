@@ -257,11 +257,16 @@ public class TaskPanel extends JPanel {
     ppRemoveTask.setEnabled(false);
     ppNewTask.setFont(new java.awt.Font("Dialog", 1, 11));
     ppNewTask.setText(Local.getString("New task")+"...");
+    
+    
     ppNewTask.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ppNewTask_actionPerformed(e);
             }
         });
+    
+    
+    
     ppNewTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
 
     ppAddSubTask.setFont(new java.awt.Font("Dialog", 1, 11));
@@ -312,8 +317,7 @@ public class TaskPanel extends JPanel {
 		});
 	ppCalcTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
 	ppCalcTask.setEnabled(false);
-
-    scrollPane.getViewport().add(taskTable, null);
+    scrollPane.setViewportView(taskTable);
         this.add(scrollPane, BorderLayout.CENTER);
         tasksToolBar.add(historyBackB, null);
         tasksToolBar.add(historyForwardB, null);
