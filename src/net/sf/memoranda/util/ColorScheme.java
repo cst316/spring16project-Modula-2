@@ -11,7 +11,7 @@ public class ColorScheme {
 	public static Color getColor(String color) {
 		if(!currentScheme.containsKey("frame_primary")) {
 			//ColorScheme.changeColor(220);
-			ColorScheme.changeColor(220);
+			ColorScheme.changeColor(Integer.parseInt((String) Configuration.get("APPEAR_COLOR")));
 		}
 		if(!currentScheme.containsKey(color)) {
 			return Color.MAGENTA;
