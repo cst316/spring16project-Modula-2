@@ -9,8 +9,10 @@ public class ColorScheme {
 	private static int color;
 	
 	public static Color getColor(String color) {
-		if(!currentScheme.containsKey("frame_primary")) {
-			ColorScheme.changeColor(Integer.parseInt((String) Configuration.get("APPEAR_COLOR")));
+		if(!currentScheme.containsKey("frame_primary")) {		
+			String config = (String) Configuration.get("APPEAR_COLOR");
+			if(config == "") config = "-1";
+			ColorScheme.changeColor(Integer.parseInt(config));
 		}
 		if(!currentScheme.containsKey(color)) {
 			return Color.MAGENTA;
