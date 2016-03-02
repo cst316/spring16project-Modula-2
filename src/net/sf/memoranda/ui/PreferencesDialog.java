@@ -307,6 +307,20 @@ public class PreferencesDialog extends JDialog {
 		editorConfigPanel.add(econfPanel, BorderLayout.NORTH);
 		
 		// Build appearance
+		String colorSetting = (String) Configuration.get("APPEAR_COLOR");
+		int colorSettingValue;
+		if(colorSetting.equals("")) {
+			colorSettingValue = 220;
+		} else {
+			try {
+				colorSettingValue = Integer.parseInt(colorSetting);
+				if(colorSettingValue < -1) colorSettingValue = -1;
+				if(colorSettingValue > 359) colorSettingValue = 359;
+			} catch(Exception e) {
+				colorSettingValue = 220;
+			}
+		}
+		
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -339,7 +353,7 @@ public class PreferencesDialog extends JDialog {
 		gbc.gridy = 1;
 		appearPanel.add(appearHueB,gbc);
 		
-		appearHueSlider = new JSlider(JSlider.HORIZONTAL, 0, 359, Math.max(0,ColorScheme.getColor()));
+		appearHueSlider = new JSlider(JSlider.HORIZONTAL, 0, 359, Math.max(0,colorSettingValue));
 		appearHueSlider.setPaintTicks(false);
 		appearHueSlider.setPaintLabels(false);
 		appearHueSlider.addChangeListener(new ChangeListener() {
@@ -354,14 +368,14 @@ public class PreferencesDialog extends JDialog {
 		
 		appearHueValue.setMinimumSize(new Dimension(48,24));
 		appearHueValue.setPreferredSize(new Dimension(48,24));
-		appearHueValue.setText(Integer.toString(Math.max(ColorScheme.getColor(),0)));
+		appearHueValue.setText(Integer.toString(Math.max(0,colorSettingValue)));
 		appearHueValue.setForeground(Color.getHSBColor(appearHueSlider.getValue()/360f, 1f, 1f));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 3;
 		gbc.gridy = 1;
 		appearPanel.add(appearHueValue,gbc);
 		
-		if(ColorScheme.getColor() == -1) {
+		if(colorSetting.equals("-1")) {
 			appearDefaultB.setSelected(true);
 			appearHueB.setSelected(false);
 			appearHueSlider.setEnabled(false);
