@@ -1,36 +1,49 @@
 package net.sf.memoranda;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Vector;
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
+import nu.xom.Elements;
 
 public class TimeLogImpl implements TimeLog {
 
+	private Vector<TimeEntry> _vector;
 	private Document _doc = null;
 	private Element _root = null;
 	
 	public TimeLogImpl(Document doc, Project prj) {
 		_doc = doc;
 		_root = new Element("timelog");
+		_vector = new Vector<TimeEntry>();
+		
+		// populate _vector with TimeEntry objects
+		Elements elements = _root.getChildElements();
+		for (int i = 0; i < elements.size(); i++) {
+			
+		}
 	}
 	
 	public TimeLogImpl() {
 		_root = new Element("timelog");
 		_doc = new Document(_root);
+		_vector = new Vector<TimeEntry>();
 	}
 	
 	@Override
-	public TimeEntry createTimeEntry(CalendarDate date,
-	                                 Calendar startTime, 
-	                                 Calendar endTime, 
-	                                 int interruptionTime, 
-	                                 int deltaTime, 
-	                                 Phase phase, 
-	                                 String comments) {
+	public TimeEntry addTimeEntry(CalendarDate date,
+	                              Calendar startTime, 
+	                              Calendar endTime, 
+	                              int interruptionTime, 
+	                              Phase phase, 
+	                              String comments) {
 		
 		Element element = new Element("timeEntry");
 		String id = Util.generateId();
@@ -50,7 +63,7 @@ public class TimeLogImpl implements TimeLog {
 		
 		Element eh = new Element("endHour");
 		eh.appendChild(Integer.toString(endTime.get(Calendar.HOUR)));
-		element.appendChild(sh);
+		element.appendChild(eh);
 		
 		Element em = new Element("endMinute");
 		em.appendChild(Integer.toString(endTime.get(Calendar.MINUTE)));
@@ -61,7 +74,7 @@ public class TimeLogImpl implements TimeLog {
 		element.appendChild(it);
 		
 		Element dt = new Element("deltaTime");
-		dt.appendChild(Integer.toString(deltaTime));
+		dt.appendChild(Integer.toString(computeDeltaTime(startTime, endTime, interruptionTime)));
 		element.appendChild(dt);
 		
 		Element p = new Element("phase");
@@ -72,7 +85,12 @@ public class TimeLogImpl implements TimeLog {
 		c.appendChild(comments);
 		element.appendChild(c);
 		
-		return new TimeEntryImpl(element);
+		_root.appendChild(element);
+		
+		TimeEntry entry = new TimeEntryImpl(element);
+		_vector.add(entry);
+		
+		return entry;
 	}
 	
 	@Override
@@ -83,6 +101,32 @@ public class TimeLogImpl implements TimeLog {
 	@Override
 	public Document getXMLContent() {
 		return _doc;
+	}
+	
+	@Override
+	public int size() {
+		return _root.getChildCount();
+	}
+	
+	private int computeDeltaTime(Calendar startTime, Calendar endTime, int interruptionTime) {
+		return (int) (((endTime.getTimeInMillis() - startTime.getTimeInMillis()) / 1000 / 60) - interruptionTime);
+	}
+
+	@Override
+	public List<TimeEntry> getLog() {
+		
+		Collections.sort(_vector, new Comparator<TimeEntry>() {
+			@Override
+			public int compare(TimeEntry e1, TimeEntry e2) {
+				if (!e1.getDate().equals(e2.getDate()))
+					return e1.getDate().before(e2.getDate()) ? -1 : 1;
+				else
+					return (e1.getStartHour() * 60 + e1.getStartMinute()) - 
+					       (e2.getStartHour() * 60 + e2.getStartMinute());
+			}
+		});
+		
+		return _vector;
 	}
 	
 }

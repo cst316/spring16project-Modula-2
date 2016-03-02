@@ -5,29 +5,19 @@ import java.util.GregorianCalendar;
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
-import nu.xom.Attribute;
 import nu.xom.Element;
 
-public class TimeEntryImpl implements TimeEntry, Comparable<TimeEntry> {
+public class TimeEntryImpl implements TimeEntry {
 
 	private Element _element = null;
 	
 	public TimeEntryImpl (Element elem) {
 		_element = elem;
 	}
-	
-	@Override
-	public int compareTo(TimeEntry entry) {
-		if (!getDate().equals(entry.getDate()))
-			return getDate().before(entry.getDate()) ? -1 : 1;
-		else
-			return (getStartHour() * 60 + getStartMinute()) - 
-			       (entry.getStartHour() * 60 + entry.getStartMinute());
-	}
 
 	@Override
 	public CalendarDate getDate() {
-		Attribute a = _element.getAttribute("date");
+		Element a = _element.getFirstChildElement("date");
 		if (a != null)
 			return new CalendarDate(a.getValue());
 		else
@@ -54,17 +44,17 @@ public class TimeEntryImpl implements TimeEntry, Comparable<TimeEntry> {
 
 	@Override
 	public int getInterruptionTime() {
-		return new Integer(_element.getAttribute("interruptTime").getValue()).intValue();
+		return new Integer(_element.getFirstChildElement("interruptTime").getValue()).intValue();
 	}
 
 	@Override
 	public int getDeltaTime() {
-		return new Integer(_element.getAttribute("deltaTime").getValue()).intValue();
+		return new Integer(_element.getFirstChildElement("deltaTime").getValue()).intValue();
 	}
 
 	@Override
 	public Phase getPhase() {
-		String phaseName = _element.getAttribute("phase").getValue();
+		String phaseName = _element.getFirstChildElement("phase").getValue();
 		for (Phase phase : Phase.values()) {
 			if (phaseName == phase.toString()) {
 				return phase;
@@ -75,27 +65,27 @@ public class TimeEntryImpl implements TimeEntry, Comparable<TimeEntry> {
 
 	@Override
 	public String getComments() {
-		return _element.getAttribute("comments").getValue();
+		return _element.getFirstChildElement("comments").getValue();
 	}
 
 	@Override
 	public int getStartHour() {
-		return new Integer(_element.getAttribute("startHour").getValue()).intValue();
+		return new Integer(_element.getFirstChildElement("startHour").getValue()).intValue();
 	}
 
 	@Override
 	public int getStartMinute() {
-		return new Integer(_element.getAttribute("startMinute").getValue()).intValue();
+		return new Integer(_element.getFirstChildElement("startMinute").getValue()).intValue();
 	}
 
 	@Override
 	public int getEndHour() {
-		return new Integer(_element.getAttribute("endHour").getValue()).intValue();
+		return new Integer(_element.getFirstChildElement("endHour").getValue()).intValue();
 	}
 
 	@Override
 	public int getEndMinute() {
-		return new Integer(_element.getAttribute("endMinute").getValue()).intValue();
+		return new Integer(_element.getFirstChildElement("endMinute").getValue()).intValue();
 	}
 
 	@Override
