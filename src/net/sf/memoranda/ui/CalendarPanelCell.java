@@ -49,7 +49,7 @@ public class CalendarPanelCell extends JPanel {
 		
 		if(active) {
 			CalendarDate today = new CalendarDate();
-			if(today.before(this._date) | today.equals(this._date)) {
+			if(today.before(this._date) || today.equals(this._date)) {
 				gridCell.setBackground(Color.WHITE);
 			} else {
 				gridCell.setBackground(new Color(225,225,225));

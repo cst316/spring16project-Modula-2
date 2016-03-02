@@ -46,7 +46,7 @@ public class CalendarPanelView extends JPanel {
 	public void changeViewType(int inType) {
 		if(inType == _type) return;
 		
-		if(inType == VIEW_MONTH | inType == VIEW_WEEK | inType == VIEW_DAY) {
+		if(inType == VIEW_MONTH || inType == VIEW_WEEK || inType == VIEW_DAY) {
 			_type = inType;
 			this.createView();
 		} else {
@@ -62,7 +62,7 @@ public class CalendarPanelView extends JPanel {
 		_view.repaint();
 		
 		// Header creation
-		if(_type == VIEW_MONTH | _type == VIEW_WEEK) {
+		if(_type == VIEW_MONTH || _type == VIEW_WEEK) {
 			_currentHour = -1;
 			
 			String[] namesOfDays = new String[] {
@@ -223,7 +223,7 @@ public class CalendarPanelView extends JPanel {
 	    		CalendarPanelCell panelCell = _cells[i];
 	    		panelCell.getCalendarNode().clear();
 	    		
-	    		if(cellOffset != -99999 & i-cellOffset <= lastMonthDay) {
+	    		if(cellOffset != -99999 && i-cellOffset <= lastMonthDay) {
 	    			// Set the label and date
 	    			CalendarDate date = new CalendarDate(i-cellOffset,gc.get(Calendar.MONTH),gc.get(Calendar.YEAR));
 	    			generateDay(panelCell,date.getCalendar(),tasks);
@@ -241,7 +241,6 @@ public class CalendarPanelView extends JPanel {
 	        gc.set(Calendar.MONTH, CurrentDate.get().getMonth());
 	        gc.set(Calendar.YEAR, CurrentDate.get().getYear());
 	        gc.set(Calendar.DAY_OF_MONTH, CurrentDate.get().getDay());
-	        int currentMonth = gc.get(Calendar.MONTH);
 	        
 	        for(int i = 7; i > 0; i--) {
 	        	if(gc.get(Calendar.DAY_OF_WEEK) == 1) break;
