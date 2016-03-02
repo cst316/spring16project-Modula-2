@@ -33,6 +33,7 @@ import net.sf.memoranda.History;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
@@ -75,6 +76,7 @@ public class EventsPanel extends JPanel {
         historyBackB.setPreferredSize(new Dimension(24, 24));
         historyBackB.setMinimumSize(new Dimension(24, 24));
         historyBackB.setMaximumSize(new Dimension(24, 24));
+        historyBackB.setBackground(ColorScheme.getColor("taskbar_primary"));
         historyBackB.setText("");
 
         historyForwardB.setAction(History.historyForwardAction);
@@ -85,6 +87,7 @@ public class EventsPanel extends JPanel {
         historyForwardB.setToolTipText(Local.getString("History forward"));
         historyForwardB.setMinimumSize(new Dimension(24, 24));
         historyForwardB.setMaximumSize(new Dimension(24, 24));
+        historyForwardB.setBackground(ColorScheme.getColor("taskbar_primary"));
         historyForwardB.setText("");
 
         newEventB.setIcon(
@@ -101,6 +104,7 @@ public class EventsPanel extends JPanel {
                 newEventB_actionPerformed(e);
             }
         });
+        newEventB.setBackground(ColorScheme.getColor("taskbar_primary"));
         newEventB.setBorderPainted(false);
 
         editEventB.setBorderPainted(false);
@@ -118,6 +122,7 @@ public class EventsPanel extends JPanel {
         editEventB.setEnabled(true);
         editEventB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_edit.png")));
+        editEventB.setBackground(ColorScheme.getColor("taskbar_primary"));
 
         removeEventB.setBorderPainted(false);
         removeEventB.setFocusable(false);
@@ -133,11 +138,14 @@ public class EventsPanel extends JPanel {
         removeEventB.setMaximumSize(new Dimension(24, 24));
         removeEventB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_remove.png")));
+        removeEventB.setBackground(ColorScheme.getColor("taskbar_primary"));
 
         this.setLayout(borderLayout1);
-        scrollPane.getViewport().setBackground(Color.white);
+        scrollPane.getViewport().setBackground(ColorScheme.getColor("frame_background"));
         eventsTable.setMaximumSize(new Dimension(32767, 32767));
         eventsTable.setRowHeight(24);
+        eventsTable.getTableHeader().setBackground(ColorScheme.getColor("frame_secondary"));
+
         eventPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
         ppEditEvent.setFont(new java.awt.Font("Dialog", 1, 11));
         ppEditEvent.setText(Local.getString("Edit event") + "...");
@@ -178,6 +186,7 @@ public class EventsPanel extends JPanel {
         eventsToolBar.add(removeEventB, null);
         eventsToolBar.addSeparator(new Dimension(8, 24));
         eventsToolBar.add(editEventB, null);
+        eventsToolBar.setBackground(ColorScheme.getColor("taskbar_primary"));
 
         this.add(eventsToolBar, BorderLayout.NORTH);
 

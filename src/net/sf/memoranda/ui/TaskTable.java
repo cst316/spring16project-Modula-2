@@ -123,7 +123,6 @@ public class TaskTable extends JTable {
     }
 
     private void initTable() {
-	
 		//model = new TaskTableModel();
 		model = new TaskTableSorter( this );
 	
