@@ -34,7 +34,7 @@ public class DefectListImpl implements DefectList {
 		_pspdefectcount = _root.getChildCount();
     }
 	
-	public DefectListImpl(Project prj) {            
+	public DefectListImpl(Project prj) {
         _root = new Element("defectlist");
         _doc = new Document(_root);
         _project = prj;
@@ -92,20 +92,20 @@ public class DefectListImpl implements DefectList {
         apft.appendChild(Long.toString(approximatefixtime));
         el.appendChild(apft);
         
-        Element ft = new Element("fixtime");
-        ft.appendChild(Long.toString(fixtime));
+        Element ft = new Element("fixTime");
+        ft.appendChild(fixtime != 0? Long.toString(fixtime):"0");
         el.appendChild(ft);
         
         Element dfix = new Element("dateFixed");
-        dfix.appendChild(datefixed.toString());
+        dfix.appendChild(datefixed != null? datefixed.toString():"");
         el.appendChild(dfix);
         
         Element fixrem = new Element("remove");
-        fixrem.appendChild(remove);
+        fixrem.appendChild(remove != null? remove:"");
         el.appendChild(fixrem);
         
         Element fixref = new Element("fixReference");
-        fixref.appendChild(fixreference);
+        fixref.appendChild(fixreference != null? fixreference:"");
         el.appendChild(fixref);
 
         Element desc = new Element("description");
@@ -121,7 +121,7 @@ public class DefectListImpl implements DefectList {
 
 	@Override
 	public void removeDefect(Defect defect) {
-		elements.remove(defect.getNumber());
+		elements.remove(defect.getId());
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class DefectListImpl implements DefectList {
 
 	@Override
 	public Collection getAllDefects() {
-		Elements defects = _root.getChildElements();
+		Elements defects = _root.getChildElements("defects");
         return convertToDefectObjects(defects);
 	}
 

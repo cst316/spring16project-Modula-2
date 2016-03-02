@@ -11,9 +11,9 @@ public interface Defect {
 	
     CalendarDate getDateFound();
     
-    void setNumber(int number);
+    void setId(int id);
   
-    int getNumber();
+    String getId();
     
     void setType(String type);
     
@@ -23,9 +23,9 @@ public interface Defect {
     
     String getInjection();
 
-    void setRemoval(String removal);
+    void setRemove(String remove);
     
-    String getRemoval();
+    String getRemove();
     
     void setApproximateFixTimeInMinutes(long approx);
     

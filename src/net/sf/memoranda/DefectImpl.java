@@ -1,13 +1,16 @@
 package net.sf.memoranda;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.Vector;
 
 import net.sf.memoranda.date.CalendarDate;
 import nu.xom.Attribute;
 import nu.xom.Element;
+import nu.xom.Elements;
 import nu.xom.Node;
 
-public class DefectImpl implements Defect, Comparable {
+public class DefectImpl implements Defect {
 	
 	private Element _element = null;
     private DefectList _dl = null;
@@ -26,6 +29,9 @@ public class DefectImpl implements Defect, Comparable {
 	
 	@Override
 	public void setDateFound(CalendarDate date) {
+		Element eldate = new Element("dateFound");
+		eldate.appendChild(date.toString());
+		_element.appendChild(eldate);
 	}
 
 	@Override
@@ -34,122 +40,130 @@ public class DefectImpl implements Defect, Comparable {
 	}
 
 	@Override
-	public void setNumber(int number) {
-		// TODO Auto-generated method stub
-		
+	public void setId(int id) {
+		_element.addAttribute(new Attribute("id", Integer.toString(id)));
 	}
 
 	@Override
-	public int getNumber() {
-		// TODO Auto-generated method stub
-		return 0;
+	public String getId() {
+		return _element.getAttribute("id").getValue();
 	}
 
 	@Override
 	public void setType(String type) {
-		// TODO Auto-generated method stub
-		
+		Element ty = new Element("type");
+		ty.appendChild(type);
+		_element.appendChild(ty);
 	}
 
 	@Override
 	public String getType() {
-		// TODO Auto-generated method stub
-		return null;
+		return _element.getFirstChildElement("type").getValue();
 	}
 
 	@Override
 	public void setInjection(String injection) {
-		// TODO Auto-generated method stub
-		
+		Element inj = new Element("injection");
+		inj.appendChild(injection);
+		_element.appendChild(inj);
 	}
 
 	@Override
 	public String getInjection() {
-		// TODO Auto-generated method stub
-		return null;
+		return _element.getFirstChildElement("injection").getValue();
 	}
 
 	@Override
-	public void setRemoval(String removal) {
-		// TODO Auto-generated method stub
-		
+	public void setRemove(String remove) {
+		Element rem = new Element("remove");
+		rem.appendChild(remove);
+		_element.appendChild(rem);
 	}
 
 	@Override
-	public String getRemoval() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getRemove() {
+		return _element.getFirstChildElement("remove").getValue();
 	}
 
 	@Override
 	public void setApproximateFixTimeInMinutes(long approx) {
-		// TODO Auto-generated method stub
-		
+		Element apft = new Element("approximateFixTime");
+		apft.appendChild(Long.toString(approx));
+		_element.appendChild(apft);
 	}
 
 	@Override
 	public long getApproximateFixTimeInMinutes() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Long.parseLong(_element.getFirstChildElement("approximateFixTime").getValue());
 	}
 
 	@Override
 	public void setFixTimeInMinutes(long fixtime) {
-		// TODO Auto-generated method stub
-		
+		Element ft = new Element("fixTime");
+		ft.appendChild(Long.toString(fixtime));
+		_element.appendChild(ft);
 	}
 
 	@Override
 	public long getFixTimeInMinutes() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Long.parseLong(_element.getFirstChildElement("fixTime").getValue());
 	}
 
 	@Override
 	public void setDateRemoved(CalendarDate date) {
-		// TODO Auto-generated method stub
-		
+		Element eldate = new Element("dateFixed");
+		eldate.appendChild(date.toString());
+		_element.appendChild(eldate);
 	}
 
 	@Override
 	public CalendarDate getDateRemoved() {
-		// TODO Auto-generated method stub
-		return null;
+		return new CalendarDate(_element.getFirstChildElement("dateFixed").getValue());
 	}
 
 	@Override
 	public void setFixReference(String reference) {
-		// TODO Auto-generated method stub
-		
+		Element fr = new Element("fixReference");
+		fr.appendChild(reference);
+		_element.appendChild(fr);
 	}
 
 	@Override
 	public String getFixReference() {
-		// TODO Auto-generated method stub
-		return null;
+		return _element.getFirstChildElement("fixReference").getValue();
 	}
 
 	@Override
 	public void setDescription(String description) {
-		// TODO Auto-generated method stub
-		
+		Element d = new Element("description");
+		d.appendChild(description);
+		_element.appendChild(d);
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return _element.getFirstChildElement("description").getValue();
 	}
 
 	@Override
 	public void setCompleted(boolean isCompleted) {
-		// TODO Auto-generated method stub
-		
+		Element comp = new Element("isCompleted");
+		comp.appendChild(Boolean.toString(isCompleted));
+		_element.appendChild(comp);
 	}
 
 	@Override
 	public boolean getCompleted() {
-		// TODO Auto-generated method stub
-		return false;
+		return Boolean.parseBoolean(_element.getFirstChildElement("isCompleted").getValue());
 	}
+	
+	private Collection convertToDefectObjects(Elements defects) {
+        Vector v = new Vector();
+
+        for (int i = 0; i < defects.size(); i++) {
+            Defect d = new DefectImpl(defects.get(i), _dl);
+            v.add(d);
+        }
+        return v;
+    }
 }

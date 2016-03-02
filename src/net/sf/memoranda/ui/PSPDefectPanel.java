@@ -118,12 +118,9 @@ public class PSPDefectPanel extends JPanel {
 		//SO FAR SO GOOD
         Defect newDefect = CurrentProject.getDefectList().createDefect(sd, Integer.parseInt(defectdialog.tfNumber.getText()), 
         		defectdialog.cmbType.getSelectedItem().toString(), defectdialog.txtInjection.getText(), 
-        		esttime, acttime, ed, defectdialog.txtRemoval.getText(), fixref, defectdialog.txtaDescription.getText(), iscompleted);
-       
-        newDefect.setProgress(((Integer)defectdialog.progress.getValue()).intValue());
+        		esttime, acttime, ed, defectdialog.txtRemove.getText(), fixref, defectdialog.txtaDescription.getText(), iscompleted);
         CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
         //defectTable.tableChanged();
-        parentPanel.updateIndicators();
        
         notifyDefectListListeners();
 	}

@@ -111,8 +111,8 @@ public class DefectDialog extends JDialog {
 	JLabel lblFixReference = new JLabel("Fix Reference");
 	JTextField txtFixReference = new JTextField();
 	JCheckBox chkFixReference = new JCheckBox("");
-	JLabel lblRemoval = new JLabel("Removal");
-	JTextField txtRemoval = new JTextField();
+	JLabel lblRemove = new JLabel("Remove");
+	JTextField txtRemove = new JTextField();
 	
     
 	
@@ -154,6 +154,7 @@ public class DefectDialog extends JDialog {
 
         spnDateFound = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
         spnDateFixed = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
+        spnDateFixed.setEnabled(false);
 		
         chkDateFixed.setSelected(false);
 		chkDateFixed.addActionListener(new java.awt.event.ActionListener() {
@@ -272,6 +273,7 @@ public class DefectDialog extends JDialog {
                 setStartDateB_actionPerformed(e);
             }
         });
+        lblDateFixed.setEnabled(false);
         lblDateFixed.setMaximumSize(new Dimension(270, 16));
         lblDateFixed.setHorizontalAlignment(SwingConstants.RIGHT);
         lblDateFixed.setText("Date Fixed");
@@ -308,6 +310,7 @@ public class DefectDialog extends JDialog {
                 ignoreEndChanged = false;
             }
         });
+        btnSetDateFixed.setEnabled(false);
         btnSetDateFixed.setMinimumSize(new Dimension(24, 24));
         btnSetDateFixed.setPreferredSize(new Dimension(24, 24));
         btnSetDateFixed.setText("");
@@ -327,6 +330,7 @@ public class DefectDialog extends JDialog {
                 setNotifB_actionPerformed(e);
             }
         });
+        txtFixReference.setEnabled(false);
        
         txtFixReference.setColumns(10);
         getContentPane().add(mPanel);
@@ -375,13 +379,13 @@ public class DefectDialog extends JDialog {
         jpActFixTime.add(txtActFixTime);
         txtActFixTime.setEnabled(false);
         txtActFixTime.setColumns(10);
-        jpActFixTime.add(lblRemoval);
-        lblRemoval.setEnabled(false);
-        jpActFixTime.add(txtRemoval);
-        txtRemoval.setEnabled(false);
-        txtRemoval.setColumns(10);
+        jpActFixTime.add(lblRemove);
+        lblRemove.setEnabled(false);
+        jpActFixTime.add(txtRemove);
+        txtRemove.setEnabled(false);
+        txtRemove.setColumns(10);
         
-        lblRemoval.setLabelFor(txtRemoval);
+        lblRemove.setLabelFor(txtRemove);
         jPanel2.add(jpSetNotification, null);
         
         jpSetNotification.add(btnSetNotification, null);
@@ -446,6 +450,8 @@ public class DefectDialog extends JDialog {
 		lblDateFixed.setEnabled(chkDateFixed.isSelected());
 		lblActFixTime.setEnabled(chkDateFixed.isSelected());
 		txtActFixTime.setEnabled(chkDateFixed.isSelected());
+		lblRemove.setEnabled(chkDateFixed.isSelected());
+		txtRemove.setEnabled(chkDateFixed.isSelected());
 		if(chkDateFixed.isSelected()) {
 			Date currentEndDate = (Date) spnDateFixed.getModel().getValue();
 			Date currentStartDate = (Date) spnDateFound.getModel().getValue();

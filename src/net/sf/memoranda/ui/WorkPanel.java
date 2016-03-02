@@ -304,9 +304,9 @@ public class WorkPanel extends JPanel {
 	}
 	
 	public void pspB_actionPerformed(ActionEvent e) {
- 		cardLayout1.show(panel, "PSP");
+ 		cardLayout1.show(panel, "PSP_DEFECTS");
  		setCurrentButton(pspB);
- 		Context.put("CURRENT_PANEL", "PSP");
+ 		Context.put("CURRENT_PANEL", "PSP_DEFECTS");
  	}
 	
 	void setCurrentButton(JButton cb) {
