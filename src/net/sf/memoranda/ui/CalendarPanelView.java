@@ -47,7 +47,7 @@ public class CalendarPanelView extends JPanel {
 	public void changeViewType(int inType) {
 		if(inType == _type) return;
 		
-		if(inType == VIEW_MONTH | inType == VIEW_WEEK | inType == VIEW_DAY) {
+		if(inType == VIEW_MONTH || inType == VIEW_WEEK || inType == VIEW_DAY) {
 			_type = inType;
 			this.createView();
 		} else {
@@ -63,7 +63,7 @@ public class CalendarPanelView extends JPanel {
 		_view.repaint();
 		
 		// Header creation
-		if(_type == VIEW_MONTH | _type == VIEW_WEEK) {
+		if(_type == VIEW_MONTH || _type == VIEW_WEEK) {
 			_currentHour = -1;
 			
 			String[] namesOfDays = new String[] {
@@ -89,18 +89,17 @@ public class CalendarPanelView extends JPanel {
 				
     	        _view.add(gridCell, gbc);
 			}
-		}
-		else if(_type == VIEW_DAY) {
-			JPanel gridCell = new JPanel(new GridBagLayout());
-			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
-			gridCell.setBorder(null);
-
-	        gbc = new GridBagConstraints();
-			JLabel gridLabel = new JLabel();
-			gridLabel.setText("");
-			gridLabel.setFont(gridLabel.getFont().deriveFont(12.0f));
-			gridCell.add(gridLabel,gbc);
-
+			
+			if(_type == VIEW_MONTH) {
+				_rows = 6;
+				_columns = 7;
+			}
+			
+			else if(_type == VIEW_WEEK) {
+				_rows = 1;
+				_columns = 7;
+			}
+			
 			_cells = new CalendarPanelCell[_rows*_columns];
 			
 			// Main panel creation
@@ -146,7 +145,7 @@ public class CalendarPanelView extends JPanel {
 			// Text
 			for(int hour = 1; hour <= 24; hour++) {
     			JPanel gridCell = new JPanel(new GridBagLayout());
-    			gridCell.setBackground(Color.WHITE);
+    			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
     			
     	        gbc = new GridBagConstraints();
 				JLabel gridLabel = new JLabel();
@@ -201,7 +200,6 @@ public class CalendarPanelView extends JPanel {
 			}
 		}
     	
-    	_view.setBorder(null);
     	updateView();
 	}
 	
@@ -227,7 +225,7 @@ public class CalendarPanelView extends JPanel {
 	    		CalendarPanelCell panelCell = _cells[i];
 	    		panelCell.getCalendarNode().clear();
 	    		
-	    		if(cellOffset != -99999 & i-cellOffset <= lastMonthDay) {
+	    		if(cellOffset != -99999 && i-cellOffset <= lastMonthDay) {
 	    			// Set the label and date
 	    			CalendarDate date = new CalendarDate(i-cellOffset,gc.get(Calendar.MONTH),gc.get(Calendar.YEAR));
 	    			generateDay(panelCell,date.getCalendar(),tasks);
@@ -245,7 +243,6 @@ public class CalendarPanelView extends JPanel {
 	        gc.set(Calendar.MONTH, CurrentDate.get().getMonth());
 	        gc.set(Calendar.YEAR, CurrentDate.get().getYear());
 	        gc.set(Calendar.DAY_OF_MONTH, CurrentDate.get().getDay());
-	        int currentMonth = gc.get(Calendar.MONTH);
 	        
 	        for(int i = 7; i > 0; i--) {
 	        	if(gc.get(Calendar.DAY_OF_WEEK) == 1) break;
@@ -264,7 +261,6 @@ public class CalendarPanelView extends JPanel {
 	        	if(gc.get(Calendar.MONTH) == currentMonth) {
 	    			CalendarDate date = new CalendarDate(gc);
 	    			generateDay(panelCell,date,tasks);
-
 	        		panelCell.setActive(true);
 	        	} else {
 	    			panelCell.getCell().setBorder(null);
@@ -293,7 +289,7 @@ public class CalendarPanelView extends JPanel {
 	
 	private void generateDay(CalendarPanelCell panelCell, Calendar calendar, Collection<Task> tasks) {
 		CalendarDate date = new CalendarDate(calendar);
-
+		
 		if(_type == CalendarPanelView.VIEW_WEEK || _type == CalendarPanelView.VIEW_MONTH) { 
 			if(_type != CalendarPanelView.VIEW_WEEK) {
 				panelCell.getLabel().setText(Integer.toString(date.getDay()));
@@ -321,11 +317,11 @@ public class CalendarPanelView extends JPanel {
 	
 			// Highlight if date is the current date
 			if(date.equals(CurrentDate.get())) {
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
 			} else {
 				// Why do we need this redundant red border? I dunno, but it fixes it
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_secondary"), 1));
 			}
 			
 			panelCell.setActive(true);
@@ -334,6 +330,7 @@ public class CalendarPanelView extends JPanel {
 			panelCell.setCalendar(calendar);
 			
 			Calendar start = (Calendar) calendar.clone();
+
 			Calendar end = (Calendar) calendar.clone();
 			end.add(Calendar.HOUR_OF_DAY, 1);
 			
@@ -355,11 +352,11 @@ public class CalendarPanelView extends JPanel {
 	        }
 	        
 			if(_currentHour == calendar.get(Calendar.HOUR_OF_DAY)) {
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
 			} else {
 				// Why do we need this redundant red border? I dunno, but it fixes it
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_secondary"), 1));
 			}
 			
 	        panelCell.setActive(true);
