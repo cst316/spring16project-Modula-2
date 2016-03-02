@@ -598,6 +598,11 @@ public class PreferencesDialog extends JDialog {
 		App.getFrame().workPanel.dailyItemsPanel.editorPanel.initCSS();
 		App.getFrame().workPanel.dailyItemsPanel.editorPanel.editor.repaint();
 		
+		if(appearDefaultB.isSelected())
+			Configuration.put("APPEAR_COLOR", "-1");
+		else if(appearHueB.isSelected())
+			Configuration.put("APPEAR_COLOR", appearHueValue.getText());
+		
 		Configuration.saveConfig();
 		
 	}
