@@ -11,9 +11,9 @@ public interface Defect {
 	
     CalendarDate getDateFound();
     
-    void setId(int id);
+    void setDefectId(int id);
   
-    String getId();
+    String getDefectId();
     
     void setType(String type);
     

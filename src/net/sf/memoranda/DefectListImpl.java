@@ -121,7 +121,7 @@ public class DefectListImpl implements DefectList {
 
 	@Override
 	public void removeDefect(Defect defect) {
-		elements.remove(defect.getId());
+		elements.remove(defect.getDefectId());
 	}
 
 	@Override

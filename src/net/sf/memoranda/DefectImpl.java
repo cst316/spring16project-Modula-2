@@ -40,12 +40,12 @@ public class DefectImpl implements Defect {
 	}
 
 	@Override
-	public void setId(int id) {
+	public void setDefectId(int id) {
 		_element.addAttribute(new Attribute("id", Integer.toString(id)));
 	}
 
 	@Override
-	public String getId() {
+	public String getDefectId() {
 		return _element.getAttribute("id").getValue();
 	}
 
