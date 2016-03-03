@@ -76,6 +76,7 @@ public class EventsPanel extends JPanel {
         historyBackB.setPreferredSize(new Dimension(24, 24));
         historyBackB.setMinimumSize(new Dimension(24, 24));
         historyBackB.setMaximumSize(new Dimension(24, 24));
+        historyBackB.setBackground(ColorScheme.getColor("taskbar_primary"));
         historyBackB.setText("");
         historyBackB.setBackground(ColorScheme.getColor("taskbar_primary"));
 
@@ -87,6 +88,7 @@ public class EventsPanel extends JPanel {
         historyForwardB.setToolTipText(Local.getString("History forward"));
         historyForwardB.setMinimumSize(new Dimension(24, 24));
         historyForwardB.setMaximumSize(new Dimension(24, 24));
+        historyForwardB.setBackground(ColorScheme.getColor("taskbar_primary"));
         historyForwardB.setText("");
         historyForwardB.setBackground(ColorScheme.getColor("taskbar_primary"));
 
@@ -104,6 +106,7 @@ public class EventsPanel extends JPanel {
                 newEventB_actionPerformed(e);
             }
         });
+        newEventB.setBackground(ColorScheme.getColor("taskbar_primary"));
         newEventB.setBorderPainted(false);
         newEventB.setBackground(ColorScheme.getColor("taskbar_primary"));
         
@@ -123,7 +126,6 @@ public class EventsPanel extends JPanel {
         editEventB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_edit.png")));
         editEventB.setBackground(ColorScheme.getColor("taskbar_primary"));
-        
         removeEventB.setBorderPainted(false);
         removeEventB.setFocusable(false);
         removeEventB.addActionListener(new java.awt.event.ActionListener() {
@@ -139,7 +141,6 @@ public class EventsPanel extends JPanel {
         removeEventB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_remove.png")));
         removeEventB.setBackground(ColorScheme.getColor("taskbar_primary"));
-        
         this.setLayout(borderLayout1);
         scrollPane.getViewport().setBackground(ColorScheme.getColor("frame_background"));
         eventsTable.setMaximumSize(new Dimension(32767, 32767));

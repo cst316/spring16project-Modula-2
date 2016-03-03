@@ -187,7 +187,6 @@ public class TaskPanel extends JPanel {
         completeTaskB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
         completeTaskB.setBackground(ColorScheme.getColor("taskbar_primary"));
-        
 		ppShowActiveOnlyChB.setFont(new java.awt.Font("Dialog", 1, 11));
 		ppShowActiveOnlyChB.setText(
 			Local.getString("Show Active only"));
@@ -205,7 +204,6 @@ public class TaskPanel extends JPanel {
 
         this.setLayout(borderLayout1);
         scrollPane.getViewport().setBackground(ColorScheme.getColor("frame_background"));
-        
         ppEditTask.setFont(new java.awt.Font("Dialog", 1, 11));
 	    ppEditTask.setText(Local.getString("Edit task")+"...");
 	    ppEditTask.addActionListener(new java.awt.event.ActionListener() {
@@ -242,7 +240,6 @@ public class TaskPanel extends JPanel {
 	            }
 	        });
 	    ppAddSubTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new_sub.png")));
-	
 		ppCompleteTask.setFont(new java.awt.Font("Dialog", 1, 11));
 		ppCompleteTask.setText(Local.getString("Complete task"));
 		ppCompleteTask.addActionListener(new java.awt.event.ActionListener() {
@@ -275,16 +272,13 @@ public class TaskPanel extends JPanel {
         tasksToolBar.addSeparator(new Dimension(8, 24));
         tasksToolBar.add(editTaskB, null);
         tasksToolBar.add(completeTaskB, null);
-
         tasksToolBar.setBackground(ColorScheme.getColor("taskbar_primary"));
-        
 
         this.add(tasksToolBar, BorderLayout.NORTH);
 
         PopupListener ppListener = new PopupListener();
         scrollPane.addMouseListener(ppListener);
         taskTable.addMouseListener(ppListener);
-
         taskTable.getTableHeader().setBackground(ColorScheme.getColor("frame_secondary"));
 
         CurrentDate.addDateListener(new DateListener() {
@@ -340,8 +334,6 @@ public class TaskPanel extends JPanel {
         removeTaskB.setEnabled(false);
 		completeTaskB.setEnabled(false);
 		ppAddSubTask.setEnabled(false);
-		//ppSubTasks.setEnabled(false);
-		//ppParentTask.setEnabled(false);
 	    taskPPMenu.add(ppEditTask);
 	    
 	    taskPPMenu.addSeparator();
@@ -352,39 +344,37 @@ public class TaskPanel extends JPanel {
 	    taskPPMenu.addSeparator();
 		taskPPMenu.add(ppCompleteTask);
 		taskPPMenu.add(ppCalcTask);
-
 	    taskPPMenu.addSeparator();
 		taskPPMenu.add(ppShowActiveOnlyChB);
-
-	
-		// define key actions in TaskPanel:
-		// - KEY:DELETE => delete tasks (recursivly).
-		// - KEY:INTERT => insert new Subtask if another is selected.
-		// - KEY:INSERT => insert new Task if nothing is selected.
-		// - KEY:SPACE => finish Task.
-		taskTable.addKeyListener(new KeyListener() {
-			public void keyPressed(KeyEvent e){
-				if(taskTable.getSelectedRows().length>0 
-					&& e.getKeyCode()==KeyEvent.VK_DELETE)
-					ppRemoveTask_actionPerformed(null);
-				
-				else if(e.getKeyCode()==KeyEvent.VK_INSERT) {
-					if(taskTable.getSelectedRows().length>0) {
-						ppAddSubTask_actionPerformed(null);
+		
+			// define key actions in TaskPanel:
+			// - KEY:DELETE => delete tasks (recursivly).
+			// - KEY:INTERT => insert new Subtask if another is selected.
+			// - KEY:INSERT => insert new Task if nothing is selected.
+			// - KEY:SPACE => finish Task.
+			taskTable.addKeyListener(new KeyListener() {
+				public void keyPressed(KeyEvent e){
+					if(taskTable.getSelectedRows().length>0 
+						&& e.getKeyCode()==KeyEvent.VK_DELETE)
+						ppRemoveTask_actionPerformed(null);
+					
+					else if(e.getKeyCode()==KeyEvent.VK_INSERT) {
+						if(taskTable.getSelectedRows().length>0) {
+							ppAddSubTask_actionPerformed(null);
+						}
+						else {
+							ppNewTask_actionPerformed(null);						
+						}
 					}
-					else {
-						ppNewTask_actionPerformed(null);						
+					
+					else if(e.getKeyCode()==KeyEvent.VK_SPACE
+							&& taskTable.getSelectedRows().length>0) {
+						ppCompleteTask_actionPerformed(null);
 					}
 				}
-				
-				else if(e.getKeyCode()==KeyEvent.VK_SPACE
-						&& taskTable.getSelectedRows().length>0) {
-					ppCompleteTask_actionPerformed(null);
-				}
-			}
-			public void	keyReleased(KeyEvent e){}
-			public void keyTyped(KeyEvent e){} 
-		});	
+				public void	keyReleased(KeyEvent e){}
+				public void keyTyped(KeyEvent e){} 
+			});	
 
     }
 

@@ -51,7 +51,7 @@ public class EventsTable extends JTable {
     }
 
     public void initTable(CalendarDate d) {
-        events = (Vector)EventsManager.getEventsForDate(d);
+        events = (Vector) EventsManager.getEventsForDate(d);
         getColumnModel().getColumn(0).setPreferredWidth(60);
         getColumnModel().getColumn(0).setMaxWidth(60);
         clearSelection();
@@ -83,7 +83,7 @@ public class EventsTable extends JTable {
                     comp.setFont(comp.getFont().deriveFont(Font.ITALIC));
                 if (CurrentDate.get().after(CalendarDate.today())) {
                   comp.setForeground(java.awt.Color.black);
-                }                
+                }
                 else if (CurrentDate.get().equals(CalendarDate.today())) {
                   if (ev.getTime().after(new Date())) {
                     comp.setForeground(java.awt.Color.black);

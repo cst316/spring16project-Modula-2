@@ -76,9 +76,9 @@ public class ResourcesPanel extends JPanel {
         });
         newResB.setBorderPainted(false);
         newResB.setBackground(ColorScheme.getColor("taskbar_primary"));
-
         resourcesTable.setMaximumSize(new Dimension(32767, 32767));
         resourcesTable.setRowHeight(24);
+        
         removeResB.setBorderPainted(false);
         removeResB.setFocusable(false);
         removeResB.addActionListener(new java.awt.event.ActionListener() {
@@ -106,7 +106,6 @@ public class ResourcesPanel extends JPanel {
         PopupListener ppListener = new PopupListener();
         scrollPane.addMouseListener(ppListener);
         resourcesTable.addMouseListener(ppListener);
-
         resourcesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 boolean enbl = (resourcesTable.getRowCount() > 0) && (resourcesTable.getSelectedRow() > -1);
@@ -116,7 +115,6 @@ public class ResourcesPanel extends JPanel {
             }
         });
         resourcesTable.getTableHeader().setBackground(ColorScheme.getColor("frame_secondary"));
-        
         refreshB.setBorderPainted(false);
         refreshB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
