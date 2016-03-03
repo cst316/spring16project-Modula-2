@@ -21,6 +21,8 @@ public interface TimeLog {
 	
 	int size();
 	
+	Project getProject();
+	
 	Document getXMLContent();
 	
 }
