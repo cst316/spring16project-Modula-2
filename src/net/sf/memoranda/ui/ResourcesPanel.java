@@ -25,6 +25,7 @@ import javax.swing.event.ListSelectionListener;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Resource;
 import net.sf.memoranda.util.AppList;
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.MimeType;
@@ -74,6 +75,8 @@ public class ResourcesPanel extends JPanel {
             }
         });
         newResB.setBorderPainted(false);
+        newResB.setBackground(ColorScheme.getColor("taskbar_primary"));
+
         resourcesTable.setMaximumSize(new Dimension(32767, 32767));
         resourcesTable.setRowHeight(24);
         removeResB.setBorderPainted(false);
@@ -92,7 +95,10 @@ public class ResourcesPanel extends JPanel {
             new ImageIcon(
                 net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/removeresource.png")));
         removeResB.setEnabled(false);
-        scrollPane.getViewport().setBackground(Color.white);
+        removeResB.setBackground(ColorScheme.getColor("taskbar_primary"));
+        
+        scrollPane.getViewport().setBackground(ColorScheme.getColor("frame_background"));
+        
         toolBar.addSeparator(new Dimension(8, 24));
         toolBar.addSeparator(new Dimension(8, 24));
 
@@ -109,6 +115,8 @@ public class ResourcesPanel extends JPanel {
                 ppRun.setEnabled(enbl);
             }
         });
+        resourcesTable.getTableHeader().setBackground(ColorScheme.getColor("frame_secondary"));
+        
         refreshB.setBorderPainted(false);
         refreshB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -124,6 +132,8 @@ public class ResourcesPanel extends JPanel {
         refreshB.setEnabled(true);
         refreshB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/refreshres.png")));
+        refreshB.setBackground(ColorScheme.getColor("taskbar_primary"));
+        
         resPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
     ppRun.setFont(new java.awt.Font("Dialog", 1, 11));
     ppRun.setText(Local.getString("Open resource")+"...");
@@ -165,6 +175,8 @@ public class ResourcesPanel extends JPanel {
         toolBar.add(removeResB, null);
         toolBar.addSeparator();
         toolBar.add(refreshB, null);
+        toolBar.setBackground(ColorScheme.getColor("taskbar_primary"));
+        
         this.add(scrollPane, BorderLayout.CENTER);
         scrollPane.getViewport().add(resourcesTable, null);
         this.add(toolBar, BorderLayout.NORTH);

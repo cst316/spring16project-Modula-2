@@ -101,7 +101,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 	void jbInit() throws Exception {
 		component1 = Box.createHorizontalStrut(20);
 		this.setLayout(borderLayout1);
-		topBar.setBackground(new Color(215, 225, 250));
+		topBar.setBackground(ColorScheme.getColor("taskbar_primary"));
 		topBar.setAlignmentX((float) 0.0);
 		topBar.setFloatable(false);
 		toolbarPanel.setLayout(borderLayout2);
@@ -119,6 +119,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 				toggleButton_actionPerformed(null);
 			}
 		});
+		toggleButton.setBackground(ColorScheme.getColor("taskbar_primary"));
 
 		toggleButton.setIcon(expIcon);
 		toggleButton.setMargin(new Insets(0, 0, 0, 0));
@@ -127,7 +128,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 		buttonsPanel.setPreferredSize(new Dimension(80, 22));
 		buttonsPanel.setRequestFocusEnabled(false);
 		buttonsPanel.setLayout(flowLayout1);
-		toolbarPanel.setBackground(SystemColor.textHighlight);
+		buttonsPanel.setBackground(ColorScheme.getColor("taskbar_primary"));
 		toolbarPanel.setMinimumSize(new Dimension(91, 22));
 		toolbarPanel.setOpaque(false);
 		toolbarPanel.setPreferredSize(new Dimension(91, 22));
@@ -136,7 +137,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 		flowLayout1.setVgap(0);
 
 		curProjectTitle.setFont(new java.awt.Font("Dialog", 1, 11));
-		curProjectTitle.setForeground(new Color(64, 70, 128));
+		curProjectTitle.setForeground(ColorScheme.getColor("taskbar_text"));
 		curProjectTitle.setMaximumSize(new Dimension(32767, 22));
 		curProjectTitle.setPreferredSize(new Dimension(32767, 22));
 		curProjectTitle.setText(CurrentProject.get().getTitle());
@@ -221,6 +222,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 			new ImageIcon(
 				net.sf.memoranda.ui.AppFrame.class.getResource(
 					"resources/icons/ppopen.png")));
+		ppOpenB.setBackground(ColorScheme.getColor("taskbar_primary"));
 		buttonsPanel.add(ppOpenB, null);
 		buttonsPanel.add(component1, null);
 		this.add(topBar, BorderLayout.NORTH);

@@ -93,6 +93,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeToMonthlyView_actionPerformed(arg0);
 				}
 			});
+			btnMonthly.setPreferredSize(new Dimension(72,32));
 			btnMonthly.setBackground(ColorScheme.getColor("button_primary"));
 			btnMonthly.setBorder(null);
 			btnMonthly.setMargin(new Insets(5, 14, 5, 14));
@@ -105,6 +106,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeToWeeklyView_actionPerformed(arg0);
 				}
 			});
+			btnWeekly.setPreferredSize(new Dimension(72,32));
 			btnWeekly.setBackground(ColorScheme.getColor("button_primary"));
 			btnWeekly.setBorder(null);
 			btnWeekly.setMargin(new Insets(5, 14, 5, 14));
@@ -116,6 +118,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeToDailyView_actionPerformed(arg0);
 				}
 			});
+			btnDaily.setPreferredSize(new Dimension(72,32));
 			btnDaily.setBackground(ColorScheme.getColor("button_primary"));
 			btnDaily.setBorder(null);
 			btnDaily.setMargin(new Insets(5, 14, 5, 14));
@@ -129,6 +132,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeSmallStepBackward_actionPerformed(arg0);
 				}
 			});
+			btnLittleStepBack.setPreferredSize(new Dimension(32,32));
 			btnLittleStepBack.setBackground(ColorScheme.getColor("button_primary"));
 			btnLittleStepBack.setBorder(null);
 			panel_1.add(btnLittleStepBack);
@@ -141,7 +145,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeLargeStepBackward_actionPerformed(arg0);
 				}
 			});
-
+			btnBigStepBack.setPreferredSize(new Dimension(32,32));
 			btnBigStepBack.setBackground(ColorScheme.getColor("button_primary"));
 			btnBigStepBack.setBorder(null);
 			panel_1.add(btnBigStepBack);
@@ -183,6 +187,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeSmallStepForward_actionPerformed(arg0);
 				}
 			});
+			btnLittleStepForward.setPreferredSize(new Dimension(32,32));
 			btnLittleStepForward.setBackground(ColorScheme.getColor("button_primary"));
 			btnLittleStepForward.setBorder(null);
 			panel_2.add(btnBigStepForward);
@@ -195,6 +200,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeLargeStepForward_actionPerformed(arg1);
 				}
 			});
+			btnBigStepForward.setPreferredSize(new Dimension(32,32));
 			btnBigStepForward.setBackground(ColorScheme.getColor("button_primary"));
 			btnBigStepForward.setBorder(null);
 			panel_2.add(btnLittleStepForward);
