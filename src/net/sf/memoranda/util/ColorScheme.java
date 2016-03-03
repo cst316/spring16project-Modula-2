@@ -10,7 +10,7 @@ public class ColorScheme {
 	public static Color getColor(String color) {
 		if(!currentScheme.containsKey("frame_primary")) {		
 			String config = (String) Configuration.get("APPEAR_COLOR");
-			if(config == "") config = "220";
+			if(config.equals("")) config = "220";
 			ColorScheme.changeColor(Integer.parseInt(config));
 		}
 		if(!currentScheme.containsKey(color)) {
