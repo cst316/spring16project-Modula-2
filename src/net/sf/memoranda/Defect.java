@@ -7,6 +7,10 @@ import net.sf.memoranda.date.CalendarDate;
 
 public interface Defect {
 	
+    public static final int ACTIVE = 1;
+
+    public static final int COMPLETED = 2;
+	
 	void setDateFound(CalendarDate date);
 	
     CalendarDate getDateFound();
@@ -50,5 +54,5 @@ public interface Defect {
     
     void setCompleted(boolean isCompleted);
     
-    boolean getCompleted();
+    int getCompleted(CalendarDate d);
 }

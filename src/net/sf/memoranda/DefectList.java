@@ -22,7 +22,7 @@ public interface DefectList {
     
 	public Collection getAllDefects();
 	
-    public Collection getActiveDefects();
+    public Collection getActiveDefects(String defectId, CalendarDate date);
     
     public long calculateTotalCompletionTimeFromDefects();
     public CalendarDate getEarliestDateFromDefects();

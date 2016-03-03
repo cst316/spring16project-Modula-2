@@ -139,7 +139,7 @@ public class DefectListImpl implements DefectList {
 
 	
 	@Override
-	public Collection getActiveDefects() {
+	public Collection getActiveDefects(String defectId, CalendarDate date) {
 		
 		/*
 		Elements defects = _root.getChildElements();

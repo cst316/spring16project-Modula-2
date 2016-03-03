@@ -153,9 +153,18 @@ public class DefectImpl implements Defect {
 	}
 
 	@Override
-	public boolean getCompleted() {
-		return Boolean.parseBoolean(_element.getFirstChildElement("isCompleted").getValue());
+	public int getCompleted(CalendarDate d) {
+		CalendarDate start = getDateFound();
+        CalendarDate end = getDateRemoved();
+        
+		if (d.inPeriod(start, end) || start.after(end)) {
+            return Defect.ACTIVE;
+        }
+		else {
+			return Defect.COMPLETED;
+		}
 	}
+	
 	
 	private Collection convertToDefectObjects(Elements defects) {
         Vector v = new Vector();

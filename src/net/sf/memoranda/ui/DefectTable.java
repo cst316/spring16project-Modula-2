@@ -1,101 +1,67 @@
-/**
- * TaskTable.java         
- * -----------------------------------------------------------------------------
- * Project           Memoranda
- * Package           net.sf.memoranda.ui
- * Original author   Alex V. Alishevskikh
- *                   [alexeya@gmail.com]
- * Created           18.05.2005 15:12:19
- * Revision info     $RCSfile: TaskTable.java,v $ $Revision: 1.26 $ $State: Exp $  
- *
- * Last modified on  $Date: 2007/01/05 10:33:26 $
- *               by  $Author: alexeya $
- * 
- * @VERSION@ 
- *
- * @COPYRIGHT@
- * 
- * @LICENSE@ 
- */
-
 package net.sf.memoranda.ui;
 
-import net.sf.memoranda.util.*;
-
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
-
 import java.util.EventObject;
-import java.util.Collection;
-import java.util.Vector;
 import java.util.Iterator;
-import java.util.Hashtable;
-import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.tree.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
-import net.sf.memoranda.*;
+import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.DefectList;
+import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectListener;
+import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
-import net.sf.memoranda.ui.treetable.*;
+import net.sf.memoranda.ui.TaskTable.ExpansionHandler;
+import net.sf.memoranda.ui.TaskTable.ListToTreeSelectionModelWrapper;
+import net.sf.memoranda.ui.TaskTable.TreeTableCellEditor;
+import net.sf.memoranda.ui.TaskTable.TreeTableCellRenderer;
+import net.sf.memoranda.ui.TaskTable.ListToTreeSelectionModelWrapper.ListSelectionHandler;
+import net.sf.memoranda.ui.treetable.AbstractCellEditor;
+import net.sf.memoranda.ui.treetable.TreeTableModel;
+import net.sf.memoranda.ui.treetable.TreeTableModelAdapter;
+import net.sf.memoranda.util.Local;
 
-/**
- * JAVADOC:
- * <h1>TaskTable</h1>
- * <p>
- * JTable whick uses JTree as a CellRenderer to show
- * Tasks and subtasks logically.</p>
- *
- * <p>
- * Datamodel is TaskTableModel whick is not used directly but
- * via TaskTableSorter whick extends TaskTableModel and
- * adds sorting capability.
- * </p>
- *
- * <p>
- * To make this class simpler, most cellrendering code
- * has been moved to TaskTreeTableCellRenderer.
- * </p>
- *
- * <p>Article about <a href="http://java.sun.com/products/jfc/tsc/articles/treetable1/">treetables</a>.</p>
- * 
- * @see	net.sf.memoranda.ui.TaskTreeTableCellRenderer
- * @version $Id: TaskTable.java,v 1.26 2007/01/05 10:33:26 alexeya Exp $
- * @author $Author: alexeya $
- */
-public class TaskTable extends JTable {
+public class DefectTable extends JTable {
 
-    public static final int TASK_ID = 100;
+	public static final int DEFECT_ID = 100;
 
-    public static final int TASK = 101;
+    public static final int DEFECT = 101;
 
     protected TreeTableCellRenderer tree;
 
-    protected TaskTableModel model;
+    protected DefectTableModel model;
     
     protected TreeTableModelAdapter modelAdapter;
     
-    protected TaskTreeTableCellRenderer renderer;
+    protected DefectTreeTableCellRenderer renderer;
 	
-	protected ExpansionHandler expansion;
+	protected ExpansionHandler expansion; 
     
-    public TaskTable() {
+    public DefectTable() {
         super();
         initTable();
         // Force the JTable and JTree to share their row selection models.
@@ -105,7 +71,6 @@ public class TaskTable extends JTable {
 
         CurrentDate.addDateListener(new DateListener() {
             public void dateChange(CalendarDate d) {
-                //updateUI();
                 tableChanged();
             }
         });
@@ -115,7 +80,6 @@ public class TaskTable extends JTable {
             }
 
             public void projectWasChanged() {
-                //initTable();
 				tableChanged();
             }
         });
@@ -124,8 +88,7 @@ public class TaskTable extends JTable {
 
     private void initTable() {
 	
-		//model = new TaskTableModel();
-		model = new TaskTableSorter( this );
+		model = new DefectTableSorter( this );
 	
 		// Create the tree. It will be used as a renderer and editor.
 		tree = new TreeTableCellRenderer(model);
@@ -140,23 +103,16 @@ public class TaskTable extends JTable {
 		super.setModel(modelAdapter);
 			
 		// Install the tree editor renderer and editor.
-		renderer = new TaskTreeTableCellRenderer(this);
-		
+		renderer = new DefectTreeTableCellRenderer(this);
 		
 		tree.setCellRenderer(renderer);
 		setDefaultRenderer(TreeTableModel.class, tree);
 		setDefaultRenderer(Integer.class, renderer);
-		setDefaultRenderer(TaskTable.class, renderer);
+		setDefaultRenderer(DefectTable.class, renderer);
 		setDefaultRenderer(String.class, renderer);
 		setDefaultRenderer(java.util.Date.class, renderer);
 
 		setDefaultEditor(TreeTableModel.class, new TreeTableCellEditor());
-		
-		// column name is repeated in 2 places, do something about it!
-		getColumn( "% " + Local.getString("done") ).setCellEditor(new TaskProgressEditor());
-		
-		// TODO: editor for task progress
-		
 		
 		//  grid.
 		setShowGrid(false);
@@ -259,7 +215,6 @@ public class TaskTable extends JTable {
 
         public TreeTableCellRenderer(TreeModel model) {
             super(model);
-            //ToolTipManager.sharedInstance().registerComponent(this);//XXX
             this.setRootVisible(false);
             this.setShowsRootHandles(true);
 			this.setCellRenderer(renderer);                       
@@ -293,9 +248,9 @@ public class TaskTable extends JTable {
         public void setRowHeight(int rowHeight) {
             if (rowHeight > 0) {
                 super.setRowHeight(rowHeight);
-                if (TaskTable.this != null
-                        && TaskTable.this.getRowHeight() != rowHeight) {
-                    TaskTable.this.setRowHeight(getRowHeight());
+                if (DefectTable.this != null
+                        && DefectTable.this.getRowHeight() != rowHeight) {
+                    DefectTable.this.setRowHeight(getRowHeight());
                 }
             }
         }
@@ -304,7 +259,7 @@ public class TaskTable extends JTable {
          * This is overridden to set the height to match that of the JTable.
          */
         public void setBounds(int x, int y, int w, int h) {
-            super.setBounds(x, 0, w, TaskTable.this.getHeight());
+            super.setBounds(x, 0, w, DefectTable.this.getHeight());
         }
 
         /**
@@ -329,12 +284,12 @@ public class TaskTable extends JTable {
             visibleRow = row;
             return this;
         }
-	} // }}}
+	 }
 
     /**
      * TreeTableCellEditor implementation. Component returned is the JTree.
      */
-	 public class TreeTableCellEditor extends AbstractCellEditor implements //{{{
+	 public class TreeTableCellEditor extends AbstractCellEditor implements
             TableCellEditor {
         public Component getTableCellEditorComponent(JTable table,
                 Object value, boolean isSelected, int r, int c) {
@@ -529,4 +484,5 @@ public class TaskTable extends JTable {
 		
 	} // }}}	
 	
+
 }
