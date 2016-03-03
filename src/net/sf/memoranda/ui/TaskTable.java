@@ -247,7 +247,7 @@ public class TaskTable extends JTable {
      */
     public TreeTableCellRenderer getTree() {
         return tree;
-    }
+    } 
 
     /**
      * A TreeCellRenderer that displays a JTree.

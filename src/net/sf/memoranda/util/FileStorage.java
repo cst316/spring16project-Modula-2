@@ -72,6 +72,11 @@ public class FileStorage implements Storage {
             //serializer.write(doc);
             OutputStreamWriter fw =
                 new OutputStreamWriter(new FileOutputStream(filePath), "UTF-8");
+            
+            System.out.println(doc.toXML().toString() + "\n");
+            System.out.println(doc.toString() + "\n");
+            System.out.println(doc.toXML() + "\n");
+            
             fw.write(doc.toXML());
             fw.flush();
             fw.close();

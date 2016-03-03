@@ -19,6 +19,7 @@ public interface Defect {
     
     String getType();
     
+    //PHASE, NOT STRING
     void setInjection(String injection);
     
     String getInjection();

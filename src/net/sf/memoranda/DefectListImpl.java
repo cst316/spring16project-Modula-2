@@ -65,6 +65,7 @@ public class DefectListImpl implements DefectList {
 		return _pspdefectcount+1;
 	}
 
+	//PHASE for injection and remove, not Strings
 	@Override
 	public Defect createDefect(CalendarDate datefound, int id, String type, String injection,
 			long approximatefixtime, long fixtime, CalendarDate datefixed, String remove, String fixreference, 
@@ -113,6 +114,7 @@ public class DefectListImpl implements DefectList {
         el.appendChild(desc);
         
 		elements.put(Integer.toString(id), el);
+		_root.appendChild(el);
 		
 		_pspdefectcount += 1;
         

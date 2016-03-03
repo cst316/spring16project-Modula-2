@@ -41,7 +41,7 @@ import java.awt.event.ActionEvent;
 
 public class PSPDefectPanel extends JPanel {
 	
-	WorkPanel parentPanel = null;
+	private WorkPanel parentPanel = null;
 	
 	private static Vector<DefectListListener> defectListListeners = new Vector<DefectListListener>();
 	
@@ -54,11 +54,11 @@ public class PSPDefectPanel extends JPanel {
         catch (Exception ex) {
             new ExceptionDialog(ex);
         }
-    }
+    } 
     
     void jbInit() throws Exception {
     	JButton btnOpenDefectPanel = new JButton("Open Defect Panel");
-    	btnOpenDefectPanel.setBounds(380, 225, 123, 23);
+    	btnOpenDefectPanel.setBounds(242, 150, 123, 23);
     	btnOpenDefectPanel.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent arg0) {
     			opendefectsB_actionPerformed(arg0);
@@ -72,7 +72,7 @@ public class PSPDefectPanel extends JPanel {
 				recorddefectB_actionPerformed(arg0);
 			}
 		});
-		btnNewButton.setBounds(373, 265, 140, 23);
+		btnNewButton.setBounds(235, 190, 140, 23);
 		add(btnNewButton);
 		
 		
