@@ -812,22 +812,6 @@ public class PreferencesDialog extends JDialog {
     	appearHueValue.setForeground(Color.getHSBColor(appearHueSlider.getValue()/360f, 1f, 1f));
     }
     
-	public void appearHueValue_changed(DocumentEvent e) {
-		int value = 0;
-		try {
-			value = Integer.parseInt(appearHueValue.getText());
-			
-			if(value > 359) value = 359;
-			else if(value < 0) value = 0;
-			
-		} catch(Exception ex) {
-
-		}
-		
-		appearHueValue.setText(Integer.toString(value));
-		appearHueSlider.setValue(value);
-	}
-    
 	Vector getFontNames() {
 		GraphicsEnvironment gEnv = 
         	GraphicsEnvironment.getLocalGraphicsEnvironment();
