@@ -1,7 +1,6 @@
 package net.sf.memoranda.ui;
 import net.sf.memoranda.*;
 import javax.swing.JPanel;
-import net.miginfocom.swing.MigLayout;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.ui.App;
 import net.sf.memoranda.ui.TaskDialog;
