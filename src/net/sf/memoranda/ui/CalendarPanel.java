@@ -77,6 +77,9 @@ public class CalendarPanel extends JPanel {
         this.setLayout(new GridBagLayout());
     	this.add(mainPanel,gbc);
     	
+    	this.setBorder(null);
+    	mainPanel.setBorder(null);
+    	
     	// Event listeners
     	EventsScheduler.addListener(new EventNotificationListener() {
 			public void eventIsOccured(Event ev) {

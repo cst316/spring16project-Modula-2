@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.util.ColorScheme;
 
 public class CalendarPanelCell extends JPanel {
 	private JPanel gridCell = new JPanel(new GridBagLayout());
@@ -23,8 +24,8 @@ public class CalendarPanelCell extends JPanel {
 	GridBagConstraints gbc;
 	
 	public CalendarPanelCell() {
-		gridCell.setBackground(Color.WHITE);
-		gridCell.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+		gridCell.setBackground(Color.MAGENTA);
+		gridCell.setBorder(BorderFactory.createLineBorder(Color.MAGENTA, 1));
 			
 	    gbc = new GridBagConstraints();
 	    gbc.anchor = GridBagConstraints.NORTH;
@@ -49,14 +50,14 @@ public class CalendarPanelCell extends JPanel {
 		
 		if(active) {
 			CalendarDate today = new CalendarDate();
-			if(today.before(this._date) || today.equals(this._date)) {
-				gridCell.setBackground(Color.WHITE);
+			if(today.before(this._date) | today.equals(this._date)) {
+				gridCell.setBackground(ColorScheme.getColor("frame_background"));
 			} else {
-				gridCell.setBackground(new Color(225,225,225));
+				gridCell.setBackground(ColorScheme.getColor("frame_tertiary"));
 			}
 		} else {
 			gridLabel.setText("");
-			gridCell.setBackground(new Color(150,150,150));
+			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
 		}
 	}
 	

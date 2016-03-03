@@ -20,6 +20,7 @@ import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.Task;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.util.ColorScheme;
 
 public class CalendarPanelView extends JPanel {
 	public static final int VIEW_INVALID = -1;
@@ -71,7 +72,8 @@ public class CalendarPanelView extends JPanel {
 			
 			for(int weekday = 0; weekday < 7; weekday++) {
     			JPanel gridCell = new JPanel(new GridBagLayout());
-    			gridCell.setBackground(Color.WHITE);
+    			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
+    			gridCell.setBorder(null);
     			
     	        gbc = new GridBagConstraints();
 				JLabel gridLabel = new JLabel();
@@ -86,20 +88,18 @@ public class CalendarPanelView extends JPanel {
 				gbc.weightx = 1.0;
 				
     	        _view.add(gridCell, gbc);
-			}
-			
+			}			
 			if(_type == VIEW_MONTH) {
 				_rows = 6;
 				_columns = 7;
-			}
-			
+			}	
 			else if(_type == VIEW_WEEK) {
 				_rows = 1;
 				_columns = 7;
 			}
-			
+
 			_cells = new CalendarPanelCell[_rows*_columns];
-			
+
 			// Main panel creation
 	    	for(int col = 0; col < _columns; col++) {
 	    		for(int row = 0; row < _rows; row++) {
@@ -143,7 +143,7 @@ public class CalendarPanelView extends JPanel {
 			// Text
 			for(int hour = 1; hour <= 24; hour++) {
     			JPanel gridCell = new JPanel(new GridBagLayout());
-    			gridCell.setBackground(Color.WHITE);
+    			gridCell.setBackground(ColorScheme.getColor("frame_secondary"));
     			
     	        gbc = new GridBagConstraints();
 				JLabel gridLabel = new JLabel();
@@ -259,7 +259,6 @@ public class CalendarPanelView extends JPanel {
 	        	if(gc.get(Calendar.MONTH) == currentMonth) {
 	    			CalendarDate date = new CalendarDate(gc);
 	    			generateDay(panelCell,date,tasks);
-
 	        		panelCell.setActive(true);
 	        	} else {
 	    			panelCell.getCell().setBorder(null);
@@ -316,11 +315,11 @@ public class CalendarPanelView extends JPanel {
 	
 			// Highlight if date is the current date
 			if(date.equals(CurrentDate.get())) {
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
 			} else {
 				// Why do we need this redundant red border? I dunno, but it fixes it
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_secondary"), 1));
 			}
 			
 			panelCell.setActive(true);
@@ -351,11 +350,11 @@ public class CalendarPanelView extends JPanel {
 	        }
 	        
 			if(_currentHour == calendar.get(Calendar.HOUR_OF_DAY)) {
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
 			} else {
 				// Why do we need this redundant red border? I dunno, but it fixes it
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_secondary"), 1));
 			}
 			
 	        panelCell.setActive(true);
