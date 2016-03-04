@@ -37,7 +37,7 @@ public class WorkPanel extends JPanel {
 	public CalendarPanel calendarPanel = new CalendarPanel(this);
 	public DailyItemsPanel dailyItemsPanel = new DailyItemsPanel(this);
 	public ResourcesPanel filesPanel = new ResourcesPanel();
-	public PSPPanel pspPanel = new PSPPanel(this);
+	public PSPTimePanel pspPanel = new PSPTimePanel(this);
 	public JButton calendarB = new JButton();
 	public JButton tasksB = new JButton();
 	public JButton eventsB = new JButton();

@@ -37,6 +37,11 @@ import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
 import javax.swing.DefaultComboBoxModel;
 import net.sf.memoranda.Phase;
+import javax.swing.JTextPane;
+import java.awt.Component;
+import javax.swing.Box;
+import javax.swing.DropMode;
+import javax.swing.SpinnerListModel;
 
 public class TimeRecordLogDialog extends JDialog {
 	  JPanel mPanel = new JPanel(new BorderLayout());
@@ -68,8 +73,6 @@ public class TimeRecordLogDialog extends JDialog {
 	    // added by rawsushi
 	    JLabel jInteruptionTime = new JLabel();
 		
-		JPanel jPanelProgress = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		
 		//Forbid to set dates outside the bounds
 		CalendarDate startDateMin = CurrentProject.get().getStartDate();
 		CalendarDate startDateMax = CurrentProject.get().getEndDate();
@@ -77,15 +80,17 @@ public class TimeRecordLogDialog extends JDialog {
 		CalendarDate endDateMax = startDateMax;
 		private final JLabel lblStartTime = new JLabel("Start Time");
 		private final JLabel lblPhase = new JLabel("Phase");
+		
+		SpinnerDateModel model = new SpinnerDateModel();
+		
+	
+		
 		private final JComboBox dpPhaseSelector = new JComboBox();
-		private final JSpinner spinner = new JSpinner();
-		private final JSpinner spinner_1 = new JSpinner();
-		private final JSpinner spinner_2 = new JSpinner();
-		private final JSpinner spinner_3 = new JSpinner();
-		private final JSpinner spinner_4 = new JSpinner();
-		private final JSpinner spinner_5 = new JSpinner();
-		private final JTextField textField = new JTextField();
+		
+		
+		
 		private final JLabel lblComments = new JLabel("Comments");
+		private final JTextArea textArea = new JTextArea();
 		
 		//populate combo box
 		
@@ -103,8 +108,8 @@ public class TimeRecordLogDialog extends JDialog {
     }
 
 		void jbInit() throws Exception {
-		this.setResizable(false);
-		this.setSize(new Dimension(705, 320));
+			this.setResizable(false);
+			this.setSize(new Dimension(937, 524));
 	        border1 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 	        border2 = BorderFactory.createEtchedBorder(Color.white, 
 	            new Color(142, 142, 142));
@@ -192,8 +197,10 @@ public class TimeRecordLogDialog extends JDialog {
 	        mPanel.add(areaPanel, BorderLayout.CENTER);
 	        mPanel.add(buttonsPanel, BorderLayout.SOUTH);
 	        buttonsPanel.add(lblComments);
-	        textField.setColumns(50);
-	        buttonsPanel.add(textField);
+	        textArea.setLineWrap(true);
+	        textArea.setColumns(70);
+	        
+	        buttonsPanel.add(textArea);
 	        buttonsPanel.add(okB, null);
 	        buttonsPanel.add(cancelB, null);
 	        this.getContentPane().add(dialogTitlePanel, BorderLayout.NORTH);
@@ -208,23 +215,11 @@ public class TimeRecordLogDialog extends JDialog {
 	        
 	        jPanel1.add(lblStartTime);
 	        
-	        
-	        jPanel1.add(spinner_2);
-	        
-	        jPanel1.add(spinner_3);
 	        // added by rawsushi
 	        jPanel2.add(jPanelEffort);
 	        jPanelEffort.add(jInteruptionTime, null);
-	        
-	        jPanelEffort.add(spinner);
-	        
-	        jPanelEffort.add(spinner_1);
 
 	        jPanel2.add(jPanel4);
-	        
-	        jPanel4.add(spinner_4);
-	        
-	        jPanel4.add(spinner_5);
 	        jPanel2.add(jPanel3);
 	        
 	        jPanel3.add(lblPhase);
@@ -232,7 +227,6 @@ public class TimeRecordLogDialog extends JDialog {
 	        dpPhaseSelector.setToolTipText("(select a phase)");
 	        
 	        jPanel3.add(dpPhaseSelector);
-	        jPanel2.add(jPanelProgress);
 
 	        
 	        
