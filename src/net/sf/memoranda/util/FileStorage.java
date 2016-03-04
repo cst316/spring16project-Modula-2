@@ -29,6 +29,8 @@ import net.sf.memoranda.ResourcesList;
 import net.sf.memoranda.ResourcesListImpl;
 import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskListImpl;
+import net.sf.memoranda.TimeLog;
+import net.sf.memoranda.TimeLogImpl;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.ui.ExceptionDialog;
 import net.sf.memoranda.ui.htmleditor.AltHTMLWriter;
@@ -305,6 +307,43 @@ public class FileStorage implements Storage {
         //tasklistDoc.setDocType(TaskListVersioning.getCurrentDocType());
         saveDocument(tasklistDoc,JN_DOCPATH + prj.getID() + File.separator + ".tasklist");
     }
+    
+	@Override
+	public TimeLog openTimeLog(Project prj) {
+		String fn = JN_DOCPATH + prj.getID() + File.separator + ".timelog";
+
+        if (documentExists(fn)) {
+            /*DEBUG*/
+            System.out.println(
+                "[DEBUG] Open time log: "
+                    + JN_DOCPATH
+                    + prj.getID()
+                    + File.separator
+                    + ".timelog");
+            
+            Document timelogDoc = openDocument(fn);
+            return new TimeLogImpl(timelogDoc, prj);   
+        }
+        else {
+            /*DEBUG*/
+            System.out.println("[DEBUG] New task list created");
+            return new TimeLogImpl(prj);
+        }
+	}
+
+	@Override
+	public void storeTimeLog(TimeLog log, Project prj) {
+		/*DEBUG*/
+        System.out.println(
+            "[DEBUG] Save task list: "
+                + JN_DOCPATH
+                + prj.getID()
+                + File.separator
+                + ".timelog");
+        Document tasklistDoc = log.getXMLContent();
+        saveDocument(tasklistDoc,JN_DOCPATH + prj.getID() + File.separator + ".timelog");
+	}
+    
     /**
      * @see net.sf.memoranda.util.Storage#createProjectStorage(net.sf.memoranda.Project)
      */
@@ -437,6 +476,7 @@ public class FileStorage implements Storage {
             rl.getXMLContent(),
             JN_DOCPATH + prj.getID() + File.separator + ".resources");
     }
+    
     /**
      * @see net.sf.memoranda.util.Storage#restoreContext()
      */

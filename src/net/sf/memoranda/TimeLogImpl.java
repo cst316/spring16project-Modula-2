@@ -16,6 +16,7 @@ import nu.xom.Elements;
 public class TimeLogImpl implements TimeLog {
 
 	private Vector<TimeEntry> _vector;
+	private Project _project = null;
 	private Document _doc = null;
 	private Element _root = null;
 	
@@ -31,10 +32,11 @@ public class TimeLogImpl implements TimeLog {
 		}
 	}
 	
-	public TimeLogImpl() {
+	public TimeLogImpl(Project prj) {
 		_root = new Element("timelog");
 		_doc = new Document(_root);
 		_vector = new Vector<TimeEntry>();
+		_project = prj;
 	}
 	
 	@Override
@@ -101,6 +103,11 @@ public class TimeLogImpl implements TimeLog {
 	@Override
 	public Document getXMLContent() {
 		return _doc;
+	}
+	
+	@Override
+	public Project getProject() {
+		return _project;
 	}
 	
 	@Override

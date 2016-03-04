@@ -24,7 +24,7 @@ public class TimeLogTest {
 	@Before
 	public void setUp() {
 		
-		log = new TimeLogImpl();
+		log = new TimeLogImpl(null);
 		
 		// Time Entry
 		//     Date         = current date

@@ -37,7 +37,9 @@ public class WorkPanel extends JPanel {
 	public CalendarPanel calendarPanel = new CalendarPanel(this);
 	public DailyItemsPanel dailyItemsPanel = new DailyItemsPanel(this);
 	public ResourcesPanel filesPanel = new ResourcesPanel();
-	public PSPTimePanel pspPanel = new PSPTimePanel(this);
+
+	public TimeLogPanel timeLogPanel= new TimeLogPanel(this);
+
 	public JButton calendarB = new JButton();
 	public JButton tasksB = new JButton();
 	public JButton eventsB = new JButton();
@@ -208,7 +210,7 @@ public class WorkPanel extends JPanel {
 		panel.add(calendarPanel, "CALENDAR");
 		panel.add(dailyItemsPanel, "DAILYITEMS");
 		panel.add(filesPanel, "FILES");
-		panel.add(pspPanel, "PSP");
+		panel.add(timeLogPanel, "TIMELOG");
 		toolBar.add(calendarB, null);
 		toolBar.add(eventsB, null);
 		toolBar.add(tasksB, null);
@@ -230,7 +232,7 @@ public class WorkPanel extends JPanel {
 		pspB.setIcon(new ImageIcon(WorkPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/agenda.png")));
 		pspB.setVerticalTextPosition(SwingConstants.BOTTOM);
 		pspB.setVerticalAlignment(SwingConstants.TOP);
-		pspB.setText("PSP");
+		pspB.setText("Time Log");
 		pspB.setSelected(true);
 		pspB.setPreferredSize(new Dimension(50, 50));
 		pspB.setOpaque(false);
@@ -249,7 +251,7 @@ public class WorkPanel extends JPanel {
 		calendarPanel.setBorder(null);
 		dailyItemsPanel.setBorder(null);
 		filesPanel.setBorder(null);
-		pspPanel.setBorder(null);
+		timeLogPanel.setBorder(null);
 		
 		
 
@@ -265,7 +267,7 @@ public class WorkPanel extends JPanel {
 				eventsB_actionPerformed(null);
 			else if (pan.equals("FILES"))
 				filesB_actionPerformed(null);
-			else if (pan.equals("PSP"))
+			else if (pan.equals("TIMELOG"))
 				pspB_actionPerformed(null);
 		}
 	}
@@ -303,9 +305,9 @@ public class WorkPanel extends JPanel {
 		Context.put("CURRENT_PANEL", "FILES");
 	}
 	public void pspB_actionPerformed(ActionEvent e) {
-		cardLayout1.show(panel, "PSP");
+		cardLayout1.show(panel, "TIMELOG");
 		setCurrentButton(pspB);
-		Context.put("CURRENT_PANEL", "PSP");
+		Context.put("CURRENT_PANEL", "TIMELOG");
 	}
 
 	void setCurrentButton(JButton cb) {

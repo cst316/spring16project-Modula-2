@@ -56,7 +56,7 @@ public class TimeEntryImpl implements TimeEntry {
 	public Phase getPhase() {
 		String phaseName = _element.getFirstChildElement("phase").getValue();
 		for (Phase phase : Phase.values()) {
-			if (phaseName == phase.toString()) {
+			if (phaseName.equals(phase.toString())) {
 				return phase;
 			}
 		}
