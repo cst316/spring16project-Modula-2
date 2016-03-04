@@ -24,22 +24,6 @@ public class TimeLogTable extends JTable {
 	public TimeLogTable(TimeLogPanel parent) {
 		super();
 		
-		CalendarDate today = new CalendarDate();
-		
-		Calendar startTime = new GregorianCalendar();
-		startTime.set(Calendar.HOUR, 4);
-		startTime.set(Calendar.MINUTE, 30);
-		
-		Calendar endTime = new GregorianCalendar();
-		endTime.set(Calendar.HOUR, 5);
-		endTime.set(Calendar.MINUTE, 0);
-		
-		int interruptionTime = 5;
-		Phase phase = Phase.CODE;
-		String comments = "testAddRemoveTimeEntry() #1";
-		
-		CurrentProject.getTimeLog().addTimeEntry(today, startTime, endTime, interruptionTime, phase, comments);
-		
 		initTable();
 		setModel(new TimeLogTableModel());
 		this.parent = parent;
