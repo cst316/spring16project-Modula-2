@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
+import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.TimeEntry;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.util.Local;
 
@@ -20,11 +22,11 @@ public class TimeLogPanel extends JPanel {
 	WorkPanel parentPanel = null;
 	
 	BorderLayout borderLayout;
-	private JToolBar toolBar;
-	private JButton newEntry;
-    private TimeLogTable table;
-    private JButton removeEntry;
-    private JScrollPane scrollPane;
+	JToolBar toolBar;
+	JButton newEntry;
+    TimeLogTable table;
+    JButton removeEntry;
+    JScrollPane scrollPane;
     
     public TimeLogPanel(WorkPanel parent) {
     	parentPanel = parent;
@@ -41,7 +43,7 @@ public class TimeLogPanel extends JPanel {
     	borderLayout = new BorderLayout();
     	toolBar = new JToolBar();
     	newEntry = new JButton();
-    	table = new TimeLogTable();
+    	table = new TimeLogTable(this);
     	removeEntry = new JButton();
     	scrollPane = new JScrollPane();
     	
@@ -95,6 +97,7 @@ public class TimeLogPanel extends JPanel {
     }
     
     private void removeEntry_actionPerformed(ActionEvent e) {
-    	// TODO: Implement this method.
+    	TimeEntry entry = CurrentProject.getTimeLog().getLog().get(table.getSelectedRow());
+		CurrentProject.getTimeLog().removeTimeEntry(entry);
     }
 }

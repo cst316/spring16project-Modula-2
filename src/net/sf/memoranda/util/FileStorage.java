@@ -322,7 +322,7 @@ public class FileStorage implements Storage {
                     + ".timelog");
             
             Document timelogDoc = openDocument(fn);
-            return new TimeLogImpl(timelogDoc, prj);   
+            return new TimeLogImpl(timelogDoc, prj);
         }
         else {
             /*DEBUG*/

@@ -5,19 +5,23 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.AbstractTableModel;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Phase;
 import net.sf.memoranda.TimeEntry;
+import net.sf.memoranda.TimeLogImpl;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
 
 public class TimeLogTable extends JTable {
 
+	TimeLogPanel parent;
 	List<TimeEntry> entries;
 	
-	public TimeLogTable() {
+	public TimeLogTable(TimeLogPanel parent) {
 		super();
 		
 		CalendarDate today = new CalendarDate();
@@ -38,6 +42,16 @@ public class TimeLogTable extends JTable {
 		
 		initTable();
 		setModel(new TimeLogTableModel());
+		this.parent = parent;
+		
+		ListSelectionModel selectionModel = getSelectionModel();
+		selectionModel.addListSelectionListener(e -> {
+			listSelection_actionPerformed(e);
+		});
+		
+		TimeLogImpl.addTimeLogListener(() -> {
+			tableChanged();
+		});
 	}
 	
 	public void initTable() {
@@ -104,6 +118,10 @@ public class TimeLogTable extends JTable {
 		sb.append(min);
 		
 		return sb.toString();
+	}
+	
+	private void listSelection_actionPerformed(ListSelectionEvent e) {
+		parent.removeEntry.setEnabled(true);
 	}
 	
 }
