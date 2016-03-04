@@ -124,7 +124,8 @@ public class TimeLogImpl implements TimeLog {
 	}
 	
 	private int computeDeltaTime(Calendar startTime, Calendar endTime, int interruptionTime) {
-		return (int) (((endTime.getTimeInMillis() - startTime.getTimeInMillis()) / 1000 / 60) - interruptionTime);
+		return endTime.get(Calendar.HOUR_OF_DAY)*60+endTime.get(Calendar.MINUTE)-startTime.get(Calendar.HOUR_OF_DAY)*60+startTime.get(Calendar.MINUTE)-interruptionTime;
+		//return (int) (((endTime.getTimeInMillis() - startTime.getTimeInMillis()) / 1000 / 60) - interruptionTime);
 	}
 
 	@Override
