@@ -335,7 +335,7 @@ public class FileStorage implements Storage {
 	public void storeTimeLog(TimeLog log, Project prj) {
 		/*DEBUG*/
         System.out.println(
-            "[DEBUG] Save task list: "
+            "[DEBUG] Save time log: "
                 + JN_DOCPATH
                 + prj.getID()
                 + File.separator
