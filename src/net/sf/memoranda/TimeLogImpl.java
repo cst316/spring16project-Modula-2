@@ -39,6 +39,7 @@ public class TimeLogImpl implements TimeLog {
 		_root = new Element("timelog");
 		_doc = new Document(_root);
 		_vector = new Vector<TimeEntry>();
+		_listeners = new Vector<TimeLogListener>();
 		_project = prj;
 	}
 	
