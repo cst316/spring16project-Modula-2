@@ -34,6 +34,7 @@ import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectListener;
 import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
@@ -47,6 +48,8 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -74,7 +77,6 @@ public class PSPDefectPanel extends JPanel {
 	JMenuItem ppRemoveDefect = new JMenuItem();
 	JMenuItem ppNewDefect = new JMenuItem();
 	JMenuItem ppCompleteDefect = new JMenuItem();
-	JMenuItem ppAddSubDefect = new JMenuItem();
 	JMenuItem ppCalcDefect = new JMenuItem();
 	
 	private static Vector<DefectListListener> defectListListeners = new Vector<DefectListListener>();
@@ -92,6 +94,10 @@ public class PSPDefectPanel extends JPanel {
     
     void jbInit() throws Exception {
     	
+    	defectsToolBar.setFloatable(false);
+    		
+    	newDefectB.setIcon(
+                new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
     	newDefectB.setEnabled(true);
         newDefectB.setMaximumSize(new Dimension(24, 24));
         newDefectB.setMinimumSize(new Dimension(24, 24));
@@ -155,8 +161,14 @@ public class PSPDefectPanel extends JPanel {
 			}
 		});
 		
+		boolean isShao =
+				(Context.get("SHOW_ACTIVE_DEFECTS_ONLY") != null)
+					&& (Context.get("SHOW_ACTIVE_DEFECTS_ONLY").equals("true"));
+			ppShowActiveOnlyChB.setSelected(isShao);
+			toggleShowActiveOnly_actionPerformed(null);
+		
+		
 		this.setLayout(borderLayout1);
-        scrollPane.getViewport().setBackground(Color.white);
         ppEditDefect.setFont(new java.awt.Font("Dialog", 1, 11));
 	    ppEditDefect.setText(Local.getString("Edit defect")+"...");
 	    ppEditDefect.addActionListener(new java.awt.event.ActionListener() {
@@ -165,22 +177,7 @@ public class PSPDefectPanel extends JPanel {
 	            }
 	        });
 	    
-	    defectTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                boolean enbl = (defectTable.getRowCount() > 0)&&(defectTable.getSelectedRow() > -1);
-                editDefectB.setEnabled(enbl);ppEditDefect.setEnabled(enbl);
-                removeDefectB.setEnabled(enbl);ppRemoveDefect.setEnabled(enbl);
-				
-				ppCompleteDefect.setEnabled(enbl);
-				completeDefectB.setEnabled(enbl);
-				ppAddSubDefect.setEnabled(enbl);
-				ppCalcDefect.setEnabled(enbl);
-				
-                if (enbl) {   
-    				String thisDefectId = defectTable.getModel().getValueAt(defectTable.getSelectedRow(), DefectTable.DEFECT_ID).toString();
-                }
-            }
-        });
+	    
 	    
 	    ppEditDefect.setEnabled(false);
 	    defectPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
@@ -235,6 +232,82 @@ public class PSPDefectPanel extends JPanel {
 		scrollPane.setBounds(0, 41, 625, 342);
 		add(scrollPane);
 		
+		CurrentDate.addDateListener(new DateListener() {
+            public void dateChange(CalendarDate d) {
+                newDefectB.setEnabled(d.inPeriod(CurrentProject.get().getStartDate(), CurrentProject.get().getEndDate()));
+            }
+        });
+        CurrentProject.addProjectListener(new ProjectListener() {
+            public void projectChange(Project p, NoteList nl, TaskList tl, DefectList dl, ResourcesList rl) {
+                newDefectB.setEnabled(
+                    CurrentDate.get().inPeriod(p.getStartDate(), p.getEndDate()));
+            }
+            public void projectWasChanged() {
+            }
+        });
+		
+		defectTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                boolean enbl = (defectTable.getRowCount() > 0)&&(defectTable.getSelectedRow() > -1);
+                editDefectB.setEnabled(enbl);ppEditDefect.setEnabled(enbl);
+                removeDefectB.setEnabled(enbl);ppRemoveDefect.setEnabled(enbl);
+				
+				ppCompleteDefect.setEnabled(enbl);
+				completeDefectB.setEnabled(enbl);
+				ppCalcDefect.setEnabled(enbl);
+				
+                if (enbl) {   
+    				String thisDefectId = defectTable.getModel().getValueAt(defectTable.getSelectedRow(), DefectTable.DEFECT_ID).toString();
+    				
+                }
+            }
+        });
+		
+		
+		editDefectB.setEnabled(false);
+        removeDefectB.setEnabled(false);
+		completeDefectB.setEnabled(false);
+	    defectPPMenu.add(ppEditDefect);
+	    
+	    defectPPMenu.addSeparator();
+	    defectPPMenu.add(ppNewDefect);
+	    defectPPMenu.add(ppRemoveDefect);
+	    
+	    defectPPMenu.addSeparator();
+	    defectPPMenu.add(ppCompleteDefect);
+	    defectPPMenu.add(ppCalcDefect);
+    
+	    defectPPMenu.addSeparator();
+	    defectPPMenu.add(ppShowActiveOnlyChB);
+
+	
+		// define key actions in PSPDefectPanel:
+		// - KEY:DELETE => delete defects (recursively).
+		// - KEY:INSERT => insert new Defect if nothing is selected.
+		// - KEY:SPACE => finish Defect.
+		defectTable.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e){
+				if(defectTable.getSelectedRows().length>0 
+					&& e.getKeyCode()==KeyEvent.VK_DELETE)
+					ppRemoveDefect_actionPerformed(null);
+				
+				else if(e.getKeyCode()==KeyEvent.VK_INSERT) {
+					if(defectTable.getSelectedRows().length>0) {
+					}
+					else {
+						ppNewDefect_actionPerformed(null);						
+					}
+				}
+				
+				else if(e.getKeyCode()==KeyEvent.VK_SPACE
+						&& defectTable.getSelectedRows().length>0) {
+					ppCompleteDefect_actionPerformed(null);
+				}
+			}
+			public void	keyReleased(KeyEvent e){}
+			public void keyTyped(KeyEvent e){} 
+		});	
+		
     }
 
 	protected void newDefectB_actionPerformed(ActionEvent arg0) {
@@ -280,6 +353,7 @@ public class PSPDefectPanel extends JPanel {
         		esttime, acttime, ed, defectdialog.txtRemove.getText(), fixref, defectdialog.txtaDescription.getText(), iscompleted);
         CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
         defectTable.tableChanged();
+        
        
         notifyDefectListListeners();
 	}
@@ -293,54 +367,36 @@ public class PSPDefectPanel extends JPanel {
 			  listener.defectListModified();
 		  }
 	}
-	
-	protected void ppCalcDefect_actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	protected void ppRemoveDefect_actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	protected void ppEditDefect_actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	protected void toggleShowActiveOnly_actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		Context.put(
+				"SHOW_ACTIVE_DEFECTS_ONLY",
+				new Boolean(ppShowActiveOnlyChB.isSelected()));
+			defectTable.tableChanged();		
 	}
-
-	protected void ppCompleteDefect_actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	protected void removeDefectB_actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	protected void editDefectB_actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	
-	protected void ppNewDefect_actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+	protected void ppCompleteDefect_actionPerformed(ActionEvent e) {
+		
+	}
+	
+	protected void removeDefectB_actionPerformed(ActionEvent e) {
+		
+	}
+	
+	protected void calcDefect_actionPerformed(ActionEvent e) {
 		
 	}
 	
 	class PopupListener extends MouseAdapter {
 
 	    public void mouseClicked(MouseEvent e) {
-		if ((e.getClickCount() == 2) && (defectTable.getSelectedRow() > -1)){
-			
-			editDefectB_actionPerformed(null);
-		}
+			if ((e.getClickCount() == 2) && (defectTable.getSelectedRow() > -1)){
+				editDefectB_actionPerformed(null);
+			}
 	    }
 
 	            public void mousePressed(MouseEvent e) {
@@ -358,4 +414,18 @@ public class PSPDefectPanel extends JPanel {
 	            }
 
 	}
+	
+	void ppEditDefect_actionPerformed(ActionEvent e) {
+	    editDefectB_actionPerformed(e);
+	  }
+	  void ppRemoveDefect_actionPerformed(ActionEvent e) {
+	    removeDefectB_actionPerformed(e);
+	  }
+	  void ppNewDefect_actionPerformed(ActionEvent e) {
+	    newDefectB_actionPerformed(e);
+	  }
+	
+	  void ppCalcDefect_actionPerformed(ActionEvent e) {
+	      calcDefect_actionPerformed(e);
+	  }
 }

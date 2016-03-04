@@ -55,7 +55,7 @@ public class DefectTableModel extends AbstractTreeTableModel implements TreeTabl
             else
                 return d.getDateRemoved().getDate();        
         case 4:
-            return 1;
+            return "NO PRIORITY FOUND";
         case 5:
             return getStatusString(d.getCompleted(CurrentDate.get()));
         case 6:            
@@ -98,8 +98,9 @@ public class DefectTableModel extends AbstractTreeTableModel implements TreeTabl
         if( activeOnly() ) {
         	return CurrentProject.getDefectList().getActiveDefects(d.getDefectId(), CurrentDate.get()).size();
         }
-        
-        return -1;
+        else {
+        	return 0;
+        }
     }
 	
 	public Class getColumnClass(int column) {

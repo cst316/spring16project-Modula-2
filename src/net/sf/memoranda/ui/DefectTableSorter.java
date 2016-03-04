@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 
 import javax.swing.JComponent;
@@ -13,7 +15,10 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
+import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Defect;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.date.CurrentDate;
 
 public class DefectTableSorter extends DefectTableModel {
 
@@ -38,6 +43,7 @@ public class DefectTableSorter extends DefectTableModel {
 					case 1: return defect1.getDefectId().compareTo(defect2.getDefectId());
 					case 2: return defect1.getDateFound().getDate().compareTo(defect2.getDateFound().getDate());
 					case 3: return defect1.getDateRemoved().getDate().compareTo(defect2.getDateRemoved().getDate());
+					case 5: return defect1.getCompleted( CurrentDate.get() ) - defect2.getCompleted( CurrentDate.get() );
 					/*
 					 case 4: if(defect1.getCompleted())
 								return 1;
@@ -57,18 +63,13 @@ public class DefectTableSorter extends DefectTableModel {
 		}
 		
 		
-		/*
+		
 		public Object getChild(Object parent, int index) {
 			Collection c = null;
 			
 			if (parent instanceof Project){
 				if( activeOnly() ) c = CurrentProject.getDefectList().getActiveDefects(null, CurrentDate.get());
-				else c = CurrentProject.getTaskList().getTopLevelTasks();
-			}
-			else{
-				Defect t = (Defect) parent;
-				if(activeOnly()) c = CurrentProject.getTaskList().getActiveSubTasks(t.getID(), CurrentDate.get());
-				else c = t.getSubTasks();
+				else c = CurrentProject.getDefectList().getAllDefects();
 			}
 			
 			Object array[] = c.toArray();
@@ -78,7 +79,7 @@ public class DefectTableSorter extends DefectTableModel {
 			}
 			return array[index];
 		}
-		*/
+		
 
 		
 	    
@@ -90,6 +91,8 @@ public class DefectTableSorter extends DefectTableModel {
 	            int column = columnModel.getColumn(viewColumn).getModelIndex();
 	            if (column != -1) {
 			sorting_column = column;
+			
+			if(column == 0) sorting_column = 4;
 			
 			if(e.isControlDown()) sorting_column = -1;
 			else opposite = !opposite;

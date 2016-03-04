@@ -19,6 +19,7 @@ import javax.swing.tree.TreeCellRenderer;
 
 import net.sf.memoranda.Defect;
 import net.sf.memoranda.Project;
+import net.sf.memoranda.Task;
 import net.sf.memoranda.date.CurrentDate;
 
 public class DefectTreeTableCellRenderer extends DefaultTreeCellRenderer implements TreeCellRenderer, TableCellRenderer {
@@ -43,6 +44,7 @@ public class DefectTreeTableCellRenderer extends DefaultTreeCellRenderer impleme
     public DefectTreeTableCellRenderer(DefectTable table) {
         super();
         this.table = table;
+        //progressLabel = new TaskProgressLabel(table);
         label.setOpaque(true);
     }
 
@@ -61,6 +63,7 @@ public class DefectTreeTableCellRenderer extends DefaultTreeCellRenderer impleme
         Defect d = (Defect) value; 
         setText(d.getDefectId());
         setToolTipText(d.getDescription());
+        setIcon(getStatusIcon(d));
         applyFont(d, this);
         return this;
     }
@@ -79,7 +82,6 @@ public class DefectTreeTableCellRenderer extends DefaultTreeCellRenderer impleme
         // label.setOpaque(true);
         label.setForeground(Color.BLACK);
         label.setIcon(null);
-       // label.setToolTipText(t.getDescription()); //XXX Disabled because of bug 1596966
         applyFont(d, label);
         applySelectionStyle(selected, label);
         applyFocus(hasFocus, label);
@@ -87,13 +89,15 @@ public class DefectTreeTableCellRenderer extends DefaultTreeCellRenderer impleme
             label.setText("");
             return label;
         }
-        // if( column_name.equals(Local.getString("Start date")) ||
-        // column_name.equals(Local.getString("End date")) ){
+        
+        if (column == 6) {
+            //return getProgressCellRenderer(d, selected, hasFocus, column);
+        }
+        
         if ((column == 2) || (column == 3)) {
             label.setText(dateFormat.format((Date) value));
             return label;
         }
-        // if( column_name.equals( Local.getString("Status") ) ){
         if (column == 5) {
             label.setText(value.toString());
             label.setForeground(getColorForDefectStatus(d, false));
@@ -109,13 +113,27 @@ public class DefectTreeTableCellRenderer extends DefaultTreeCellRenderer impleme
     private Component getDefectTreeCellRenderer(Defect d, boolean selected, boolean hasFocus) {
         JLabel tree_label = new JLabel();       
         tree_label.setText(d.getDefectId());
-        // XXX [alexeya] Disabled coz a bug with tooltips in TreeTables:
-        //tree_label.setToolTipText(t.getDescription());
         tree_label.setIcon(getStatusIcon(d));
         applyFont(d, tree_label);
         return tree_label;        
     }
+    
+    /*
+    private Component getProgressCellRenderer(Defect d, boolean selected, boolean hasFocus, int column) {
+        progressLabel.setDefect(d);
+        progressLabel.setColumn(column);
+        applyFocus(hasFocus, progressLabel);
+        return progressLabel;
+    }
 
+    private Component getPriorityIconCellRenderer(Defect d, boolean selected, boolean hasFocus) {
+        applyFocus(false, label); // disable focus borders
+        label.setIcon(getPriorityIcon(d));
+        label.setToolTipText(d.getDescription());
+        return label;
+    }
+    */
+    
     // some convenience methods
     private void applySelectionStyle(boolean selected, JComponent c) {
         if (selected)
