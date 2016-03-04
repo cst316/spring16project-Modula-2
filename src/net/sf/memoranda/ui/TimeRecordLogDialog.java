@@ -243,7 +243,7 @@ public class TimeRecordLogDialog extends JDialog {
 	    }
 		
 	    void okB_actionPerformed(ActionEvent e) {
-		CANCELLED = false;
+	    	CANCELLED = false;
 		
 	        this.dispose();
 	    }
