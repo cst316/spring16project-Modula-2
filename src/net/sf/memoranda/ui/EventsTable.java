@@ -22,6 +22,7 @@ import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Local;
 /**
  *
@@ -50,7 +51,7 @@ public class EventsTable extends JTable {
     }
 
     public void initTable(CalendarDate d) {
-        events = (Vector)EventsManager.getEventsForDate(d);
+        events = (Vector) EventsManager.getEventsForDate(d);
         getColumnModel().getColumn(0).setPreferredWidth(60);
         getColumnModel().getColumn(0).setMaxWidth(60);
         clearSelection();
@@ -71,6 +72,9 @@ public class EventsTable extends JTable {
                 boolean hasFocus,
                 int row,
                 int column) {
+            	
+            	table.setBackground(ColorScheme.getColor("frame_tertiary"));
+            	
                 Component comp;
                 comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 Event ev = (Event)getModel().getValueAt(row, EVENT);
@@ -79,11 +83,10 @@ public class EventsTable extends JTable {
                     comp.setFont(comp.getFont().deriveFont(Font.ITALIC));
                 if (CurrentDate.get().after(CalendarDate.today())) {
                   comp.setForeground(java.awt.Color.black);
-                }                
+                }
                 else if (CurrentDate.get().equals(CalendarDate.today())) {
                   if (ev.getTime().after(new Date())) {
                     comp.setForeground(java.awt.Color.black);
-                    //comp.setFont(new java.awt.Font("Dialog", 1, 12));
                     comp.setFont(comp.getFont().deriveFont(Font.BOLD));
                   }
                 }
