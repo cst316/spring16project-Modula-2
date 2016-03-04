@@ -15,6 +15,8 @@ import nu.xom.Elements;
 
 public class TimeLogImpl implements TimeLog {
 
+	private static Vector<TimeLogListener> _listeners;
+	
 	private Vector<TimeEntry> _vector;
 	private Project _project = null;
 	private Document _doc = null;
@@ -22,13 +24,14 @@ public class TimeLogImpl implements TimeLog {
 	
 	public TimeLogImpl(Document doc, Project prj) {
 		_doc = doc;
-		_root = new Element("timelog");
+		_root = _doc.getRootElement();
 		_vector = new Vector<TimeEntry>();
+		_listeners = new Vector<TimeLogListener>();
 		
 		// populate _vector with TimeEntry objects
 		Elements elements = _root.getChildElements();
 		for (int i = 0; i < elements.size(); i++) {
-			
+			_vector.add(new TimeEntryImpl(elements.get(i)));
 		}
 	}
 	
@@ -92,12 +95,16 @@ public class TimeLogImpl implements TimeLog {
 		TimeEntry entry = new TimeEntryImpl(element);
 		_vector.add(entry);
 		
+		notifyListeners();
+		
 		return entry;
 	}
 	
 	@Override
 	public void removeTimeEntry(TimeEntry entry) {
 		_root.removeChild(entry.getContent());
+		_vector.remove(entry);
+		notifyListeners();
 	}
 
 	@Override
@@ -135,5 +142,15 @@ public class TimeLogImpl implements TimeLog {
 		
 		return _vector;
 	}
+	
+	public static void addTimeLogListener(TimeLogListener tll) {
+        _listeners.add(tll);
+    }
+	
+	private static void notifyListeners() {
+        for (int i = 0; i < _listeners.size(); i++) {
+            _listeners.get(i).timeLogChanged();            
+        }
+    }
 	
 }
