@@ -76,13 +76,20 @@ public class NoteImpl implements Note, Comparable {
 		return _el.getAttribute("refid").getValue();
 	}
 	
+	public String setTeamTable(String s){
+		if (id)
+	}
+	
+	
 	/**
      * @see net.sf.memoranda.Note#setId(java.lang.String)
      */
 	 
 	public void setId(String s) {
 		Attribute id = _el.getAttribute("refid");
-		if(id==null) _el.addAttribute(new Attribute("refid", s));
+		if(id==null) {
+			_el.addAttribute(new Attribute("refid", s));
+		}
 	}
     /**
      * @see net.sf.memoranda.Note#isMarked()
@@ -103,7 +110,7 @@ public class NoteImpl implements Note, Comparable {
         else if (!mark)
             _el.removeAttribute(ma);
     }
-	
+    	
 	/*
 	 * Comparable interface
 	 */

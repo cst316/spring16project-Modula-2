@@ -1,5 +1,6 @@
 package net.sf.memoranda.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -68,11 +69,24 @@ public class ProjectDialog extends JDialog {
     private final JLabel descriptionLabel = new JLabel("Description");
     public final JScrollPane desciptionScrollPane = new JScrollPane();
     public final JTextArea descriptionTextArea = new JTextArea();
+    
+    //Used for the team system GUI
     private final JLabel teamLabel = new JLabel("Team");
     private final JButton buttonAddTeam = new JButton("Add");
     private final JButton buttonRemoveTeam = new JButton("Remove");
     private final JPanel teamPanel = new JPanel();
-    private final JTable tableTeam = new JTable();
+    private JTable tableTeam = new JTable();
+    private JScrollPane teamPabelScrollPane = new JScrollPane();
+    
+    String columnNames[] = {"ID", "Name", "Phone Number", "Email" };
+    
+    static String dataValues[][] =
+		{
+			{"1", "12", "234", "67" },
+			{"2",  "-123", "43", "853" },
+			{"3",  "93", "89.2", "109" },
+			{"4",  "279", "9033", "3092" }
+		};
     
     public ProjectDialog(Frame frame, String title) {
         super(frame, title, true);
@@ -91,7 +105,7 @@ public class ProjectDialog extends JDialog {
     void jbInit() throws Exception {
 	this.setResizable(false);
         GridBagLayout gridBagLayout = new GridBagLayout();
-        gridBagLayout.rowHeights = new int[]{0, 398, 39};
+        gridBagLayout.rowHeights = new int[]{0, 471, 39};
         getContentPane().setLayout(gridBagLayout);
         topPanel.setBorder(new EmptyBorder(new Insets(0, 5, 0, 5)));
         topPanel.setBackground(Color.WHITE);        
@@ -301,7 +315,7 @@ public class ProjectDialog extends JDialog {
         GridBagConstraints gbc_teamPanel = new GridBagConstraints();
         gbc_teamPanel.gridheight = 3;
         gbc_teamPanel.gridwidth = 5;
-        gbc_teamPanel.insets = new Insets(0, 0, 5, 5);
+        gbc_teamPanel.insets = new Insets(0, 10, 5, 5);
         gbc_teamPanel.fill = GridBagConstraints.BOTH;
         gbc_teamPanel.gridx = 0;
         gbc_teamPanel.gridy = 6;
@@ -309,15 +323,28 @@ public class ProjectDialog extends JDialog {
         
         
         
-        //Settings for the teamTable
-       
-        teamPanel.add(tableTeam);
+        
+        //Settings for the tableTeam
+		setTitle( "Simple Table Application" );
+        tableTeam = new JTable( dataValues, columnNames );
+        
+		// Add the table to a scrolling pane
+        teamPabelScrollPane = new JScrollPane( tableTeam );
+        teamPabelScrollPane.setPreferredSize(new Dimension(452, 120));
+        teamPanel.add(teamPabelScrollPane);
+        
+
         
         GridBagConstraints gbc_buttonAddTeam = new GridBagConstraints();
         gbc_buttonAddTeam.anchor = GridBagConstraints.WEST;
         gbc_buttonAddTeam.insets = new Insets(0, 0, 5, 0);
         gbc_buttonAddTeam.gridx = 5;
         gbc_buttonAddTeam.gridy = 7;
+        buttonAddTeam.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		
+        	}
+        });
         centerPanel.add(buttonAddTeam, gbc_buttonAddTeam);
         
         GridBagConstraints gbc_buttonRemoveTeam = new GridBagConstraints();
@@ -407,7 +434,7 @@ public class ProjectDialog extends JDialog {
         CalendarDate endD = null;
         if (dlg.endDateChB.isSelected())
             endD = new CalendarDate((Date) dlg.endDate.getModel().getValue());
-        Project prj = ProjectManager.createProject(title, description, startD, endD);
+        Project prj = ProjectManager.createProject(title, description, startD, endD, dataValues);
         /*if (dlg.freezeChB.isSelected())
             prj.freeze();*/
         CurrentStorage.get().storeProjectManager();

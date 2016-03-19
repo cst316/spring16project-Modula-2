@@ -90,7 +90,7 @@ public class ProjectPackager {
                 }	
                 ProjectManager.removeProject(pId);
             }
-            Project prj = ProjectManager.createProject(pId, pTitle, new CalendarDate(pStartD), null);
+            Project prj = ProjectManager.createProject(pId, pTitle, new CalendarDate(pStartD), null, null);
             if (pEndD != null)
                 prj.setEndDate(new CalendarDate(pEndD));
             //File prDir = new File(JN_DOCPATH + prj.getID());
