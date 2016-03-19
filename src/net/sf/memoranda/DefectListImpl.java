@@ -133,7 +133,7 @@ public class DefectListImpl implements DefectList {
 
 	@Override
 	public Collection getAllDefects() {
-		Elements defects = _root.getChildElements("defects");
+		Elements defects = _root.getChildElements("defect");
         return convertToDefectObjects(defects);
 	}
 

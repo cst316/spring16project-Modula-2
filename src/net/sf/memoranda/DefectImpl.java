@@ -118,7 +118,15 @@ public class DefectImpl implements Defect {
 
 	@Override
 	public CalendarDate getDateRemoved() {
-		return new CalendarDate(_element.getFirstChildElement("dateFixed").getValue());
+		
+		String d = _element.getFirstChildElement("dateFixed").getValue();
+		
+		if (d.equals("")) {
+			return new CalendarDate();
+		}
+		else {
+			return new CalendarDate(d);
+		}
 	}
 
 	@Override
