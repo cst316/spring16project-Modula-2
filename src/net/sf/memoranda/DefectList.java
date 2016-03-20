@@ -9,16 +9,16 @@ public interface DefectList {
 
 	Project getProject();
 	
-	Defect getDefect(int number);
+	Defect getDefect(String thisDefectId);
 	
 	int getNextDefectNumber();
 
-    Defect createDefect(CalendarDate datefound, int number, String type, String injection, long approximatefixtime, long fixtime,
+    Defect createDefect(CalendarDate datefound, String number, String type, String injection, long approximatefixtime, long fixtime,
 			CalendarDate datefixed, String fixremoval, String fixreference, String description, boolean isCompleted);
 
     void removeDefect(Defect defect);
     
-    void removeDefect(int number);
+    //void removeDefect(String number);
     
 	public Collection getAllDefects();
 	

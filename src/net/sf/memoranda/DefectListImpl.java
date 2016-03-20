@@ -56,8 +56,8 @@ public class DefectListImpl implements DefectList {
 	}
 
 	@Override
-	public Defect getDefect(int number) {
-		return new DefectImpl(getDefectElement(Integer.toString(number)), this); 
+	public Defect getDefect(String number) {
+		return new DefectImpl(getDefectElement(number), this); 
 	}
 
 	@Override
@@ -67,13 +67,13 @@ public class DefectListImpl implements DefectList {
 
 	//PHASE for injection and remove, not Strings
 	@Override
-	public Defect createDefect(CalendarDate datefound, int id, String type, String injection,
+	public Defect createDefect(CalendarDate datefound, String id, String type, String injection,
 			long approximatefixtime, long fixtime, CalendarDate datefixed, String remove, String fixreference, 
 			String description, boolean isCompleted) {
 		
 		Element el = new Element("defect");
 		
-        el.addAttribute(new Attribute("id", Integer.toString(id)));
+        el.addAttribute(new Attribute("id", id));
         
         el.addAttribute(new Attribute("isCompleted", Boolean.toString(isCompleted)));
         
@@ -113,7 +113,7 @@ public class DefectListImpl implements DefectList {
         desc.appendChild(description);
         el.appendChild(desc);
         
-		elements.put(Integer.toString(id), el);
+		elements.put(id, el);
 		_root.appendChild(el);
 		
 		_pspdefectcount += 1;
@@ -123,13 +123,17 @@ public class DefectListImpl implements DefectList {
 
 	@Override
 	public void removeDefect(Defect defect) {
+        _root.removeChild(defect.getContent());
 		elements.remove(defect.getDefectId());
 	}
 
+	/*
 	@Override
-	public void removeDefect(int number) {
-		elements.remove(Integer.toString(number));
+	public void removeDefect(String number) {
+		_root.removeChild(defect.getDefectId(number).getContent());
+		elements.remove(number);
 	}
+	*/
 
 	@Override
 	public Collection getAllDefects() {

@@ -19,7 +19,7 @@ public class DefectTableModel extends AbstractTreeTableModel implements TreeTabl
             Local.getString(""), Local.getString("Status"),
             "% " + Local.getString("done") };
 
-    protected EventListenerList listenerList = new EventListenerList();
+    //protected EventListenerList listenerList = new EventListenerList();
 
     private boolean activeOnly = check_activeOnly();
     

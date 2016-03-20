@@ -4,18 +4,21 @@ import java.util.Date;
 import java.util.Vector;
 
 import net.sf.memoranda.date.CalendarDate;
+import nu.xom.Element;
 
 public interface Defect {
 	
     public static final int ACTIVE = 1;
 
     public static final int COMPLETED = 2;
-	
+    
+    public Element getContent();
+    
 	void setDateFound(CalendarDate date);
 	
     CalendarDate getDateFound();
     
-    void setDefectId(int id);
+    void setDefectId(String id);
   
     String getDefectId();
     
@@ -55,4 +58,6 @@ public interface Defect {
     void setCompleted(boolean isCompleted);
     
     int getCompleted(CalendarDate d);
+    
+    boolean getIsCompleted();
 }

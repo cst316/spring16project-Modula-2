@@ -40,8 +40,8 @@ public class DefectImpl implements Defect {
 	}
 
 	@Override
-	public void setDefectId(int id) {
-		_element.addAttribute(new Attribute("id", Integer.toString(id)));
+	public void setDefectId(String id) {
+		_element.addAttribute(new Attribute("id", id));
 	}
 
 	@Override
@@ -170,6 +170,18 @@ public class DefectImpl implements Defect {
         }
 		else {
 			return Defect.COMPLETED;
+		}
+	}
+	
+	@Override
+	public boolean getIsCompleted() {
+		Elements comp = _element.getChildElements("isCompleted");
+		
+		if (Boolean.parseBoolean(comp.toString()) == true) {
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	

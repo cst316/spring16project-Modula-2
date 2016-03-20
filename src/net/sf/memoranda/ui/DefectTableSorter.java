@@ -72,12 +72,19 @@ public class DefectTableSorter extends DefectTableModel {
 				else c = CurrentProject.getDefectList().getAllDefects();
 			}
 			
-			Object array[] = c.toArray();
-			Arrays.sort(array, comparator);
-			if(opposite){
+			Object array[] = null;
+			
+			if (c != null) {
+				array = c.toArray();
+				Arrays.sort(array, comparator);
+				return array[index];
+			}
+			else if(opposite) {
 				return array[ array.length - index - 1];
 			}
-			return array[index];
+			else {
+				return null;
+			}
 		}
 		
 

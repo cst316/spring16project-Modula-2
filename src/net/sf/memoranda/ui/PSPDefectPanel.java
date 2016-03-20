@@ -19,6 +19,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -34,6 +35,7 @@ import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectListener;
 import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.Task;
 import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
@@ -125,6 +127,8 @@ public class PSPDefectPanel extends JPanel {
         editDefectB.setMinimumSize(new Dimension(24, 24));
         editDefectB.setMaximumSize(new Dimension(24, 24));
         
+        removeDefectB.setIcon(
+                new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_remove.png")));
         removeDefectB.setBorderPainted(false);
         removeDefectB.setFocusable(false);
         removeDefectB.addActionListener(new java.awt.event.ActionListener() {
@@ -347,8 +351,7 @@ public class PSPDefectPanel extends JPanel {
         else
         	fixref = null;
         	
-		//SO FAR SO GOOD
-        Defect newDefect = CurrentProject.getDefectList().createDefect(sd, Integer.parseInt(defectdialog.tfNumber.getText()), 
+        Defect newDefect = CurrentProject.getDefectList().createDefect(sd, defectdialog.tfNumber.getText(), 
         		defectdialog.cmbType.getSelectedItem().toString(), defectdialog.txtInjection.getText(), 
         		esttime, acttime, ed, defectdialog.txtRemove.getText(), fixref, defectdialog.txtaDescription.getText(), iscompleted);
         CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
@@ -376,7 +379,87 @@ public class PSPDefectPanel extends JPanel {
 	}
 	
 	protected void editDefectB_actionPerformed(ActionEvent e) {
+		Defect d =
+	            CurrentProject.getDefectList().getDefect(
+	                defectTable.getModel().getValueAt(defectTable.getSelectedRow(), DefectTable.DEFECT_ID).toString());
+	        DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("Edit Defect"));
+	        Dimension frmSize = App.getFrame().getSize();
+	        Point loc = App.getFrame().getLocation();
+	        defectdialog.setLocation((frmSize.width - defectdialog.getSize().width) / 2 + loc.x, (frmSize.height - defectdialog.getSize().height) / 2 + loc.y);
+	        defectdialog.tfNumber.setText(d.getDefectId());
+	        defectdialog.txtaDescription.setText(d.getDescription());
+	        defectdialog.spnDateFound.getModel().setValue(d.getDateFound().getDate());
+	        defectdialog.txtEstFixTime.setText(Util.getHoursFromMillis(d.getApproximateFixTimeInMinutes()));
+	        defectdialog.txtInjection.setText(d.getInjection());
+	        defectdialog.cmbType.setSelectedItem(d.getType());
+	        defectdialog.chkFixReference.setSelected(false);
 		
+		if(d.getIsCompleted() == false) {
+			defectdialog.chkDateFixed.setSelected(false);
+		}
+		else {
+			defectdialog.chkDateFixed.setSelected(true);
+	        defectdialog.spnDateFixed.getModel().setValue(d.getDateRemoved().getDate());
+	        defectdialog.txtActFixTime.setText(Util.getHoursFromMillis(d.getFixTimeInMinutes()));
+	        defectdialog.txtRemove.setText(d.getRemove());
+		}
+		
+		if(!d.getFixReference().equals(null)) {
+			defectdialog.chkFixReference.setSelected(true);
+	        defectdialog.txtFixReference.setText(d.getFixReference());
+		}
+		
+		defectdialog.chkDateFixed_actionPerformed(null);
+		defectdialog.setVisible(true);
+	        
+	        
+	        if (defectdialog.CANCELLED)
+	            return;
+	        
+	        CalendarDate sd = new CalendarDate((Date) defectdialog.spnDateFound.getModel().getValue());
+	        CalendarDate ed;
+	 		
+	        if(defectdialog.chkDateFixed.isSelected())
+	 			ed = new CalendarDate((Date) defectdialog.spnDateFixed.getModel().getValue());
+	 		else
+	 			ed = null;
+	        
+	        long esttime = Util.getMillisFromMinutes(defectdialog.txtEstFixTime.getText());
+	        
+	        long acttime;
+	        boolean iscompleted;
+	        if(defectdialog.chkDateFixed.isSelected()) {
+	        	acttime = Util.getMillisFromMinutes(defectdialog.txtActFixTime.getText());
+	        	iscompleted = true;
+	        }
+	        else {
+	        	acttime = 0;
+	        	iscompleted = false;
+	        }
+	        
+	        String fixref;
+	        if(defectdialog.chkFixReference.isSelected())
+	        	fixref = defectdialog.txtFixReference.getText();
+	        else
+	        	fixref = null;
+	        	
+	        d.setDateFound(sd);
+	        d.setDefectId(defectdialog.tfNumber.getText());
+	        d.setType(defectdialog.cmbType.getSelectedItem().toString());
+	        d.setInjection(defectdialog.txtInjection.getText());
+	        d.setApproximateFixTimeInMinutes(esttime);
+	        d.setFixTimeInMinutes(acttime);
+	        d.setDateRemoved(ed);
+	        d.setRemove(defectdialog.txtRemove.getText());
+	        d.setFixReference(fixref);
+	        d.setDescription(defectdialog.txtaDescription.getText());
+	        d.setCompleted(iscompleted);
+	        
+	        CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
+	        defectTable.tableChanged();
+	        
+	        
+	        notifyDefectListListeners();
 	}
 	
 	protected void ppCompleteDefect_actionPerformed(ActionEvent e) {
@@ -384,6 +467,40 @@ public class PSPDefectPanel extends JPanel {
 	}
 	
 	protected void removeDefectB_actionPerformed(ActionEvent e) {
+		
+		String msg;
+        String thisDefectId = defectTable.getModel().getValueAt(defectTable.getSelectedRow(), DefectTable.DEFECT_ID).toString();
+        
+        if (defectTable.getSelectedRows().length > 1)
+            msg = Local.getString("Remove")+" "+defectTable.getSelectedRows().length +" "+Local.getString("defects")+"?"
+             + "\n"+Local.getString("Are you sure?");
+        else {
+        	Defect d = CurrentProject.getDefectList().getDefect(thisDefectId);
+        	msg = Local.getString("Remove defect")+"\n'" + d.getDescription() + "'\n"+Local.getString("Are you sure?");
+        }
+        int n =
+            JOptionPane.showConfirmDialog(
+                App.getFrame(),
+                msg,
+                Local.getString("Remove defect"),
+                JOptionPane.YES_NO_OPTION);
+        if (n != JOptionPane.YES_OPTION)
+            return;
+        Vector toremove = new Vector();
+        for (int i = 0; i < defectTable.getSelectedRows().length; i++) {
+            Defect d =
+            CurrentProject.getDefectList().getDefect(
+                defectTable.getModel().getValueAt(defectTable.getSelectedRows()[i], DefectTable.DEFECT_ID).toString());
+            if (d != null)
+                toremove.add(d);
+        }
+        for (int i = 0; i < toremove.size(); i++) {
+            CurrentProject.getDefectList().removeDefect((Defect)toremove.get(i));
+        }
+        defectTable.tableChanged();
+        CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
+        
+        notifyDefectListListeners();
 		
 	}
 	
