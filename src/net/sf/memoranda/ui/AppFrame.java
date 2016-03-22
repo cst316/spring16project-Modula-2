@@ -102,6 +102,12 @@ public class AppFrame extends JFrame {
             doPrjUnPack();
         }
     };
+    
+    public Action exportICalAction = new AbstractAction("Export iCal") {
+        public void actionPerformed(ActionEvent e) {
+            // TODO 
+        }
+    };
 
     public Action minimizeAction = new AbstractAction("Close the window") {
         public void actionPerformed(ActionEvent e) {
@@ -116,7 +122,7 @@ public class AppFrame extends JFrame {
     };
     
     public Action exportNotesAction =
-                new AbstractAction(Local.getString("Export notes") + "...") {
+                new AbstractAction(Local.getString("Export notes")) {
 
                 public void actionPerformed(ActionEvent e) {
                         ppExport_actionPerformed(e);
@@ -142,6 +148,7 @@ public class AppFrame extends JFrame {
         JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
     JMenuItem jMenuFilePackPrj = new JMenuItem(prjPackAction);
     JMenuItem jMenuFileUnpackPrj = new JMenuItem(prjUnpackAction);
+    JMenuItem jMenuFileExportICal = new JMenuItem(exportICalAction);
     JMenuItem jMenuFileExportPrj = new JMenuItem(exportNotesAction);
     JMenuItem jMenuFileImportPrj = new JMenuItem(importNotesAction);
     JMenuItem jMenuFileImportNote = new JMenuItem(importOneNoteAction);
@@ -322,7 +329,7 @@ public class AppFrame extends JFrame {
          workPanel.setPreferredSize(new Dimension(1073, 300));*/
         splitPane.setDividerLocation(28);
 
-        /* jMenuFileNewPrj.setText(Local.getString("New project") + "...");
+        /* jMenuFileNewPrj.setText(Local.getString("New project"));
          jMenuFileNewPrj.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
          ProjectDialog.newProject();
@@ -331,12 +338,11 @@ public class AppFrame extends JFrame {
          */
         jMenuFileNewPrj.setAction(projectsPanel.newProjectAction);
 
-        jMenuFileUnpackPrj.setText(Local.getString("Unpack project") + "...");
-        jMenuFileExportNote.setText(Local.getString("Export current note")
-                + "...");
-        jMenuFileImportNote.setText(Local.getString("Import one note")
-                + "...");
-        jMenuFilePackPrj.setText(Local.getString("Pack project") + "...");
+        jMenuFileUnpackPrj.setText(Local.getString("Unpack project"));
+        jMenuFileExportICal.setText("Export as iCal");
+        jMenuFileExportNote.setText(Local.getString("Export current note"));
+        jMenuFileImportNote.setText(Local.getString("Import one note"));
+        jMenuFilePackPrj.setText(Local.getString("Pack project"));
         jMenuFileMin.setText(Local.getString("Close the window"));
         jMenuFileMin.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F10,
                 InputEvent.ALT_MASK));
@@ -357,17 +363,17 @@ public class AppFrame extends JFrame {
         jMenuEditPasteSpec.setToolTipText(Local.getString("Paste special"));
         jMenuEditSelectAll.setText(Local.getString("Select all"));
 
-        jMenuEditFind.setText(Local.getString("Find & replace") + "...");
+        jMenuEditFind.setText(Local.getString("Find & replace"));
 
-        jMenuEditPref.setText(Local.getString("Preferences") + "...");
+        jMenuEditPref.setText(Local.getString("Preferences"));
 
         jMenuInsert.setText(Local.getString("Insert"));
 
-        jMenuInsertImage.setText(Local.getString("Image") + "...");
+        jMenuInsertImage.setText(Local.getString("Image"));
         jMenuInsertImage.setToolTipText(Local.getString("Insert Image"));
-        jMenuInsertTable.setText(Local.getString("Table") + "...");
+        jMenuInsertTable.setText(Local.getString("Table"));
         jMenuInsertTable.setToolTipText(Local.getString("Insert Table"));
-        jMenuInsertLink.setText(Local.getString("Hyperlink") + "...");
+        jMenuInsertLink.setText(Local.getString("Hyperlink"));
         jMenuInsertLink.setToolTipText(Local.getString("Insert Hyperlink"));
         jMenuInsertList.setText(Local.getString("List"));
 
@@ -381,12 +387,12 @@ public class AppFrame extends JFrame {
 
         jMenuInsertListOL.setToolTipText(Local.getString("Insert Ordered"));
 
-        jMenuInsertChar.setText(Local.getString("Special character") + "...");
+        jMenuInsertChar.setText(Local.getString("Special character"));
         jMenuInsertChar.setToolTipText(Local.getString(
                 "Insert Special character"));
         jMenuInsertDate.setText(Local.getString("Current date"));
         jMenuInsertTime.setText(Local.getString("Current time"));
-        jMenuInsertFile.setText(Local.getString("File") + "...");
+        jMenuInsertFile.setText(Local.getString("File"));
 
         jMenuFormat.setText(Local.getString("Format"));
         jMenuFormatPStyle.setText(Local.getString("Paragraph style"));
@@ -407,7 +413,7 @@ public class AppFrame extends JFrame {
         jMenuFormatChCite.setText(Local.getString("Cite"));
         jMenuFormatChSUP.setText(Local.getString("Superscript"));
         jMenuFormatChSUB.setText(Local.getString("Subscript"));
-        jMenuFormatChCustom.setText(Local.getString("Custom style") + "...");
+        jMenuFormatChCustom.setText(Local.getString("Custom style"));
         jMenuFormatChB.setText(Local.getString("Bold"));
         jMenuFormatChB.setToolTipText(Local.getString("Bold"));
         jMenuFormatChI.setText(Local.getString("Italic"));
@@ -424,8 +430,7 @@ public class AppFrame extends JFrame {
         jMenuFormatTable.setText(Local.getString("Table"));
         jMenuFormatTableInsR.setText(Local.getString("Insert row"));
         jMenuFormatTableInsC.setText(Local.getString("Insert cell"));
-        jMenuFormatProperties.setText(Local.getString("Object properties")
-                + "...");
+        jMenuFormatProperties.setText(Local.getString("Object properties"));
         jMenuFormatProperties.setToolTipText(Local.getString(
                 "Object properties"));
 
@@ -450,6 +455,8 @@ public class AppFrame extends JFrame {
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFilePackPrj);
         jMenuFile.add(jMenuFileUnpackPrj);
+        jMenuFile.addSeparator();
+        jMenuFile.add(jMenuFileExportICal);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFileExportPrj);
         jMenuFile.add(jMenuFileExportNote);
