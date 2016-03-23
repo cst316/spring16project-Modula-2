@@ -98,9 +98,7 @@ public class WorkPanel extends JPanel {
 			}
 		});
 		calendarB.setIcon(
-			new ImageIcon(
-				net.sf.memoranda.ui.AppFrame.class.getResource(
-					"resources/icons/agenda.png")));
+			new ImageIcon(WorkPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/agenda.png")));
 		calendarB.setOpaque(false);
 		calendarB.setMargin(new Insets(0, 0, 0, 0));
 		calendarB.setSelected(true);
@@ -230,6 +228,7 @@ public class WorkPanel extends JPanel {
 		toolBar.setBackground(ColorScheme.getColor("taskbar_primary"));
 
 		toolBar.setBorder(null);
+		pspB.setText("Process");
 		
 		pspB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -237,10 +236,9 @@ public class WorkPanel extends JPanel {
 			}
 		});
 		
-		pspB.setIcon(new ImageIcon(WorkPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/agenda.png")));
+		pspB.setIcon(new ImageIcon(WorkPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/pspwhite.png")));
 		pspB.setVerticalTextPosition(SwingConstants.BOTTOM);
 		pspB.setVerticalAlignment(SwingConstants.TOP);
-		pspB.setText("Time Log");
 		pspB.setSelected(true);
 		pspB.setPreferredSize(new Dimension(50, 50));
 		pspB.setOpaque(false);
@@ -248,7 +246,7 @@ public class WorkPanel extends JPanel {
 		pspB.setMaximumSize(new Dimension(60, 80));
 		pspB.setMargin(new Insets(0, 0, 0, 0));
 		pspB.setHorizontalTextPosition(SwingConstants.CENTER);
-		pspB.setFont(new Font("Dialog", Font.BOLD, 10));
+		pspB.setFont(new Font("Dialog", Font.BOLD, 9));
 		pspB.setFocusPainted(false);
 		pspB.setContentAreaFilled(false);
 		pspB.setBorderPainted(false);
