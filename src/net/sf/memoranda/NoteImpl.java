@@ -65,6 +65,19 @@ public class NoteImpl implements Note, Comparable {
         else 
             ta.setValue(s);
     }
+    
+//	public String setTeam(String [][] team){
+//        Attribute ta = _el.getAttribute("team");
+//        if (ta == null) _el.addAttribute(new Attribute("team", team));
+//        else 
+//            ta.setValue(team);
+//	}
+	
+	public String getTeam(){
+        Attribute ta = _el.getAttribute("team");
+        if (ta == null) return "";
+        return _el.getAttribute("team").getValue();
+	}
 	
 	/**
      * @see net.sf.memoranda.Note#getId
@@ -76,9 +89,9 @@ public class NoteImpl implements Note, Comparable {
 		return _el.getAttribute("refid").getValue();
 	}
 	
-	public String setTeamTable(String s){
-		if (id)
-	}
+//	public String setTeamTable(String s){
+//		if (id)
+//	}
 	
 	
 	/**

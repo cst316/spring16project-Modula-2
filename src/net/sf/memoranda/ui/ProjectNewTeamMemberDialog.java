@@ -37,6 +37,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+
+
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Project;
@@ -65,6 +67,7 @@ import java.awt.GridBagConstraints;
 import javax.swing.border.LineBorder;
 
 public class ProjectNewTeamMemberDialog extends JPanel {
+	private boolean CANCELLED = true;
 	private JTextField nameTextfield;
 	private JTextField emailTextfield;
 	private JTextField phoneNumberTextfield;
@@ -95,7 +98,7 @@ public class ProjectNewTeamMemberDialog extends JPanel {
 		usernamePanel.add(nameLabel);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(20);
-		horizontalStrut.setPreferredSize(new Dimension(71, 0));
+		horizontalStrut.setPreferredSize(new Dimension(70, 0));
 		usernamePanel.add(horizontalStrut);
 		
 		nameTextfield = new JTextField();
@@ -127,6 +130,7 @@ public class ProjectNewTeamMemberDialog extends JPanel {
 		phoneNumberPanel.add(phoneNumLabel);
 		
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
+		horizontalStrut_2.setPreferredSize(new Dimension(27, 0));
 		phoneNumberPanel.add(horizontalStrut_2);
 		
 		phoneNumberTextfield = new JTextField();
@@ -138,9 +142,20 @@ public class ProjectNewTeamMemberDialog extends JPanel {
 		newUserPanel.add(finalPanel);
 		
 		JButton cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
 		finalPanel.add(cancelButton);
 		
 		JButton acceptButton = new JButton("Accept");
+		acceptButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+		        CANCELLED = true;
+//		        this.dispose();
+			}
+		});
 		finalPanel.add(acceptButton);
 	}
 	

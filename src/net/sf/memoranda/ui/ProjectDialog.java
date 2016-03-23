@@ -342,7 +342,7 @@ public class ProjectDialog extends JDialog {
         gbc_buttonAddTeam.gridy = 7;
         buttonAddTeam.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		
+        		new ProjectNewTeamMemberDialog().setVisible(true);
         	}
         });
         centerPanel.add(buttonAddTeam, gbc_buttonAddTeam);
@@ -378,7 +378,6 @@ public class ProjectDialog extends JDialog {
      * 
      * @param e
      */
-    
     void okButton_actionPerformed(ActionEvent e) {
         CANCELLED = false;
         this.dispose();
@@ -400,9 +399,7 @@ public class ProjectDialog extends JDialog {
     
     void sdButton_actionPerformed(ActionEvent e) {
         //startCalFrame.setLocation(sdButton.getLocation());
-        startCalFrame.setLocation(0, 0);
-        startCalFrame.setSize((this.getContentPane().getWidth() / 2), 
-            this.getContentPane().getHeight());
+        this.getContentPane().getHeight();
         this.getLayeredPane().add(startCalFrame);
         startCalFrame.setTitle(Local.getString("Start date"));
         startCalFrame.show();

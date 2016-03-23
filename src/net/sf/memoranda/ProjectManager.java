@@ -109,6 +109,7 @@ public class ProjectManager {
         prj.setDescription(description);
         prj.setStartDate(startDate);
         prj.setEndDate(endDate);
+        //prj.setTeam();
         CurrentStorage.get().createProjectStorage(prj);
         return prj;
     }
