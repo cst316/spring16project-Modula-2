@@ -1,4 +1,4 @@
-package net.sf.memoranda.ui;
+package net.sf.memoranda.ui;		
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -342,7 +342,7 @@ public class ProjectDialog extends JDialog {
         gbc_buttonAddTeam.gridy = 7;
         buttonAddTeam.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		new ProjectNewTeamMemberDialog().setVisible(true);
+        		new ProjectNewTeamMemberDialog();
         	}
         });
         centerPanel.add(buttonAddTeam, gbc_buttonAddTeam);
@@ -355,7 +355,6 @@ public class ProjectDialog extends JDialog {
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 2;
         gbc.insets = new Insets(5, 0, 5, 5);
-        gbc.anchor = GridBagConstraints.EAST;
         getContentPane().add(bottomPanel, gbc);
     
         startCalFrame.cal.addSelectionListener(new ActionListener() {

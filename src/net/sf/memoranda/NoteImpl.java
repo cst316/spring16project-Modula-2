@@ -74,7 +74,7 @@ public class NoteImpl implements Note, Comparable {
 //	}
 	
 	public String getTeam(){
-        Attribute ta = _el.getAttribute("team");
+		Attribute ta = _el.getAttribute("team");
         if (ta == null) return "";
         return _el.getAttribute("team").getValue();
 	}
