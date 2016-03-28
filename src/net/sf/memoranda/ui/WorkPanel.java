@@ -38,8 +38,7 @@ public class WorkPanel extends JPanel {
 	public CalendarPanel calendarPanel = new CalendarPanel(this);
 	public DailyItemsPanel dailyItemsPanel = new DailyItemsPanel(this);
 	public ResourcesPanel filesPanel = new ResourcesPanel();
-
-	public TimeLogPanel timeLogPanel= new TimeLogPanel(this);
+	public PSPPanel pspPanel = new PSPPanel(this);
 
 	public JButton calendarB = new JButton();
 	public JButton tasksB = new JButton();
@@ -214,7 +213,7 @@ public class WorkPanel extends JPanel {
 		panel.add(calendarPanel, "CALENDAR");
 		panel.add(dailyItemsPanel, "DAILYITEMS");
 		panel.add(filesPanel, "FILES");
-		panel.add(timeLogPanel, "TIMELOG");
+		panel.add(pspPanel, "PSP");
 		toolBar.add(calendarB, null);
 		toolBar.add(eventsB, null);
 		toolBar.add(tasksB, null);
@@ -258,7 +257,7 @@ public class WorkPanel extends JPanel {
 		calendarPanel.setBorder(null);
 		dailyItemsPanel.setBorder(null);
 		filesPanel.setBorder(null);
-		timeLogPanel.setBorder(null);
+		pspPanel.setBorder(null);
 		
 		
 
@@ -274,7 +273,7 @@ public class WorkPanel extends JPanel {
 				eventsB_actionPerformed(null);
 			else if (pan.equals("FILES"))
 				filesB_actionPerformed(null);
-			else if (pan.equals("TIMELOG"))
+			else if (pan.equals("PSP"))
 				pspB_actionPerformed(null);
 		}
 	}
@@ -312,9 +311,9 @@ public class WorkPanel extends JPanel {
 		Context.put("CURRENT_PANEL", "FILES");
 	}
 	public void pspB_actionPerformed(ActionEvent e) {
-		cardLayout1.show(panel, "TIMELOG");
+		cardLayout1.show(panel, "PSP");
 		setCurrentButton(pspB);
-		Context.put("CURRENT_PANEL", "TIMELOG");
+		Context.put("CURRENT_PANEL", "PSP");
 	}
 
 	void setCurrentButton(JButton cb) {

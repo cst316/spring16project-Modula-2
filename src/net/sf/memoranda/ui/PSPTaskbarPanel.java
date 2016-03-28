@@ -38,21 +38,15 @@ import java.awt.GridLayout;
 
 public class PSPTaskbarPanel extends JPanel {
 
-		CalendarPanel parentPanel = null;
-		CalendarDate date;
+		PSPPanel parentPanel = null;
 
-		private int currentView = CalendarPanelView.VIEW_INVALID;
-
-		public int getCurrentView() {
-			return currentView;
-		}
 		private final JLabel pspLabel = new JLabel("Personal Software Process");
 		private final JPanel viewbtnPanel = new JPanel();
 
 		/**
 		 * Create the application.
 		 */
-		 public PSPTaskbarPanel(CalendarPanel _parentPanel) {
+		 public PSPTaskbarPanel(PSPPanel _parentPanel) {
 
 			 super();
 			 setVisible(true);
@@ -67,6 +61,7 @@ public class PSPTaskbarPanel extends JPanel {
 		        catch (Exception ex) {
 		            new ExceptionDialog(ex);
 		        }
+		        
 		    }
 
 
@@ -130,6 +125,12 @@ public class PSPTaskbarPanel extends JPanel {
 			add(pspLabel);
 			pspLabel.setFont(new Font("Dialog", Font.BOLD, 29));		   
 																					
+		}
+		
+		@Override
+		public Dimension getMinimumSize()
+		{
+			return new Dimension(300, 300);
 		}
 	
 		// Change views
