@@ -1,8 +1,6 @@
 package net.sf.memoranda.ui;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -15,7 +13,7 @@ public class PSPPanel extends JPanel {
 	private PSPTaskbarPanel taskbar;
 	
 	// switch between PSPPanels
-	JPanel cardPanel;
+	private JPanel cardPanel;
 	private CardLayout cardLayout;
 	
 	private TimeLogPanel timeLogPanel;
@@ -42,17 +40,14 @@ public class PSPPanel extends JPanel {
 		
 		taskbar = new PSPTaskbarPanel(null);
 		taskbar.setBorder(null);
-		
-		taskbar.setMaximumSize(new Dimension(500, 42));
-		taskbar.setPreferredSize(new Dimension(300, 42));
-		
+
 		cardPanel = new JPanel();
 		cardPanel.setLayout(cardLayout);
 		cardPanel.add(timeLogPanel, "TIMELOG");
 		cardPanel.add(calendarPanel, "CALENDAR");
 		
-		setLayout(new BorderLayout());
-		add(cardPanel, BorderLayout.CENTER);
-		add(taskbar, BorderLayout.NORTH);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(taskbar);
+		add(cardPanel);
 	}
 }

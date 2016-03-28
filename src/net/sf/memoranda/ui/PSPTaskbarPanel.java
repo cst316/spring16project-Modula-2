@@ -126,6 +126,12 @@ public class PSPTaskbarPanel extends JToolBar {
 			pspLabel.setFont(new Font("Dialog", Font.BOLD, 20));		   
 																					
 		}
+		
+		@Override
+		public Dimension getMinimumSize()
+		{
+			return new Dimension(300, 300);
+		}
 	
 		// Change views
 		void changeToSummaryView_actionPerformed(ActionEvent e) {
