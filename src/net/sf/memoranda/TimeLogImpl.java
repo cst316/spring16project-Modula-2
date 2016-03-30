@@ -51,6 +51,9 @@ public class TimeLogImpl implements TimeLog {
 	                              Phase phase, 
 	                              String comments) {
 		
+		assert startTime.before(endTime) : "startTime must be before endTime";
+		assert interruptionTime >= 0 : "interruptionTime must be >= 0";
+		
 		Element element = new Element("timeEntry");
 		String id = Util.generateId();
 		element.addAttribute(new Attribute("id", id));
