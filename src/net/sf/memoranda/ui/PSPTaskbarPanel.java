@@ -36,7 +36,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 
-public class PSPTaskbarPanel extends JPanel {
+public class PSPTaskbarPanel extends JToolBar {
 
 		PSPPanel parentPanel = null;
 
@@ -49,9 +49,11 @@ public class PSPTaskbarPanel extends JPanel {
 		 public PSPTaskbarPanel(PSPPanel _parentPanel) {
 
 			 super();
+			 setFloatable(false);
 			 setVisible(true);
 			 super.setBorder(new EmptyBorder(new Insets(10,10,10,2)));
 			 setAlignmentX(Component.LEFT_ALIGNMENT);
+			 setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		        try {
 		            parentPanel = _parentPanel;
@@ -74,7 +76,7 @@ public class PSPTaskbarPanel extends JPanel {
 			this.setBackground(ColorScheme.getColor("frame_secondary"));
 			this.setBorder(null);
 			setLayout(null);
-		    viewbtnPanel.setBounds(439, 81, 464, 42);
+		    viewbtnPanel.setBounds(-50, 30, 464, 42);
 		    viewbtnPanel.setBackground(ColorScheme.getColor("frame_secondary"));
 																		
 			add(viewbtnPanel);
@@ -122,15 +124,9 @@ public class PSPTaskbarPanel extends JPanel {
 			btnDefect.setBorder(null);
 			btnDefect.setMargin(new Insets(5, 14, 5, 14));
 			pspLabel.setBounds(489, 13, 373, 38);
-			add(pspLabel);
-			pspLabel.setFont(new Font("Dialog", Font.BOLD, 29));		   
+			//add(pspLabel);
+			pspLabel.setFont(new Font("Dialog", Font.BOLD, 20));		   
 																					
-		}
-		
-		@Override
-		public Dimension getMinimumSize()
-		{
-			return new Dimension(300, 300);
 		}
 	
 		// Change views
