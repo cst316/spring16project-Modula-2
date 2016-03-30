@@ -74,6 +74,7 @@ public class PSPTaskbarPanel extends JToolBar {
 			this.setBackground(ColorScheme.getColor("taskbar_primary"));
 			this.setBorder(null);
 			setLayout(null);
+
 		    viewbtnPanel.setBounds(-50, 0, 464, 42);
 		    viewbtnPanel.setBackground(ColorScheme.getColor("taskbar_primary"));
 																		
@@ -125,12 +126,6 @@ public class PSPTaskbarPanel extends JToolBar {
 			//add(pspLabel);
 			pspLabel.setFont(new Font("Dialog", Font.BOLD, 20));		   
 																					
-		}
-		
-		@Override
-		public Dimension getMinimumSize()
-		{
-			return new Dimension(300, 300);
 		}
 	
 		// Change views
