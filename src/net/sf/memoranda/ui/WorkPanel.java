@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.Local;
 import java.awt.Font;
@@ -38,6 +39,7 @@ public class WorkPanel extends JPanel {
 	public DailyItemsPanel dailyItemsPanel = new DailyItemsPanel(this);
 	public ResourcesPanel filesPanel = new ResourcesPanel();
 	public PSPDefectPanel pspDefectPanel = new PSPDefectPanel(this);
+	
 	public JButton calendarB = new JButton();
 	public JButton tasksB = new JButton();
 	public JButton eventsB = new JButton();
@@ -45,6 +47,8 @@ public class WorkPanel extends JPanel {
 	public JButton pspB = new JButton();
 	JButton currentB = null;
 	Border border1;
+	
+	
 
 	
 	
@@ -86,6 +90,7 @@ public class WorkPanel extends JPanel {
 		calendarB.setFocusPainted(false);
 		calendarB.setHorizontalTextPosition(SwingConstants.CENTER);
 		calendarB.setText(Local.getString("Calendar"));
+		calendarB.setForeground(ColorScheme.getColor("taskbar_text"));
 		calendarB.setVerticalAlignment(SwingConstants.TOP);
 		calendarB.setVerticalTextPosition(SwingConstants.BOTTOM);
 		calendarB.addActionListener(new java.awt.event.ActionListener() {
@@ -112,6 +117,7 @@ public class WorkPanel extends JPanel {
 		eventsB.setFocusPainted(false);
 		eventsB.setHorizontalTextPosition(SwingConstants.CENTER);
 		eventsB.setText(Local.getString("Events"));
+		eventsB.setForeground(ColorScheme.getColor("taskbar_text"));
 		eventsB.setVerticalAlignment(SwingConstants.TOP);
 		eventsB.setVerticalTextPosition(SwingConstants.BOTTOM);
 		eventsB.addActionListener(new java.awt.event.ActionListener() {
@@ -142,6 +148,7 @@ public class WorkPanel extends JPanel {
 		});
 		tasksB.setVerticalAlignment(SwingConstants.TOP);
 		tasksB.setText(Local.getString("Tasks"));
+		tasksB.setForeground(ColorScheme.getColor("taskbar_text"));
 		tasksB.setHorizontalTextPosition(SwingConstants.CENTER);
 		tasksB.setFocusPainted(false);
 		tasksB.setBorderPainted(false);
@@ -164,6 +171,7 @@ public class WorkPanel extends JPanel {
 		notesB.setFocusPainted(false);
 		notesB.setHorizontalTextPosition(SwingConstants.CENTER);
 		notesB.setText(Local.getString("Notes"));
+		notesB.setForeground(ColorScheme.getColor("taskbar_text"));
 		notesB.setVerticalAlignment(SwingConstants.TOP);
 		notesB.setVerticalTextPosition(SwingConstants.BOTTOM);
 		notesB.addActionListener(new java.awt.event.ActionListener() {
@@ -194,6 +202,7 @@ public class WorkPanel extends JPanel {
 		filesB.setFont(new java.awt.Font("Dialog", 1, 10));
 		filesB.setVerticalAlignment(SwingConstants.TOP);
 		filesB.setText(Local.getString("Resources"));
+		filesB.setForeground(ColorScheme.getColor("taskbar_text"));
 		filesB.setHorizontalTextPosition(SwingConstants.CENTER);
 		filesB.setFocusPainted(false);
 		filesB.setBorderPainted(false);
@@ -216,8 +225,10 @@ public class WorkPanel extends JPanel {
 		toolBar.add(filesB, null);
 		currentB = calendarB;
 		// Default blue color
-		currentB.setBackground(new Color(215, 225, 250));
+		currentB.setBackground(ColorScheme.getColor("taskbar_highlight"));
 		currentB.setOpaque(true);
+		
+		toolBar.setBackground(ColorScheme.getColor("taskbar_primary"));
 
 		toolBar.setBorder(null);
 		
@@ -245,6 +256,7 @@ public class WorkPanel extends JPanel {
  		pspB.setBackground(Color.WHITE);
  		
  		toolBar.add(pspB);
+
 		panel.setBorder(null);
 		calendarPanel.setBorder(null);
 		dailyItemsPanel.setBorder(null);
@@ -308,13 +320,13 @@ public class WorkPanel extends JPanel {
  		setCurrentButton(pspB);
  		Context.put("CURRENT_PANEL", "PSP_DEFECTS");
  	}
-	
+
 	void setCurrentButton(JButton cb) {
 		currentB.setBackground(Color.white);
 		currentB.setOpaque(false);
 		currentB = cb;
 		// Default color blue
-		currentB.setBackground(new Color(215, 225, 250));
+		currentB.setBackground(ColorScheme.getColor("taskbar_highlight"));
 		currentB.setOpaque(true);
 	}
 }

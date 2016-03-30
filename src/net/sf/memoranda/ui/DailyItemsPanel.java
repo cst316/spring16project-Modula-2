@@ -41,6 +41,7 @@ import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.Util;
@@ -123,7 +124,7 @@ public class DailyItemsPanel extends JPanel {
         //calendar.setMinimumSize(new Dimension(200, 170));
         mainPanel.setLayout(borderLayout3);
         editorsPanel.setLayout(cardLayout1);
-        statusPanel.setBackground(Color.black);
+        statusPanel.setBackground(ColorScheme.getColor("taskbar_primary"));
         statusPanel.setForeground(Color.white);
         statusPanel.setMinimumSize(new Dimension(14, 24));
         statusPanel.setPreferredSize(new Dimension(14, 24));

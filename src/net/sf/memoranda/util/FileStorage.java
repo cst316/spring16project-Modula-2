@@ -31,6 +31,8 @@ import net.sf.memoranda.ResourcesList;
 import net.sf.memoranda.ResourcesListImpl;
 import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskListImpl;
+import net.sf.memoranda.TimeLog;
+import net.sf.memoranda.TimeLogImpl;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.ui.ExceptionDialog;
 import net.sf.memoranda.ui.htmleditor.AltHTMLWriter;
@@ -313,12 +315,14 @@ public class FileStorage implements Storage {
         saveDocument(tasklistDoc,JN_DOCPATH + prj.getID() + File.separator + ".tasklist");
     }
     
+
     public DefectList openDefectList(Project prj) {
         String fn = JN_DOCPATH + prj.getID() + File.separator + ".defectlist";
 
         if (documentExists(fn)) {
             /*DEBUG*/
             System.out.println(
+
                 "[DEBUG] Open defect list: "
                     + JN_DOCPATH
                     + prj.getID()
@@ -347,6 +351,43 @@ public class FileStorage implements Storage {
         Document defectlistDoc = defectlist.getXMLContent();
         saveDocument(defectlistDoc,JN_DOCPATH + prj.getID() + File.separator + ".defectlist");
     }
+
+	@Override
+	public TimeLog openTimeLog(Project prj) {
+		String fn = JN_DOCPATH + prj.getID() + File.separator + ".timelog";
+		
+		if (documentExists(fn)) {
+			/*DEBUG*/
+	        System.out.println(
+                "[DEBUG] Open time log: "
+                    + JN_DOCPATH
+                    + prj.getID()
+                    + File.separator
+                    + ".timelog");
+            
+            Document timelogDoc = openDocument(fn);
+            return new TimeLogImpl(timelogDoc, prj);
+        }
+        else {
+            /*DEBUG*/
+            System.out.println("[DEBUG] New task list created");
+            return new TimeLogImpl(prj);
+        }
+	}
+
+	@Override
+	public void storeTimeLog(TimeLog log, Project prj) {
+		/*DEBUG*/
+        System.out.println(
+            "[DEBUG] Save time log: "
+                + JN_DOCPATH
+                + prj.getID()
+                + File.separator
+                + ".timelog");
+        Document tasklistDoc = log.getXMLContent();
+        saveDocument(tasklistDoc,JN_DOCPATH + prj.getID() + File.separator + ".timelog");
+	}
+	
     /**
      * @see net.sf.memoranda.util.Storage#createProjectStorage(net.sf.memoranda.Project)
      */
@@ -479,6 +520,7 @@ public class FileStorage implements Storage {
             rl.getXMLContent(),
             JN_DOCPATH + prj.getID() + File.separator + ".resources");
     }
+    
     /**
      * @see net.sf.memoranda.util.Storage#restoreContext()
      */
