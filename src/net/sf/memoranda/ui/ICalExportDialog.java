@@ -5,12 +5,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 
+import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.util.Local;
+
 import javax.swing.*;
+
 import java.awt.*;
 
-public class ICalExportDialog extends JDialog {
-
+public class ICalExportDialog extends JDialog {	
   BorderLayout borderLayout1 = new BorderLayout();
   JPanel jPanel2 = new JPanel();
   public JFileChooser fileChooser = null;

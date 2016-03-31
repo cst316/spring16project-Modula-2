@@ -47,6 +47,7 @@ import net.sf.memoranda.ui.htmleditor.HTMLEditor;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.CurrentStorage;
+import net.sf.memoranda.util.ICalExporter;
 import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.ProjectExporter;
 import net.sf.memoranda.util.ProjectPackager;
@@ -910,12 +911,10 @@ public class AppFrame extends JFrame {
                 "LAST_SELECTED_EXPORT_FILE",
                 chooser.getSelectedFile().getPath());
 
-        File f = chooser.getSelectedFile();
-        boolean xhtml =
-                chooser.getFileFilter().getDescription().indexOf("XHTML") > -1;
-         CurrentProject.save();
-         
-        }
+        CurrentProject.save();
+
+        ICalExporter.export(CurrentProject.get(), chooser.getSelectedFile());
+    }
     
         protected void ppExport_actionPerformed(ActionEvent e) {
             // Fix until Sun's JVM supports more locales...

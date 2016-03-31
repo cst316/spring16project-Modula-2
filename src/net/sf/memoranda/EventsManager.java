@@ -53,8 +53,70 @@ public class EventsManager {
 			_doc = new Document(_root);
 		} else
 			_root = _doc.getRootElement();
-
 	}
+	
+	public static Vector<EventExpanded> getFutureNonrecurringEvents() {
+		Vector<EventExpanded> nonrecurringEvents = new Vector<EventExpanded>();
+		
+		Elements yearElements = _root.getChildElements();
+		
+		for(int years = 0; years < yearElements.size(); years++) {
+			Element yearElement = yearElements.get(years);
+			//System.out.println("getUpcomingEvents(): yearElement = " + yearElement.getLocalName() + "(Size " + yearElement.getChildCount() + ")");
+			if(yearElement.getLocalName() == "repeatable") {
+				// Repeatable events
+				// Eat this, not processing repeatable here
+			} 
+			else if(yearElement.getLocalName() == "sticker") {
+				// What is this
+				// Eat this, whatever the heck this is
+			} else {
+				// Year
+				Elements monthElements = yearElement.getChildElements();
+				for(int months = 0; months < monthElements.size(); months++) {
+					// Month
+					Element monthElement = monthElements.get(months);
+					//System.out.println("getUpcomingEvents(): monthElement = " + monthElement.getLocalName() + "(Size " + monthElement.getChildCount() + ")");
+					Elements dayElements = monthElement.getChildElements();
+					for(int days = 0; days < dayElements.size(); days++) {
+						// Day
+						Element dayElement = dayElements.get(days);
+						//System.out.println("getUpcomingEvents(): dayElement = " + dayElement.getLocalName() + "(Size " + dayElement.getChildCount() + ")");
+					
+						int dateYear = Integer.parseInt(yearElement.getAttributeValue("year"));
+						int dateMonth = Integer.parseInt(monthElement.getAttributeValue("month"));
+						int dateDay = Integer.parseInt(dayElement.getAttributeValue("day"));
+
+						CalendarDate date = new CalendarDate(dateDay,dateMonth,dateYear);
+
+						Elements eventElements = dayElement.getChildElements();
+						for(int e = 0; e < eventElements.size(); e++) {
+							// Event
+							Element eventElement = eventElements.get(e);
+							//System.out.println("getUpcomingEvents(): Added event (" + singletonEvents.size() + " total)");
+							
+							EventExpanded event = new EventExpanded(eventElement, date);
+							CalendarDate today = new CalendarDate();
+							
+							// Only get events today or in the future
+							if(date.before(today) && !date.equals(today))
+								continue;
+							
+							nonrecurringEvents.add(event);
+						}
+					}
+				}
+			}
+		}
+		
+		//System.out.println("getUpcomingEvents() returning " + singletonEvents.size());
+		return nonrecurringEvents;
+	}
+	
+	// TODO Will this be compatable with iCal export?
+	//public static Vector<Event> getFutureRecurringEvents() {
+	//	return new Vector<Event>();
+	//}
 
 	public static void createSticker(String text, int prior) {
 		Element el = new Element("sticker");
