@@ -82,57 +82,130 @@ public class ICalExporter {
         	if(event.getEndDate() != null && event.getEndDate().before(today))
         		continue;
 
-        	java.util.Calendar date = java.util.Calendar.getInstance();
-        	date.set(java.util.Calendar.DAY_OF_MONTH, event.getStartDate().getDay());
-        	date.set(java.util.Calendar.MONTH, event.getStartDate().getMonth());
-        	date.set(java.util.Calendar.YEAR, event.getStartDate().getYear());
-        	date.set(java.util.Calendar.HOUR_OF_DAY, event.getHour());
-        	date.set(java.util.Calendar.MINUTE, event.getMinute());
+        	Vector<CalendarDate> exceptionDates = event.getExceptionDates();
+        	if(exceptionDates.size() > 1) {
+        		// TODO sort exception dates by date
+        	}
         	
-        	Recur recur;
-        	        	
-        	if(event.getRepeat() == EventsManager.REPEAT_YEARLY) {
-       		 	recur = new Recur(Recur.YEARLY,null);
-       		 	recur.setInterval(event.getPeriod());
-        	}
-        	else if(event.getRepeat() == EventsManager.REPEAT_MONTHLY) {
-        		// iCal4j has no way to recur on day of months, so this is close :), I hate myself for this sorry
-        		recur = new Recur(Recur.MONTHLY,null);
-        		recur.setInterval(30);
-        	}
-        	else if(event.getRepeat() == EventsManager.REPEAT_WEEKLY) {
-        		// Find day of the week
-        		while(date.get(java.util.Calendar.DAY_OF_WEEK) != event.getPeriod())
-        			date.add(java.util.Calendar.DAY_OF_MONTH, 1);
+        	int exceptionNum = 0;
+        	do {
+        		CalendarDate startDate;
+        		if(exceptionNum == 0) {
+        			startDate = event.getStartDate();
+        		} else {
+        			startDate = exceptionDates.get(exceptionNum-1);
+    				java.util.Calendar tempDate = startDate.getCalendar();
+        			
+        			if(event.getRepeat() == EventsManager.REPEAT_YEARLY) {
+        				// Increment by one day (in case it is the same day as event)
+        				tempDate.add(java.util.Calendar.DAY_OF_YEAR, 1);
+        				
+        				// Now find when it should next occur
+        				while(!tempDate.equals(event.getStartDate().getCalendar())) {
+        					tempDate.add(java.util.Calendar.DAY_OF_YEAR,1);
+        				}
+        				
+        				// Continue now creating this as the beginning new date
+        				startDate = new CalendarDate(tempDate);
+        			}
+                	else if(event.getRepeat() == EventsManager.REPEAT_MONTHLY) {
+        				// Increment by one day (in case it is the same day as event)
+        				tempDate.add(java.util.Calendar.DAY_OF_YEAR, 1);
+        				
+        				// Now find when it should next occur
+        				while(tempDate.get(java.util.Calendar.DAY_OF_MONTH) != event.getStartDate().getCalendar().get(java.util.Calendar.DAY_OF_MONTH)) {
+        					tempDate.add(java.util.Calendar.DAY_OF_YEAR,1);
+        				}
+        				
+        				// Continue now creating this as the beginning new date
+        				startDate = new CalendarDate(tempDate);
+        			}
+                	else if(event.getRepeat() == EventsManager.REPEAT_WEEKLY){ 
+        				// Increment by one day (in case it is the same day as event)
+        				tempDate.add(java.util.Calendar.DAY_OF_YEAR, 1);
+                		
+        				while(tempDate.get(java.util.Calendar.DAY_OF_WEEK) != event.getStartDate().getCalendar().get(java.util.Calendar.DAY_OF_WEEK)) {
+        					tempDate.add(java.util.Calendar.DAY_OF_YEAR,1);
+        				}
+        				
+        				// Continue now creating this as the beginning new date
+        				startDate = new CalendarDate(tempDate);
+                	}
+                	else {
+                		// Get the last exception date we're processing
+                		java.util.Calendar exceptionDate = (java.util.Calendar) tempDate.clone();
+                		
+                		// Start from the beginning
+                		tempDate = event.getStartDate().getCalendar();
+                		
+                		// Keep iterating forward the period until we're after the exception date
+                		while(exceptionDate.before(tempDate) || exceptionDate.equals(tempDate))
+            				tempDate.add(java.util.Calendar.DAY_OF_YEAR, event.getPeriod());
+        				
+                		startDate = new CalendarDate(tempDate);
+                	}
+        		}
         		
-        		// Repeat every day of week
-        		recur = new Recur(Recur.WEEKLY,null);
-        		recur.setInterval(7);
-        	}
-        	else {
-        		recur = new Recur(Recur.DAILY,null);
-        		recur.setInterval(event.getPeriod());
-        	}
+            	java.util.Calendar date = java.util.Calendar.getInstance();
+            	date.set(java.util.Calendar.DAY_OF_MONTH, startDate.getDay());
+            	date.set(java.util.Calendar.MONTH, startDate.getMonth());
+            	date.set(java.util.Calendar.YEAR, startDate.getYear());
+            	date.set(java.util.Calendar.HOUR_OF_DAY, event.getHour());
+            	date.set(java.util.Calendar.MINUTE, event.getMinute());
+            	
+            	Recur recur;
+            	        	
+            	if(event.getRepeat() == EventsManager.REPEAT_YEARLY) {
+           		 	recur = new Recur(Recur.YEARLY,null);
+           		 	recur.setInterval(event.getPeriod());
+            	}
+            	else if(event.getRepeat() == EventsManager.REPEAT_MONTHLY) {
+            		// iCal4j has no way to recur on day of months, so this is close :), I hate myself for this sorry
+            		recur = new Recur(Recur.MONTHLY,null);
+            		recur.setInterval(30);
+            	}
+            	else if(event.getRepeat() == EventsManager.REPEAT_WEEKLY) {
+            		// Find day of the week
+            		while(date.get(java.util.Calendar.DAY_OF_WEEK) != event.getPeriod())
+            			date.add(java.util.Calendar.DAY_OF_MONTH, 1);
 
-        	// Create event
-        	net.fortuna.ical4j.model.DateTime icalDate = new net.fortuna.ical4j.model.DateTime(date.getTime());        	
-        	VEvent temp = new VEvent(icalDate,new net.fortuna.ical4j.model.Dur(0,1,0,0), event.getText());
+            		// Repeat every day of week
+            		recur = new Recur(Recur.DAILY,null);
+            		recur.setInterval(7);
+            	}
+            	else {
+            		recur = new Recur(Recur.DAILY,null);
+            		recur.setInterval(event.getPeriod());
+            	}
 
-        	// If it has an ending date, set it
-        	if(event.getEndDate() != null)
-            	recur.setUntil((net.fortuna.ical4j.model.Date) event.getEndDate().getDate());
-
-        	// Create and add rule to event
-        	RRule rule = new RRule(recur);
-        	temp.getProperties().add(rule);
+            	// Create event
+            	net.fortuna.ical4j.model.DateTime icalDate = new net.fortuna.ical4j.model.DateTime(date.getTime());        	
+            	VEvent tempEvent = new VEvent(icalDate,new net.fortuna.ical4j.model.Dur(0,1,0,0), event.getText());
+            	
+            	// Stop repeating if we're going to add another after this
+            	if(exceptionNum+1 <= exceptionDates.size()) {
+            		recur.setUntil(new net.fortuna.ical4j.model.Date(exceptionDates.get(exceptionNum).getDate()));
+            	}
+            	// If it has an ending date, set it
+            	else if(event.getEndDate() != null) {
+                	recur.setUntil(new net.fortuna.ical4j.model.Date(event.getEndDate().getDate()));
+        		}
         	
-        	try {
-				UidGenerator uidGenerator = new UidGenerator("1");
-	        	temp.getProperties().add(uidGenerator.generateUid());
-	        	icalCalendar.getComponents().add(temp);
-			} catch (SocketException e1) {
-				e1.printStackTrace();
-			}
+            	// Create and add rule to event
+            	RRule rule = new RRule(recur);
+            	tempEvent.getProperties().add(rule);
+            	
+            	try {
+    				UidGenerator uidGenerator = new UidGenerator("1");
+    	        	tempEvent.getProperties().add(uidGenerator.generateUid());
+    	        	icalCalendar.getComponents().add(tempEvent);
+    			} catch (SocketException e1) {
+    				e1.printStackTrace();
+    			}
+        		
+        		exceptionNum++;
+        	}
+        	while(exceptionNum <= exceptionDates.size());        	
         }
        
         // Output
