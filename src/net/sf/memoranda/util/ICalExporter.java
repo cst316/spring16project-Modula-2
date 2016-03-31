@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.net.SocketException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Vector;
 
@@ -82,9 +83,12 @@ public class ICalExporter {
         	if(event.getEndDate() != null && event.getEndDate().before(today))
         		continue;
 
-        	Vector<CalendarDate> exceptionDates = event.getExceptionDates();
-        	if(exceptionDates.size() > 1) {
-        		// TODO sort exception dates by date
+        	Vector v = event.getExceptionDates();        	
+        	Vector<CalendarDate> exceptionDates = new Vector<CalendarDate>();
+        	
+        	if(v.size() > 0) {
+        		Collections.sort(v);
+        		exceptionDates.addAll(v);
         	}
         	
         	int exceptionNum = 0;
