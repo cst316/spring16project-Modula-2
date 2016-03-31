@@ -80,17 +80,19 @@ public class ICalExporter {
         for(int e = 0; e < eventsRecurring.size(); e++) {
         	Event event = eventsRecurring.get(e);
 
+        	// Don't care about it if it's past
         	if(event.getEndDate() != null && event.getEndDate().before(today))
         		continue;
 
+        	// Sort exception dates
         	Vector v = event.getExceptionDates();        	
         	Vector<CalendarDate> exceptionDates = new Vector<CalendarDate>();
-        	
         	if(v.size() > 0) {
         		Collections.sort(v);
         		exceptionDates.addAll(v);
         	}
         	
+        	// Start with initial startDate, then create more events if necessary for exception dates
         	int exceptionNum = 0;
         	do {
         		CalendarDate startDate;
@@ -199,6 +201,7 @@ public class ICalExporter {
             	RRule rule = new RRule(recur);
             	tempEvent.getProperties().add(rule);
             	
+            	// Generate event ID and add to calendar
             	try {
     				UidGenerator uidGenerator = new UidGenerator("1");
     	        	tempEvent.getProperties().add(uidGenerator.generateUid());
@@ -207,6 +210,7 @@ public class ICalExporter {
     				e1.printStackTrace();
     			}
         		
+            	// Increment exception counter, for do{} while() if there are exception dates
         		exceptionNum++;
         	}
         	while(exceptionNum <= exceptionDates.size());        	
