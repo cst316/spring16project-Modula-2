@@ -16,8 +16,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.Local;
+import java.awt.Font;
+import java.awt.event.ActionListener;
 
 /**
  * 
@@ -35,12 +38,18 @@ public class WorkPanel extends JPanel {
 	public CalendarPanel calendarPanel = new CalendarPanel(this);
 	public DailyItemsPanel dailyItemsPanel = new DailyItemsPanel(this);
 	public ResourcesPanel filesPanel = new ResourcesPanel();
+
+	public TimeLogPanel timeLogPanel= new TimeLogPanel(this);
+
 	public JButton calendarB = new JButton();
 	public JButton tasksB = new JButton();
 	public JButton eventsB = new JButton();
 	public JButton filesB = new JButton();
+	public JButton pspB = new JButton();
 	JButton currentB = null;
 	Border border1;
+	
+	
 
 	public WorkPanel() {
 		try {
@@ -80,6 +89,7 @@ public class WorkPanel extends JPanel {
 		calendarB.setFocusPainted(false);
 		calendarB.setHorizontalTextPosition(SwingConstants.CENTER);
 		calendarB.setText(Local.getString("Calendar"));
+		calendarB.setForeground(ColorScheme.getColor("taskbar_text"));
 		calendarB.setVerticalAlignment(SwingConstants.TOP);
 		calendarB.setVerticalTextPosition(SwingConstants.BOTTOM);
 		calendarB.addActionListener(new java.awt.event.ActionListener() {
@@ -106,6 +116,7 @@ public class WorkPanel extends JPanel {
 		eventsB.setFocusPainted(false);
 		eventsB.setHorizontalTextPosition(SwingConstants.CENTER);
 		eventsB.setText(Local.getString("Events"));
+		eventsB.setForeground(ColorScheme.getColor("taskbar_text"));
 		eventsB.setVerticalAlignment(SwingConstants.TOP);
 		eventsB.setVerticalTextPosition(SwingConstants.BOTTOM);
 		eventsB.addActionListener(new java.awt.event.ActionListener() {
@@ -136,6 +147,7 @@ public class WorkPanel extends JPanel {
 		});
 		tasksB.setVerticalAlignment(SwingConstants.TOP);
 		tasksB.setText(Local.getString("Tasks"));
+		tasksB.setForeground(ColorScheme.getColor("taskbar_text"));
 		tasksB.setHorizontalTextPosition(SwingConstants.CENTER);
 		tasksB.setFocusPainted(false);
 		tasksB.setBorderPainted(false);
@@ -158,6 +170,7 @@ public class WorkPanel extends JPanel {
 		notesB.setFocusPainted(false);
 		notesB.setHorizontalTextPosition(SwingConstants.CENTER);
 		notesB.setText(Local.getString("Notes"));
+		notesB.setForeground(ColorScheme.getColor("taskbar_text"));
 		notesB.setVerticalAlignment(SwingConstants.TOP);
 		notesB.setVerticalTextPosition(SwingConstants.BOTTOM);
 		notesB.addActionListener(new java.awt.event.ActionListener() {
@@ -171,7 +184,7 @@ public class WorkPanel extends JPanel {
 					"resources/icons/notes.png")));
 		notesB.setMargin(new Insets(0, 0, 0, 0));
 		notesB.setSelected(true);
-		this.setPreferredSize(new Dimension(1073, 300));
+		this.setPreferredSize(new Dimension(1085, 478));
 
 		filesB.setSelected(true);
 		filesB.setMargin(new Insets(0, 0, 0, 0));
@@ -188,6 +201,7 @@ public class WorkPanel extends JPanel {
 		filesB.setFont(new java.awt.Font("Dialog", 1, 10));
 		filesB.setVerticalAlignment(SwingConstants.TOP);
 		filesB.setText(Local.getString("Resources"));
+		filesB.setForeground(ColorScheme.getColor("taskbar_text"));
 		filesB.setHorizontalTextPosition(SwingConstants.CENTER);
 		filesB.setFocusPainted(false);
 		filesB.setBorderPainted(false);
@@ -202,6 +216,7 @@ public class WorkPanel extends JPanel {
 		panel.add(calendarPanel, "CALENDAR");
 		panel.add(dailyItemsPanel, "DAILYITEMS");
 		panel.add(filesPanel, "FILES");
+		panel.add(timeLogPanel, "TIMELOG");
 		toolBar.add(calendarB, null);
 		toolBar.add(eventsB, null);
 		toolBar.add(tasksB, null);
@@ -209,14 +224,45 @@ public class WorkPanel extends JPanel {
 		toolBar.add(filesB, null);
 		currentB = calendarB;
 		// Default blue color
-		currentB.setBackground(new Color(215, 225, 250));
+		currentB.setBackground(ColorScheme.getColor("taskbar_highlight"));
 		currentB.setOpaque(true);
+		
+		toolBar.setBackground(ColorScheme.getColor("taskbar_primary"));
 
 		toolBar.setBorder(null);
+		
+		pspB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pspB_actionPerformed(e);
+			}
+		});
+		
+		pspB.setIcon(new ImageIcon(WorkPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/agenda.png")));
+		pspB.setVerticalTextPosition(SwingConstants.BOTTOM);
+		pspB.setVerticalAlignment(SwingConstants.TOP);
+		pspB.setText("Time Log");
+		pspB.setSelected(true);
+		pspB.setPreferredSize(new Dimension(50, 50));
+		pspB.setOpaque(false);
+		pspB.setMinimumSize(new Dimension(30, 30));
+		pspB.setMaximumSize(new Dimension(60, 80));
+		pspB.setMargin(new Insets(0, 0, 0, 0));
+		pspB.setHorizontalTextPosition(SwingConstants.CENTER);
+		pspB.setFont(new Font("Dialog", Font.BOLD, 10));
+		pspB.setFocusPainted(false);
+		pspB.setContentAreaFilled(false);
+		pspB.setBorderPainted(false);
+		pspB.setBackground(Color.WHITE);
+		pspB.setForeground(ColorScheme.getColor("taskbar_text"));
+		
+		toolBar.add(pspB);
 		panel.setBorder(null);
 		calendarPanel.setBorder(null);
 		dailyItemsPanel.setBorder(null);
 		filesPanel.setBorder(null);
+		timeLogPanel.setBorder(null);
+		
+		
 
 	}
 
@@ -230,6 +276,8 @@ public class WorkPanel extends JPanel {
 				eventsB_actionPerformed(null);
 			else if (pan.equals("FILES"))
 				filesB_actionPerformed(null);
+			else if (pan.equals("TIMELOG"))
+				pspB_actionPerformed(null);
 		}
 	}
 
@@ -265,13 +313,18 @@ public class WorkPanel extends JPanel {
 		setCurrentButton(filesB);
 		Context.put("CURRENT_PANEL", "FILES");
 	}
+	public void pspB_actionPerformed(ActionEvent e) {
+		cardLayout1.show(panel, "TIMELOG");
+		setCurrentButton(pspB);
+		Context.put("CURRENT_PANEL", "TIMELOG");
+	}
 
 	void setCurrentButton(JButton cb) {
 		currentB.setBackground(Color.white);
 		currentB.setOpaque(false);
 		currentB = cb;
 		// Default color blue
-		currentB.setBackground(new Color(215, 225, 250));
+		currentB.setBackground(ColorScheme.getColor("taskbar_highlight"));
 		currentB.setOpaque(true);
 	}
 }

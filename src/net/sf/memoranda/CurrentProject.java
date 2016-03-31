@@ -27,6 +27,7 @@ public class CurrentProject {
     private static Project _project = null;
     private static TaskList _tasklist = null;
     private static NoteList _notelist = null;
+    private static TimeLog _timelog = null;
     private static ResourcesList _resources = null;
     private static Vector projectListeners = new Vector();
 
@@ -52,6 +53,7 @@ public class CurrentProject {
 		
         _tasklist = CurrentStorage.get().openTaskList(_project);
         _notelist = CurrentStorage.get().openNoteList(_project);
+        _timelog = CurrentStorage.get().openTimeLog(_project);
         _resources = CurrentStorage.get().openResourcesList(_project);
         AppFrame.addExitListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -73,6 +75,10 @@ public class CurrentProject {
             return _notelist;
     }
     
+    public static TimeLog getTimeLog() {
+    	return _timelog;
+    }
+    
     public static ResourcesList getResourcesList() {
             return _resources;
     }
@@ -81,11 +87,13 @@ public class CurrentProject {
         if (project.getID().equals(_project.getID())) return;
         TaskList newtasklist = CurrentStorage.get().openTaskList(project);
         NoteList newnotelist = CurrentStorage.get().openNoteList(project);
+        TimeLog newtimelog = CurrentStorage.get().openTimeLog(project);
         ResourcesList newresources = CurrentStorage.get().openResourcesList(project);
         notifyListenersBefore(project, newnotelist, newtasklist, newresources);
         _project = project;
         _tasklist = newtasklist;
         _notelist = newnotelist;
+        _timelog = newtimelog;
         _resources = newresources;
         notifyListenersAfter();
         Context.put("LAST_OPENED_PROJECT_ID", project.getID());
@@ -117,6 +125,7 @@ public class CurrentProject {
 
         storage.storeNoteList(_notelist, _project);
         storage.storeTaskList(_tasklist, _project); 
+        storage.storeTimeLog(_timelog, _project);
         storage.storeResourcesList(_resources, _project);
         storage.storeProjectManager();
     }
