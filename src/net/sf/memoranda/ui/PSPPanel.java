@@ -43,9 +43,8 @@ public class PSPPanel extends JPanel {
 		taskbar = new PSPTaskbarPanel(null);
 		taskbar.setBorder(null);
 		
-		taskbar.setMaximumSize(new Dimension(500, 100));
-		taskbar.setPreferredSize(new Dimension(300, 100));
-		taskbar.setMinimumSize(new Dimension(1, 100));
+		taskbar.setMaximumSize(new Dimension(500, 42));
+		taskbar.setPreferredSize(new Dimension(300, 42));
 		
 		cardPanel = new JPanel();
 		cardPanel.setLayout(cardLayout);
