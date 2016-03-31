@@ -342,7 +342,7 @@ public class ProjectDialog extends JDialog {
         gbc_buttonAddTeam.gridy = 7;
         buttonAddTeam.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		new ProjectNewTeamMemberDialog();
+        		new ProjectNewTeamMemberDialog(App.getFrame(), Local.getString("New task"));
         	}
         });
         centerPanel.add(buttonAddTeam, gbc_buttonAddTeam);

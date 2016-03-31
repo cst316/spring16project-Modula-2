@@ -5,6 +5,8 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -12,7 +14,7 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 
-public class ProjectNewTeamMemberDialog extends JPanel {
+public class ProjectNewTeamMemberDialog extends JDialog {
 	/**
 	 * 
 	 */
@@ -22,6 +24,7 @@ public class ProjectNewTeamMemberDialog extends JPanel {
 	private JTextField emailTextfield;
 	private JTextField phoneNumberTextfield;
 	
+	JFrame newTeam = new JFrame("NewTeam");
 	JPanel newUserPanel = new JPanel();
 	JPanel titlePanel = new JPanel();
 	JLabel lblNewLabel = new JLabel("Enter New Team Member");
@@ -33,8 +36,8 @@ public class ProjectNewTeamMemberDialog extends JPanel {
 	JLabel phoneNumLabel = new JLabel("Phone Number");
 	JPanel finalPanel = new JPanel();
 	
-		public ProjectNewTeamMemberDialog(Frame frame) {
-		super();
+		public ProjectNewTeamMemberDialog(Frame frame, String title) {
+		super(frame, title, true);
 		try {
             jbInit();
             
@@ -43,9 +46,10 @@ public class ProjectNewTeamMemberDialog extends JPanel {
             new ExceptionDialog(ex);
         }
 	}
-		
+
 		void jbInit() throws Exception {
-		
+
+			
 		newUserPanel.setPreferredSize(new Dimension(300, 170));
 		newUserPanel.setMinimumSize(new Dimension(500, 500));
 		newUserPanel.setLayout(new BoxLayout(newUserPanel, BoxLayout.PAGE_AXIS));
