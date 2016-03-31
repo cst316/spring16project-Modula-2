@@ -107,7 +107,7 @@ public class ICalExporter {
         				tempDate.add(java.util.Calendar.DAY_OF_YEAR, 1);
         				
         				// Now find when it should next occur
-        				while(!tempDate.equals(event.getStartDate().getCalendar())) {
+        				while(!tempDate.equals(startDate.getCalendar())) {
         					tempDate.add(java.util.Calendar.DAY_OF_YEAR,1);
         				}
         				
@@ -119,7 +119,7 @@ public class ICalExporter {
         				tempDate.add(java.util.Calendar.DAY_OF_YEAR, 1);
         				
         				// Now find when it should next occur
-        				while(tempDate.get(java.util.Calendar.DAY_OF_MONTH) != event.getStartDate().getCalendar().get(java.util.Calendar.DAY_OF_MONTH)) {
+        				while(tempDate.get(java.util.Calendar.DAY_OF_MONTH) != startDate.getCalendar().get(java.util.Calendar.DAY_OF_MONTH)) {
         					tempDate.add(java.util.Calendar.DAY_OF_YEAR,1);
         				}
         				
@@ -130,7 +130,7 @@ public class ICalExporter {
         				// Increment by one day (in case it is the same day as event)
         				tempDate.add(java.util.Calendar.DAY_OF_YEAR, 1);
                 		
-        				while(tempDate.get(java.util.Calendar.DAY_OF_WEEK) != event.getStartDate().getCalendar().get(java.util.Calendar.DAY_OF_WEEK)) {
+        				while(tempDate.get(java.util.Calendar.DAY_OF_WEEK) != startDate.getCalendar().get(java.util.Calendar.DAY_OF_WEEK)) {
         					tempDate.add(java.util.Calendar.DAY_OF_YEAR,1);
         				}
         				
@@ -166,6 +166,10 @@ public class ICalExporter {
            		 	recur.setInterval(event.getPeriod());
             	}
             	else if(event.getRepeat() == EventsManager.REPEAT_MONTHLY) {
+            		// Find correct day of month
+            		if(date.get(java.util.Calendar.DAY_OF_MONTH) != event.getPeriod())
+            			date.set(java.util.Calendar.DAY_OF_MONTH, event.getPeriod());
+            			
             		recur = new Recur(Recur.MONTHLY,null);
             		recur.setInterval(1);
             	}
