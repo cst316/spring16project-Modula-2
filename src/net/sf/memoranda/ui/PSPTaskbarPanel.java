@@ -55,7 +55,7 @@ public class PSPTaskbarPanel extends JToolBar {
 			 
 			 setFloatable(false);
 			 setVisible(true);
-			 super.setBorder(new EmptyBorder(new Insets(10,10,10,2)));
+			 super.setBorder(new EmptyBorder(new Insets(0,0,0,0)));
 			 setAlignmentX(Component.LEFT_ALIGNMENT);
 			 setLayout(new FlowLayout(FlowLayout.CENTER));
 
@@ -73,13 +73,11 @@ public class PSPTaskbarPanel extends JToolBar {
 		 * Initialize the contents of the frame.
 		 */
 		private void jbInit () throws Exception {
-
-			
-			this.setBackground(ColorScheme.getColor("frame_secondary"));
+			this.setBackground(ColorScheme.getColor("taskbar_primary"));
 			this.setBorder(null);
 			setLayout(null);
-		    viewbtnPanel.setBounds(-50, 30, 464, 42);
-		    viewbtnPanel.setBackground(ColorScheme.getColor("frame_secondary"));
+		    viewbtnPanel.setBounds(-50, 0, 464, 42);
+		    viewbtnPanel.setBackground(ColorScheme.getColor("taskbar_primary"));
 																		
 			add(viewbtnPanel);
 																		

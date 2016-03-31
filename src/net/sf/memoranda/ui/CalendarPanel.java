@@ -24,6 +24,8 @@ import net.sf.memoranda.Task;
 import net.sf.memoranda.TaskListListener;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.util.ColorScheme;
+
 import java.awt.Insets;
 
 public class CalendarPanel extends JPanel {
@@ -53,6 +55,9 @@ public class CalendarPanel extends JPanel {
     }
 
     void jbInit() throws Exception {
+    	this.setBackground(ColorScheme.getColor("frame_secondary"));
+    	mainPanel.setBackground(ColorScheme.getColor("frame_secondary"));
+    	
 		viewPanel.changeViewType(CalendarPanelView.VIEW_MONTH);
 
     	// GridPanel
