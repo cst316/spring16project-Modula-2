@@ -166,9 +166,8 @@ public class ICalExporter {
            		 	recur.setInterval(event.getPeriod());
             	}
             	else if(event.getRepeat() == EventsManager.REPEAT_MONTHLY) {
-            		// iCal4j has no way to recur on day of months, so this is close :), I hate myself for this sorry
             		recur = new Recur(Recur.MONTHLY,null);
-            		recur.setInterval(30);
+            		recur.setInterval(1);
             	}
             	else if(event.getRepeat() == EventsManager.REPEAT_WEEKLY) {
             		// Find day of the week
