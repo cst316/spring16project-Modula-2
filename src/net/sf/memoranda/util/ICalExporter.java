@@ -5,11 +5,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.net.SocketException;
+import java.util.Date;
 import java.util.Vector;
 
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.parameter.Value;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Version;
@@ -48,8 +51,10 @@ public class ICalExporter {
         	date.set(java.util.Calendar.YEAR, event.getDate().getYear());
         	date.set(java.util.Calendar.HOUR_OF_DAY, event.getHour());
         	date.set(java.util.Calendar.MINUTE, event.getMinute());
+
+        	net.fortuna.ical4j.model.DateTime icalDate = new net.fortuna.ical4j.model.DateTime(date.getTime());
         	
-        	VEvent temp = new VEvent(new net.fortuna.ical4j.model.Date(date.getTime()), event.getText());
+        	VEvent temp = new VEvent(icalDate,new net.fortuna.ical4j.model.Dur(0,1,0,0), event.getText());
 
         	try {
 				UidGenerator uidGenerator = new UidGenerator("1");
