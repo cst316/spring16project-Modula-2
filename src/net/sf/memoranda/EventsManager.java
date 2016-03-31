@@ -112,11 +112,6 @@ public class EventsManager {
 		//System.out.println("getUpcomingEvents() returning " + singletonEvents.size());
 		return nonrecurringEvents;
 	}
-	
-	// TODO Will this be compatable with iCal export?
-	//public static Vector<Event> getFutureRecurringEvents() {
-	//	return new Vector<Event>();
-	//}
 
 	public static void createSticker(String text, int prior) {
 		Element el = new Element("sticker");
@@ -235,11 +230,13 @@ public class EventsManager {
 		return event;
 	}
 
-	public static Collection getRepeatableEvents() {
-		Vector v = new Vector();
+	public static Vector<Event> getRepeatableEvents() {
+		Vector<Event> v = new Vector<Event>();
 		Element rep = _root.getFirstChildElement("repeatable");
+
 		if (rep == null)
 			return v;
+		
 		Elements els = rep.getChildElements("event");
 		for (int i = 0; i < els.size(); i++)
 			v.add(new EventImpl(els.get(i)));
@@ -252,22 +249,13 @@ public class EventsManager {
 		for (int i = 0; i < reps.size(); i++) {
 			Event ev = (Event) reps.get(i);
 			
-			// --- ivanrise
 			// ignore this event if it's a 'only working days' event and today is weekend.
 			if(ev.getWorkingDays() && (date.getCalendar().get(Calendar.DAY_OF_WEEK) == 1 ||
 				date.getCalendar().get(Calendar.DAY_OF_WEEK) == 7)) continue;
 			
 			// -- dchende2
 			if(ev.hasExceptionDate( date )) continue;
-			
-			// ---
-			/*
-			 * /if ( ((date.after(ev.getStartDate())) &&
-			 * (date.before(ev.getEndDate()))) ||
-			 * (date.equals(ev.getStartDate()))
-			 */
-			//System.out.println(date.inPeriod(ev.getStartDate(),
-			// ev.getEndDate()));
+
 			if (date.inPeriod(ev.getStartDate(), ev.getEndDate())) {
 				if (ev.getRepeat() == REPEAT_DAILY) {
 					int n = date.getCalendar().get(Calendar.DAY_OF_YEAR);
