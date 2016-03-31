@@ -107,7 +107,7 @@ public class ICalExporter {
         				tempDate.add(java.util.Calendar.DAY_OF_YEAR, 1);
         				
         				// Now find when it should next occur
-        				while(!tempDate.equals(startDate.getCalendar())) {
+        				while(tempDate.get(java.util.Calendar.DAY_OF_YEAR) != startDate.getCalendar().get(java.util.Calendar.DAY_OF_YEAR)) {
         					tempDate.add(java.util.Calendar.DAY_OF_YEAR,1);
         				}
         				
@@ -138,6 +138,7 @@ public class ICalExporter {
         				startDate = new CalendarDate(tempDate);
                 	}
                 	else {
+                		// REPEAT_DAILY
                 		// Get the last exception date we're processing
                 		java.util.Calendar exceptionDate = (java.util.Calendar) tempDate.clone();
                 		
@@ -163,7 +164,7 @@ public class ICalExporter {
             	        	
             	if(event.getRepeat() == EventsManager.REPEAT_YEARLY) {
            		 	recur = new Recur(Recur.YEARLY,null);
-           		 	recur.setInterval(event.getPeriod());
+           		 	recur.setInterval(1);
             	}
             	else if(event.getRepeat() == EventsManager.REPEAT_MONTHLY) {
             		// Find correct day of month
