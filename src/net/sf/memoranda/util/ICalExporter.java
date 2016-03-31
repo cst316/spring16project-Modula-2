@@ -35,16 +35,18 @@ public class ICalExporter {
         if(!filePath.endsWith(".ical") && !filePath.endsWith(".ics")) 
             output = new File(filePath + ".ical");
         
-        Vector<EventExpanded> events = EventsManager.getFutureNonrecurringEvents();
+        
         
         Calendar icalCalendar = new net.fortuna.ical4j.model.Calendar();
         icalCalendar.getProperties().add(new ProdId("-//Ben Fortuna//iCal4j 1.0//EN"));
         icalCalendar.getProperties().add(Version.VERSION_2_0);
         icalCalendar.getProperties().add(CalScale.GREGORIAN);
         
-        
-        for(int e = 0; e < events.size(); e++) {
-        	EventExpanded event = events.get(e);
+        // Nonrecurring events
+        Vector<EventExpanded> eventsNonrecurring = EventsManager.getFutureNonrecurringEvents();
+        for(int e = 0; e < eventsNonrecurring.size(); e++) {
+        	
+        	EventExpanded event = eventsNonrecurring.get(e);
         	java.util.Calendar date = java.util.Calendar.getInstance();
         	date.set(java.util.Calendar.DAY_OF_MONTH, event.getDate().getDay());
         	date.set(java.util.Calendar.MONTH, event.getDate().getMonth());
@@ -64,6 +66,9 @@ public class ICalExporter {
 				e1.printStackTrace();
 			}
         }
+        
+        // Recurring events
+        // TODO Recurring events
        
         try {
             CalendarOutputter outputter = new CalendarOutputter();
