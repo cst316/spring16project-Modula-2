@@ -27,6 +27,10 @@ public class DefectListImplTest {
 	public static void tearDownAfterClass() throws Exception {
 	}
 	
+
+	@Test
+	public void testCreateDefect() {}
+	
 	public static void addDefectListListener(DefectListListener listener) {
 		  defectListListeners.add(listener);
 	}
