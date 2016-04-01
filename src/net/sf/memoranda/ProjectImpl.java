@@ -24,7 +24,7 @@ public class ProjectImpl implements Project {
     /**
      * Constructor for ProjectImpl.
      */
-    public ProjectImpl(Element root) {        
+    public ProjectImpl(Element root) {
         _root = root;
     }
 
