@@ -19,7 +19,7 @@ import net.sf.memoranda.util.Local;
 
 public class TimeLogPanel extends JPanel {
 
-	WorkPanel parentPanel = null;
+	PSPPanel parentPanel = null;
 	
 	BorderLayout borderLayout;
 	JToolBar toolBar;
@@ -28,7 +28,7 @@ public class TimeLogPanel extends JPanel {
     JButton removeEntry;
     JScrollPane scrollPane;
     
-    public TimeLogPanel(WorkPanel parent) {
+    public TimeLogPanel(PSPPanel parent) {
     	parentPanel = parent;
         try {
             jbInit();
