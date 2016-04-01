@@ -42,7 +42,7 @@ public class ProjectManager {
 //            _root.addNamespaceDeclaration("jnotes", NS_JNPROJECT);
 //            _root.appendChild(new Comment("This is JNotes 2 data file. Do not modify."));
             _doc = new Document(_root);
-            createProject("__default", Local.getString("Default project"), CalendarDate.today(), null, null);
+            createProject("__default", Local.getString("Default project"), CalendarDate.today(), null);
         }
         else
             _root = _doc.getRootElement();
@@ -100,7 +100,7 @@ public class ProjectManager {
         return count;
     }
 
-    public static Project createProject(String id, String title, String description, CalendarDate startDate, CalendarDate endDate,String[][] team) {
+    public static Project createProject(String id, String title, String description, CalendarDate startDate, CalendarDate endDate) {
         Element el = new Element("project");
         el.addAttribute(new Attribute("id", id));
         _root.appendChild(el);
@@ -109,13 +109,13 @@ public class ProjectManager {
         prj.setDescription(description);
         prj.setStartDate(startDate);
         prj.setEndDate(endDate);
-        //prj.setTeam();
+        
         CurrentStorage.get().createProjectStorage(prj);
         return prj;
     }
 
-    public static Project createProject(String title, String description, CalendarDate startDate, CalendarDate endDate, String[][] team) {
-        return createProject(Util.generateId(), title, description, startDate,  endDate, team);
+    public static Project createProject(String title, String description, CalendarDate startDate, CalendarDate endDate) {
+        return createProject(Util.generateId(), title, description, startDate,  endDate);
     }
     
     public static void removeProject(String id) {
