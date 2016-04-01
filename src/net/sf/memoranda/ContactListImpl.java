@@ -53,12 +53,12 @@ public class ContactListImpl implements ContactList {
 		element.appendChild(n);
 		
 		Element e = new Element("email");
-		e.appendChild(name);
-		element.appendChild(n);
+		e.appendChild(email);
+		element.appendChild(e);
 		
 		Element p = new Element("phone");
-		p.appendChild(name);
-		element.appendChild(n);
+		p.appendChild(phone);
+		element.appendChild(p);
 		
 		_root.appendChild(element);
 		
