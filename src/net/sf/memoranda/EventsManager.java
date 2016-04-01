@@ -53,7 +53,64 @@ public class EventsManager {
 			_doc = new Document(_root);
 		} else
 			_root = _doc.getRootElement();
+	}
+	
+	public static Vector<EventExpanded> getFutureNonrecurringEvents() {
+		Vector<EventExpanded> nonrecurringEvents = new Vector<EventExpanded>();
+		
+		Elements yearElements = _root.getChildElements();
+		
+		for(int years = 0; years < yearElements.size(); years++) {
+			Element yearElement = yearElements.get(years);
+			//System.out.println("getUpcomingEvents(): yearElement = " + yearElement.getLocalName() + "(Size " + yearElement.getChildCount() + ")");
+			if(yearElement.getLocalName() == "repeatable") {
+				// Repeatable events
+				// Eat this, not processing repeatable here
+			} 
+			else if(yearElement.getLocalName() == "sticker") {
+				// What is this
+				// Eat this, whatever the heck this is
+			} else {
+				// Year
+				Elements monthElements = yearElement.getChildElements();
+				for(int months = 0; months < monthElements.size(); months++) {
+					// Month
+					Element monthElement = monthElements.get(months);
+					//System.out.println("getUpcomingEvents(): monthElement = " + monthElement.getLocalName() + "(Size " + monthElement.getChildCount() + ")");
+					Elements dayElements = monthElement.getChildElements();
+					for(int days = 0; days < dayElements.size(); days++) {
+						// Day
+						Element dayElement = dayElements.get(days);
+						//System.out.println("getUpcomingEvents(): dayElement = " + dayElement.getLocalName() + "(Size " + dayElement.getChildCount() + ")");
+					
+						int dateYear = Integer.parseInt(yearElement.getAttributeValue("year"));
+						int dateMonth = Integer.parseInt(monthElement.getAttributeValue("month"));
+						int dateDay = Integer.parseInt(dayElement.getAttributeValue("day"));
 
+						CalendarDate date = new CalendarDate(dateDay,dateMonth,dateYear);
+
+						Elements eventElements = dayElement.getChildElements();
+						for(int e = 0; e < eventElements.size(); e++) {
+							// Event
+							Element eventElement = eventElements.get(e);
+							//System.out.println("getUpcomingEvents(): Added event (" + singletonEvents.size() + " total)");
+							
+							EventExpanded event = new EventExpanded(eventElement, date);
+							CalendarDate today = new CalendarDate();
+							
+							// Only get events today or in the future
+							if(date.before(today) && !date.equals(today))
+								continue;
+							
+							nonrecurringEvents.add(event);
+						}
+					}
+				}
+			}
+		}
+		
+		//System.out.println("getUpcomingEvents() returning " + singletonEvents.size());
+		return nonrecurringEvents;
 	}
 
 	public static void createSticker(String text, int prior) {
@@ -173,11 +230,13 @@ public class EventsManager {
 		return event;
 	}
 
-	public static Collection getRepeatableEvents() {
-		Vector v = new Vector();
+	public static Vector<Event> getRepeatableEvents() {
+		Vector<Event> v = new Vector<Event>();
 		Element rep = _root.getFirstChildElement("repeatable");
+
 		if (rep == null)
 			return v;
+		
 		Elements els = rep.getChildElements("event");
 		for (int i = 0; i < els.size(); i++)
 			v.add(new EventImpl(els.get(i)));
@@ -190,22 +249,13 @@ public class EventsManager {
 		for (int i = 0; i < reps.size(); i++) {
 			Event ev = (Event) reps.get(i);
 			
-			// --- ivanrise
 			// ignore this event if it's a 'only working days' event and today is weekend.
 			if(ev.getWorkingDays() && (date.getCalendar().get(Calendar.DAY_OF_WEEK) == 1 ||
 				date.getCalendar().get(Calendar.DAY_OF_WEEK) == 7)) continue;
 			
 			// -- dchende2
 			if(ev.hasExceptionDate( date )) continue;
-			
-			// ---
-			/*
-			 * /if ( ((date.after(ev.getStartDate())) &&
-			 * (date.before(ev.getEndDate()))) ||
-			 * (date.equals(ev.getStartDate()))
-			 */
-			//System.out.println(date.inPeriod(ev.getStartDate(),
-			// ev.getEndDate()));
+
 			if (date.inPeriod(ev.getStartDate(), ev.getEndDate())) {
 				if (ev.getRepeat() == REPEAT_DAILY) {
 					int n = date.getCalendar().get(Calendar.DAY_OF_YEAR);
