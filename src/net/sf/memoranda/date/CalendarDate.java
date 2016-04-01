@@ -19,7 +19,7 @@ import net.sf.memoranda.util.Util;
  *
  */
 /*$Id: CalendarDate.java,v 1.3 2004/01/30 12:17:41 alexeya Exp $*/
-public class CalendarDate {
+public class CalendarDate implements Comparable<CalendarDate> {
 
     private int _year;
     private int _month;
@@ -174,6 +174,14 @@ public class CalendarDate {
     public String getShortDateString() {
         return Local.getDateString(this, DateFormat.SHORT);
     }
-    
 
+	@Override
+	public int compareTo(CalendarDate other) {
+		if (before(other))
+			return -1;
+		else if (after(other))
+			return 1;
+		else
+			return 0;
+	}
 }

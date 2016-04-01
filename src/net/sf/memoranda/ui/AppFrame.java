@@ -48,6 +48,7 @@ import net.sf.memoranda.ui.htmleditor.HTMLEditor;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.CurrentStorage;
+import net.sf.memoranda.util.ICalExporter;
 import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.ProjectExporter;
 import net.sf.memoranda.util.ProjectPackager;
@@ -103,6 +104,14 @@ public class AppFrame extends JFrame {
             doPrjUnPack();
         }
     };
+    
+    public Action exportICalAction =
+        new AbstractAction("Export as iCal") {
+
+        public void actionPerformed(ActionEvent e) {
+        	iCalExport_actionPerformed(e);
+        }
+    };
 
     public Action minimizeAction = new AbstractAction("Close the window") {
         public void actionPerformed(ActionEvent e) {
@@ -117,32 +126,33 @@ public class AppFrame extends JFrame {
     };
     
     public Action exportNotesAction =
-                new AbstractAction(Local.getString("Export notes") + "...") {
+            new AbstractAction(Local.getString("Export notes")) {
 
-                public void actionPerformed(ActionEvent e) {
-                        ppExport_actionPerformed(e);
-                }
-        };
-        
-        public Action importNotesAction =
-                        new AbstractAction(Local.getString("Import multiple notes")) {
+            public void actionPerformed(ActionEvent e) {
+                    ppExport_actionPerformed(e);
+            }
+    };
+    
+    public Action importNotesAction =
+                    new AbstractAction(Local.getString("Import multiple notes")) {
 
-                        public void actionPerformed(ActionEvent e) {
-                                ppImport_actionPerformed(e);
-                        }
-                };
-        public Action importOneNoteAction =
-                new AbstractAction(Local.getString("Import one note")) {
+                    public void actionPerformed(ActionEvent e) {
+                            ppImport_actionPerformed(e);
+                    }
+            };
+    public Action importOneNoteAction =
+            new AbstractAction(Local.getString("Import one note")) {
 
-                public void actionPerformed(ActionEvent e) {
-                        p1Import_actionPerformed(e);
-                }
-        };
+            public void actionPerformed(ActionEvent e) {
+                    p1Import_actionPerformed(e);
+            }
+    };
     
     JMenuItem jMenuFileNewPrj = new JMenuItem();
         JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
     JMenuItem jMenuFilePackPrj = new JMenuItem(prjPackAction);
     JMenuItem jMenuFileUnpackPrj = new JMenuItem(prjUnpackAction);
+    JMenuItem jMenuFileExportICal = new JMenuItem(exportICalAction);
     JMenuItem jMenuFileExportPrj = new JMenuItem(exportNotesAction);
     JMenuItem jMenuFileImportPrj = new JMenuItem(importNotesAction);
     JMenuItem jMenuFileImportNote = new JMenuItem(importOneNoteAction);
@@ -334,7 +344,7 @@ public class AppFrame extends JFrame {
          workPanel.setPreferredSize(new Dimension(1073, 300));*/
         splitPane.setDividerLocation(28);
 
-        /* jMenuFileNewPrj.setText(Local.getString("New project") + "...");
+        /* jMenuFileNewPrj.setText(Local.getString("New project"));
          jMenuFileNewPrj.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
          ProjectDialog.newProject();
@@ -343,12 +353,11 @@ public class AppFrame extends JFrame {
          */
         jMenuFileNewPrj.setAction(projectsPanel.newProjectAction);
 
-        jMenuFileUnpackPrj.setText(Local.getString("Unpack project") + "...");
-        jMenuFileExportNote.setText(Local.getString("Export current note")
-                + "...");
-        jMenuFileImportNote.setText(Local.getString("Import one note")
-                + "...");
-        jMenuFilePackPrj.setText(Local.getString("Pack project") + "...");
+        jMenuFileUnpackPrj.setText(Local.getString("Unpack project"));
+        jMenuFileExportICal.setText("Export as iCal");
+        jMenuFileExportNote.setText(Local.getString("Export current note"));
+        jMenuFileImportNote.setText(Local.getString("Import one note"));
+        jMenuFilePackPrj.setText(Local.getString("Pack project"));
         jMenuFileMin.setText(Local.getString("Close the window"));
         jMenuFileMin.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F10,
                 InputEvent.ALT_MASK));
@@ -369,17 +378,17 @@ public class AppFrame extends JFrame {
         jMenuEditPasteSpec.setToolTipText(Local.getString("Paste special"));
         jMenuEditSelectAll.setText(Local.getString("Select all"));
 
-        jMenuEditFind.setText(Local.getString("Find & replace") + "...");
+        jMenuEditFind.setText(Local.getString("Find & replace"));
 
-        jMenuEditPref.setText(Local.getString("Preferences") + "...");
+        jMenuEditPref.setText(Local.getString("Preferences"));
 
         jMenuInsert.setText(Local.getString("Insert"));
 
-        jMenuInsertImage.setText(Local.getString("Image") + "...");
+        jMenuInsertImage.setText(Local.getString("Image"));
         jMenuInsertImage.setToolTipText(Local.getString("Insert Image"));
-        jMenuInsertTable.setText(Local.getString("Table") + "...");
+        jMenuInsertTable.setText(Local.getString("Table"));
         jMenuInsertTable.setToolTipText(Local.getString("Insert Table"));
-        jMenuInsertLink.setText(Local.getString("Hyperlink") + "...");
+        jMenuInsertLink.setText(Local.getString("Hyperlink"));
         jMenuInsertLink.setToolTipText(Local.getString("Insert Hyperlink"));
         jMenuInsertList.setText(Local.getString("List"));
 
@@ -393,12 +402,12 @@ public class AppFrame extends JFrame {
 
         jMenuInsertListOL.setToolTipText(Local.getString("Insert Ordered"));
 
-        jMenuInsertChar.setText(Local.getString("Special character") + "...");
+        jMenuInsertChar.setText(Local.getString("Special character"));
         jMenuInsertChar.setToolTipText(Local.getString(
                 "Insert Special character"));
         jMenuInsertDate.setText(Local.getString("Current date"));
         jMenuInsertTime.setText(Local.getString("Current time"));
-        jMenuInsertFile.setText(Local.getString("File") + "...");
+        jMenuInsertFile.setText(Local.getString("File"));
 
         jMenuFormat.setText(Local.getString("Format"));
         jMenuFormatPStyle.setText(Local.getString("Paragraph style"));
@@ -419,7 +428,7 @@ public class AppFrame extends JFrame {
         jMenuFormatChCite.setText(Local.getString("Cite"));
         jMenuFormatChSUP.setText(Local.getString("Superscript"));
         jMenuFormatChSUB.setText(Local.getString("Subscript"));
-        jMenuFormatChCustom.setText(Local.getString("Custom style") + "...");
+        jMenuFormatChCustom.setText(Local.getString("Custom style"));
         jMenuFormatChB.setText(Local.getString("Bold"));
         jMenuFormatChB.setToolTipText(Local.getString("Bold"));
         jMenuFormatChI.setText(Local.getString("Italic"));
@@ -436,8 +445,7 @@ public class AppFrame extends JFrame {
         jMenuFormatTable.setText(Local.getString("Table"));
         jMenuFormatTableInsR.setText(Local.getString("Insert row"));
         jMenuFormatTableInsC.setText(Local.getString("Insert cell"));
-        jMenuFormatProperties.setText(Local.getString("Object properties")
-                + "...");
+        jMenuFormatProperties.setText(Local.getString("Object properties"));
         jMenuFormatProperties.setToolTipText(Local.getString(
                 "Object properties"));
 
@@ -462,6 +470,8 @@ public class AppFrame extends JFrame {
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFilePackPrj);
         jMenuFile.add(jMenuFileUnpackPrj);
+        jMenuFile.addSeparator();
+        jMenuFile.add(jMenuFileExportICal);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFileExportPrj);
         jMenuFile.add(jMenuFileExportNote);
@@ -859,97 +869,167 @@ public class AppFrame extends JFrame {
         dlg.setLocationRelativeTo(this);
         dlg.setVisible(true);
     }
+
+    protected void iCalExport_actionPerformed(ActionEvent e) {
+        UIManager.put(
+                "FileChooser.lookInLabelText",
+                Local.getString("Save in:"));
+        UIManager.put(
+                "FileChooser.upFolderToolTipText",
+                Local.getString("Up One Level"));
+        UIManager.put(
+                "FileChooser.newFolderToolTipText",
+                Local.getString("Create New Folder"));
+        UIManager.put(
+                "FileChooser.listViewButtonToolTipText",
+                Local.getString("List"));
+        UIManager.put(
+                "FileChooser.detailsViewButtonToolTipText",
+                Local.getString("Details"));
+        UIManager.put(
+                "FileChooser.fileNameLabelText",
+                Local.getString("File Name:"));
+        UIManager.put(
+                "FileChooser.filesOfTypeLabelText",
+                Local.getString("Files of Type:"));
+        UIManager.put("FileChooser.saveButtonText", Local.getString("Save"));
+        UIManager.put(
+                "FileChooser.saveButtonToolTipText",
+                Local.getString("Save selected file"));
+        UIManager.put(
+                "FileChooser.cancelButtonText",
+                Local.getString("Cancel"));
+        UIManager.put(
+                "FileChooser.cancelButtonToolTipText",
+                Local.getString("Cancel"));
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileHidingEnabled(false);
+        chooser.setDialogTitle(Local.getString("Export as iCal"));
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.ICAL));
+        
+        String lastSel = (String) Context.get("LAST_SELECTED_EXPORT_FILE");
+        if (lastSel != null)
+                chooser.setCurrentDirectory(new File(lastSel));
+
+        ICalExportDialog dlg =
+                new ICalExportDialog(
+                        App.getFrame(),
+                        "Export as iCal",
+                        chooser);
+
+        Dimension dlgSize = new Dimension(550, 500);
+        dlg.setSize(dlgSize);
+        Dimension frmSize = App.getFrame().getSize();
+        Point loc = App.getFrame().getLocation();
+        dlg.setLocation(
+                (frmSize.width - dlgSize.width) / 2 + loc.x,
+                (frmSize.height - dlgSize.height) / 2 + loc.y);
+        dlg.setVisible(true);
+
+        if (dlg.CANCELLED)
+                return;
+        
+        Context.put(
+                "LAST_SELECTED_EXPORT_FILE",
+                chooser.getSelectedFile().getPath());
+
+        CurrentProject.save();
+
+        ICalExporter.export(CurrentProject.get(), chooser.getSelectedFile());
+    }
     
-            protected void ppExport_actionPerformed(ActionEvent e) {
-                // Fix until Sun's JVM supports more locales...
-                UIManager.put(
-                        "FileChooser.lookInLabelText",
-                        Local.getString("Save in:"));
-                UIManager.put(
-                        "FileChooser.upFolderToolTipText",
-                        Local.getString("Up One Level"));
-                UIManager.put(
-                        "FileChooser.newFolderToolTipText",
-                        Local.getString("Create New Folder"));
-                UIManager.put(
-                        "FileChooser.listViewButtonToolTipText",
-                        Local.getString("List"));
-                UIManager.put(
-                        "FileChooser.detailsViewButtonToolTipText",
-                        Local.getString("Details"));
-                UIManager.put(
-                        "FileChooser.fileNameLabelText",
-                        Local.getString("File Name:"));
-                UIManager.put(
-                        "FileChooser.filesOfTypeLabelText",
-                        Local.getString("Files of Type:"));
-                UIManager.put("FileChooser.saveButtonText", Local.getString("Save"));
-                UIManager.put(
-                        "FileChooser.saveButtonToolTipText",
-                        Local.getString("Save selected file"));
-                UIManager.put(
-                        "FileChooser.cancelButtonText",
-                        Local.getString("Cancel"));
-                UIManager.put(
-                        "FileChooser.cancelButtonToolTipText",
-                        Local.getString("Cancel"));
+        protected void ppExport_actionPerformed(ActionEvent e) {
+            // Fix until Sun's JVM supports more locales...
+            UIManager.put(
+                    "FileChooser.lookInLabelText",
+                    Local.getString("Save in:"));
+            UIManager.put(
+                    "FileChooser.upFolderToolTipText",
+                    Local.getString("Up One Level"));
+            UIManager.put(
+                    "FileChooser.newFolderToolTipText",
+                    Local.getString("Create New Folder"));
+            UIManager.put(
+                    "FileChooser.listViewButtonToolTipText",
+                    Local.getString("List"));
+            UIManager.put(
+                    "FileChooser.detailsViewButtonToolTipText",
+                    Local.getString("Details"));
+            UIManager.put(
+                    "FileChooser.fileNameLabelText",
+                    Local.getString("File Name:"));
+            UIManager.put(
+                    "FileChooser.filesOfTypeLabelText",
+                    Local.getString("Files of Type:"));
+            UIManager.put("FileChooser.saveButtonText", Local.getString("Save"));
+            UIManager.put(
+                    "FileChooser.saveButtonToolTipText",
+                    Local.getString("Save selected file"));
+            UIManager.put(
+                    "FileChooser.cancelButtonText",
+                    Local.getString("Cancel"));
+            UIManager.put(
+                    "FileChooser.cancelButtonToolTipText",
+                    Local.getString("Cancel"));
 
-                JFileChooser chooser = new JFileChooser();
-                chooser.setFileHidingEnabled(false);
-                chooser.setDialogTitle(Local.getString("Export notes"));
-                chooser.setAcceptAllFileFilterUsed(false);
-                chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                chooser.addChoosableFileFilter(
-                        new AllFilesFilter(AllFilesFilter.XHTML));
-                chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileHidingEnabled(false);
+            chooser.setDialogTitle(Local.getString("Export notes"));
+            chooser.setAcceptAllFileFilterUsed(false);
+            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.XHTML));
+            chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
 
-                String lastSel = (String) Context.get("LAST_SELECTED_EXPORT_FILE");
-                if (lastSel != null)
-                        chooser.setCurrentDirectory(new File(lastSel));
+            String lastSel = (String) Context.get("LAST_SELECTED_EXPORT_FILE");
+            if (lastSel != null)
+                    chooser.setCurrentDirectory(new File(lastSel));
 
-                ProjectExportDialog dlg =
-                        new ProjectExportDialog(
-                                App.getFrame(),
-                                Local.getString("Export notes"),
-                                chooser);
-                String enc = (String) Context.get("EXPORT_FILE_ENCODING");
-                if (enc != null)
-                        dlg.encCB.setSelectedItem(enc);
-                String spl = (String) Context.get("EXPORT_SPLIT_NOTES");
-                if (spl != null)
-                        dlg.splitChB.setSelected(spl.equalsIgnoreCase("true"));
-                String ti = (String) Context.get("EXPORT_TITLES_AS_HEADERS");
-                if (ti != null)
-                        dlg.titlesAsHeadersChB.setSelected(ti.equalsIgnoreCase("true"));
-                Dimension dlgSize = new Dimension(550, 500);
-                dlg.setSize(dlgSize);
-                Dimension frmSize = App.getFrame().getSize();
-                Point loc = App.getFrame().getLocation();
-                dlg.setLocation(
-                        (frmSize.width - dlgSize.width) / 2 + loc.x,
-                        (frmSize.height - dlgSize.height) / 2 + loc.y);
-                dlg.setVisible(true);
-                if (dlg.CANCELLED)
-                        return;
-                
-                        Context.put(
-                                "LAST_SELECTED_EXPORT_FILE",
-                                chooser.getSelectedFile().getPath());
-                        Context.put("EXPORT_SPLIT_NOTES", new Boolean(dlg.splitChB.isSelected()).toString());
-                        Context.put("EXPORT_TITLES_AS_HEADERS", new Boolean(dlg.titlesAsHeadersChB.isSelected()).toString());
-                
-                int ei = dlg.encCB.getSelectedIndex();
-                enc = null;
-                if (ei == 1)
-                        enc = "UTF-8";
-                boolean nument = (ei == 2);
-                File f = chooser.getSelectedFile();
-                boolean xhtml =
-                        chooser.getFileFilter().getDescription().indexOf("XHTML") > -1;
-                 CurrentProject.save();
-                 ProjectExporter.export(CurrentProject.get(), chooser.getSelectedFile(), enc, xhtml, 
-                                 dlg.splitChB.isSelected(), true, nument, dlg.titlesAsHeadersChB.isSelected(), false); 
-                }
+            ProjectExportDialog dlg =
+                    new ProjectExportDialog(
+                            App.getFrame(),
+                            Local.getString("Export notes"),
+                            chooser);
+            String enc = (String) Context.get("EXPORT_FILE_ENCODING");
+            if (enc != null)
+                    dlg.encCB.setSelectedItem(enc);
+            String spl = (String) Context.get("EXPORT_SPLIT_NOTES");
+            if (spl != null)
+                    dlg.splitChB.setSelected(spl.equalsIgnoreCase("true"));
+            String ti = (String) Context.get("EXPORT_TITLES_AS_HEADERS");
+            if (ti != null)
+                    dlg.titlesAsHeadersChB.setSelected(ti.equalsIgnoreCase("true"));
+            Dimension dlgSize = new Dimension(550, 500);
+            dlg.setSize(dlgSize);
+            Dimension frmSize = App.getFrame().getSize();
+            Point loc = App.getFrame().getLocation();
+            dlg.setLocation(
+                    (frmSize.width - dlgSize.width) / 2 + loc.x,
+                    (frmSize.height - dlgSize.height) / 2 + loc.y);
+            dlg.setVisible(true);
+            if (dlg.CANCELLED)
+                    return;
+            
+                    Context.put(
+                            "LAST_SELECTED_EXPORT_FILE",
+                            chooser.getSelectedFile().getPath());
+                    Context.put("EXPORT_SPLIT_NOTES", new Boolean(dlg.splitChB.isSelected()).toString());
+                    Context.put("EXPORT_TITLES_AS_HEADERS", new Boolean(dlg.titlesAsHeadersChB.isSelected()).toString());
+            
+            int ei = dlg.encCB.getSelectedIndex();
+            enc = null;
+            if (ei == 1)
+                    enc = "UTF-8";
+            boolean nument = (ei == 2);
+            File f = chooser.getSelectedFile();
+            boolean xhtml =
+                    chooser.getFileFilter().getDescription().indexOf("XHTML") > -1;
+             CurrentProject.save();
+             ProjectExporter.export(CurrentProject.get(), chooser.getSelectedFile(), enc, xhtml, 
+                             dlg.splitChB.isSelected(), true, nument, dlg.titlesAsHeadersChB.isSelected(), false); 
+            }
             
             protected void ppImport_actionPerformed(ActionEvent e) {
             

@@ -82,9 +82,9 @@ public class ProjectsTablePanel extends JPanel {
     void jbInit() throws Exception {
         projectsTable.getTableHeader().setFont(new java.awt.Font("Dialog", 1, 10));
         projectsTable.setFont(new java.awt.Font("Dialog", 0, 11));
-        projectsTable.setMinimumSize(new Dimension(200, 100));
+        projectsTable.setMinimumSize(new Dimension(100, 100));
         projectsTable.setMaximumSize(new Dimension(32767, 32767));
-        //projectsTable.setPreferredSize(new Dimension(400, 100));
+        projectsTable.setPreferredSize(new Dimension(400, 100));
         projectsTable.setGridColor(new Color(230, 230, 230));
         projectsTable.setShowHorizontalLines(false);
         /*projectsTable.setSelectionBackground(Color.white);
@@ -104,8 +104,8 @@ public class ProjectsTablePanel extends JPanel {
                 column.setPreferredWidth(32767);
             }
             else {
-                column.setMinWidth(80);
-                column.setPreferredWidth(80);                
+                column.setMinWidth(120);
+                column.setPreferredWidth(120);                
             }
         }
     }
@@ -135,16 +135,21 @@ public class ProjectsTablePanel extends JPanel {
                 Local.getString("Start date"),
                 Local.getString("End date"),
                 //Local.getString("Execution"),
-                Local.getString("Status")};
+                Local.getString("Status"),
+                Local.getString("Defect Count"),
+                Local.getString("Completion"),};
 
         PrjTableModel() {
             super();
         }
 
         public int getColumnCount() {
-            return 4;
+            return 6;
         }
 
+        /**
+         * Used for selecting values in the project panel.
+         */
         public Object getValueAt(int row, int col) {
 			if(row==-1) return "";
 			Project pr;

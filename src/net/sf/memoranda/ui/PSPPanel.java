@@ -15,12 +15,12 @@ public class PSPPanel extends JPanel {
 	private PSPTaskbarPanel taskbar;
 	
 	// switch between PSPPanels
-	private JPanel cardPanel;
+	JPanel cardPanel;
 	private CardLayout cardLayout;
 	
-	private PSPDefectPanel defectPanel;
 	private TimeLogPanel timeLogPanel;
 	private CalendarPanel calendarPanel;
+	private PSPDefectPanel defectPanel;
 	
 	public PSPPanel(WorkPanel parentPanel) {
 		

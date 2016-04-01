@@ -1,5 +1,6 @@
-package net.sf.memoranda.ui;
+package net.sf.memoranda.ui;		
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -27,13 +28,22 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.AbstractTableModel;
 
+import net.sf.memoranda.Contact;
+import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectManager;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
-
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.JList;
+import javax.swing.JTextPane;
+import javax.swing.JTable;
+//
 /*$Id: ProjectDialog.java,v 1.26 2004/10/18 19:09:10 ivanrise Exp $*/
 public class ProjectDialog extends JDialog {
     public boolean CANCELLED = true;
@@ -44,7 +54,8 @@ public class ProjectDialog extends JDialog {
     GridBagConstraints gbc;
     JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JLabel header = new JLabel();
-    JPanel centerPanel = new JPanel(new GridBagLayout());
+    private GridBagLayout gbl_centerPanel = new GridBagLayout();
+    JPanel centerPanel = new JPanel(gbl_centerPanel);
     JLabel titleLabel = new JLabel();
     public JTextField prTitleField = new JTextField();
     JLabel sdLabel = new JLabel();
@@ -57,9 +68,30 @@ public class ProjectDialog extends JDialog {
     JPanel bottomPanel = new JPanel();
     JButton okButton = new JButton();
     JButton cancelButton = new JButton();
+    private final JLabel descriptionLabel = new JLabel("Description");
+    public final JScrollPane desciptionScrollPane = new JScrollPane();
+    public final JTextArea descriptionTextArea = new JTextArea();
+    
+    //Used for the team system GUI
+    final JLabel teamLabel = new JLabel("Team");
+    final JButton buttonAddTeam = new JButton("Add");
+    final JButton buttonRemoveTeam = new JButton("Remove");
+    final JPanel teamPanel = new JPanel();
+    ContactListTable tableTeam = new ContactListTable(this);
+    JScrollPane teamPabelScrollPane = new JScrollPane();
+    
+    String columnNames[] = {"Name", "Phone Number", "Email" };
+    
+    static String dataValues[][] =
+		{
+
+		};
     
     public ProjectDialog(Frame frame, String title) {
         super(frame, title, true);
+        gbl_centerPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0};
+        gbl_centerPanel.rowHeights = new int[]{0, 0, 0, 66, 22, 0, 0, 0, 0};
+        gbl_centerPanel.columnWeights = new double[]{1.0, 0.0, 0.0, 1.0, 0.0, 0.0};
         try {
             jbInit();
             pack();
@@ -71,7 +103,9 @@ public class ProjectDialog extends JDialog {
 
     void jbInit() throws Exception {
 	this.setResizable(false);
-        getContentPane().setLayout(new GridBagLayout());
+        GridBagLayout gridBagLayout = new GridBagLayout();
+        gridBagLayout.rowHeights = new int[]{0, 471, 39};
+        getContentPane().setLayout(gridBagLayout);
         topPanel.setBorder(new EmptyBorder(new Insets(0, 5, 0, 5)));
         topPanel.setBackground(Color.WHITE);        
         header.setFont(new java.awt.Font("Dialog", 0, 20));
@@ -97,17 +131,42 @@ public class ProjectDialog extends JDialog {
         gbc.gridwidth = 5;
         gbc.gridx = 0; gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(0, 10, 5, 0);
+        gbc.insets = new Insets(0, 10, 5, 5);
         //gbc.anchor = GridBagConstraints.EAST;
         gbc.anchor = GridBagConstraints.CENTER;
         centerPanel.add(prTitleField, gbc);
+        
+        GridBagConstraints gbc_descriptionLabel = new GridBagConstraints();
+        gbc_descriptionLabel.anchor = GridBagConstraints.NORTHWEST;
+        gbc_descriptionLabel.gridwidth = 5;
+        gbc_descriptionLabel.insets = new Insets(0, 10, 5, 5);
+        gbc_descriptionLabel.gridx = 0;
+        gbc_descriptionLabel.gridy = 2;
+        centerPanel.add(descriptionLabel, gbc_descriptionLabel);
+        
+        GridBagConstraints gbc_desciptionScrollPane = new GridBagConstraints();
+        gbc_desciptionScrollPane.gridwidth = 5;
+        gbc_desciptionScrollPane.insets = new Insets(0, 10, 5, 5);
+        gbc_desciptionScrollPane.fill = GridBagConstraints.BOTH;
+        gbc_desciptionScrollPane.gridx = 0;
+        gbc_desciptionScrollPane.gridy = 3;
+        desciptionScrollPane.setMaximumSize(new Dimension(23, 32767));
+        centerPanel.add(desciptionScrollPane, gbc_desciptionScrollPane);
+        descriptionTextArea.setLineWrap(true);
+        descriptionTextArea.setMaximumSize(new Dimension(22, 2147483647));
+        descriptionTextArea.setRows(8);
+        descriptionTextArea.setTabSize(3);
+        descriptionTextArea.setWrapStyleWord(true);
+        descriptionTextArea.setColumns(6);
+        
+        desciptionScrollPane.setViewportView(descriptionTextArea);
         
         sdLabel.setText(Local.getString("Start date"));
         sdLabel.setPreferredSize(new Dimension(70, 20));
         sdLabel.setMinimumSize(new Dimension(70, 20));
         sdLabel.setMaximumSize(new Dimension(70, 20));
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0; gbc.gridy = 4;
         gbc.insets = new Insets(5, 10, 10, 10);
         centerPanel.add(sdLabel, gbc);
 
@@ -137,7 +196,7 @@ public class ProjectDialog extends JDialog {
             }
         });
         gbc = new GridBagConstraints();
-        gbc.gridx = 1; gbc.gridy = 2;
+        gbc.gridx = 1; gbc.gridy = 4;
         gbc.insets = new Insets(5, 0, 10, 5);
         centerPanel.add(startDate, gbc);
         
@@ -150,7 +209,7 @@ public class ProjectDialog extends JDialog {
             }
         });
         gbc = new GridBagConstraints();
-        gbc.gridx = 2; gbc.gridy = 2;
+        gbc.gridx = 2; gbc.gridy = 4;
         gbc.insets = new Insets(5, 0, 10, 25);
         gbc.anchor = GridBagConstraints.WEST;
         centerPanel.add(sdButton, gbc);
@@ -163,7 +222,7 @@ public class ProjectDialog extends JDialog {
             }
         });
         gbc = new GridBagConstraints();
-        gbc.gridx = 3; gbc.gridy = 2;
+        gbc.gridx = 3; gbc.gridy = 4;
         gbc.insets = new Insets(5, 0, 10, 5);
         gbc.anchor = GridBagConstraints.WEST;
         centerPanel.add(endDateChB, gbc);
@@ -192,7 +251,7 @@ public class ProjectDialog extends JDialog {
         });
         //((JSpinner.DateEditor) endDate.getEditor()).setLocale(Local.getCurrentLocale());
         gbc = new GridBagConstraints();
-        gbc.gridx = 4; gbc.gridy = 2;
+        gbc.gridx = 4; gbc.gridy = 4;
         gbc.insets = new Insets(5, 0, 10, 5);
         gbc.anchor = GridBagConstraints.WEST;
         centerPanel.add(endDate, gbc);
@@ -208,7 +267,7 @@ public class ProjectDialog extends JDialog {
             }
         });
         gbc = new GridBagConstraints();
-        gbc.gridx = 5; gbc.gridy = 2;
+        gbc.gridx = 5; gbc.gridy = 4;
         gbc.insets = new Insets(5, 0, 10, 10);
         gbc.anchor = GridBagConstraints.WEST;
         centerPanel.add(edButton, gbc);
@@ -246,10 +305,67 @@ public class ProjectDialog extends JDialog {
         gbc.insets = new Insets(5, 5, 5, 5);
         getContentPane().add(centerPanel, gbc);
         
+        GridBagConstraints gbc_teamLabel = new GridBagConstraints();
+        gbc_teamLabel.insets = new Insets(0, 0, 5, 5);
+        gbc_teamLabel.gridx = 0;
+        gbc_teamLabel.gridy = 5;
+        centerPanel.add(teamLabel, gbc_teamLabel);
+        
+        GridBagConstraints gbc_teamPanel = new GridBagConstraints();
+        gbc_teamPanel.gridheight = 3;
+        gbc_teamPanel.gridwidth = 5;
+        gbc_teamPanel.insets = new Insets(0, 10, 5, 5);
+        gbc_teamPanel.fill = GridBagConstraints.BOTH;
+        gbc_teamPanel.gridx = 0;
+        gbc_teamPanel.gridy = 6;
+        centerPanel.add(teamPanel, gbc_teamPanel);
+        
+        
+        
+        
+        //Settings for the tableTeam
+		setTitle( "Project Dialog" );
+        
+		// Add the table to a scrolling pane
+        teamPabelScrollPane = new JScrollPane( tableTeam );
+        teamPabelScrollPane.setPreferredSize(new Dimension(452, 120));
+        teamPanel.add(teamPabelScrollPane);
+        
+
+        
+        GridBagConstraints gbc_buttonAddTeam = new GridBagConstraints();
+        gbc_buttonAddTeam.anchor = GridBagConstraints.WEST;
+        gbc_buttonAddTeam.insets = new Insets(0, 0, 5, 0);
+        gbc_buttonAddTeam.gridx = 5;
+        gbc_buttonAddTeam.gridy = 7;
+        
+        
+        buttonAddTeam.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		ProjectNewTeamMemberDialog dlg = new ProjectNewTeamMemberDialog(App.getFrame(), Local.getString("New Team member"));
+        		Dimension frmSize = App.getFrame().getSize();
+        		Dimension dlgSize = dlg.getSize();
+        		Point loc = App.getFrame().getLocation();
+                dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
+        		dlg.setVisible(true);
+        	}
+        });
+        centerPanel.add(buttonAddTeam, gbc_buttonAddTeam);
+        
+        GridBagConstraints gbc_buttonRemoveTeam = new GridBagConstraints();
+        gbc_buttonRemoveTeam.gridx = 5;
+        gbc_buttonRemoveTeam.gridy = 8;
+        buttonRemoveTeam.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		Contact contact = CurrentProject.getContactList().getLog().get(tableTeam.getSelectedRow());
+        		CurrentProject.getContactList().removeContact(contact);
+        	}
+        });
+        centerPanel.add(buttonRemoveTeam, gbc_buttonRemoveTeam);
+        
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 2;
         gbc.insets = new Insets(5, 0, 5, 5);
-        gbc.anchor = GridBagConstraints.EAST;
         getContentPane().add(bottomPanel, gbc);
     
         startCalFrame.cal.addSelectionListener(new ActionListener() {
@@ -268,6 +384,10 @@ public class ProjectDialog extends JDialog {
         });
     }
     
+    /** Used to generate team stats
+     * 
+     * @param e
+     */
     void okButton_actionPerformed(ActionEvent e) {
         CANCELLED = false;
         this.dispose();
@@ -289,9 +409,7 @@ public class ProjectDialog extends JDialog {
     
     void sdButton_actionPerformed(ActionEvent e) {
         //startCalFrame.setLocation(sdButton.getLocation());
-        startCalFrame.setLocation(0, 0);
-        startCalFrame.setSize((this.getContentPane().getWidth() / 2), 
-            this.getContentPane().getHeight());
+        this.getContentPane().getHeight();
         this.getLayeredPane().add(startCalFrame);
         startCalFrame.setTitle(Local.getString("Start date"));
         startCalFrame.show();
@@ -318,13 +436,15 @@ public class ProjectDialog extends JDialog {
         if (dlg.CANCELLED)
             return;
         String title = dlg.prTitleField.getText();
+        String description = dlg.descriptionTextArea.getText();
         CalendarDate startD = new CalendarDate((Date) dlg.startDate.getModel().getValue());
         CalendarDate endD = null;
         if (dlg.endDateChB.isSelected())
             endD = new CalendarDate((Date) dlg.endDate.getModel().getValue());
-        Project prj = ProjectManager.createProject(title, startD, endD);
+        Project prj = ProjectManager.createProject(title, description, startD, endD);
         /*if (dlg.freezeChB.isSelected())
             prj.freeze();*/
         CurrentStorage.get().storeProjectManager();
     }
 }
+

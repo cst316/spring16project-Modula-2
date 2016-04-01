@@ -39,7 +39,7 @@ import java.awt.GridLayout;
 
 public class PSPTaskbarPanel extends JToolBar {
 
-		PSPPanel parentPanel;
+		PSPPanel parentPanel = null;
 
 		private final JLabel pspLabel = new JLabel("Personal Software Process");
 		private final JPanel viewbtnPanel = new JPanel();
@@ -52,7 +52,6 @@ public class PSPTaskbarPanel extends JToolBar {
 			 super();
 			 
 			 parentPanel = _parentPanel;
-			 
 			 setFloatable(false);
 			 setVisible(true);
 			 super.setBorder(new EmptyBorder(new Insets(0,0,0,0)));
@@ -76,6 +75,7 @@ public class PSPTaskbarPanel extends JToolBar {
 			this.setBackground(ColorScheme.getColor("taskbar_primary"));
 			this.setBorder(null);
 			setLayout(null);
+
 		    viewbtnPanel.setBounds(-50, 0, 464, 42);
 		    viewbtnPanel.setBackground(ColorScheme.getColor("taskbar_primary"));
 																		
