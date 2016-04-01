@@ -27,6 +27,9 @@ public class DefectListImplTest {
 	public static void tearDownAfterClass() throws Exception {
 	}
 	
+	@Test
+	public void testCreateDefect() { }
+	
 	/*
 	@Test
 	public void testCreateDefect() {
