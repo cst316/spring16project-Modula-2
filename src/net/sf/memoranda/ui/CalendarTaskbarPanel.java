@@ -169,16 +169,6 @@ public class CalendarTaskbarPanel extends JToolBar {
 			lblYear.setFont(new Font("Tahoma", Font.PLAIN, 29));
 			lblYear.setText(this.getYear());
 
-			chckbxTasks.setSelected(true);
-			chckbxTasks.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg1) {
-					changeShowTasks_actionPerformed(arg1);
-				}
-			});
-			chckbxTasks.setBackground(ColorScheme.getColor("taskbar_primary"));
-			chckbxTasks.setForeground(ColorScheme.getColor("taskbar_text"));
-			add(chckbxTasks);
-
 			panel_2.setBackground(ColorScheme.getColor("taskbar_primary"));
 			add(panel_2);
 
@@ -218,6 +208,16 @@ public class CalendarTaskbarPanel extends JToolBar {
 			chckbxEvents.setForeground(ColorScheme.getColor("taskbar_text"));
 			chckbxEvents.setBackground(ColorScheme.getColor("taskbar_primary"));
 			add(chckbxEvents);
+
+			chckbxTasks.setSelected(true);
+			chckbxTasks.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg1) {
+					changeShowTasks_actionPerformed(arg1);
+				}
+			});
+			chckbxTasks.setBackground(ColorScheme.getColor("taskbar_primary"));
+			chckbxTasks.setForeground(ColorScheme.getColor("taskbar_text"));
+			add(chckbxTasks);
 			
 			lblDay.setForeground(ColorScheme.getColor("taskbar_text"));
 			lblMonth.setForeground(ColorScheme.getColor("taskbar_text"));

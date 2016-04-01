@@ -82,6 +82,7 @@ public class PSPTaskbarPanel extends JToolBar {
 			add(viewbtnPanel);
 																		
 		    JButton btnSummary = new JButton("Summary");
+		    btnSummary.setEnabled(false);
 		    viewbtnPanel.add(btnSummary);
 		    btnSummary.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
