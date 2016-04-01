@@ -661,6 +661,13 @@ public class AppFrame extends JFrame {
     	referenceFrame.pack();
     	referenceFrame.setVisible(true);
     	
+    /*	AppFrame_AboutBox dlg = new AppFrame_AboutBox(this);        
+        Dimension dlgSize = dlg.getSize();
+        Dimension frmSize = getSize();
+        Point loc = getLocation();
+        dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
+        dlg.setModal(true);
+        dlg.setVisible(true);*/
     }
     //File | Exit action performed
     public void doExit() {
