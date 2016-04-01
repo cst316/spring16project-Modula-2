@@ -38,8 +38,7 @@ public class WorkPanel extends JPanel {
 	public CalendarPanel calendarPanel = new CalendarPanel(this);
 	public DailyItemsPanel dailyItemsPanel = new DailyItemsPanel(this);
 	public ResourcesPanel filesPanel = new ResourcesPanel();
-
-	public TimeLogPanel timeLogPanel= new TimeLogPanel(this);
+	public PSPPanel pspPanel = new PSPPanel(this);
 
 	public JButton calendarB = new JButton();
 	public JButton tasksB = new JButton();
@@ -98,9 +97,7 @@ public class WorkPanel extends JPanel {
 			}
 		});
 		calendarB.setIcon(
-			new ImageIcon(
-				net.sf.memoranda.ui.AppFrame.class.getResource(
-					"resources/icons/agenda.png")));
+			new ImageIcon(WorkPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/agenda.png")));
 		calendarB.setOpaque(false);
 		calendarB.setMargin(new Insets(0, 0, 0, 0));
 		calendarB.setSelected(true);
@@ -216,7 +213,7 @@ public class WorkPanel extends JPanel {
 		panel.add(calendarPanel, "CALENDAR");
 		panel.add(dailyItemsPanel, "DAILYITEMS");
 		panel.add(filesPanel, "FILES");
-		panel.add(timeLogPanel, "TIMELOG");
+		panel.add(pspPanel, "PSP");
 		toolBar.add(calendarB, null);
 		toolBar.add(eventsB, null);
 		toolBar.add(tasksB, null);
@@ -230,6 +227,7 @@ public class WorkPanel extends JPanel {
 		toolBar.setBackground(ColorScheme.getColor("taskbar_primary"));
 
 		toolBar.setBorder(null);
+		pspB.setText("Process");
 		
 		pspB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -237,10 +235,9 @@ public class WorkPanel extends JPanel {
 			}
 		});
 		
-		pspB.setIcon(new ImageIcon(WorkPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/agenda.png")));
+		pspB.setIcon(new ImageIcon(WorkPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/pspwhite.png")));
 		pspB.setVerticalTextPosition(SwingConstants.BOTTOM);
 		pspB.setVerticalAlignment(SwingConstants.TOP);
-		pspB.setText("Time Log");
 		pspB.setSelected(true);
 		pspB.setPreferredSize(new Dimension(50, 50));
 		pspB.setOpaque(false);
@@ -248,7 +245,7 @@ public class WorkPanel extends JPanel {
 		pspB.setMaximumSize(new Dimension(60, 80));
 		pspB.setMargin(new Insets(0, 0, 0, 0));
 		pspB.setHorizontalTextPosition(SwingConstants.CENTER);
-		pspB.setFont(new Font("Dialog", Font.BOLD, 10));
+		pspB.setFont(new Font("Dialog", Font.BOLD, 9));
 		pspB.setFocusPainted(false);
 		pspB.setContentAreaFilled(false);
 		pspB.setBorderPainted(false);
@@ -260,7 +257,7 @@ public class WorkPanel extends JPanel {
 		calendarPanel.setBorder(null);
 		dailyItemsPanel.setBorder(null);
 		filesPanel.setBorder(null);
-		timeLogPanel.setBorder(null);
+		pspPanel.setBorder(null);
 		
 		
 
@@ -276,7 +273,7 @@ public class WorkPanel extends JPanel {
 				eventsB_actionPerformed(null);
 			else if (pan.equals("FILES"))
 				filesB_actionPerformed(null);
-			else if (pan.equals("TIMELOG"))
+			else if (pan.equals("PSP"))
 				pspB_actionPerformed(null);
 		}
 	}
@@ -314,9 +311,9 @@ public class WorkPanel extends JPanel {
 		Context.put("CURRENT_PANEL", "FILES");
 	}
 	public void pspB_actionPerformed(ActionEvent e) {
-		cardLayout1.show(panel, "TIMELOG");
+		cardLayout1.show(panel, "PSP");
 		setCurrentButton(pspB);
-		Context.put("CURRENT_PANEL", "TIMELOG");
+		Context.put("CURRENT_PANEL", "PSP");
 	}
 
 	void setCurrentButton(JButton cb) {

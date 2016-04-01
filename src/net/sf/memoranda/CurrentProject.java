@@ -24,6 +24,7 @@ import net.sf.memoranda.util.Storage;
 /*$Id: CurrentProject.java,v 1.6 2005/12/01 08:12:26 alexeya Exp $*/
 public class CurrentProject {
 
+	private static ContactList _contactlist = null;
     private static Project _project = null;
     private static TaskList _tasklist = null;
     private static NoteList _notelist = null;
@@ -51,6 +52,7 @@ public class CurrentProject {
 			
 		}		
 		
+		_contactlist = CurrentStorage.get().openContactList(_project);
         _tasklist = CurrentStorage.get().openTaskList(_project);
         _notelist = CurrentStorage.get().openNoteList(_project);
         _timelog = CurrentStorage.get().openTimeLog(_project);
@@ -67,6 +69,10 @@ public class CurrentProject {
         return _project;
     }
 
+    public static ContactList getContactList() {
+    	return _contactlist;
+    }
+    
     public static TaskList getTaskList() {
             return _tasklist;
     }
@@ -85,12 +91,14 @@ public class CurrentProject {
 
     public static void set(Project project) {
         if (project.getID().equals(_project.getID())) return;
+        ContactList newcontactlist = CurrentStorage.get().openContactList(project);
         TaskList newtasklist = CurrentStorage.get().openTaskList(project);
         NoteList newnotelist = CurrentStorage.get().openNoteList(project);
         TimeLog newtimelog = CurrentStorage.get().openTimeLog(project);
         ResourcesList newresources = CurrentStorage.get().openResourcesList(project);
         notifyListenersBefore(project, newnotelist, newtasklist, newresources);
         _project = project;
+        _contactlist = newcontactlist;
         _tasklist = newtasklist;
         _notelist = newnotelist;
         _timelog = newtimelog;
@@ -124,6 +132,7 @@ public class CurrentProject {
         Storage storage = CurrentStorage.get();
 
         storage.storeNoteList(_notelist, _project);
+        storage.storeContactList(_contactlist, _project);
         storage.storeTaskList(_tasklist, _project); 
         storage.storeTimeLog(_timelog, _project);
         storage.storeResourcesList(_resources, _project);
@@ -131,6 +140,7 @@ public class CurrentProject {
     }
     
     public static void free() {
+    	_contactlist = null;
         _project = null;
         _tasklist = null;
         _notelist = null;
