@@ -338,10 +338,15 @@ public class ProjectDialog extends JDialog {
         gbc_buttonAddTeam.insets = new Insets(0, 0, 5, 0);
         gbc_buttonAddTeam.gridx = 5;
         gbc_buttonAddTeam.gridy = 7;
+        
+        
         buttonAddTeam.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		ProjectNewTeamMemberDialog dlg = new ProjectNewTeamMemberDialog(App.getFrame(), Local.getString("New Team member"));
-        		
+        		Dimension frmSize = App.getFrame().getSize();
+        		Dimension dlgSize = dlg.getSize();
+        		Point loc = App.getFrame().getLocation();
+                dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
         		dlg.setVisible(true);
         	}
         });

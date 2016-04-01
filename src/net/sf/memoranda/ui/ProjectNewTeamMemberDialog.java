@@ -2,6 +2,7 @@ package net.sf.memoranda.ui;
 
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -12,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.util.Local;
 
 import java.awt.Component;
 import javax.swing.Box;
@@ -22,12 +24,11 @@ public class ProjectNewTeamMemberDialog extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private boolean CANCELLED = true;
 	private JTextField nameTextfield;
 	private JTextField emailTextfield;
 	private JTextField phoneNumberTextfield;
 	
-	
+	ProjectDialog dlg = new ProjectDialog(null, Local.getString("New project"));
 	JPanel newUserPanel = new JPanel();
 	JPanel titlePanel = new JPanel();
 	JLabel lblNewLabel = new JLabel("Enter New Team Member");
@@ -53,8 +54,8 @@ public class ProjectNewTeamMemberDialog extends JDialog {
 		void jbInit() throws Exception {
 
 			
-		newUserPanel.setPreferredSize(new Dimension(500, 500));
-		newUserPanel.setMinimumSize(new Dimension(500, 500));
+		this.setPreferredSize(new Dimension(310, 200));
+		this.setMinimumSize(new Dimension(310, 200));
 		newUserPanel.setLayout(new BoxLayout(newUserPanel, BoxLayout.PAGE_AXIS));
 		getContentPane().add(newUserPanel);
 		
@@ -77,7 +78,7 @@ public class ProjectNewTeamMemberDialog extends JDialog {
 		usernamePanel.add(horizontalStrut);
 		
 		nameTextfield = new JTextField();
-		nameTextfield.setPreferredSize(new Dimension(6, 15));
+		nameTextfield.setPreferredSize(new Dimension(6, 17));
 		usernamePanel.add(nameTextfield);
 		nameTextfield.setColumns(10);
 		
@@ -101,11 +102,11 @@ public class ProjectNewTeamMemberDialog extends JDialog {
 		phoneNumberPanel.add(phoneNumLabel);
 		
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
-		horizontalStrut_2.setPreferredSize(new Dimension(27, 0));
+		horizontalStrut_2.setMinimumSize(new Dimension(18, 0));
 		phoneNumberPanel.add(horizontalStrut_2);
 		
 		phoneNumberTextfield = new JTextField();
-		phoneNumberTextfield.setPreferredSize(new Dimension(6, 15));
+		phoneNumberTextfield.setPreferredSize(new Dimension(5, 14));
 		phoneNumberPanel.add(phoneNumberTextfield);
 		phoneNumberTextfield.setColumns(10);
 				
@@ -113,21 +114,22 @@ public class ProjectNewTeamMemberDialog extends JDialog {
 		
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
+				ProjectNewTeamMemberDialog.this.setVisible(false);
 				
+	
 			}
 		});
 		finalPanel.add(cancelButton);
 		
 		JButton acceptButton = new JButton("Accept");
 		acceptButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-		        CANCELLED = true;
-//		        this.dispose();
+			public void actionPerformed(ActionEvent e) {
 		        CurrentProject.getContactList().addContact(
 		        		nameTextfield.getText(),
 		        		emailTextfield.getText(),
-		        		phoneNumberTextfield.getText());		        
+		        		phoneNumberTextfield.getText());
+		        ProjectNewTeamMemberDialog.this.setVisible(false);
 			}
 		});
 		finalPanel.add(acceptButton);
