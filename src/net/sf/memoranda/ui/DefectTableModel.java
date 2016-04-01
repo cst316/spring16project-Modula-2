@@ -138,10 +138,13 @@ public class DefectTableModel extends AbstractTreeTableModel implements TreeTabl
                 return Class.forName("java.util.Date");
             case 6:
                 return Class.forName("java.lang.Integer");
+            default:
+            	return Class.forName("java.lang.String");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        System.out.println(column);
         return null;
     }
     
