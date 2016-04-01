@@ -244,6 +244,9 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuHelpWeb = new JMenuItem();
     JMenuItem jMenuHelpBug = new JMenuItem();
     JMenuItem jMenuHelpAbout = new JMenuItem();
+    
+    //agamezli
+    JMenuItem jMenuPSPReference = new JMenuItem();
 
     //Construct the frame
     public AppFrame() {
@@ -308,6 +311,14 @@ public class AppFrame extends JFrame {
                 jMenuHelpAbout_actionPerformed(e);
             }
         });
+        //agamelzli 
+        jMenuPSPReference.setText(Local.getString("PSP Reference"));
+        jMenuPSPReference.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	jMenuPSPReference_actionPerformed(e);
+            }
+        });
+        //reference 
         //jButton3.setIcon(image3);
         jButton3.setToolTipText(Local.getString("Help"));
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -466,6 +477,7 @@ public class AppFrame extends JFrame {
         jMenuHelp.add(jMenuHelpGuide);
         jMenuHelp.add(jMenuHelpWeb);
         jMenuHelp.add(jMenuHelpBug);
+        jMenuHelp.add(jMenuPSPReference);
         jMenuHelp.addSeparator();
         jMenuHelp.add(jMenuHelpAbout);
         
@@ -644,7 +656,12 @@ public class AppFrame extends JFrame {
     protected void jMenuHelpGuide_actionPerformed(ActionEvent e) {
         Util.runBrowser(App.GUIDE_URL);
     }
-    
+    protected void jMenuPSPReference_actionPerformed(ActionEvent e) {
+    	PSPReferenceDialog referenceFrame = new PSPReferenceDialog(App.getFrame(), Local.getString("PSP Reference"));
+    	referenceFrame.pack();
+    	referenceFrame.setVisible(true);
+    	
+    }
     //File | Exit action performed
     public void doExit() {
         if (Configuration.get("ASK_ON_EXIT").equals("yes")) {
