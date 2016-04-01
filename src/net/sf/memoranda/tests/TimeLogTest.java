@@ -92,8 +92,8 @@ public class TimeLogTest {
 	
 	@Test
 	public void testComputeDeltaTime() {
-		assertEquals(25, entry1.getDeltaTime());
-		assertEquals(60, entry2.getDeltaTime());
+		assertEquals(85, entry1.getDeltaTime());
+		assertEquals(120, entry2.getDeltaTime());
 	}
 	
 	@Test
