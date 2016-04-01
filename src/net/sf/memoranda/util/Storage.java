@@ -8,6 +8,7 @@
  */
 package net.sf.memoranda.util;
 
+import net.sf.memoranda.ContactList;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Project;
@@ -25,6 +26,9 @@ public interface Storage {
     
     NoteList openNoteList(Project prj);
     void storeNoteList(NoteList nl, Project prj);
+    
+    ContactList openContactList(Project prj);
+    void storeContactList(ContactList list, Project prj);
     
     TimeLog openTimeLog(Project prj);
     void storeTimeLog(TimeLog log, Project prj);
