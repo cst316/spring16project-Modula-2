@@ -207,7 +207,7 @@ public class TaskPanel extends JPanel {
         scrollPane.getViewport().setBackground(ColorScheme.getColor("frame_background"));
         ppEditTask.setFont(new java.awt.Font("Dialog", 1, 11));
 
-<<<<<<< HEAD
+/*
     ppParentTask.setFont(new java.awt.Font("Dialog", 1, 11));
     ppParentTask.setText(Local.getString("Parent Task"));
     ppParentTask.addActionListener(new java.awt.event.ActionListener() {
@@ -238,7 +238,7 @@ public class TaskPanel extends JPanel {
 	ppCalcTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
 	ppCalcTask.setEnabled(false);
     scrollPane.setViewportView(taskTable);
-=======
+
 	    ppEditTask.setText(Local.getString("Edit task")+"...");
 	    ppEditTask.addActionListener(new java.awt.event.ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
@@ -295,7 +295,7 @@ public class TaskPanel extends JPanel {
 		ppCalcTask.setEnabled(false);
 
 	    scrollPane.getViewport().add(taskTable, null);
->>>>>>> 62cf8cc18ca33b8a7ba8697cc4eb24745900b1e0
+	    
         this.add(scrollPane, BorderLayout.CENTER);
         tasksToolBar.add(historyBackB, null);
         tasksToolBar.add(historyForwardB, null);
