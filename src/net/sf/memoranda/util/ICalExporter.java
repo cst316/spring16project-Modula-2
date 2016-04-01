@@ -101,7 +101,7 @@ public class ICalExporter {
         		} else {
         			startDate = exceptionDates.get(exceptionNum-1);
     				java.util.Calendar tempDate = startDate.getCalendar();
-        			
+
         			if(event.getRepeat() == EventsManager.REPEAT_YEARLY) {
         				// Increment by one day (in case it is the same day as event)
         				tempDate.add(java.util.Calendar.DAY_OF_YEAR, 1);
@@ -146,7 +146,7 @@ public class ICalExporter {
                 		tempDate = event.getStartDate().getCalendar();
                 		
                 		// Keep iterating forward the period until we're after the exception date
-                		while(exceptionDate.before(tempDate) || exceptionDate.equals(tempDate))
+                		while(exceptionDate.after(tempDate) || exceptionDate.equals(tempDate))
             				tempDate.add(java.util.Calendar.DAY_OF_YEAR, event.getPeriod());
         				
                 		startDate = new CalendarDate(tempDate);
@@ -217,7 +217,7 @@ public class ICalExporter {
             	// Increment exception counter, for do{} while() if there are exception dates
         		exceptionNum++;
         	}
-        	while(exceptionNum <= exceptionDates.size());        	
+        	while(exceptionNum <= exceptionDates.size());
         }
        
         // Output
