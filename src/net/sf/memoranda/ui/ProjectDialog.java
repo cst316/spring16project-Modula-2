@@ -71,12 +71,12 @@ public class ProjectDialog extends JDialog {
     public final JTextArea descriptionTextArea = new JTextArea();
     
     //Used for the team system GUI
-    private final JLabel teamLabel = new JLabel("Team");
-    private final JButton buttonAddTeam = new JButton("Add");
-    private final JButton buttonRemoveTeam = new JButton("Remove");
-    private final JPanel teamPanel = new JPanel();
-    private JTable tableTeam = new JTable();
-    private JScrollPane teamPabelScrollPane = new JScrollPane();
+    final JLabel teamLabel = new JLabel("Team");
+    final JButton buttonAddTeam = new JButton("Add");
+    final JButton buttonRemoveTeam = new JButton("Remove");
+    final JPanel teamPanel = new JPanel();
+    JTable tableTeam = new JTable();
+    JScrollPane teamPabelScrollPane = new JScrollPane();
     
     String columnNames[] = {"ID", "Name", "Phone Number", "Email" };
     
