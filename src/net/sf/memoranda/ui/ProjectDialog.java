@@ -429,7 +429,7 @@ public class ProjectDialog extends JDialog {
         CalendarDate endD = null;
         if (dlg.endDateChB.isSelected())
             endD = new CalendarDate((Date) dlg.endDate.getModel().getValue());
-        Project prj = ProjectManager.createProject(title, description, startD, endD, dataValues);
+        Project prj = ProjectManager.createProject(title, description, startD, endD);
         /*if (dlg.freezeChB.isSelected())
             prj.freeze();*/
         CurrentStorage.get().storeProjectManager();

@@ -19,6 +19,8 @@ import java.net.URL;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import net.sf.memoranda.ContactList;
+import net.sf.memoranda.ContactListImpl;
 import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.NoteList;
@@ -342,6 +344,42 @@ public class FileStorage implements Storage {
                 + ".timelog");
         Document tasklistDoc = log.getXMLContent();
         saveDocument(tasklistDoc,JN_DOCPATH + prj.getID() + File.separator + ".timelog");
+	}
+	
+	@Override
+	public ContactList openContactList(Project prj) {
+		String fn = JN_DOCPATH + prj.getID() + File.separator + ".contactlist";
+
+        if (documentExists(fn)) {
+            /*DEBUG*/
+            System.out.println(
+                "[DEBUG] Open contact list: "
+                    + JN_DOCPATH
+                    + prj.getID()
+                    + File.separator
+                    + ".contactlist");
+            
+            Document contactListDoc = openDocument(fn);
+            return new ContactListImpl(contactListDoc, prj);
+        }
+        else {
+            /*DEBUG*/
+            System.out.println("[DEBUG] New task list created");
+            return new ContactListImpl(prj);
+        }
+	}
+
+	@Override
+	public void storeContactList(ContactList list, Project prj) {
+		/*DEBUG*/
+        System.out.println(
+            "[DEBUG] Save contact list: "
+                + JN_DOCPATH
+                + prj.getID()
+                + File.separator
+                + ".contactlist");
+        Document contactListDoc = list.getXMLContent();
+        saveDocument(contactListDoc,JN_DOCPATH + prj.getID() + File.separator + ".contactList");
 	}
     
     /**
