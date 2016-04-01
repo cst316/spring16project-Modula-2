@@ -24,7 +24,7 @@ public class ProjectNewTeamMemberDialog extends JDialog {
 	private JTextField emailTextfield;
 	private JTextField phoneNumberTextfield;
 	
-	JFrame newTeam = new JFrame("NewTeam");
+	
 	JPanel newUserPanel = new JPanel();
 	JPanel titlePanel = new JPanel();
 	JLabel lblNewLabel = new JLabel("Enter New Team Member");
@@ -50,10 +50,10 @@ public class ProjectNewTeamMemberDialog extends JDialog {
 		void jbInit() throws Exception {
 
 			
-		newUserPanel.setPreferredSize(new Dimension(300, 170));
+		newUserPanel.setPreferredSize(new Dimension(500, 500));
 		newUserPanel.setMinimumSize(new Dimension(500, 500));
 		newUserPanel.setLayout(new BoxLayout(newUserPanel, BoxLayout.PAGE_AXIS));
-		add(newUserPanel);
+		getContentPane().add(newUserPanel);
 		
 		newUserPanel.add(titlePanel);
 		

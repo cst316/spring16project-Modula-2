@@ -78,14 +78,11 @@ public class ProjectDialog extends JDialog {
     private JTable tableTeam = new JTable();
     private JScrollPane teamPabelScrollPane = new JScrollPane();
     
-    String columnNames[] = {"ID", "Name", "Phone Number", "Email" };
+    String columnNames[] = {"Name", "Phone Number", "Email" };
     
     static String dataValues[][] =
 		{
-			{"1", "12", "234", "67" },
-			{"2",  "-123", "43", "853" },
-			{"3",  "93", "89.2", "109" },
-			{"4",  "279", "9033", "3092" }
+
 		};
     
     public ProjectDialog(Frame frame, String title) {
@@ -342,7 +339,9 @@ public class ProjectDialog extends JDialog {
         gbc_buttonAddTeam.gridy = 7;
         buttonAddTeam.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		new ProjectNewTeamMemberDialog(App.getFrame(), Local.getString("New task"));
+        		ProjectNewTeamMemberDialog dlg = new ProjectNewTeamMemberDialog(App.getFrame(), Local.getString("New Team member"));
+        		
+        		dlg.setVisible(true);
         	}
         });
         centerPanel.add(buttonAddTeam, gbc_buttonAddTeam);
