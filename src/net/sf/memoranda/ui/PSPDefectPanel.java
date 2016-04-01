@@ -59,7 +59,7 @@ import javax.swing.JToolBar;
 
 public class PSPDefectPanel extends JPanel {
 	
-	private WorkPanel parentPanel = null;
+	private PSPPanel parentPanel = null;
 	
     BorderLayout borderLayout1 = new BorderLayout();
 
@@ -83,10 +83,10 @@ public class PSPDefectPanel extends JPanel {
 	
 	private static Vector<DefectListListener> defectListListeners = new Vector<DefectListListener>();
 	
-	public PSPDefectPanel(WorkPanel _parentPanel) {
+	public PSPDefectPanel(PSPPanel pspPanel) {
 		setLayout(null);
         try {
-            parentPanel = _parentPanel;
+            parentPanel = pspPanel;
             jbInit();
         }
         catch (Exception ex) {

@@ -123,7 +123,6 @@ public class TaskTable extends JTable {
     }
 
     private void initTable() {
-	
 		//model = new TaskTableModel();
 		model = new TaskTableSorter( this );
 	
@@ -524,7 +523,6 @@ public class TaskTable extends JTable {
 			while(iter.hasNext()){
 				tree.expandPath( (TreePath) iter.next() );
 			}
-			System.out.println(expanded.size());
 		}
 		
 	} // }}}	
