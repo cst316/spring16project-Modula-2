@@ -34,6 +34,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.DefectList;
 import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectListener;
@@ -242,6 +243,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 				Project p,
 				NoteList nl,
 				TaskList tl,
+				DefectList dl,
 				ResourcesList rl) {
 			}
 			public void projectWasChanged() {

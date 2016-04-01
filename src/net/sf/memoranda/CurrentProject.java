@@ -27,6 +27,7 @@ public class CurrentProject {
 	private static ContactList _contactlist = null;
     private static Project _project = null;
     private static TaskList _tasklist = null;
+    private static DefectList _defectlist = null;
     private static NoteList _notelist = null;
     private static TimeLog _timelog = null;
     private static ResourcesList _resources = null;
@@ -54,6 +55,7 @@ public class CurrentProject {
 		
 		_contactlist = CurrentStorage.get().openContactList(_project);
         _tasklist = CurrentStorage.get().openTaskList(_project);
+        _defectlist = CurrentStorage.get().openDefectList(_project);
         _notelist = CurrentStorage.get().openNoteList(_project);
         _timelog = CurrentStorage.get().openTimeLog(_project);
         _resources = CurrentStorage.get().openResourcesList(_project);
@@ -76,6 +78,10 @@ public class CurrentProject {
     public static TaskList getTaskList() {
             return _tasklist;
     }
+    
+    public static DefectList getDefectList() {
+    	return _defectlist;
+    }
 
     public static NoteList getNoteList() {
             return _notelist;
@@ -93,13 +99,15 @@ public class CurrentProject {
         if (project.getID().equals(_project.getID())) return;
         ContactList newcontactlist = CurrentStorage.get().openContactList(project);
         TaskList newtasklist = CurrentStorage.get().openTaskList(project);
+        DefectList newdefectlist = CurrentStorage.get().openDefectList(project);
         NoteList newnotelist = CurrentStorage.get().openNoteList(project);
         TimeLog newtimelog = CurrentStorage.get().openTimeLog(project);
         ResourcesList newresources = CurrentStorage.get().openResourcesList(project);
-        notifyListenersBefore(project, newnotelist, newtasklist, newresources);
+        notifyListenersBefore(project, newnotelist, newtasklist, newdefectlist, newresources);
         _project = project;
         _contactlist = newcontactlist;
         _tasklist = newtasklist;
+        _defectlist = newdefectlist;
         _notelist = newnotelist;
         _timelog = newtimelog;
         _resources = newresources;
@@ -115,9 +123,9 @@ public class CurrentProject {
         return projectListeners;
     }
 
-    private static void notifyListenersBefore(Project project, NoteList nl, TaskList tl, ResourcesList rl) {
+    private static void notifyListenersBefore(Project project, NoteList nl, TaskList tl, DefectList dl, ResourcesList rl) {
         for (int i = 0; i < projectListeners.size(); i++) {
-            ((ProjectListener)projectListeners.get(i)).projectChange(project, nl, tl, rl);
+            ((ProjectListener)projectListeners.get(i)).projectChange(project, nl, tl, dl, rl);
             /*DEBUGSystem.out.println(projectListeners.get(i));*/
         }
     }
@@ -132,6 +140,7 @@ public class CurrentProject {
         Storage storage = CurrentStorage.get();
 
         storage.storeNoteList(_notelist, _project);
+        storage.storeDefectList(_defectlist, _project);
         storage.storeContactList(_contactlist, _project);
         storage.storeTaskList(_tasklist, _project); 
         storage.storeTimeLog(_timelog, _project);
@@ -143,6 +152,7 @@ public class CurrentProject {
     	_contactlist = null;
         _project = null;
         _tasklist = null;
+        _defectlist = null;
         _notelist = null;
         _resources = null;
     }

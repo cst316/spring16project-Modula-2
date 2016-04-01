@@ -25,6 +25,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.DefectList;
 import net.sf.memoranda.History;
 import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Project;
@@ -206,6 +207,38 @@ public class TaskPanel extends JPanel {
         scrollPane.getViewport().setBackground(ColorScheme.getColor("frame_background"));
         ppEditTask.setFont(new java.awt.Font("Dialog", 1, 11));
 
+/*
+    ppParentTask.setFont(new java.awt.Font("Dialog", 1, 11));
+    ppParentTask.setText(Local.getString("Parent Task"));
+    ppParentTask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ppParentTask_actionPerformed(e);
+            }
+        });
+    ppParentTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
+    */
+
+	ppCompleteTask.setFont(new java.awt.Font("Dialog", 1, 11));
+	ppCompleteTask.setText(Local.getString("Complete task"));
+	ppCompleteTask.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ppCompleteTask_actionPerformed(e);
+			}
+		});
+	ppCompleteTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
+	ppCompleteTask.setEnabled(false);
+
+	ppCalcTask.setFont(new java.awt.Font("Dialog", 1, 11));
+	ppCalcTask.setText(Local.getString("Calculate task data"));
+	ppCalcTask.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ppCalcTask_actionPerformed(e);
+			}
+		});
+	ppCalcTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
+	ppCalcTask.setEnabled(false);
+    scrollPane.setViewportView(taskTable);
+
 	    ppEditTask.setText(Local.getString("Edit task")+"...");
 	    ppEditTask.addActionListener(new java.awt.event.ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
@@ -262,6 +295,7 @@ public class TaskPanel extends JPanel {
 		ppCalcTask.setEnabled(false);
 
 	    scrollPane.getViewport().add(taskTable, null);
+	    
         this.add(scrollPane, BorderLayout.CENTER);
         tasksToolBar.add(historyBackB, null);
         tasksToolBar.add(historyForwardB, null);
@@ -288,7 +322,7 @@ public class TaskPanel extends JPanel {
             }
         });
         CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl) {
+            public void projectChange(Project p, NoteList nl, TaskList tl, DefectList dl, ResourcesList rl) {
                 newTaskB.setEnabled(
                     CurrentDate.get().inPeriod(p.getStartDate(), p.getEndDate()));
             }

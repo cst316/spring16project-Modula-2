@@ -50,6 +50,8 @@ public class WorkPanel extends JPanel {
 	
 	
 
+	
+	
 	public WorkPanel() {
 		try {
 			jbInit();
@@ -214,6 +216,7 @@ public class WorkPanel extends JPanel {
 		panel.add(dailyItemsPanel, "DAILYITEMS");
 		panel.add(filesPanel, "FILES");
 		panel.add(pspPanel, "PSP");
+
 		toolBar.add(calendarB, null);
 		toolBar.add(eventsB, null);
 		toolBar.add(tasksB, null);
@@ -253,6 +256,7 @@ public class WorkPanel extends JPanel {
 		pspB.setForeground(ColorScheme.getColor("taskbar_text"));
 		
 		toolBar.add(pspB);
+
 		panel.setBorder(null);
 		calendarPanel.setBorder(null);
 		dailyItemsPanel.setBorder(null);
@@ -260,7 +264,6 @@ public class WorkPanel extends JPanel {
 		pspPanel.setBorder(null);
 		
 		
-
 	}
 
 	public void selectPanel(String pan) {
@@ -310,6 +313,7 @@ public class WorkPanel extends JPanel {
 		setCurrentButton(filesB);
 		Context.put("CURRENT_PANEL", "FILES");
 	}
+	
 	public void pspB_actionPerformed(ActionEvent e) {
 		cardLayout1.show(panel, "PSP");
 		setCurrentButton(pspB);

@@ -135,6 +135,38 @@ public class Util {
     	}
     }
     
+    public static long getMillisFromMinutes(String mins) {
+    	try {
+        	double numMins = Double.parseDouble(mins);
+        	double millisDouble = (numMins * 60 * 3600 * 1000);
+        	return (long) millisDouble;
+    	}
+    	catch (NumberFormatException e) {
+    		return 0;
+    	}
+    }
+    
+    public static long getMinsFromMillis(String millis) {
+    	try {
+        	double numMillis = Double.parseDouble(millis);
+        	double minsDouble = (numMillis / 60 / 3600 / 1000);
+        	return (long) minsDouble;
+    	}
+    	catch (NumberFormatException e) {
+    		return 0;
+    	}
+    }
+    
+    public static long getMinsFromMillis(long millis) {
+    	try {
+        	double minsDouble = (millis / 60 / 3600 / 1000);
+        	return (long) minsDouble;
+    	}
+    	catch (NumberFormatException e) {
+    		return 0;
+    	}
+    }
+    
     static Set tempFiles = new HashSet();
     
     static {

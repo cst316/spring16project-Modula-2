@@ -20,6 +20,7 @@ public class PSPPanel extends JPanel {
 	
 	private TimeLogPanel timeLogPanel;
 	private CalendarPanel calendarPanel;
+	private PSPDefectPanel defectPanel;
 	
 	public PSPPanel(WorkPanel parentPanel) {
 		
@@ -37,10 +38,10 @@ public class PSPPanel extends JPanel {
 	void jbInit() {
 		
 		timeLogPanel = new TimeLogPanel(this);
-		calendarPanel = new CalendarPanel(null);
+		defectPanel = new PSPDefectPanel(this);
 		cardLayout = new CardLayout();
 		
-		taskbar = new PSPTaskbarPanel(null);
+		taskbar = new PSPTaskbarPanel(this);
 		taskbar.setBorder(null);
 		
 		taskbar.setMaximumSize(new Dimension(500, 42));
@@ -49,10 +50,18 @@ public class PSPPanel extends JPanel {
 		cardPanel = new JPanel();
 		cardPanel.setLayout(cardLayout);
 		cardPanel.add(timeLogPanel, "TIMELOG");
-		cardPanel.add(calendarPanel, "CALENDAR");
+		cardPanel.add(defectPanel, "DEFECTLOG");
 		
 		setLayout(new BorderLayout());
 		add(cardPanel, BorderLayout.CENTER);
 		add(taskbar, BorderLayout.NORTH);
+	}
+	
+	public CardLayout getCardLayout() {
+		return cardLayout;
+	}
+	
+	public JPanel getCardPanel() {
+		return cardPanel;
 	}
 }

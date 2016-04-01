@@ -19,6 +19,8 @@ import java.net.URL;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import net.sf.memoranda.DefectList;
+import net.sf.memoranda.DefectListImpl;
 import net.sf.memoranda.ContactList;
 import net.sf.memoranda.ContactListImpl;
 import net.sf.memoranda.EventsManager;
@@ -74,6 +76,7 @@ public class FileStorage implements Storage {
             //serializer.write(doc);
             OutputStreamWriter fw =
                 new OutputStreamWriter(new FileOutputStream(filePath), "UTF-8");
+                        
             fw.write(doc.toXML());
             fw.flush();
             fw.close();
@@ -310,13 +313,50 @@ public class FileStorage implements Storage {
         saveDocument(tasklistDoc,JN_DOCPATH + prj.getID() + File.separator + ".tasklist");
     }
     
-	@Override
-	public TimeLog openTimeLog(Project prj) {
-		String fn = JN_DOCPATH + prj.getID() + File.separator + ".timelog";
+
+    public DefectList openDefectList(Project prj) {
+        String fn = JN_DOCPATH + prj.getID() + File.separator + ".defectlist";
 
         if (documentExists(fn)) {
             /*DEBUG*/
             System.out.println(
+
+                "[DEBUG] Open defect list: "
+                    + JN_DOCPATH
+                    + prj.getID()
+                    + File.separator
+                    + ".defectlist");
+            
+            Document defectlistDoc = openDocument(fn);
+            
+            return new DefectListImpl(defectlistDoc, prj);   
+        }
+        else {
+            /*DEBUG*/
+            System.out.println("[DEBUG] New defect list created");
+            return new DefectListImpl(prj);
+        }
+    }
+    
+    public void storeDefectList(DefectList defectlist, Project prj) {
+        /*DEBUG*/
+        System.out.println(
+            "[DEBUG] Save defect list: "
+                + JN_DOCPATH
+                + prj.getID()
+                + File.separator
+                + ".defectlist");
+        Document defectlistDoc = defectlist.getXMLContent();
+        saveDocument(defectlistDoc,JN_DOCPATH + prj.getID() + File.separator + ".defectlist");
+    }
+
+	@Override
+	public TimeLog openTimeLog(Project prj) {
+		String fn = JN_DOCPATH + prj.getID() + File.separator + ".timelog";
+		
+		if (documentExists(fn)) {
+			/*DEBUG*/
+	        System.out.println(
                 "[DEBUG] Open time log: "
                     + JN_DOCPATH
                     + prj.getID()

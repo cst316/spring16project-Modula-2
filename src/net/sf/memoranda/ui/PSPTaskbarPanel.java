@@ -33,6 +33,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.Box;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.GridLayout;
 
 
@@ -49,6 +50,8 @@ public class PSPTaskbarPanel extends JToolBar {
 		 public PSPTaskbarPanel(PSPPanel _parentPanel) {
 
 			 super();
+			 
+			 parentPanel = _parentPanel;
 			 setFloatable(false);
 			 setVisible(true);
 			 super.setBorder(new EmptyBorder(new Insets(0,0,0,0)));
@@ -56,8 +59,6 @@ public class PSPTaskbarPanel extends JToolBar {
 			 setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		        try {
-		            parentPanel = _parentPanel;
-
 		            jbInit();
 		        }
 		        catch (Exception ex) {
@@ -100,7 +101,7 @@ public class PSPTaskbarPanel extends JToolBar {
 			viewbtnPanel.add(btnTimeRecording);
 			btnTimeRecording.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			changeToDefectView_actionPerformed(arg0);
+			changeToTimeView_actionPerformed(arg0);
 			}			
 			});
 			
@@ -114,7 +115,7 @@ public class PSPTaskbarPanel extends JToolBar {
 			viewbtnPanel.add(btnDefect);
 			btnDefect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				changeToTimeView_actionPerformed(arg0);
+				changeToDefectView_actionPerformed(arg0);
 			}
 			});
 			
@@ -130,23 +131,15 @@ public class PSPTaskbarPanel extends JToolBar {
 	
 		// Change views
 		void changeToSummaryView_actionPerformed(ActionEvent e) {
-			//currentView = CalendarPanelView.VIEW_MONTH;
-			//parentPanel.changeCalendarPanelView(currentView);
+			// TODO: Show summary panel.
 		}
 
 		void changeToTimeView_actionPerformed(ActionEvent e) {
-			//currentView = CalendarPanelView.VIEW_WEEK;
-			//parentPanel.changeCalendarPanelView(currentView);
+			parentPanel.getCardLayout().show(parentPanel.getCardPanel(), "TIMELOG");
 		}
 
 		void changeToDefectView_actionPerformed(ActionEvent e) {
-			//currentView = CalendarPanelView.VIEW_DAY;
-			//parentPanel.changeCalendarPanelView(currentView);
+			parentPanel.getCardLayout().show(parentPanel.getCardPanel(), "DEFECTLOG");
 		}
-
-	
-
-		
-
 		
 	}
