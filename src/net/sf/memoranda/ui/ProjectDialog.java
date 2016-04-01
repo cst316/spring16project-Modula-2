@@ -30,6 +30,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.AbstractTableModel;
 
+import net.sf.memoranda.Contact;
+import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectManager;
 import net.sf.memoranda.date.CalendarDate;
@@ -75,7 +77,7 @@ public class ProjectDialog extends JDialog {
     final JButton buttonAddTeam = new JButton("Add");
     final JButton buttonRemoveTeam = new JButton("Remove");
     final JPanel teamPanel = new JPanel();
-    JTable tableTeam = new JTable();
+    ContactListTable tableTeam = new ContactListTable(this);
     JScrollPane teamPabelScrollPane = new JScrollPane();
     
     String columnNames[] = {"Name", "Phone Number", "Email" };
@@ -322,8 +324,7 @@ public class ProjectDialog extends JDialog {
         
         
         //Settings for the tableTeam
-		setTitle( "Simple Table Application" );
-        tableTeam = new JTable( dataValues, columnNames );
+		setTitle( "Project Dialog" );
         
 		// Add the table to a scrolling pane
         teamPabelScrollPane = new JScrollPane( tableTeam );
@@ -349,6 +350,12 @@ public class ProjectDialog extends JDialog {
         GridBagConstraints gbc_buttonRemoveTeam = new GridBagConstraints();
         gbc_buttonRemoveTeam.gridx = 5;
         gbc_buttonRemoveTeam.gridy = 8;
+        buttonRemoveTeam.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		Contact contact = CurrentProject.getContactList().getLog().get(tableTeam.getSelectedRow());
+        		CurrentProject.getContactList().removeContact(contact);
+        	}
+        });
         centerPanel.add(buttonRemoveTeam, gbc_buttonRemoveTeam);
         
         gbc = new GridBagConstraints();

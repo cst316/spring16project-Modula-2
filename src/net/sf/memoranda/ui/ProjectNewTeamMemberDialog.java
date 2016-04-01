@@ -10,6 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import net.sf.memoranda.CurrentProject;
+
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -121,6 +124,10 @@ public class ProjectNewTeamMemberDialog extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 		        CANCELLED = true;
 //		        this.dispose();
+		        CurrentProject.getContactList().addContact(
+		        		nameTextfield.getText(),
+		        		emailTextfield.getText(),
+		        		phoneNumberTextfield.getText());		        
 			}
 		});
 		finalPanel.add(acceptButton);
