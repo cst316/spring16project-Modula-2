@@ -258,7 +258,7 @@ public class TimeRecordLogDialog extends JDialog {
         	int interruptionTime = 0;
         	Calendar it = Calendar.getInstance();
         	it.setTime((Date) logInterruptTime.getValue());
-        	interruptionTime += it.get(Calendar.HOUR) * 60 + it.get(Calendar.MINUTE);
+        	interruptionTime += it.get(Calendar.HOUR_OF_DAY) * 60 + it.get(Calendar.MINUTE);
         	
         	String ps = dpPhaseSelector.getSelectedItem().toString();
         	Phase phase = null;

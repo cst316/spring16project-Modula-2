@@ -8,6 +8,8 @@
  */
 package net.sf.memoranda;
 
+import java.util.Vector;
+
 import net.sf.memoranda.date.CalendarDate;
 
 /**

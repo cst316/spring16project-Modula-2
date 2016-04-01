@@ -24,7 +24,7 @@ public class ProjectImpl implements Project {
     /**
      * Constructor for ProjectImpl.
      */
-    public ProjectImpl(Element root) {        
+    public ProjectImpl(Element root) {
         _root = root;
     }
 
@@ -180,6 +180,15 @@ public class ProjectImpl implements Project {
             desc.appendChild(s);    	
     	}
     }
+    
+//    public void setTeam(String [][] team) {
+//    	
+//    }
+//    
+//    public String[][] getTeam(){
+//		return null;
+//    	
+//    }
         
     /**
      * @see net.sf.memoranda.Project#getTaskList()

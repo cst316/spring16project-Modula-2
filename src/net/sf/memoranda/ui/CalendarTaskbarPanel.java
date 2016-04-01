@@ -149,11 +149,11 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnBigStepBack.setBackground(ColorScheme.getColor("button_primary"));
 			btnBigStepBack.setBorder(null);
 			panel_1.add(btnBigStepBack);
-			panel_1.setBackground(ColorScheme.getColor("frame_secondary"));
+			panel_1.setBackground(ColorScheme.getColor("taskbar_primary"));
 			add(panel_1);
 
 			panel.setPreferredSize(new Dimension(500, 40));
-			panel.setBackground(ColorScheme.getColor("frame_secondary"));
+			panel.setBackground(ColorScheme.getColor("taskbar_primary"));
 			panel.setBorder(null);
 			add(panel);
 			panel.add(lblDay);
@@ -175,8 +175,11 @@ public class CalendarTaskbarPanel extends JToolBar {
 					changeShowTasks_actionPerformed(arg1);
 				}
 			});
+			chckbxTasks.setBackground(ColorScheme.getColor("taskbar_primary"));
+			chckbxTasks.setForeground(ColorScheme.getColor("taskbar_text"));
+			add(chckbxTasks);
 
-			panel_2.setBackground(ColorScheme.getColor("frame_secondary"));
+			panel_2.setBackground(ColorScheme.getColor("taskbar_primary"));
 			add(panel_2);
 
 			Image rightArrowSmall = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow_small.gif"));
@@ -205,19 +208,22 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnBigStepForward.setBorder(null);
 			panel_2.add(btnLittleStepForward);
 
-			chckbxTasks.setBackground(ColorScheme.getColor("frame_secondary"));
-			add(chckbxTasks);
-
 			chckbxEvents.setSelected(true);
 			chckbxEvents.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg1) {
 					changeShowEvents_actionPerformed(arg1);
 				}
 			});
-
-			chckbxEvents.setBackground(ColorScheme.getColor("frame_secondary"));
+			
+			chckbxEvents.setForeground(ColorScheme.getColor("taskbar_text"));
+			chckbxEvents.setBackground(ColorScheme.getColor("taskbar_primary"));
 			add(chckbxEvents);
-			this.setBackground(ColorScheme.getColor("frame_secondary"));
+			
+			lblDay.setForeground(ColorScheme.getColor("taskbar_text"));
+			lblMonth.setForeground(ColorScheme.getColor("taskbar_text"));
+			lblYear.setForeground(ColorScheme.getColor("taskbar_text"));
+			
+			this.setBackground(ColorScheme.getColor("taskbar_primary"));
 			this.setBorder(null);
 		}
 		public String getDay(){
