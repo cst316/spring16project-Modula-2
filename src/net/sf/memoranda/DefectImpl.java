@@ -33,6 +33,15 @@ public class DefectImpl implements Defect {
 		eldate.appendChild(date.toString());
 		_element.appendChild(eldate);
 	}
+	
+	@Override
+	public void editDateFound(CalendarDate date) {
+		Element eldate = new Element("dateFound");
+		eldate.appendChild(date.toString());
+		Elements old = _element.getChildElements("dateFound");
+		Element old2 = old.get(0);
+		_element.replaceChild(old2, eldate);
+	}
 
 	@Override
 	public CalendarDate getDateFound() {
@@ -43,7 +52,7 @@ public class DefectImpl implements Defect {
 	public void setDefectId(String id) {
 		_element.addAttribute(new Attribute("id", id));
 	}
-
+	
 	@Override
 	public String getDefectId() {
 		return _element.getAttribute("id").getValue();
@@ -55,7 +64,16 @@ public class DefectImpl implements Defect {
 		ty.appendChild(type);
 		_element.appendChild(ty);
 	}
-
+	
+	@Override
+	public void editType(String type) {
+		Element ty = new Element("type");
+		ty.appendChild(type);
+		Elements old = _element.getChildElements("type");
+		Element old2 = old.get(0);
+		_element.replaceChild(old2, ty);
+	}
+	
 	@Override
 	public String getType() {
 		return _element.getFirstChildElement("type").getValue();
@@ -66,6 +84,15 @@ public class DefectImpl implements Defect {
 		Element inj = new Element("injection");
 		inj.appendChild(injection);
 		_element.appendChild(inj);
+	}
+	
+	@Override
+	public void editInjection(String injection) {
+		Element inj = new Element("injection");
+		inj.appendChild(injection);
+		Elements old = _element.getChildElements("injection");
+		Element old2 = old.get(0);
+		_element.replaceChild(old2, inj);
 	}
 
 	@Override
@@ -79,6 +106,15 @@ public class DefectImpl implements Defect {
 		rem.appendChild(remove);
 		_element.appendChild(rem);
 	}
+	
+	@Override
+	public void editRemove(String remove) {
+		Element rem = new Element("remove");
+		rem.appendChild(remove);
+		Elements old = _element.getChildElements("remove");
+		Element old2 = old.get(0);
+		_element.replaceChild(old2, rem);
+	}
 
 	@Override
 	public String getRemove() {
@@ -86,26 +122,44 @@ public class DefectImpl implements Defect {
 	}
 
 	@Override
-	public void setApproximateFixTimeInMinutes(long approx) {
+	public void setApproximateFixTimeInMillis(long approx) {
 		Element apft = new Element("approximateFixTime");
 		apft.appendChild(Long.toString(approx));
 		_element.appendChild(apft);
 	}
+	
+	@Override
+	public void editApproximateFixTimeInMillis(long approx) {
+		Element apft = new Element("approximateFixTime");
+		apft.appendChild(Long.toString(approx));
+		Elements old = _element.getChildElements("approximateFixTime");
+		Element old2 = old.get(0);
+		_element.replaceChild(old2, apft);
+	}
 
 	@Override
-	public long getApproximateFixTimeInMinutes() {
+	public long getApproximateFixTimeInMillis() {
 		return Long.parseLong(_element.getFirstChildElement("approximateFixTime").getValue());
 	}
 
 	@Override
-	public void setFixTimeInMinutes(long fixtime) {
+	public void setFixTimeInMillis(long fixtime) {
 		Element ft = new Element("fixTime");
 		ft.appendChild(Long.toString(fixtime));
 		_element.appendChild(ft);
 	}
+	
+	@Override
+	public void editFixTimeInMillis(long fixtime) {
+		Element ft = new Element("fixTime");
+		ft.appendChild(Long.toString(fixtime));
+		Elements old = _element.getChildElements("fixTime");
+		Element old2 = old.get(0);
+		_element.replaceChild(old2, ft);
+	}
 
 	@Override
-	public long getFixTimeInMinutes() {
+	public long getFixTimeInMillis() {
 		return Long.parseLong(_element.getFirstChildElement("fixTime").getValue());
 	}
 
@@ -115,12 +169,27 @@ public class DefectImpl implements Defect {
 		eldate.appendChild(date.toString());
 		_element.appendChild(eldate);
 	}
+	
+	@Override
+	public void editDateRemoved(CalendarDate date) {
+		
+		Element eldate = new Element("dateFixed");
+		
+		if (date == null) {
+			eldate.appendChild(new CalendarDate().toString());
+		}
+		else {
+			eldate.appendChild(date.toString());
+		}
+		
+		Elements old = _element.getChildElements("dateFixed");
+		Element old2 = old.get(0);
+		_element.replaceChild(old2, eldate);
+	}
 
 	@Override
 	public CalendarDate getDateRemoved() {
-		
 		String d = _element.getFirstChildElement("dateFixed").getValue();
-		
 		if (d.equals("")) {
 			return new CalendarDate();
 		}
@@ -135,6 +204,15 @@ public class DefectImpl implements Defect {
 		fr.appendChild(reference);
 		_element.appendChild(fr);
 	}
+	
+	@Override
+	public void editFixReference(String reference) {
+		Element fr = new Element("fixReference");
+		fr.appendChild(reference);
+		Elements old = _element.getChildElements("fixReference");
+		Element old2 = old.get(0);
+		_element.replaceChild(old2, fr);
+	}
 
 	@Override
 	public String getFixReference() {
@@ -147,6 +225,15 @@ public class DefectImpl implements Defect {
 		d.appendChild(description);
 		_element.appendChild(d);
 	}
+	
+	@Override
+	public void editDescription(String description) {
+		Element d = new Element("description");
+		d.appendChild(description);
+		Elements old = _element.getChildElements("description");
+		Element old2 = old.get(0);
+		_element.replaceChild(old2, d);	
+	}
 
 	@Override
 	public String getDescription() {
@@ -158,6 +245,12 @@ public class DefectImpl implements Defect {
 		Element comp = new Element("isCompleted");
 		comp.appendChild(Boolean.toString(isCompleted));
 		_element.appendChild(comp);
+	}
+	
+	@Override
+	public void editCompleted(boolean isCompleted) {
+		_element.removeAttribute(_element.getAttribute("isCompleted"));
+		_element.addAttribute(new Attribute("isCompleted", Boolean.toString(isCompleted)));
 	}
 
 	@Override
@@ -175,9 +268,9 @@ public class DefectImpl implements Defect {
 	
 	@Override
 	public boolean getIsCompleted() {
-		Elements comp = _element.getChildElements("isCompleted");
+		String comp = _element.getAttribute("isCompleted").getValue();
 		
-		if (Boolean.parseBoolean(comp.toString()) == true) {
+		if (Boolean.parseBoolean(comp) == true) {
 			return true;
 		}
 		else {

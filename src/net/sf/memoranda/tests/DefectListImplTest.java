@@ -29,7 +29,7 @@ public class DefectListImplTest {
 	
 	@Test
 	public void testCreateDefect() {
-		Defect newDefect = CurrentProject.getDefectList().createDefect(new CalendarDate(), 0, null, null, 0, 0, new CalendarDate(), null, null, null, false);
+		//Defect newDefect = CurrentProject.getDefectList().createDefect(new CalendarDate(), 0, null, null, 0, 0, new CalendarDate(), null, null, null, false);
 		System.out.println("DefectList Debug... Current defect list: " + CurrentProject.getDefectList().toString());
         CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
         

@@ -11,13 +11,16 @@ import net.sf.memoranda.ui.treetable.AbstractTreeTableModel;
 import net.sf.memoranda.ui.treetable.TreeTableModel;
 import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.Local;
+import net.sf.memoranda.util.Util;
 
 public class DefectTableModel extends AbstractTreeTableModel implements TreeTableModel {
 
-	String[] columnNames = {"", Local.getString("To-do"),
+	String[] columnNames = {Local.getString("Description"), Local.getString("Defect ID"),
             Local.getString("Found date"), Local.getString("Fixed date"),
-            Local.getString(""), Local.getString("Status"),
-            "% " + Local.getString("done") };
+            Local.getString("Injection"), Local.getString("Type"), 
+            Local.getString("Approximate Fix Time"), Local.getString("Fix Time"),
+            Local.getString("Fix Reference"), Local.getString("Status"),
+            Local.getString("Removal") };
 
     //protected EventListenerList listenerList = new EventListenerList();
 
@@ -44,7 +47,7 @@ public class DefectTableModel extends AbstractTreeTableModel implements TreeTabl
         Defect d = (Defect) node;
         switch (column) {
         case 0:
-            return "";
+            return d.getDescription();
         case 1:
             return d;
         case 2:
@@ -53,13 +56,30 @@ public class DefectTableModel extends AbstractTreeTableModel implements TreeTabl
             if (d.getDateRemoved() == null)
                 return null;
             else
-                return d.getDateRemoved().getDate();        
+                return d.getDateRemoved().getDate();       
         case 4:
-            return "NO PRIORITY FOUND";
+            return d.getInjection();
         case 5:
+        	return d.getType();
+        case 6:    
+        	return Long.toString(Util.getMinsFromMillis(d.getApproximateFixTimeInMillis()));
+        case 7:
+        	if (d.getApproximateFixTimeInMillis() == 0)
+        		return null;
+        	else
+        		return Long.toString(Util.getMinsFromMillis(d.getFixTimeInMillis()));
+        case 8:
+        	if (d.getFixReference() == null)
+        		return null;
+        	else
+        		return d.getFixReference();
+        case 9:
             return getStatusString(d.getCompleted(CurrentDate.get()));
-        case 6:            
-			return d;
+        case 10:            
+        	if (d.getRemove() == null)
+        		return null;
+        	else
+        		return d.getRemove();
         case DefectTable.DEFECT_ID:
             return d.getDefectId();
         case DefectTable.DEFECT:
