@@ -28,6 +28,7 @@ public class CurrentProject {
     private static TaskList _tasklist = null;
     private static DefectList _defectlist = null;
     private static NoteList _notelist = null;
+    private static TimeLog _timelog = null;
     private static ResourcesList _resources = null;
     private static Vector projectListeners = new Vector();
 
@@ -54,6 +55,7 @@ public class CurrentProject {
         _tasklist = CurrentStorage.get().openTaskList(_project);
         _defectlist = CurrentStorage.get().openDefectList(_project);
         _notelist = CurrentStorage.get().openNoteList(_project);
+        _timelog = CurrentStorage.get().openTimeLog(_project);
         _resources = CurrentStorage.get().openResourcesList(_project);
         AppFrame.addExitListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -79,6 +81,10 @@ public class CurrentProject {
             return _notelist;
     }
     
+    public static TimeLog getTimeLog() {
+    	return _timelog;
+    }
+    
     public static ResourcesList getResourcesList() {
             return _resources;
     }
@@ -88,12 +94,14 @@ public class CurrentProject {
         TaskList newtasklist = CurrentStorage.get().openTaskList(project);
         DefectList newdefectlist = CurrentStorage.get().openDefectList(project);
         NoteList newnotelist = CurrentStorage.get().openNoteList(project);
+        TimeLog newtimelog = CurrentStorage.get().openTimeLog(project);
         ResourcesList newresources = CurrentStorage.get().openResourcesList(project);
         notifyListenersBefore(project, newnotelist, newtasklist, newdefectlist, newresources);
         _project = project;
         _tasklist = newtasklist;
         _defectlist = newdefectlist;
         _notelist = newnotelist;
+        _timelog = newtimelog;
         _resources = newresources;
         notifyListenersAfter();
         Context.put("LAST_OPENED_PROJECT_ID", project.getID());
@@ -124,8 +132,9 @@ public class CurrentProject {
         Storage storage = CurrentStorage.get();
 
         storage.storeNoteList(_notelist, _project);
-        storage.storeTaskList(_tasklist, _project); 
+        storage.storeTaskList(_tasklist, _project);
         storage.storeDefectList(_defectlist, _project);
+        storage.storeTimeLog(_timelog, _project);
         storage.storeResourcesList(_resources, _project);
         storage.storeProjectManager();
     }

@@ -3,14 +3,21 @@ package net.sf.memoranda.ui;
 import java.io.File;
 import java.util.Vector;
 
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.MimeTypesList;
+
 import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import java.awt.event.*;
 
 /*$Id: PreferencesDialog.java,v 1.16 2006/06/28 22:58:31 alexeya Exp $*/
@@ -137,6 +144,15 @@ public class PreferencesDialog extends JDialog {
 	JLabel headerFontLabel = new JLabel();
 	JLabel monoFontLabel = new JLabel();
 	JLabel baseFontSizeLabel = new JLabel();
+	
+	JPanel appearPanel = new JPanel(new GridBagLayout());
+	JLabel appearRestartLabel = new JLabel();
+	JLabel appearDefaultLabel = new JLabel();
+	JRadioButton appearDefaultB = new JRadioButton();
+	JLabel appearHueLabel = new JLabel();
+	JRadioButton appearHueB = new JRadioButton();
+	JLabel appearHueValue = new JLabel();
+	JSlider appearHueSlider = new JSlider();
 
 	public PreferencesDialog(Frame frame) {
 		super(frame, Local.getString("Preferences"), true);
@@ -157,210 +173,15 @@ public class PreferencesDialog extends JDialog {
 				.getString("Sound"));
 		this.setResizable(false);
 		// Build Tab1
-		jLabel1.setHorizontalAlignment(SwingConstants.RIGHT);
-		jLabel1.setText(Local.getString("Window minimize action:"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 10, 0, 15);
-		gbc.anchor = GridBagConstraints.EAST;
-		enableSoundCB.setText(Local.getString("Enable sound notifications"));
-		enableSoundCB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				enableSoundCB_actionPerformed(e);
-			}
-		});
-		soundPanel.setLayout(borderLayout1);
-		soundFileBrowseB.setText(Local.getString("Browse"));
-		soundFileBrowseB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				soundFileBrowseB_actionPerformed(e);
-			}
-		});
-		gridLayout1.setRows(4);
-		jPanel1.setBorder(titledBorder1);
-		jPanel1.setLayout(gridLayout1);
-		soundBeepRB.setText(Local.getString("System beep"));
-		soundBeepRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				soundBeepRB_actionPerformed(e);
-			}
-		});
-		jLabel6.setText(Local.getString("Sound file") + ":");
-		soundDefaultRB.setText(Local.getString("Default"));
-		soundDefaultRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				soundDefaultRB_actionPerformed(e);
-			}
-		});
-		jPanel3.setLayout(borderLayout3);
-		soundCustomRB.setText(Local.getString("Custom"));
-		soundCustomRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				soundCustomRB_actionPerformed(e);
-			}
-		});
-		jPanel2.setLayout(borderLayout2);
-		soundPanel.add(jPanel2, BorderLayout.CENTER);
-		jPanel2.add(jPanel1, BorderLayout.NORTH);
-		jPanel1.add(soundDefaultRB, null);
-		jPanel1.add(soundBeepRB, null);
-		jPanel1.add(soundCustomRB, null);
-		this.soundGroup.add(soundDefaultRB);
-		this.soundGroup.add(soundBeepRB);
-		this.soundGroup.add(soundCustomRB);
-		jPanel1.add(jPanel3, null);
-		jPanel3.add(soundFile, BorderLayout.CENTER);
-		jPanel3.add(soundFileBrowseB, BorderLayout.EAST);
-		jPanel3.add(jLabel6, BorderLayout.WEST);
-		GeneralPanel.add(jLabel1, gbc);
-		minGroup.add(minTaskbarRB);
-		minTaskbarRB.setSelected(true);
-		minTaskbarRB.setText(Local.getString("Minimize to taskbar"));
-		minTaskbarRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				minTaskbarRB_actionPerformed(e);
-			}
-		});
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(minTaskbarRB, gbc);
-		minGroup.add(minHideRB);
-		minHideRB.setText(Local.getString("Hide"));
-		minHideRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				minHideRB_actionPerformed(e);
-			}
-		});
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(minHideRB, gbc);
-		jLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
-		jLabel2.setText(Local.getString("Window close action:"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.insets = new Insets(2, 10, 0, 15);
-		gbc.anchor = GridBagConstraints.EAST;
-		GeneralPanel.add(jLabel2, gbc);
-		closeGroup.add(closeExitRB);
-		closeExitRB.setSelected(true);
-		closeExitRB.setText(Local.getString("Close and exit"));
-		closeExitRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				closeExitRB_actionPerformed(e);
-			}
-		});
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 2;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(closeExitRB, gbc);
-
-		closeGroup.add(closeHideRB);
-		closeHideRB.setText(Local.getString("Hide"));
-		closeHideRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				closeHideRB_actionPerformed(e);
-			}
-		});
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 3;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(closeHideRB, gbc);
-		jLabel3.setHorizontalAlignment(SwingConstants.RIGHT);
-		jLabel3.setText(Local.getString("Look and feel:"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.insets = new Insets(2, 10, 0, 15);
-		gbc.anchor = GridBagConstraints.EAST;
-		GeneralPanel.add(jLabel3, gbc);
-
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 4;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 5;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfSystemRB, gbc);
-
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 6;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfJavaRB, gbc);
-		lfGroup.add(lfCustomRB);
-		lfCustomRB.setText(Local.getString("Custom"));
-		lfCustomRB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				lfCustomRB_actionPerformed(e);
-			}
-		});
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 7;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfCustomRB, gbc);
-		classNameLabel.setEnabled(false);
-		classNameLabel.setText(Local.getString("L&F class name:"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 8;
-		gbc.insets = new Insets(2, 20, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(classNameLabel, gbc);
-		lfClassName.setEnabled(false);
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 9;
-		gbc.insets = new Insets(7, 20, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		GeneralPanel.add(lfClassName, gbc);
 		jLabel4.setHorizontalAlignment(SwingConstants.RIGHT);
 		jLabel4.setText(Local.getString("Startup:"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
-		gbc.gridy = 10;
+		gbc.gridy = 1;
 		gbc.insets = new Insets(2, 10, 0, 15);
 		gbc.anchor = GridBagConstraints.EAST;
 		GeneralPanel.add(jLabel4, gbc);
-		enSystrayChB.setText(Local.getString("Enable system tray icon"));
-		enSystrayChB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				enSystrayChB_actionPerformed(e);
-			}
-		});
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 10;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(enSystrayChB, gbc);
-		startMinimizedChB.setText(Local.getString("Start minimized"));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 11;
-		gbc.insets = new Insets(2, 0, 0, 10);
-		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(startMinimizedChB, gbc);
+
 		enSplashChB.setText(Local.getString("Show splash screen"));
 		enSplashChB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -369,10 +190,11 @@ public class PreferencesDialog extends JDialog {
 		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 12;
+		gbc.gridy = 1;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(enSplashChB, gbc);
+		
 		enL10nChB.setText(Local.getString("Enable localization"));
 		enL10nChB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -381,10 +203,11 @@ public class PreferencesDialog extends JDialog {
 		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 13;
+		gbc.gridy = 2;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(enL10nChB, gbc);
+		
 		firstdow.setText(Local.getString("First day of week - Monday"));
 		firstdow.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -392,15 +215,16 @@ public class PreferencesDialog extends JDialog {
 		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 14;
+		gbc.gridy = 3;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(firstdow, gbc);
+		
 		lblExit.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblExit.setText(Local.getString("Exit") + ":");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
-		gbc.gridy = 15;
+		gbc.gridy = 4;
 		gbc.insets = new Insets(2, 10, 10, 15);
 		gbc.anchor = GridBagConstraints.EAST;
 		GeneralPanel.add(lblExit, gbc);
@@ -413,7 +237,7 @@ public class PreferencesDialog extends JDialog {
 		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
-		gbc.gridy = 15;
+		gbc.gridy = 4;
 		gbc.insets = new Insets(2, 0, 10, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(askConfirmChB, gbc);
@@ -481,11 +305,98 @@ public class PreferencesDialog extends JDialog {
 		((GridLayout)econfPanel.getLayout()).setHgap(10);
 		((GridLayout)econfPanel.getLayout()).setVgap(5);
 		editorConfigPanel.add(econfPanel, BorderLayout.NORTH);
+		
+		// Build appearance
+		String colorSetting = (String) Configuration.get("APPEAR_COLOR");
+		int colorSettingValue;
+		if(colorSetting.equals("")) {
+			colorSettingValue = 220;
+		} else {
+			try {
+				colorSettingValue = Integer.parseInt(colorSetting);
+				if(colorSettingValue < -1) colorSettingValue = -1;
+				if(colorSettingValue > 359) colorSettingValue = 359;
+			} catch(Exception e) {
+				colorSettingValue = 220;
+			}
+		}
+		
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		appearDefaultLabel.setText("Classic");
+		appearPanel.add(appearDefaultLabel,gbc);
+
+		appearDefaultB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	appearDefaultB_actionPerformed(e);
+            }
+        });
+		gbc = new GridBagConstraints();
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		appearPanel.add(appearDefaultB,gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		appearHueLabel.setText("Color");
+		appearPanel.add(appearHueLabel,gbc);
+
+		appearHueB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	appearHueB_actionPerformed(e);
+            }
+        });
+		gbc = new GridBagConstraints();
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		appearPanel.add(appearHueB,gbc);
+		
+		appearHueSlider = new JSlider(JSlider.HORIZONTAL, 0, 359, Math.max(0,colorSettingValue));
+		appearHueSlider.setPaintTicks(false);
+		appearHueSlider.setPaintLabels(false);
+		appearHueSlider.addChangeListener(new ChangeListener() {
+	         public void stateChanged(ChangeEvent e) {
+	        	 appearHueSlider_stateChanged(e);
+	         }
+	    });
+		gbc = new GridBagConstraints();
+		gbc.gridx = 2;
+		gbc.gridy = 1;
+		appearPanel.add(appearHueSlider,gbc);
+		
+		appearHueValue.setMinimumSize(new Dimension(48,24));
+		appearHueValue.setPreferredSize(new Dimension(48,24));
+		appearHueValue.setText(Integer.toString(Math.max(0,colorSettingValue)));
+		appearHueValue.setForeground(Color.getHSBColor(appearHueSlider.getValue()/360f, 1f, 1f));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 3;
+		gbc.gridy = 1;
+		appearPanel.add(appearHueValue,gbc);
+		
+		if(colorSetting.equals("-1")) {
+			appearDefaultB.setSelected(true);
+			appearHueB.setSelected(false);
+			appearHueSlider.setEnabled(false);
+		} else {
+			appearDefaultB.setSelected(false);
+			appearHueB.setSelected(true);
+		}
+		
+		appearRestartLabel.setText("Color scheme changes are applied on restart.");
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridwidth = 4;
+		gbc.gridy = 4;
+		appearPanel.add(appearRestartLabel,gbc);
+		
 		// Build TabbedPanel
 		tabbedPanel.add(GeneralPanel, Local.getString("General"));
 		tabbedPanel.add(resourcePanel, Local.getString("Resource types"));
 		tabbedPanel.add(soundPanel, Local.getString("Sound"));
 		tabbedPanel.add(editorConfigPanel, Local.getString("Editor"));
+		tabbedPanel.add(appearPanel, "Appearance");
 
 		// Build TopPanel
 		topPanel.add(tabbedPanel, BorderLayout.CENTER);
@@ -709,6 +620,11 @@ public class PreferencesDialog extends JDialog {
 		App.getFrame().workPanel.dailyItemsPanel.editorPanel.initCSS();
 		App.getFrame().workPanel.dailyItemsPanel.editorPanel.editor.repaint();
 		
+		if(appearDefaultB.isSelected())
+			Configuration.put("APPEAR_COLOR", "-1");
+		else if(appearHueB.isSelected())
+			Configuration.put("APPEAR_COLOR", appearHueValue.getText());
+		
 		Configuration.saveConfig();
 		
 	}
@@ -878,7 +794,24 @@ public class PreferencesDialog extends JDialog {
 	void soundCustomRB_actionPerformed(ActionEvent e) {
 		this.enableCustomSound(true);
 	}
-	
+
+    public void appearDefaultB_actionPerformed(ActionEvent e) {
+    	appearHueSlider.setEnabled(false);
+    	appearDefaultB.setSelected(true);
+    	appearHueB.setSelected(false);
+    }
+    
+    public void appearHueB_actionPerformed(ActionEvent e) {
+    	appearHueSlider.setEnabled(true);
+    	appearDefaultB.setSelected(false);
+    	appearHueB.setSelected(true);
+    }
+    
+    public void appearHueSlider_stateChanged(ChangeEvent e) {
+    	appearHueValue.setText(Integer.toString(appearHueSlider.getValue()));
+    	appearHueValue.setForeground(Color.getHSBColor(appearHueSlider.getValue()/360f, 1f, 1f));
+    }
+    
 	Vector getFontNames() {
 		GraphicsEnvironment gEnv = 
         	GraphicsEnvironment.getLocalGraphicsEnvironment();

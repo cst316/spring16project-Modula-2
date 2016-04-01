@@ -27,6 +27,7 @@ public class DefectListImplTest {
 	public static void tearDownAfterClass() throws Exception {
 	}
 	
+	/*
 	@Test
 	public void testCreateDefect() {
 		Defect newDefect = CurrentProject.getDefectList().createDefect(new CalendarDate(), 0, null, null, 0, 0, new CalendarDate(), null, null, null, false);
@@ -35,6 +36,7 @@ public class DefectListImplTest {
         
         notifyDefectListListeners();
 	}
+	*/
 
 	public static void addDefectListListener(DefectListListener listener) {
 		  defectListListeners.add(listener);
