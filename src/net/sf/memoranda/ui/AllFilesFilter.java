@@ -19,7 +19,6 @@ import net.sf.memoranda.util.Local;
  */
 /*$Id: AllFilesFilter.java,v 1.5 2004/01/30 12:17:41 alexeya Exp $*/
 public class AllFilesFilter extends FileFilter {
-
     public static final String RTF = "RTF";
     public static final String HTML = "HTML";
     public static final String HTM = "HTM";
