@@ -10,7 +10,7 @@ public interface ContactList {
 			           String email,
 			           String phone);
 	
-	void removeContactList(Contact contact);
+	void removeContact(Contact contact);
 	
 	List<Contact> getLog();
 	
@@ -19,9 +19,5 @@ public interface ContactList {
 	Project getProject();
 	
 	Document getXMLContent();
-	
-	void notifyListeners();
-	
-	void addContactListener(ContactListener cl);
 	
 }

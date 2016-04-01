@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
-import net.sf.memoranda.tests.ContactListener;
 import net.sf.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Document;
@@ -72,7 +71,7 @@ public class ContactListImpl implements ContactList {
 	}
 
 	@Override
-	public void removeTimeEntry(Contact contact) {
+	public void removeContact(Contact contact) {
 		_root.removeChild(contact.getContent());
 		_vector.remove(contact);
 		notifyListeners();
@@ -105,14 +104,12 @@ public class ContactListImpl implements ContactList {
 		return _doc;
 	}
 	
-	@Override
 	private static void notifyListeners() {
         for (int i = 0; i < _listeners.size(); i++) {
             _listeners.get(i).contactChanged();            
         }
     }
 
-	@Override
 	public static void addContactListener(ContactListener cl) {
         _listeners.add(cl);
     }
