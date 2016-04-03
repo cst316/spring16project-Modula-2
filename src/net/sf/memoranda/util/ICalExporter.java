@@ -139,14 +139,15 @@ public class ICalExporter {
                 	}
                 	else {
                 		// REPEAT_DAILY
-                		// Get the last exception date we're processing
                 		java.util.Calendar exceptionDate = (java.util.Calendar) tempDate.clone();
                 		
                 		// Start from the beginning
                 		tempDate = event.getStartDate().getCalendar();
+                		tempDate.set(java.util.Calendar.HOUR_OF_DAY, 0);
+                		tempDate.set(java.util.Calendar.MINUTE, 0);
                 		
                 		// Keep iterating forward the period until we're after the exception date
-                		while(exceptionDate.after(tempDate) || exceptionDate.equals(tempDate))
+                		while(tempDate.before(exceptionDate) || tempDate.equals(exceptionDate))
             				tempDate.add(java.util.Calendar.DAY_OF_YEAR, event.getPeriod());
         				
                 		startDate = new CalendarDate(tempDate);
