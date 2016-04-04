@@ -62,6 +62,9 @@ public class CalendarPanelView extends JPanel {
 		_view.revalidate();
 		_view.repaint();
 		
+		_view.setBorder(null);
+    	_view.setBackground(ColorScheme.getColor("frame_secondary"));
+		
 		// Header creation
 		if(_type == VIEW_MONTH || _type == VIEW_WEEK) {
 			_currentHour = -1;
