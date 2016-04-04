@@ -1,7 +1,6 @@
 package net.sf.memoranda;
 
 import java.util.Collection;
-import java.util.Date;
 
 import net.sf.memoranda.date.CalendarDate;
 

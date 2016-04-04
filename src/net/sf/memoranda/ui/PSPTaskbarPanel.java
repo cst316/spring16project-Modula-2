@@ -1,40 +1,21 @@
 package net.sf.memoranda.ui;
 
 
-import javax.swing.JToolBar;
-
-import net.sf.memoranda.date.CalendarDate;
-import net.sf.memoranda.date.CurrentDate;
-import net.sf.memoranda.util.ColorScheme;
-
-import javax.swing.JLabel;
-
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Insets;
-import java.text.DateFormatSymbols;
-import java.util.Calendar;
-
-import javax.swing.border.*;
-import javax.swing.JCheckBox;
-import javax.swing.JButton;
-
 import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.UIManager;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.Box;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.GridLayout;
+import javax.swing.JToolBar;
+import javax.swing.border.EmptyBorder;
+
+import net.sf.memoranda.util.ColorScheme;
 
 
 public class PSPTaskbarPanel extends JToolBar {

@@ -21,14 +21,15 @@ package net.sf.memoranda.ui.table;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Date;
-import java.util.Vector;
 import java.util.Hashtable;
+import java.util.Vector;
 
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+
 import net.sf.memoranda.util.Local;
 
 /*$Id: TableSorter.java,v 1.7 2004/10/07 08:52:32 ivanrise Exp $*/

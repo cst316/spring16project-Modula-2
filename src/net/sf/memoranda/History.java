@@ -9,11 +9,10 @@
 package net.sf.memoranda;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-
-import java.util.Vector;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;

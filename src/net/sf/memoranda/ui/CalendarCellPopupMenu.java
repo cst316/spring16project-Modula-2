@@ -3,8 +3,6 @@ package net.sf.memoranda.ui;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -13,7 +11,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import net.sf.memoranda.CurrentProject;
-import net.sf.memoranda.Event;
 import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.Task;

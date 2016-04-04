@@ -21,8 +21,8 @@ import javax.swing.table.TableCellRenderer;
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
-import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.Configuration;
+import net.sf.memoranda.util.Local;
 
 /**
  *  

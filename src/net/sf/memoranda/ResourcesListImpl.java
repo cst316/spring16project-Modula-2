@@ -8,8 +8,8 @@
  */
 package net.sf.memoranda;
 
-import java.util.Vector;
 import java.io.File;
+import java.util.Vector;
 
 import net.sf.memoranda.util.Util;
 import nu.xom.Attribute;

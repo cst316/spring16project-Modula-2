@@ -1,14 +1,17 @@
 package net.sf.memoranda.ui;
 
-import net.sf.memoranda.*;
-import net.sf.memoranda.util.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.event.CellEditorListener;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 
-import java.awt.*;
-import java.awt.event.*;
+import net.sf.memoranda.Task;
 
 /**
  * Editor for task progress

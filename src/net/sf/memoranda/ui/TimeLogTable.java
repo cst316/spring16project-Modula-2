@@ -1,7 +1,6 @@
 package net.sf.memoranda.ui;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -10,10 +9,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.AbstractTableModel;
 
 import net.sf.memoranda.CurrentProject;
-import net.sf.memoranda.Phase;
 import net.sf.memoranda.TimeEntry;
 import net.sf.memoranda.TimeLogImpl;
-import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
 
 public class TimeLogTable extends JTable {

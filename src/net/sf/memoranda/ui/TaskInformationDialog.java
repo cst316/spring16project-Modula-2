@@ -2,8 +2,6 @@ package net.sf.memoranda.ui;
 
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
@@ -13,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import net.sf.memoranda.Event;
 import net.sf.memoranda.Task;
 
 public class TaskInformationDialog extends JDialog {

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
@@ -19,8 +20,6 @@ import javax.swing.border.Border;
 import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.Local;
-import java.awt.Font;
-import java.awt.event.ActionListener;
 
 /**
  * 

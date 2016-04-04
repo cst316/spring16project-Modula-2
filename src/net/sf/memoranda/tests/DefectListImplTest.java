@@ -1,19 +1,12 @@
 package net.sf.memoranda.tests;
 
-import static org.junit.Assert.*;
-
 import java.util.Vector;
+
+import net.sf.memoranda.DefectListListener;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import net.sf.memoranda.CurrentProject;
-import net.sf.memoranda.Defect;
-import net.sf.memoranda.DefectListListener;
-import net.sf.memoranda.Task;
-import net.sf.memoranda.date.CalendarDate;
-import net.sf.memoranda.util.CurrentStorage;
 
 public class DefectListImplTest {
 

@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.sf.memoranda.date.CalendarDate;
-import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.util.ColorScheme;
 
 public class CalendarPanelCell extends JPanel {

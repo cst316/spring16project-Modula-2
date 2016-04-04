@@ -7,14 +7,12 @@
  */
 package net.sf.memoranda;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Vector;
-import java.util.Map;
 import java.util.Collections;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.CurrentStorage;

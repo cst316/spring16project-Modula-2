@@ -4,17 +4,27 @@
  */
 package net.sf.memoranda.util;
 
-import net.sf.memoranda.*;
-import net.sf.memoranda.date.CalendarDate;
-import net.sf.memoranda.ui.*;
-import net.sf.memoranda.ui.htmleditor.AltHTMLWriter;
-
-import java.io.*;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Vector;
+import java.util.regex.Pattern;
 
 import javax.swing.text.html.HTMLDocument;
+
+import net.sf.memoranda.Note;
+import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.date.CalendarDate;
+import net.sf.memoranda.ui.App;
+import net.sf.memoranda.ui.ExceptionDialog;
+import net.sf.memoranda.ui.htmleditor.AltHTMLWriter;
 
 /**
  *  

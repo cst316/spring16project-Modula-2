@@ -19,10 +19,10 @@ import java.net.URL;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
-import net.sf.memoranda.DefectList;
-import net.sf.memoranda.DefectListImpl;
 import net.sf.memoranda.ContactList;
 import net.sf.memoranda.ContactListImpl;
+import net.sf.memoranda.DefectList;
+import net.sf.memoranda.DefectListImpl;
 import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.NoteList;
@@ -39,7 +39,6 @@ import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.ui.ExceptionDialog;
 import net.sf.memoranda.ui.htmleditor.AltHTMLWriter;
 import nu.xom.Builder;
-import nu.xom.DocType;
 import nu.xom.Document;
 
 

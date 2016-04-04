@@ -1,16 +1,21 @@
 package net.sf.memoranda.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 
-import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.util.Local;
-
-import javax.swing.*;
-
-import java.awt.*;
 
 public class ICalExportDialog extends JDialog {	
   BorderLayout borderLayout1 = new BorderLayout();

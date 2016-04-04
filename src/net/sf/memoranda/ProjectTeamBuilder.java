@@ -1,6 +1,5 @@
 package net.sf.memoranda;
 
-import nu.xom.Attribute;
 
 
 

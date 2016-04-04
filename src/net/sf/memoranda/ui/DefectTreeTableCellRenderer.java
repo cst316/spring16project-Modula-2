@@ -19,7 +19,6 @@ import javax.swing.tree.TreeCellRenderer;
 
 import net.sf.memoranda.Defect;
 import net.sf.memoranda.Project;
-import net.sf.memoranda.Task;
 import net.sf.memoranda.date.CurrentDate;
 
 public class DefectTreeTableCellRenderer extends DefaultTreeCellRenderer implements TreeCellRenderer, TableCellRenderer {
