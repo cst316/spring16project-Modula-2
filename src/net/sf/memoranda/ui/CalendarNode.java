@@ -23,6 +23,7 @@ public class CalendarNode extends JPanel {
 	
 	public CalendarNode() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setOpaque(false);
 	}
 	
 	public void addTask(Task task) {
@@ -46,7 +47,7 @@ public class CalendarNode extends JPanel {
 		
 		private CalendarNodeItem() {
 			this.setLayout(new GridBagLayout());
-			this.setOpaque(true);
+			this.setOpaque(false);
 			this.setBackground(Color.WHITE);
 			
 			c = new GridBagConstraints();
