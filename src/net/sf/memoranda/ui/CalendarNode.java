@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,20 +21,32 @@ import net.sf.memoranda.Event;
 import net.sf.memoranda.Task;
 
 public class CalendarNode extends JPanel {	
+	private Vector<CalendarNodeItem> queueNodes;
 	
 	public CalendarNode() {
+		queueNodes = new Vector<CalendarNodeItem>();
+		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(false);
 	}
 	
-	public void addTask(Task task) {
-		add(new CalendarNodeItem(task));
-		//add(Box.createRigidArea(new Dimension(12, 12)));
+	public void queueAdd(Task task) {
+		queueNodes.add(new CalendarNodeItem(task));
 	}
 	
-	public void addEvent(Event event) {
-		add(new CalendarNodeItem(event));
-		//add(Box.createRigidArea(new Dimension(12, 12)));
+	public void queueAdd(Event event) {
+		queueNodes.add(new CalendarNodeItem(event));
+	}
+	
+	public void queueRemoveLast() {
+		queueNodes.remove(queueNodes.size()-1);
+	}
+	
+	public void queueProcess() {
+		for(CalendarNodeItem node : queueNodes)
+			add(node);
+
+		queueNodes.removeAllElements();
 	}
 	
 	public void clear() {
@@ -87,6 +100,10 @@ public class CalendarNode extends JPanel {
 		
 		public Task getTask() {
 			return task;
+		}
+		
+		private CalendarNodeItem(int count) {
+			this();
 		}
 		
 		private CalendarNodeItem(Task task) {

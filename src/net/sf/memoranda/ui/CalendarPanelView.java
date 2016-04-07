@@ -291,11 +291,17 @@ public class CalendarPanelView extends JPanel {
 	private void generateDay(CalendarPanelCell panelCell, Calendar calendar, Collection<Task> tasks) {
 		CalendarDate date = new CalendarDate(calendar);
 		
-		if(_type == CalendarPanelView.VIEW_WEEK || _type == CalendarPanelView.VIEW_MONTH) { 
-			if(_type != CalendarPanelView.VIEW_WEEK) {
-				panelCell.getLabel().setText(Integer.toString(date.getDay()));
-			} else {
+		if(_type == CalendarPanelView.VIEW_WEEK || _type == CalendarPanelView.VIEW_MONTH) {
+			int maxDisplay;
+			int curDisplay = 0;
+			int overDisplay = 0;
+			
+			if(_type == CalendarPanelView.VIEW_WEEK) {
 				panelCell.getLabel().setText(Integer.toString(date.getMonth()+1) + "/" + Integer.toString(date.getDay()));
+				maxDisplay = 8;
+			} else {
+				panelCell.getLabel().setText(Integer.toString(date.getDay()));
+				maxDisplay = 3;				
 			}
 	
 			panelCell.setCalendarDate(date);
@@ -304,16 +310,43 @@ public class CalendarPanelView extends JPanel {
 	        if(_parent.taskPanel.isShowEvents()) {
 	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
 	            for (Event event : events) {
-	                panelCell.getCalendarNode().addEvent(event);
+	            	if(curDisplay >= maxDisplay) {
+	            		if(overDisplay == 0) {
+	            			// Remove the last element and fix the overdisplay to reflect
+	            			overDisplay = 1;
+	            			panelCell.getCalendarNode().queueRemoveLast();
+	            		}
+	            		overDisplay++;
+	            	} else {
+		            	curDisplay++;
+		                panelCell.getCalendarNode().queueAdd(event);
+	            	}
 	            }
 	        }
 	        
 	        // Add tasks
 	        if(_parent.taskPanel.isShowTasks()) {
 	            for (Task task : tasks) {
-	                if(task.getStartDate().equals(date))
-	                    panelCell.getCalendarNode().addTask(task);
+	                if(task.getStartDate().equals(date)) {
+	                	if(curDisplay >= maxDisplay) {
+		            		if(overDisplay == 0) {
+		            			// Remove the last element and fix the overdisplay to reflect
+		            			overDisplay = 1;
+		            			panelCell.getCalendarNode().queueRemoveLast();
+		            		}
+	                		overDisplay++;
+	                	} else {
+	                		curDisplay++;
+	                		panelCell.getCalendarNode().queueAdd(task);
+	                	}
+	                }
 	            }
+	        }
+	        
+	        panelCell.getCalendarNode().queueProcess();
+	        
+	        if(date.equals(new CalendarDate().tomorrow())) {
+	        	System.out.println("CalendarPanelView(): overDisplay(" + overDisplay + "), curDisplay(" + curDisplay + ")");
 	        }
 	
 			// Highlight if date is the current date
@@ -340,7 +373,7 @@ public class CalendarPanelView extends JPanel {
 	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
 	            for (Event event : events) {
 	            	if(inTimespan(event, start, end))
-	            		panelCell.getCalendarNode().addEvent(event);
+	            		panelCell.getCalendarNode().queueAdd(event);
 	            }
 	        }
 	        
@@ -348,9 +381,11 @@ public class CalendarPanelView extends JPanel {
 	        if(_parent.taskPanel.isShowTasks()) {
 	            for (Task task : tasks) {
 	                if(task.getStartDate().equals(date) && inTimespan(task))
-	                    panelCell.getCalendarNode().addTask(task);
+	                    panelCell.getCalendarNode().queueAdd(task);
 	            }
 	        }
+	        
+	        panelCell.getCalendarNode().queueProcess();
 	        
 			if(_currentHour == calendar.get(Calendar.HOUR_OF_DAY)) {
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
