@@ -365,6 +365,11 @@ public class CalendarPanelView extends JPanel {
 			panelCell.setActive(true);
 		}
 		else if(_type == CalendarPanelView.VIEW_DAY) {
+			int maxDisplay = 4;
+			int curDisplay = 0;
+			int overEventDisplay = 0;
+			int overTaskDisplay = 0;
+			
 			panelCell.setCalendar(calendar);
 			
 			Calendar start = (Calendar) calendar.clone();
@@ -376,20 +381,53 @@ public class CalendarPanelView extends JPanel {
 	        if(_parent.taskPanel.isShowEvents()) {
 	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
 	            for (Event event : events) {
-	            	if(inTimespan(event, start, end))
-	            		panelCell.getCalendarNode().queueAdd(event);
+	            	if(inTimespan(event, start, end)) {
+	                    if(curDisplay >= maxDisplay) {
+	                        if(overEventDisplay == 0) {
+	                            int type = panelCell.getCalendarNode().queueRemoveLast();
+	                            if(type == CalendarNode.TYPE_EVENT)
+	                                overEventDisplay++;
+	                        }
+	                        overEventDisplay++;
+	                    } else {
+	                        curDisplay++;
+	                    	panelCell.getCalendarNode().queueAdd(event);
+	                    }
+	                }
 	            }
 	        }
 	        
 	        // Add tasks
-	        if(_parent.taskPanel.isShowTasks()) {
+	        // Tasks do not have a time associated with them, so do not display in hourly (daily) view
+	        /*if(_parent.taskPanel.isShowTasks()) {
 	            for (Task task : tasks) {
-	                if(task.getStartDate().equals(date) && inTimespan(task))
-	                    panelCell.getCalendarNode().queueAdd(task);
+	                if(task.getStartDate().equals(date) && inTimespan(task)) {
+	                	if(curDisplay >= maxDisplay) {
+		            		if(overTaskDisplay == 0 && overEventDisplay == 0) {
+		            			// Remove the last element and fix the overdisplay to reflect
+		            			int type = panelCell.getCalendarNode().queueRemoveLast();
+		            			if(type == CalendarNode.TYPE_TASK)
+		            				overTaskDisplay++;
+		            			else if(type == CalendarNode.TYPE_EVENT)
+		            				overEventDisplay++;
+		            		}
+		            		overTaskDisplay++;
+	                	} else {
+	                		curDisplay++;
+	                		panelCell.getCalendarNode().queueAdd(task);
+	                	}
+	                }
 	            }
 	        }
-	        
+	        */
+
 	        panelCell.getCalendarNode().queueProcess();
+
+	        System.out.println("curDisplay(" + curDisplay + ") maxDisplay(" + maxDisplay + ") overEventDisplay(" + overEventDisplay + ") overTaskDisplay(" + overTaskDisplay + ")");
+	        
+	        // If events/tasks are trimmed add label saying how many
+	        if((overEventDisplay+overTaskDisplay) > 0)
+	        	panelCell.getCalendarNode().addNotShownLabel(overEventDisplay, overTaskDisplay);
 	        
 			if(_currentHour == calendar.get(Calendar.HOUR_OF_DAY)) {
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
@@ -413,6 +451,7 @@ public class CalendarPanelView extends JPanel {
 	}
 	
 	private boolean inTimespan(Task task) {
+		// Tasks do not have a time associated with them
 		return false;
 	}
 
