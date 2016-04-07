@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.date.DateListener;
 import net.sf.memoranda.util.ColorScheme;
 
 
@@ -79,7 +80,12 @@ public class CalendarTaskbarPanel extends JToolBar {
 		 * Initialize the contents of the frame.
 		 */
 		private void jbInit () throws Exception {
-
+            CurrentDate.addDateListener(new DateListener() {
+                public void dateChange(CalendarDate d) {
+                    updateCalendar();
+                }
+            });
+            
 			JButton btnMonthly = new JButton("Month");
 			btnMonthly.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -239,7 +245,8 @@ public class CalendarTaskbarPanel extends JToolBar {
 			lblYear.setText(this.getYear());
 			lblMonth.setText(this.getMonth());
 
-			parentPanel.updateCalendarPanelView();
+			if(currentView == CalendarPanelView.VIEW_DAY)
+				parentPanel.updateCalendarPanelView();
 		}
 
 		// Change views

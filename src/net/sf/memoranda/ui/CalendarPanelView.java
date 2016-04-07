@@ -20,6 +20,7 @@ import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.Task;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.date.DateListener;
 import net.sf.memoranda.util.ColorScheme;
 
 public class CalendarPanelView extends JPanel {
@@ -41,7 +42,14 @@ public class CalendarPanelView extends JPanel {
 	
 	public CalendarPanelView(int inType, CalendarPanel inParent) {
 		_parent = inParent;
+		
 		this.changeViewType(inType);
+		
+		CurrentDate.addDateListener(new DateListener() {
+			public void dateChange(CalendarDate d) {
+				updateView();
+			}
+		});
 	}
 	
 	public void changeViewType(int inType) {
