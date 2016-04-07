@@ -423,8 +423,6 @@ public class CalendarPanelView extends JPanel {
 
 	        panelCell.getCalendarNode().queueProcess();
 
-	        System.out.println("curDisplay(" + curDisplay + ") maxDisplay(" + maxDisplay + ") overEventDisplay(" + overEventDisplay + ") overTaskDisplay(" + overTaskDisplay + ")");
-	        
 	        // If events/tasks are trimmed add label saying how many
 	        if((overEventDisplay+overTaskDisplay) > 0)
 	        	panelCell.getCalendarNode().addNotShownLabel(overEventDisplay, overTaskDisplay);
