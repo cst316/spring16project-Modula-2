@@ -299,11 +299,9 @@ public class CalendarPanelView extends JPanel {
 	private void generateDay(CalendarPanelCell panelCell, Calendar calendar, Collection<Task> tasks) {
 		CalendarDate date = new CalendarDate(calendar);
 		
+		int maxDisplay = 0;
+		
 		if(_type == CalendarPanelView.VIEW_WEEK || _type == CalendarPanelView.VIEW_MONTH) {
-			int maxDisplay;
-			int curDisplay = 0;
-			int overEventDisplay = 0;
-			int overTaskDisplay = 0;
 			
 			if(_type == CalendarPanelView.VIEW_WEEK) {
 				panelCell.getLabel().setText(Integer.toString(date.getMonth()+1) + "/" + Integer.toString(date.getDay()));
@@ -319,64 +317,31 @@ public class CalendarPanelView extends JPanel {
 	        if(_parent.taskPanel.isShowEvents()) {
 	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
 	            for (Event event : events) {
-	            	if(curDisplay >= maxDisplay) {
-	            		if(overEventDisplay == 0) {
-	            			int type = panelCell.getCalendarNode().queueRemoveLast();
-	            			if(type == CalendarNode.TYPE_EVENT)
-	            				overEventDisplay++;
-	            		}
-	            		overEventDisplay++;
-	            	} else {
-		            	curDisplay++;
 		                panelCell.getCalendarNode().queueAdd(event);
-	            	}
 	            }
 	        }
 	        
 	        // Add tasks
 	        if(_parent.taskPanel.isShowTasks()) {
 	            for (Task task : tasks) {
-	                if(task.getStartDate().equals(date)) {
-	                	if(curDisplay >= maxDisplay) {
-		            		if(overTaskDisplay == 0 && overEventDisplay == 0) {
-		            			// Remove the last element and fix the overdisplay to reflect
-		            			int type = panelCell.getCalendarNode().queueRemoveLast();
-		            			if(type == CalendarNode.TYPE_TASK)
-		            				overTaskDisplay++;
-		            			else if(type == CalendarNode.TYPE_EVENT)
-		            				overEventDisplay++;
-		            		}
-		            		overTaskDisplay++;
-	                	} else {
-	                		curDisplay++;
-	                		panelCell.getCalendarNode().queueAdd(task);
-	                	}
-	                }
+	                if(task.getStartDate().equals(date))
+                		panelCell.getCalendarNode().queueAdd(task);
 	            }
 	        }
-	        
-	        panelCell.getCalendarNode().queueProcess();
-	        
-	        // If events/tasks are trimmed add label saying how many
-	        if((overEventDisplay+overTaskDisplay) > 0)
-	        	panelCell.getCalendarNode().addNotShownLabel(overEventDisplay, overTaskDisplay);
 	
 			// Highlight if date is the current date
 			if(date.equals(CurrentDate.get())) {
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
 			} else {
 				// Why do we need this redundant red border? I dunno, but it fixes it
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+				// panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_secondary"), 1));
 			}
 			
 			panelCell.setActive(true);
 		}
 		else if(_type == CalendarPanelView.VIEW_DAY) {
-			int maxDisplay = 4;
-			int curDisplay = 0;
-			int overEventDisplay = 0;
-			int overTaskDisplay = 0;
+			maxDisplay = 4;
 			
 			panelCell.setCalendar(calendar);
 			
@@ -389,19 +354,8 @@ public class CalendarPanelView extends JPanel {
 	        if(_parent.taskPanel.isShowEvents()) {
 	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
 	            for (Event event : events) {
-	            	if(inTimespan(event, start, end)) {
-	                    if(curDisplay >= maxDisplay) {
-	                        if(overEventDisplay == 0) {
-	                            int type = panelCell.getCalendarNode().queueRemoveLast();
-	                            if(type == CalendarNode.TYPE_EVENT)
-	                                overEventDisplay++;
-	                        }
-	                        overEventDisplay++;
-	                    } else {
-	                        curDisplay++;
-	                    	panelCell.getCalendarNode().queueAdd(event);
-	                    }
-	                }
+	            	if(inTimespan(event, start, end))
+	                    panelCell.getCalendarNode().queueAdd(event);
 	            }
 	        }
 	        
@@ -410,30 +364,11 @@ public class CalendarPanelView extends JPanel {
 	        /*if(_parent.taskPanel.isShowTasks()) {
 	            for (Task task : tasks) {
 	                if(task.getStartDate().equals(date) && inTimespan(task)) {
-	                	if(curDisplay >= maxDisplay) {
-		            		if(overTaskDisplay == 0 && overEventDisplay == 0) {
-		            			// Remove the last element and fix the overdisplay to reflect
-		            			int type = panelCell.getCalendarNode().queueRemoveLast();
-		            			if(type == CalendarNode.TYPE_TASK)
-		            				overTaskDisplay++;
-		            			else if(type == CalendarNode.TYPE_EVENT)
-		            				overEventDisplay++;
-		            		}
-		            		overTaskDisplay++;
-	                	} else {
-	                		curDisplay++;
 	                		panelCell.getCalendarNode().queueAdd(task);
-	                	}
 	                }
 	            }
 	        }
 	        */
-
-	        panelCell.getCalendarNode().queueProcess();
-
-	        // If events/tasks are trimmed add label saying how many
-	        if((overEventDisplay+overTaskDisplay) > 0)
-	        	panelCell.getCalendarNode().addNotShownLabel(overEventDisplay, overTaskDisplay);
 	        
 			if(_currentHour == calendar.get(Calendar.HOUR_OF_DAY)) {
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
@@ -446,6 +381,8 @@ public class CalendarPanelView extends JPanel {
 			
 	        panelCell.setActive(true);
 		}
+		
+		panelCell.getCalendarNode().queueProcess(maxDisplay);
 	}
 	
 	private boolean inTimespan(Event event, Calendar startCal, Calendar endCal) {
