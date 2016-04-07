@@ -117,7 +117,14 @@ public class CalendarNode extends JPanel {
 		}
 		
 		public int getType() {
-			return _type;
+			if(_type == CalendarNode.TYPE_EVENT)
+				return _type;
+			else if(_type == CalendarNode.TYPE_TASK)
+				return _type;
+			else if(_type == CalendarNode.TYPE_LABEL)
+				return _type;
+			else
+				return _type;
 		}
 		
 		private CalendarNodeItem(int eventCount, int taskCount) {
