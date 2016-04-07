@@ -23,8 +23,8 @@ public class CalendarPanelCell extends JPanel {
 	GridBagConstraints gbc;
 	
 	public CalendarPanelCell() {
-		gridCell.setBackground(Color.MAGENTA);
-		gridCell.setBorder(BorderFactory.createLineBorder(Color.MAGENTA, 1));
+		gridCell.setBackground(Color.WHITE);
+		gridCell.setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_secondary"), 1));
 			
 	    gbc = new GridBagConstraints();
 	    gbc.anchor = GridBagConstraints.NORTH;
