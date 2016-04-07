@@ -294,7 +294,8 @@ public class CalendarPanelView extends JPanel {
 		if(_type == CalendarPanelView.VIEW_WEEK || _type == CalendarPanelView.VIEW_MONTH) {
 			int maxDisplay;
 			int curDisplay = 0;
-			int overDisplay = 0;
+			int overEventDisplay = 0;
+			int overTaskDisplay = 0;
 			
 			if(_type == CalendarPanelView.VIEW_WEEK) {
 				panelCell.getLabel().setText(Integer.toString(date.getMonth()+1) + "/" + Integer.toString(date.getDay()));
@@ -311,12 +312,12 @@ public class CalendarPanelView extends JPanel {
 	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
 	            for (Event event : events) {
 	            	if(curDisplay >= maxDisplay) {
-	            		if(overDisplay == 0) {
-	            			// Remove the last element and fix the overdisplay to reflect
-	            			overDisplay = 1;
-	            			panelCell.getCalendarNode().queueRemoveLast();
+	            		if(overEventDisplay == 0) {
+	            			int type = panelCell.getCalendarNode().queueRemoveLast();
+	            			if(type == CalendarNode.TYPE_EVENT)
+	            				overEventDisplay++;
 	            		}
-	            		overDisplay++;
+	            		overEventDisplay++;
 	            	} else {
 		            	curDisplay++;
 		                panelCell.getCalendarNode().queueAdd(event);
@@ -329,12 +330,15 @@ public class CalendarPanelView extends JPanel {
 	            for (Task task : tasks) {
 	                if(task.getStartDate().equals(date)) {
 	                	if(curDisplay >= maxDisplay) {
-		            		if(overDisplay == 0) {
+		            		if(overTaskDisplay == 0 && overEventDisplay == 0) {
 		            			// Remove the last element and fix the overdisplay to reflect
-		            			overDisplay = 1;
-		            			panelCell.getCalendarNode().queueRemoveLast();
+		            			int type = panelCell.getCalendarNode().queueRemoveLast();
+		            			if(type == CalendarNode.TYPE_TASK)
+		            				overTaskDisplay++;
+		            			else if(type == CalendarNode.TYPE_EVENT)
+		            				overEventDisplay++;
 		            		}
-	                		overDisplay++;
+		            		overTaskDisplay++;
 	                	} else {
 	                		curDisplay++;
 	                		panelCell.getCalendarNode().queueAdd(task);
@@ -345,9 +349,9 @@ public class CalendarPanelView extends JPanel {
 	        
 	        panelCell.getCalendarNode().queueProcess();
 	        
-	        if(date.equals(new CalendarDate().tomorrow())) {
-	        	System.out.println("CalendarPanelView(): overDisplay(" + overDisplay + "), curDisplay(" + curDisplay + ")");
-	        }
+	        // If events/tasks are trimmed add label saying how many
+	        if((overEventDisplay+overTaskDisplay) > 0)
+	        	panelCell.getCalendarNode().addNotShownLabel(overEventDisplay, overTaskDisplay);
 	
 			// Highlight if date is the current date
 			if(date.equals(CurrentDate.get())) {
@@ -391,7 +395,8 @@ public class CalendarPanelView extends JPanel {
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
 			} else {
 				// Why do we need this redundant red border? I dunno, but it fixes it
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+				// But now like four weeks later it seems to not need it anymore? WHY?!
+				// panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_secondary"), 1));
 			}
 			
