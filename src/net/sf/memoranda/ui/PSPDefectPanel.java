@@ -388,12 +388,8 @@ public class PSPDefectPanel extends JPanel {
 	        defectdialog.txtEstFixTime.setText(Long.toString(Util.getMinsFromMillis(d.getApproximateFixTimeInMillis())));
 	        defectdialog.txtInjection.setText(d.getInjection());
 	        defectdialog.cmbType.setSelectedItem(d.getType());
-	        defectdialog.chkFixReference.setSelected(false);
 		
-		if(d.getIsCompleted() == false) {
-			defectdialog.chkDateFixed.setSelected(false);
-		}
-		else {
+		if(d.getIsCompleted() == true) {
 			defectdialog.chkDateFixed.setSelected(true);
 			defectdialog.lblDateFixed.setEnabled(true);
 			defectdialog.btnSetDateFixed.setEnabled(true);
@@ -407,10 +403,10 @@ public class PSPDefectPanel extends JPanel {
 			defectdialog.txtRemove.setText(d.getRemove());
 		}
 		
-		if(!d.getFixReference().equals(null)) {
+		if(!d.getFixReference().equals("")) {
+			defectdialog.chkFixReference.setSelected(true);
 			defectdialog.lblFixReference.setEnabled(true);
 			defectdialog.txtFixReference.setEnabled(true);
-			defectdialog.chkFixReference.setSelected(true);
 	        defectdialog.txtFixReference.setText(d.getFixReference());
 		}
 		
