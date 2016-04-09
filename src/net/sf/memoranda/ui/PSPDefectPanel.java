@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -21,12 +22,14 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Defect;
 import net.sf.memoranda.DefectList;
+import net.sf.memoranda.DefectListImpl;
 import net.sf.memoranda.DefectListListener;
 import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Project;
@@ -310,7 +313,8 @@ public class PSPDefectPanel extends JPanel {
     }
 
 	protected void newDefectB_actionPerformed(ActionEvent arg0) {
-		DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("New Defect"));
+		DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("Record New Defect: " + (CurrentProject.getDefectList().getLastDefectId())));
+		
         defectdialog.spnDateFound.getModel().setValue(CurrentDate.get().getDate());
         defectdialog.setLocationRelativeTo(this);
         defectdialog.pack();
@@ -346,9 +350,9 @@ public class PSPDefectPanel extends JPanel {
         else
         	fixref = null;
         	
-        Defect newDefect = CurrentProject.getDefectList().createDefect(sd, defectdialog.tfNumber.getText(), 
-        		defectdialog.cmbType.getSelectedItem().toString(), defectdialog.txtInjection.getText(), 
-        		esttime, acttime, ed, defectdialog.txtRemove.getText(), fixref, defectdialog.txtaDescription.getText(), iscompleted);
+        Defect newDefect = CurrentProject.getDefectList().createDefect(sd, defectdialog.cmbType.getSelectedItem().toString(), 
+        		defectdialog.txtInjection.getText(), esttime, acttime, ed, defectdialog.txtRemove.getText(), fixref, 
+        		defectdialog.txtaDescription.getText(), iscompleted);
         CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
         defectTable.tableChanged();
         
@@ -377,18 +381,18 @@ public class PSPDefectPanel extends JPanel {
 		Defect d =
 	            CurrentProject.getDefectList().getDefect(
 	                defectTable.getModel().getValueAt(defectTable.getSelectedRow(), DefectTable.DEFECT_ID).toString());
-	        DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("Edit Defect"));
+	        DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("Edit Defect: " + d.getDefectId()));
 	        Dimension frmSize = App.getFrame().getSize();
 	        Point loc = App.getFrame().getLocation();
 	        defectdialog.setLocation((frmSize.width - defectdialog.getSize().width) / 2 + loc.x, (frmSize.height - defectdialog.getSize().height) / 2 + loc.y);
-	        defectdialog.tfNumber.setText(d.getDefectId());
-	        defectdialog.tfNumber.setEnabled(false);
 	        defectdialog.txtaDescription.setText(d.getDescription());
 	        defectdialog.spnDateFound.getModel().setValue(d.getDateFound().getDate());
 	        defectdialog.txtEstFixTime.setText(Long.toString(Util.getMinsFromMillis(d.getApproximateFixTimeInMillis())));
 	        defectdialog.txtInjection.setText(d.getInjection());
 	        defectdialog.cmbType.setSelectedItem(d.getType());
-		
+	        
+	    
+		//Conditional for enabling defect completion properties
 		if(d.getIsCompleted() == true) {
 			defectdialog.chkDateFixed.setSelected(true);
 			defectdialog.lblDateFixed.setEnabled(true);
@@ -403,6 +407,7 @@ public class PSPDefectPanel extends JPanel {
 			defectdialog.txtRemove.setText(d.getRemove());
 		}
 		
+		//Conditional for enabling fix reference properties
 		if(!d.getFixReference().equals("")) {
 			defectdialog.chkFixReference.setSelected(true);
 			defectdialog.lblFixReference.setEnabled(true);
@@ -410,8 +415,9 @@ public class PSPDefectPanel extends JPanel {
 	        defectdialog.txtFixReference.setText(d.getFixReference());
 		}
 		
-		defectdialog.setVisible(true);    
+		defectdialog.setVisible(true);
 	        
+		//Conditional when user closed application
         if (defectdialog.CANCELLED)
             return;
         

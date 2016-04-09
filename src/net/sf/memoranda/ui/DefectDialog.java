@@ -55,7 +55,6 @@ public class DefectDialog extends JDialog {
     Border border3;
     Border border4;
     JPanel jPanel2 = new JPanel(new GridLayout(3, 2));
-    JTextField tfNumber = new JTextField();
     
     // added by rawsushi
     JTextField txtEstFixTime = new JTextField();
@@ -120,7 +119,7 @@ public class DefectDialog extends JDialog {
 		super(frame, title, true);
 		
         try {
-            jbInit();            
+            jbInit(title);            
             pack();
         }
         catch (Exception ex) {
@@ -128,7 +127,7 @@ public class DefectDialog extends JDialog {
         }
     }
 	
-	void jbInit() throws Exception {
+	void jbInit(String title) throws Exception {
 		
 
 		this.setResizable(false);
@@ -137,7 +136,7 @@ public class DefectDialog extends JDialog {
         border2 = BorderFactory.createEtchedBorder(Color.white, 
             new Color(142, 142, 142));
         border3 = new TitledBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0), 
-        Local.getString("Defect Number (FILL IN SEQUENTIALLY FOR NOW!!!)"), TitledBorder.LEFT, TitledBorder.BELOW_TOP);
+        Local.getString(""), TitledBorder.LEFT, TitledBorder.BELOW_TOP);
         border4 = BorderFactory.createEmptyBorder(0, 5, 0, 5);
         border8 = BorderFactory.createEtchedBorder(Color.white, 
             new Color(178, 178, 178));
@@ -186,23 +185,16 @@ public class DefectDialog extends JDialog {
         dialogTitlePanel.setBorder(border4);
         header.setFont(new java.awt.Font("Dialog", 0, 20));
         header.setForeground(new Color(0, 0, 124));
-        header.setText(Local.getString("Record New Defect"));
+        header.setText(Local.getString(title));
         header.setIcon(new ImageIcon(DefectDialog.class.getResource("/net/sf/memoranda/ui/resources/icons/mimetypes/application/default.png")));
         
         GridBagLayout gbLayout = (GridBagLayout) jpNumberDescription.getLayout();
         jpNumberDescription.setBorder(border3);
-				
-        tfNumber.setBorder(border8);
-        tfNumber.setPreferredSize(new Dimension(24, 24));
-        GridBagConstraints gbCon = new GridBagConstraints();
-        gbCon.gridwidth = GridBagConstraints.REMAINDER;
-        gbCon.weighty = 1;
-        gbLayout.setConstraints(tfNumber,gbCon);
         
         lblDescription.setMaximumSize(new Dimension(100, 16));
         lblDescription.setMinimumSize(new Dimension(60, 16));
         lblDescription.setText(Local.getString("Description"));
-        gbCon = new GridBagConstraints();
+        GridBagConstraints gbCon = new GridBagConstraints();
         gbCon.gridwidth = GridBagConstraints.REMAINDER;
         gbCon.weighty = 1;
         gbCon.anchor = GridBagConstraints.WEST;
@@ -340,7 +332,6 @@ public class DefectDialog extends JDialog {
         this.getContentPane().add(dialogTitlePanel, BorderLayout.NORTH);
         dialogTitlePanel.add(header, null);
         areaPanel.add(jpNumberDescription, BorderLayout.NORTH);
-        jpNumberDescription.add(tfNumber, null);
         jpNumberDescription.add(lblDescription);
         jpNumberDescription.add(descriptionScrollPane, null);
         areaPanel.add(jPanel2, BorderLayout.CENTER);
@@ -482,6 +473,6 @@ public class DefectDialog extends JDialog {
     
     void setNotifB_actionPerformed(ActionEvent e) {
     	((AppFrame)App.getFrame()).workPanel.dailyItemsPanel.eventsPanel.newEventB_actionPerformed(e, 
-			this.tfNumber.getText(), (Date)spnDateFound.getModel().getValue(),(Date)spnDateFixed.getModel().getValue());
+			CurrentProject.getDefectList().getLastDefectId(), (Date)spnDateFound.getModel().getValue(),(Date)spnDateFixed.getModel().getValue());
     }
 }

@@ -16,7 +16,7 @@ public class DefectListImpl implements DefectList {
 	private Project _project = null;
     private Document _doc = null;
     private Element _root = null;
-    private int _pspdefectcount = 0;
+    private String _lastdefectid = "1";
     
     /*
 	 * Hastable of "task" XOM elements for quick searching them by ID's
@@ -24,20 +24,24 @@ public class DefectListImpl implements DefectList {
 	 */
 	private Hashtable elements = new Hashtable();
 	
+	
+	//Used to loads current defect list from doc file
 	public DefectListImpl(Document doc, Project prj) {
         _doc = doc;
         _root = _doc.getRootElement();
+        _lastdefectid = _root.getAttributeValue("lastdefectid");
         _project = prj;
 		buildElements(_root);
-		_pspdefectcount = _root.getChildCount();
     }
 	
+	
+	//Used to create initial defect list when none exists
 	public DefectListImpl(Project prj) {
         _root = new Element("defectlist");
+		_root.addAttribute(new Attribute("lastdefectid","1"));
         _doc = new Document(_root);
         _project = prj;
-}
-	
+	}
 	
 	private void buildElements(Element parent) {
 		Elements els = parent.getChildElements("defect");
@@ -59,19 +63,19 @@ public class DefectListImpl implements DefectList {
 	}
 
 	@Override
-	public int getNextDefectNumber() {
-		return _pspdefectcount+1;
+	public String getLastDefectId() {
+		return _lastdefectid;
 	}
 
 	//PHASE for injection and remove, not Strings
 	@Override
-	public Defect createDefect(CalendarDate datefound, String id, String type, String injection,
+	public Defect createDefect(CalendarDate datefound, String type, String injection,
 			long approximatefixtime, long fixtime, CalendarDate datefixed, String remove, String fixreference, 
 			String description, boolean isCompleted) {
 		
 		Element el = new Element("defect");
 		
-        el.addAttribute(new Attribute("id", id));
+        el.addAttribute(new Attribute("id", _lastdefectid));
         
         el.addAttribute(new Attribute("isCompleted", Boolean.toString(isCompleted)));
         
@@ -111,11 +115,14 @@ public class DefectListImpl implements DefectList {
         desc.appendChild(description);
         el.appendChild(desc);
         
-		elements.put(id, el);
+		elements.put(_lastdefectid, el);
 		_root.appendChild(el);
 		
-		_pspdefectcount += 1;
-        
+		_lastdefectid = Integer.toString(Integer.parseInt(_lastdefectid) + 1);
+		
+		_root.removeAttribute(_root.getAttribute("lastdefectid"));
+		_root.addAttribute(new Attribute("lastdefectid", _lastdefectid));
+		
         return new DefectImpl(el, this);
 	}
 

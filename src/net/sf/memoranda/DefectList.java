@@ -10,9 +10,9 @@ public interface DefectList {
 	
 	Defect getDefect(String thisDefectId);
 	
-	int getNextDefectNumber();
-
-    Defect createDefect(CalendarDate datefound, String number, String type, String injection, long approximatefixtime, long fixtime,
+	String getLastDefectId();
+	
+    Defect createDefect(CalendarDate datefound, String type, String injection, long approximatefixtime, long fixtime,
 			CalendarDate datefixed, String fixremoval, String fixreference, String description, boolean isCompleted);
 
     void removeDefect(Defect defect);
