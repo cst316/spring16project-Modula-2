@@ -313,7 +313,7 @@ public class PSPDefectPanel extends JPanel {
     }
 
 	protected void newDefectB_actionPerformed(ActionEvent arg0) {
-		DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("Record New Defect: " + (CurrentProject.getDefectList().getLastDefectId())));
+		DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("Record New Defect: " ) + (CurrentProject.getDefectList().getLastDefectId()));
 		
         defectdialog.spnDateFound.getModel().setValue(CurrentDate.get().getDate());
         defectdialog.setLocationRelativeTo(this);
@@ -381,7 +381,7 @@ public class PSPDefectPanel extends JPanel {
 		Defect d =
 	            CurrentProject.getDefectList().getDefect(
 	                defectTable.getModel().getValueAt(defectTable.getSelectedRow(), DefectTable.DEFECT_ID).toString());
-	        DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("Edit Defect: " + d.getDefectId()));
+	        DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("Edit Defect: ") + d.getDefectId());
 	        Dimension frmSize = App.getFrame().getSize();
 	        Point loc = App.getFrame().getLocation();
 	        defectdialog.setLocation((frmSize.width - defectdialog.getSize().width) / 2 + loc.x, (frmSize.height - defectdialog.getSize().height) / 2 + loc.y);
@@ -472,6 +472,7 @@ public class PSPDefectPanel extends JPanel {
 	            CurrentProject.getDefectList().getDefect(
 	                defectTable.getModel().getValueAt(defectTable.getSelectedRow(), DefectTable.DEFECT_ID).toString());
 		d.editCompleted(true);
+		d.editDateRemoved(CalendarDate.today());
 		
 		CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
         defectTable.tableChanged();
@@ -517,9 +518,11 @@ public class PSPDefectPanel extends JPanel {
 		
 	}
 	
+	/*
 	protected void calcDefect_actionPerformed(ActionEvent e) {
 		
 	}
+	*/
 	
 	class PopupListener extends MouseAdapter {
 
@@ -555,7 +558,9 @@ public class PSPDefectPanel extends JPanel {
 	    newDefectB_actionPerformed(e);
 	  }
 	
+	  /*
 	  void ppCalcDefect_actionPerformed(ActionEvent e) {
 	      calcDefect_actionPerformed(e);
 	  }
+	  */
 }

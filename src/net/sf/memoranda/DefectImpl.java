@@ -255,27 +255,18 @@ public class DefectImpl implements Defect {
 
 	@Override
 	public int getCompleted(CalendarDate d) {
-		CalendarDate start = getDateFound();
-        CalendarDate end = getDateRemoved();
-        
-		if (d.inPeriod(start, end) || start.after(end)) {
-            return Defect.ACTIVE;
+		if (getIsCompleted()) {
+            return Defect.COMPLETED;
         }
 		else {
-			return Defect.COMPLETED;
+            return Defect.ACTIVE;
 		}
 	}
 	
 	@Override
 	public boolean getIsCompleted() {
 		String comp = _element.getAttribute("isCompleted").getValue();
-		
-		if (Boolean.parseBoolean(comp) == true) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return Boolean.parseBoolean(comp);
 	}
 	
 	
