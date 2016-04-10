@@ -36,6 +36,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.Phase;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
 
@@ -105,12 +106,12 @@ public class DefectDialog extends JDialog {
 	CalendarDate endDateMin = startDateMin;
 	CalendarDate endDateMax = startDateMax;
 	JLabel lblInjection = new JLabel("Injection");
-	JTextField txtInjection = new JTextField();
+	JComboBox cmbInjection = new JComboBox();
 	JLabel lblFixReference = new JLabel("Fix Reference");
 	JTextField txtFixReference = new JTextField();
 	JCheckBox chkFixReference = new JCheckBox("");
 	JLabel lblRemove = new JLabel("Remove");
-	JTextField txtRemove = new JTextField();
+	JComboBox cmbRemove = new JComboBox();
 	
     
 	
@@ -346,9 +347,9 @@ public class DefectDialog extends JDialog {
         jpDateFound.add(cmbType);
         cmbType.setModel(new DefaultComboBoxModel(new String[] {"10 Documentation", "20 Syntax", "30 Build, Package", "40 Assignment", "50 Interface", "60 Checking", "70 Data", "80 Function", "90 System", "100 Environment"}));
         
-                cmbType.setFont(new java.awt.Font("Dialog", 0, 11));
-                
-                cmbType.setSelectedItem(Local.getString("Normal"));
+        cmbType.setFont(new java.awt.Font("Dialog", 0, 11));
+        
+        cmbType.setSelectedItem(Local.getString("Normal"));
         jPanel2.add(jpDateFixed, null);
 		jpDateFixed.add(chkDateFixed, null);
         jpDateFixed.add(lblDateFixed, null);
@@ -358,9 +359,14 @@ public class DefectDialog extends JDialog {
         jPanel2.add(jpEstFixTime, null);
         jpEstFixTime.add(lblEstFixTime, null);
         jpEstFixTime.add(txtEstFixTime, null);
-                jpEstFixTime.add(lblInjection);
-                jpEstFixTime.add(txtInjection);
-                txtInjection.setColumns(10);
+        lblInjection.setLabelFor(cmbInjection);
+        jpEstFixTime.add(lblInjection);
+        jpEstFixTime.add(cmbInjection);
+        cmbInjection.setModel(new DefaultComboBoxModel(Phase.values()));
+        
+        cmbInjection.setFont(new java.awt.Font("Dialog", 0, 11));
+        
+        cmbInjection.setSelectedItem(Local.getString("Normal"));
        
         jPanel2.add(jpActFixTime, null);
         jpActFixTime.add(lblActFixTime);
@@ -371,11 +377,15 @@ public class DefectDialog extends JDialog {
         txtActFixTime.setColumns(10);
         jpActFixTime.add(lblRemove);
         lblRemove.setEnabled(false);
-        jpActFixTime.add(txtRemove);
-        txtRemove.setEnabled(false);
-        txtRemove.setColumns(10);
+        jpActFixTime.add(cmbRemove);
+        cmbRemove.setModel(new DefaultComboBoxModel(Phase.values()));
         
-        lblRemove.setLabelFor(txtRemove);
+        cmbRemove.setFont(new java.awt.Font("Dialog", 0, 11));
+        
+        cmbRemove.setSelectedItem(Local.getString("Normal"));
+        cmbRemove.setEnabled(false);
+        
+        lblRemove.setLabelFor(cmbRemove);
         jPanel2.add(jpSetNotification, null);
         
         jpSetNotification.add(btnSetNotification, null);
@@ -441,7 +451,7 @@ public class DefectDialog extends JDialog {
 		lblActFixTime.setEnabled(chkDateFixed.isSelected());
 		txtActFixTime.setEnabled(chkDateFixed.isSelected());
 		lblRemove.setEnabled(chkDateFixed.isSelected());
-		txtRemove.setEnabled(chkDateFixed.isSelected());
+		cmbRemove.setEnabled(chkDateFixed.isSelected());
 		if(chkDateFixed.isSelected()) {
 			Date currentEndDate = (Date) spnDateFixed.getModel().getValue();
 			Date currentStartDate = (Date) spnDateFound.getModel().getValue();

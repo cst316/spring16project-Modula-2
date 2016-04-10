@@ -55,7 +55,7 @@ public class DefectTableModel extends AbstractTreeTableModel implements TreeTabl
             else
                 return d.getDateRemoved().getDate();       
         case 4:
-            return d.getInjection();
+            return d.getInjection().toString();
         case 5:
         	return d.getType();
         case 6:    
@@ -76,7 +76,7 @@ public class DefectTableModel extends AbstractTreeTableModel implements TreeTabl
         	if (d.getRemove() == null)
         		return null;
         	else
-        		return d.getRemove();
+        		return d.getRemove().toString();
         case DefectTable.DEFECT_ID:
             return d.getDefectId();
         case DefectTable.DEFECT:

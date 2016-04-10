@@ -69,8 +69,8 @@ public class DefectListImpl implements DefectList {
 
 	//PHASE for injection and remove, not Strings
 	@Override
-	public Defect createDefect(CalendarDate datefound, String type, String injection,
-			long approximatefixtime, long fixtime, CalendarDate datefixed, String remove, String fixreference, 
+	public Defect createDefect(CalendarDate datefound, String type, Phase injection,
+			long approximatefixtime, long fixtime, CalendarDate datefixed, Phase remove, String fixreference,
 			String description, boolean isCompleted) {
 		
 		Element el = new Element("defect");
@@ -80,7 +80,7 @@ public class DefectListImpl implements DefectList {
         el.addAttribute(new Attribute("isCompleted", Boolean.toString(isCompleted)));
         
         Element inj = new Element("injection");
-        inj.appendChild(injection);
+        inj.appendChild(injection.toString());
         el.appendChild(inj);
                 
         Element dfou = new Element("dateFound");
@@ -104,7 +104,13 @@ public class DefectListImpl implements DefectList {
         el.appendChild(dfix);
         
         Element fixrem = new Element("remove");
-        fixrem.appendChild(remove != null? remove:"");
+        
+        if(remove == null) {
+        	fixrem.appendChild("");
+        }
+        else {
+        	fixrem.appendChild(remove.toString());
+        }
         el.appendChild(fixrem);
         
         Element fixref = new Element("fixReference");

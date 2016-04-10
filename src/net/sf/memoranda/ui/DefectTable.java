@@ -126,13 +126,13 @@ public class DefectTable extends JTable {
     }
 
     void initColumnWidths() {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 11; i++) {
             TableColumn column = getColumnModel().getColumn(i);
             if (i == 0) {
-                column.setPreferredWidth(8);
+                column.setPreferredWidth(500);
             } 
             else if (i == 1) {
-                column.setPreferredWidth(32767);
+                column.setPreferredWidth(8);
             }
 	    else if( i == 6 ){
 		    column.setPreferredWidth(100);

@@ -32,6 +32,7 @@ import net.sf.memoranda.DefectList;
 import net.sf.memoranda.DefectListImpl;
 import net.sf.memoranda.DefectListListener;
 import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Phase;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectListener;
 import net.sf.memoranda.ResourcesList;
@@ -324,22 +325,35 @@ public class PSPDefectPanel extends JPanel {
             return;
         
         CalendarDate sd = new CalendarDate((Date) defectdialog.spnDateFound.getModel().getValue());
-        CalendarDate ed;
- 		
-        if(defectdialog.chkDateFixed.isSelected())
- 			ed = new CalendarDate((Date) defectdialog.spnDateFixed.getModel().getValue());
- 		else
- 			ed = null;
         
         long esttime = Util.getMillisFromMinutes(defectdialog.txtEstFixTime.getText());
         
+        String inj = defectdialog.cmbInjection.getSelectedItem().toString();
+    	Phase injphase = null;
+    	for (Phase p : Phase.values()) {
+			if (inj.equals(p.toString())) {
+				injphase = p;
+			}
+		}
+    	
+    	CalendarDate ed;
         long acttime;
+        String rem;
+        Phase remphase = null;
         boolean iscompleted;
         if(defectdialog.chkDateFixed.isSelected()) {
+        	ed = new CalendarDate((Date) defectdialog.spnDateFixed.getModel().getValue());
         	acttime = Util.getMillisFromMinutes(defectdialog.txtActFixTime.getText());
+        	rem = defectdialog.cmbRemove.getSelectedItem().toString();
+        	for (Phase p : Phase.values()) {
+    			if (rem.equals(p.toString())) {
+    				remphase = p;
+    			}
+    		}
         	iscompleted = true;
         }
         else {
+ 			ed = null;
         	acttime = 0;
         	iscompleted = false;
         }
@@ -351,7 +365,7 @@ public class PSPDefectPanel extends JPanel {
         	fixref = null;
         	
         Defect newDefect = CurrentProject.getDefectList().createDefect(sd, defectdialog.cmbType.getSelectedItem().toString(), 
-        		defectdialog.txtInjection.getText(), esttime, acttime, ed, defectdialog.txtRemove.getText(), fixref, 
+        		injphase, esttime, acttime, ed, remphase, fixref, 
         		defectdialog.txtaDescription.getText(), iscompleted);
         CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
         defectTable.tableChanged();
@@ -388,7 +402,7 @@ public class PSPDefectPanel extends JPanel {
 	        defectdialog.txtaDescription.setText(d.getDescription());
 	        defectdialog.spnDateFound.getModel().setValue(d.getDateFound().getDate());
 	        defectdialog.txtEstFixTime.setText(Long.toString(Util.getMinsFromMillis(d.getApproximateFixTimeInMillis())));
-	        defectdialog.txtInjection.setText(d.getInjection());
+	        defectdialog.cmbInjection.setSelectedItem(d.getInjection().toString());
 	        defectdialog.cmbType.setSelectedItem(d.getType());
 	        
 	    
@@ -403,8 +417,8 @@ public class PSPDefectPanel extends JPanel {
 			defectdialog.txtActFixTime.setEnabled(true);
 	        defectdialog.txtActFixTime.setText(Long.toString(Util.getMinsFromMillis(d.getFixTimeInMillis())));
 			defectdialog.lblRemove.setEnabled(true);
-			defectdialog.txtRemove.setEnabled(true);
-			defectdialog.txtRemove.setText(d.getRemove());
+			defectdialog.cmbRemove.setEnabled(true);
+			defectdialog.cmbRemove.setSelectedItem(d.getRemove().toString());
 		}
 		
 		//Conditional for enabling fix reference properties
@@ -422,24 +436,33 @@ public class PSPDefectPanel extends JPanel {
             return;
         
         CalendarDate sd = new CalendarDate((Date) defectdialog.spnDateFound.getModel().getValue());
-        CalendarDate ed;
- 		
-        if(defectdialog.chkDateFixed.isSelected()) {
- 			ed = new CalendarDate((Date) defectdialog.spnDateFixed.getModel().getValue());
-        }
-        else {
- 			ed = null;
- 		}
-        
         long esttime = Util.getMillisFromMinutes(defectdialog.txtEstFixTime.getText());
         
+        String inj = defectdialog.cmbInjection.getSelectedItem().toString();
+    	Phase injphase = null;
+    	for (Phase p : Phase.values()) {
+			if (inj.equals(p.toString())) {
+				injphase = p;
+			}
+		}
+        
+        CalendarDate ed;
         long acttime;
+        String rem = defectdialog.cmbRemove.getSelectedItem().toString();
+        Phase remphase = null;
         boolean iscompleted;
         if(defectdialog.chkDateFixed.isSelected()) {
+ 			ed = new CalendarDate((Date) defectdialog.spnDateFixed.getModel().getValue());
+ 			for (Phase p : Phase.values()) {
+ 				if (rem.equals(p.toString())) {
+ 					remphase = p;
+ 				}
+ 			}
         	acttime = Util.getMillisFromMinutes(defectdialog.txtActFixTime.getText());
         	iscompleted = true;
         }
         else {
+ 			ed = null;
         	acttime = 0;
         	iscompleted = false;
         }
@@ -450,13 +473,15 @@ public class PSPDefectPanel extends JPanel {
         else
         	fixref = null;
         	
-        d.editInjection(defectdialog.txtInjection.getText());
+        
+        
+        d.editInjection(injphase);
         d.editDateFound(sd);
         d.editType(defectdialog.cmbType.getSelectedItem().toString());
         d.editApproximateFixTimeInMillis(esttime);
         d.editFixTimeInMillis(acttime);
         d.editDateRemoved(ed);
-        d.editRemove(defectdialog.txtRemove.getText());
+        d.editRemove(remphase);
         d.editFixReference(fixref);
         d.editDescription(defectdialog.txtaDescription.getText());
         d.editCompleted(iscompleted);

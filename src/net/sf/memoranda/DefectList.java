@@ -12,8 +12,8 @@ public interface DefectList {
 	
 	String getLastDefectId();
 	
-    Defect createDefect(CalendarDate datefound, String type, String injection, long approximatefixtime, long fixtime,
-			CalendarDate datefixed, String fixremoval, String fixreference, String description, boolean isCompleted);
+    Defect createDefect(CalendarDate datefound, String type, Phase injection, long approximatefixtime, long fixtime,
+			CalendarDate datefixed, Phase fixremoval, String fixreference, String description, boolean isCompleted);
 
     void removeDefect(Defect defect);
     
