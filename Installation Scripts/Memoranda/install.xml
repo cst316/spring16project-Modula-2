@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<!--
+   A sample installation file.
+   Use it as a base for your own installers :-)
+   
+   To compile it :
+   - go in the bin directory where you installed IzPack
+   - call "compile ../sample/install.xml -b ../sample"
+-->
+
+
+<Installation version="1.0">
+
+    <info>
+        <appname>Memoranda</appname>
+        <appversion>1.0</appversion>
+		<authors>
+			<authors email="" name=""/>
+			<authors email="" name=""/>
+			<authors email="" name=""/>
+			<authors email="" name=""/>
+			<authors email="" name=""/>
+		<javaversion>1.7</javaversion>
+		<requiresjdk>no</requiresjdk>
+        <url>https://github.com/cst316/spring16project-Modula-2</url>
+    </info>
+
+    <!--
+       The gui preferences indication.
+       Sets the installer window to 640x480. It will not be able to change the size.
+   -->
+    <guiprefs width="640" height="480" resizable="yes"/>
+    <variables>
+        <variable name="DesktopShortcutCheckboxEnabled" value="true"/>
+    </variables>
+    <!--
+       The locale section.
+       Asks here to include the English and French langpacks.
+   -->
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+
+    <!--
+       The resources section.
+       The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
+   -->
+    <resources>
+        <res src="shortcutSpec.xml" id="shortcutSpec.xml"/>
+        <res id="LicencePanel.licence" src="Licence.txt"/>
+        <res id="InfoPanel.info" src="Readme.txt"/>
+    </resources>
+
+    <!--
+       The panels section.
+       We indicate here which panels we want to use. The order will be respected.
+   -->
+    <panels>
+        <panel classname="HelloPanel"/>
+        <panel classname="LicencePanel"/>
+        <panel classname="TargetPanel"/>
+        <panel classname="PacksPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="ShortcutPanel"/>
+        <panel classname="FinishPanel"/>
+    </panels>
+
+    <!--
+       The packs section.
+       We specify here our packs.
+   -->
+    <packs>
+        <pack name="Base" required="yes">
+            <description>The base files</description>
+            <file src="Readme.txt" targetdir="$INSTALL_PATH"/>
+            <file src="Licence.txt" targetdir="$INSTALL_PATH"/>
+            <file src="exe.ico" targetdir="$INSTALL_PATH"/>
+            <file src="Memoranda.jar" targetdir="$INSTALL_PATH"/>
+            <fileset dir="lib" targetdir="$INSTALL_PATH\lib">
+                <include name="**"/>
+            </fileset>
+        </pack>
+    </packs>
+    <native type="izpack" name="ShellLink.dll"/>
+    <native type="3rdparty" name="COIOSHelper.dll" stage="both">
+        <os family="windows"/>
+    </native>
+</installation>

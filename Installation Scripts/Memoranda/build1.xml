@@ -1,0 +1,20 @@
+<taskdef name="izpack" classpath="${install.lib}/standalone-compiler.jar"
+    classname="com.izforge.izpack.ant.IzPackTask"/>
+	
+<project default="install">
+    <path id="build.classpath">
+        <fileset dir="${user.home}/IzPack">
+            <include name="lib/*.jar" />
+        </fileset>
+    </path>
+    <taskdef name="izpack" classpathref="build.classpath" classname="com.izforge.izpack.ant.IzPackTask" />
+ 
+    <target name="install">
+        <izpack input="install.xml"
+                output="memorandaInstaller.jar"
+                installerType="standard"
+                inheritAll="true"
+                basedir="${basedir}"
+                izPackDir="${user.home}/IzPack/" />
+    </target>
+</project>
