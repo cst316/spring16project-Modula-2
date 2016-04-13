@@ -38,6 +38,7 @@ import net.sf.memoranda.date.DateListener;
 import net.sf.memoranda.ui.treetable.AbstractCellEditor;
 import net.sf.memoranda.ui.treetable.TreeTableModel;
 import net.sf.memoranda.ui.treetable.TreeTableModelAdapter;
+import net.sf.memoranda.util.ColorScheme;
 
 public class DefectTable extends JTable {
 
@@ -48,7 +49,7 @@ public class DefectTable extends JTable {
     protected TreeTableCellRenderer tree;
 
     protected DefectTableModel model;
-    
+
     protected TreeTableModelAdapter modelAdapter;
     
     protected DefectTreeTableCellRenderer renderer;
@@ -77,7 +78,6 @@ public class DefectTable extends JTable {
 				tableChanged();
             }
         });
-	
     }
 
     private void initTable() {
@@ -123,6 +123,7 @@ public class DefectTable extends JTable {
 		
 		// do not allow moving columns
 		getTableHeader().setReorderingAllowed(false);
+		getTableHeader().setBackground(ColorScheme.getColor("frame_secondary"));
     }
 
     void initColumnWidths() {

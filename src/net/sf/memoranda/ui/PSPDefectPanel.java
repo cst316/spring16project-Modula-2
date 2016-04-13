@@ -40,6 +40,7 @@ import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
@@ -51,7 +52,7 @@ public class PSPDefectPanel extends JPanel {
 	
     BorderLayout borderLayout1 = new BorderLayout();
 
-	JToolBar defectsToolBar = new JToolBar();
+	JToolBar defectsToolbar = new JToolBar();
 	JButton newDefectB = new JButton();
     JButton subDefectB = new JButton();
     JButton editDefectB = new JButton();
@@ -84,7 +85,9 @@ public class PSPDefectPanel extends JPanel {
     
     void jbInit() throws Exception {
     	
-    	defectsToolBar.setFloatable(false);
+    	defectsToolbar.setFloatable(false);
+    	defectsToolbar.setBackground(ColorScheme.getColor("taskbar_primary"));
+    	defectsToolbar.setBorder(null);
     		
     	newDefectB.setIcon(
                 new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
@@ -100,6 +103,7 @@ public class PSPDefectPanel extends JPanel {
                 newDefectB_actionPerformed(e);
             }
         });
+        newDefectB.setBackground(ColorScheme.getColor("taskbar_primary"));
         newDefectB.setBorderPainted(false);
 		
         editDefectB.setIcon(
@@ -116,6 +120,7 @@ public class PSPDefectPanel extends JPanel {
         editDefectB.setToolTipText(Local.getString("Edit defect"));
         editDefectB.setMinimumSize(new Dimension(24, 24));
         editDefectB.setMaximumSize(new Dimension(24, 24));
+        editDefectB.setBackground(ColorScheme.getColor("taskbar_primary"));
         
         removeDefectB.setIcon(
                 new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_remove.png")));
@@ -131,6 +136,7 @@ public class PSPDefectPanel extends JPanel {
         removeDefectB.setToolTipText(Local.getString("Remove defect"));
         removeDefectB.setMinimumSize(new Dimension(24, 24));
         removeDefectB.setMaximumSize(new Dimension(24, 24));
+        removeDefectB.setBackground(ColorScheme.getColor("taskbar_primary"));
         
         completeDefectB.setIcon(
                 new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
@@ -146,6 +152,7 @@ public class PSPDefectPanel extends JPanel {
         completeDefectB.setToolTipText(Local.getString("Complete defect"));
         completeDefectB.setMinimumSize(new Dimension(24, 24));
         completeDefectB.setMaximumSize(new Dimension(24, 24));
+        completeDefectB.setBackground(ColorScheme.getColor("taskbar_primary"));
         
         ppShowActiveOnlyChB.setFont(new java.awt.Font("Dialog", 1, 11));
 		ppShowActiveOnlyChB.setText(
@@ -221,13 +228,13 @@ public class PSPDefectPanel extends JPanel {
 		scrollPane.getViewport().setBackground(Color.white);
 		scrollPane.getViewport().add(defectTable, null);
 		this.add(scrollPane, BorderLayout.CENTER);
-        defectsToolBar.add(newDefectB, null);
-        defectsToolBar.add(removeDefectB, null);
-        defectsToolBar.addSeparator(new Dimension(8, 24));
-        defectsToolBar.add(editDefectB, null);
-        defectsToolBar.add(completeDefectB, null);
+        defectsToolbar.add(newDefectB, null);
+        defectsToolbar.add(removeDefectB, null);
+        defectsToolbar.addSeparator(new Dimension(8, 24));
+        defectsToolbar.add(editDefectB, null);
+        defectsToolbar.add(completeDefectB, null);
 
-        this.add(defectsToolBar, BorderLayout.NORTH);
+        this.add(defectsToolbar, BorderLayout.NORTH);
 
         PopupListener ppListener = new PopupListener();
         scrollPane.addMouseListener(ppListener);
