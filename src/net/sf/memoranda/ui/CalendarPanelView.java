@@ -294,6 +294,9 @@ public class CalendarPanelView extends JPanel {
 		        generateDay(panelCell,(Calendar) dayCal.clone(),tasks);
 	        }
 		}
+		
+		_view.revalidate();
+		_view.repaint();
 	}
 	
 	private void generateDay(CalendarPanelCell panelCell, Calendar calendar, Collection<Task> tasks) {
