@@ -33,11 +33,9 @@ public class EventsScheduler {
         //changeDateTimer.cancel();
         Vector events = (Vector)EventsManager.getActiveEvents();
         _timers = new Vector();
-        /*DEBUG*/System.out.println("----------");
         for (int i = 0; i < events.size(); i++) {
             Event ev = (Event)events.get(i);
             Date evTime = ev.getTime();
-        /*DEBUG*/System.out.println((Calendar.getInstance()).getTime());
           //  if (evTime.after(new Date())) {
 	      if (evTime.after((Calendar.getInstance()).getTime())) {	
                 EventTimer t = new EventTimer(ev);
@@ -46,7 +44,6 @@ public class EventsScheduler {
                 /*DEBUG*/System.out.println(ev.getTimeString());
             }
         }
-        /*DEBUG*/System.out.println("----------");
         Date midnight = getMidnight();
         changeDateTimer.schedule(new TimerTask() {
                 public void run() {
