@@ -16,7 +16,7 @@ public class DefectListImpl implements DefectList {
 	private Project _project = null;
     private Document _doc = null;
     private Element _root = null;
-    private String _lastdefectid = "1";
+    private String _lastDefectId = null;
     
     /*
 	 * Hastable of "task" XOM elements for quick searching them by ID's
@@ -29,7 +29,12 @@ public class DefectListImpl implements DefectList {
 	public DefectListImpl(Document doc, Project prj) {
         _doc = doc;
         _root = _doc.getRootElement();
-        _lastdefectid = _root.getAttributeValue("lastdefectid");
+        _lastDefectId = _root.getAttributeValue("lastdefectid");
+        
+        // Legacy support, if user does not have an existing defect ID
+        if(_lastDefectId == null)
+        	_lastDefectId = "1";
+        
         _project = prj;
 		buildElements(_root);
     }
@@ -64,7 +69,7 @@ public class DefectListImpl implements DefectList {
 
 	@Override
 	public String getLastDefectId() {
-		return _lastdefectid;
+		return _lastDefectId;
 	}
 
 	//PHASE for injection and remove, not Strings
@@ -75,7 +80,7 @@ public class DefectListImpl implements DefectList {
 		
 		Element el = new Element("defect");
 		
-        el.addAttribute(new Attribute("id", _lastdefectid));
+        el.addAttribute(new Attribute("id", _lastDefectId));
         
         el.addAttribute(new Attribute("isCompleted", Boolean.toString(isCompleted)));
         
@@ -121,13 +126,16 @@ public class DefectListImpl implements DefectList {
         desc.appendChild(description);
         el.appendChild(desc);
         
-		elements.put(_lastdefectid, el);
+		elements.put(_lastDefectId, el);
 		_root.appendChild(el);
 		
-		_lastdefectid = Integer.toString(Integer.parseInt(_lastdefectid) + 1);
+		_lastDefectId = Integer.toString(Integer.parseInt(_lastDefectId) + 1);
 		
-		_root.removeAttribute(_root.getAttribute("lastdefectid"));
-		_root.addAttribute(new Attribute("lastdefectid", _lastdefectid));
+		// Legacy support, if they don't have a previous defect ID
+		if(_root.getAttribute("lastdefectid") != null)
+			_root.removeAttribute(_root.getAttribute("lastdefectid"));
+
+		_root.addAttribute(new Attribute("lastdefectid", _lastDefectId));
 		
         return new DefectImpl(el, this);
 	}
