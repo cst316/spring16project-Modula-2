@@ -45,6 +45,7 @@ import net.sf.memoranda.ResourcesList;
 import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.ui.htmleditor.HTMLEditor;
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.CurrentStorage;
@@ -109,7 +110,7 @@ public class AppFrame extends JFrame {
         new AbstractAction("Export as iCal") {
 
         public void actionPerformed(ActionEvent e) {
-        	iCalExport_actionPerformed(e);
+            iCalExport_actionPerformed(e);
         }
     };
 
@@ -183,7 +184,7 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuInsertDate = new JMenuItem(
             workPanel.dailyItemsPanel.editorPanel.insertDateAction);
     JMenuItem jMenuInsertTime = new JMenuItem(
-    		workPanel.dailyItemsPanel.editorPanel.insertTimeAction);
+            workPanel.dailyItemsPanel.editorPanel.insertTimeAction);
     JMenuItem jMenuInsertFile = new JMenuItem(
             workPanel.dailyItemsPanel.editorPanel.importAction);
 
@@ -280,6 +281,7 @@ public class AppFrame extends JFrame {
         //Added a space to App.VERSION_INFO to make it look some nicer
         statusBar.setText(" Version:" + App.VERSION_INFO + " (Build "
                 + App.BUILD_INFO + " )");
+        statusBar.setForeground(ColorScheme.getColor("taskbar_text"));
 
         jMenuFile.setText(Local.getString("File"));
         jMenuFileExit.setText(Local.getString("Exit"));
@@ -325,7 +327,7 @@ public class AppFrame extends JFrame {
         jMenuPSPReference.setText(Local.getString("PSP Reference"));
         jMenuPSPReference.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	jMenuPSPReference_actionPerformed(e);
+                jMenuPSPReference_actionPerformed(e);
             }
         });
         //reference 
@@ -500,6 +502,7 @@ public class AppFrame extends JFrame {
         this.setJMenuBar(menuBar);
         //contentPane.add(toolBar, BorderLayout.NORTH);
         contentPane.add(statusBar, BorderLayout.SOUTH);
+        contentPane.setBackground(ColorScheme.getColor("taskbar_primary"));
         contentPane.add(splitPane, BorderLayout.CENTER);
         splitPane.add(projectsPanel, JSplitPane.TOP);
         splitPane.add(workPanel, JSplitPane.BOTTOM);
@@ -667,11 +670,11 @@ public class AppFrame extends JFrame {
         Util.runBrowser(App.GUIDE_URL);
     }
     protected void jMenuPSPReference_actionPerformed(ActionEvent e) {
-    	PSPReferenceDialog referenceFrame = new PSPReferenceDialog(App.getFrame(), Local.getString("PSP Reference"));
-    	referenceFrame.pack();
-    	referenceFrame.setVisible(true);
-    	
-    /*	AppFrame_AboutBox dlg = new AppFrame_AboutBox(this);        
+        PSPReferenceDialog referenceFrame = new PSPReferenceDialog(App.getFrame(), Local.getString("PSP Reference"));
+        referenceFrame.pack();
+        referenceFrame.setVisible(true);
+        
+    /*  AppFrame_AboutBox dlg = new AppFrame_AboutBox(this);        
         Dimension dlgSize = dlg.getSize();
         Dimension frmSize = getSize();
         Point loc = getLocation();
@@ -1181,7 +1184,7 @@ public class AppFrame extends JFrame {
                     content = document.getRootElement().getFirstChildElement("body").getValue();
                     content = content.substring(content.indexOf("\n", content.indexOf("-")));
                     content = content.replace("<p>","").replace("</p>","\n");
-                    name = f.getName().substring(0,f.getName().lastIndexOf("."));	
+                    name = f.getName().substring(0,f.getName().lastIndexOf("."));   
                     Element item;
                     id=Util.generateId();
                     System.out.println(id+" "+name+" "+content);
