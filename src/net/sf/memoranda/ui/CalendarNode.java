@@ -43,22 +43,61 @@ public class CalendarNode extends JPanel {
 		queueNodes.add(new CalendarNodeItem(event));
 	}
 	
-	public int queueRemoveLast() {
+	private int queueRemoveLast() {
 		int type = queueNodes.get(queueNodes.size()-1).getType();
-
 		queueNodes.remove(queueNodes.size()-1);
-		
 		return type;
 	}
 	
-	public void queueProcess() {
-		for(CalendarNodeItem node : queueNodes)
-			add(node);
+	public void queueProcess(int maxDisplay) {
+		int curDisplay = 0;
+		int overDisplay = 0;
+		int overEventDisplay = 0;
+		int overTaskDisplay = 0;
+			
+		if(queueNodes.size() == 0)
+			return;
+				
+		for(int i = 0; i < queueNodes.size(); i++) {
+			CalendarNodeItem node = queueNodes.get(i);
+
+			if((curDisplay+1) >= maxDisplay) {
+				int queueCurType = node.getType();
+				
+				// If this is the first to go over, remove the last element and fix the overdisplay to reflect
+				if(overDisplay == 0) {
+					int queueLastType = queueRemoveLast();
+				
+					if(queueLastType == CalendarNode.TYPE_EVENT)
+						overEventDisplay++;
+					else if(queueLastType == CalendarNode.TYPE_TASK)
+						overTaskDisplay++;
+
+					overDisplay++;
+				}
+				
+				// Now process one we're adding
+				if(queueCurType == CalendarNode.TYPE_EVENT)
+					overEventDisplay++;
+				else if(queueCurType == CalendarNode.TYPE_TASK)
+					overTaskDisplay++;
+				
+				overDisplay++;
+			} else {
+        		curDisplay++;
+        		add(node);
+			}
+		}
+		
+		// Add label if some are truncated
+		if(overDisplay > 0)
+			addNotShownLabel(overEventDisplay, overTaskDisplay);
+
 
 		queueNodes.removeAllElements();
 	}
 	
-	public void addNotShownLabel(int eventCount, int taskCount) {
+	private void addNotShownLabel(int eventCount, int taskCount) {
 		add(new CalendarNodeItem(eventCount, taskCount));
 	}
 	

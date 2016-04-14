@@ -24,10 +24,16 @@ public class App {
 
 	static AppFrame frame = null;
 	
+<<<<<<< HEAD
 	//Agamezli - Changed the url for the Memoranda User guide to something in my public asu webspace.
 		public static final String GUIDE_URL = "http://www.public.asu.edu/~agamezli/CST316/The%20draft%20plan%20of%20manual.pdf";//http://memoranda.sourceforge.net/guide.html
 	public static final String BUGS_TRACKER_URL = "http://sourceforge.net/tracker/?group_id=90997&atid=595566";
 	public static final String WEBSITE_URL = "http://memoranda.sourceforge.net";
+=======
+	public static final String GUIDE_URL = "http://memoranda.sourceforge.net/guide.html";
+	public static final String BUGS_TRACKER_URL = "https://github.com/cst316/spring16project-Modula-2/issues";
+	public static final String WEBSITE_URL = "https://github.com/cst316/spring16project-Modula-2";
+>>>>>>> 8759fea78043b7f9efbccb9bcbbced8e725e2e1a
 
 	private JFrame splash = null;
 

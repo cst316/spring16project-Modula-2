@@ -29,28 +29,20 @@ public class AppFrame_AboutBox extends JDialog implements ActionListener {
   JLabel lblText = new JLabel();
   
   String product = "Version "+App.VERSION_INFO + " (Build " + App.BUILD_INFO + ")";
-  String copyright = "Copyright (c) 2003, 2004 Memoranda team";
+  String copyright = "Copyright (c) 2016 ASU CST316 Modula-2 Memoranda team";
   String url = App.WEBSITE_URL;
   String developersHead = Local.getString("Developers") + ":";
   String[] developers = {
-              "Alex Alishevskikh (alexeya@users.sourceforge.net)",
-              "Patrick Bielen (bielen@stafa.nl)",
-              "Ryan Ho (rawsushi@users.sourceforge.net)",
-              "Ivan Ribas (ivanrise@users.sourceforge.net)",
-              "Jyrki Velhonoja (velhonoja@kapsi.fi>)",
-  			  "Jeremy Whitlock (jwhitlock@starprecision.com)"              
+		  	  "Amilcar Gamez-Lizarraga (agamezli@asu.edu)",
+              "David Henderson (dchende2@asu.edu)",
+              "Luis Quintanilla (lequinta@asu.edu)",
+              "Eric Reeves (esreeves@asu.edu)",
+              "Nelson Tran (nttran9@asu.edu)"         
   };
   String othersHead = Local.getString("Other contributors") + ":";
   String[] others = {
-              "Thomas Chuffart (informatique@pierrelouiscarlier.fr)",
-              "Willy Dobe (wdobe@gmx.de)",
-              "Yunjie Liu (liu-610@163.com)",
-              "Kenneth J. Pouncey (kjpou@pt.lu)",
-              "Michael Radtke (mradtke@abigale.de)",
-              "Carel-J Rischmuller (carel-j.rischmuller@epiuse.com)",
-              "Milena Vitali-Charewicz (milo22370@yahoo.com)",
-              "Toru Watanabe (t-wata@cablenet.ne.jp)"                            
- };
+              "See original developers at http://memoranda.sourceforge.net"  
+  };
     
   JLayeredPane layeredPane;
   ImageIcon image;
@@ -88,13 +80,14 @@ public class AppFrame_AboutBox extends JDialog implements ActionListener {
     lblText.setFont(new java.awt.Font("Dialog", 0, 11));
     lblText.setText(text);
     lblText.setBounds(10, 55, 300, 400);
+    lblText.setForeground(Color.WHITE);
 
     
     button1.setText(Local.getString("Ok"));
     button1.setBounds(150, 415, 95, 30);
     button1.addActionListener(this);
     button1.setPreferredSize(new Dimension(95, 30));
-    button1.setBackground(new Color(69, 125, 186));
+    button1.setBackground(new Color(128, 170, 255));
     button1.setForeground(Color.white);
     layeredPane = getLayeredPane();
     //layeredPane.setPreferredSize(new Dimension(300, 300));
@@ -103,7 +96,7 @@ public class AppFrame_AboutBox extends JDialog implements ActionListener {
     layeredPane.add(imgLabel, new Integer(1));
     layeredPane.add(lblText, new Integer(2));    
     layeredPane.add(button1, new Integer(2));
-    this.getContentPane().setBackground(new Color(251, 197, 63));
+    this.getContentPane().setBackground(new Color(43, 100, 209));
   }
   //Overridden so we can exit when window is closed
   protected void processWindowEvent(WindowEvent e) {
