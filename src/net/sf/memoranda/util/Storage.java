@@ -8,8 +8,8 @@
  */
 package net.sf.memoranda.util;
 
-import net.sf.memoranda.DefectList;
 import net.sf.memoranda.ContactList;
+import net.sf.memoranda.DefectList;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Project;

@@ -1,18 +1,24 @@
 package net.sf.memoranda.ui;
 
-import javax.swing.*;
-import javax.swing.table.*;
-import javax.swing.tree.*;
-import javax.swing.event.*;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
-import java.util.*;
-
-import net.sf.memoranda.*;
-import net.sf.memoranda.util.*;
-import net.sf.memoranda.date.*;
+import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.Task;
+import net.sf.memoranda.date.CurrentDate;
 
 public class TaskTableSorter extends TaskTableModel{
 	

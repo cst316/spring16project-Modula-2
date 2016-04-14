@@ -2,6 +2,7 @@ package net.sf.memoranda.ui;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

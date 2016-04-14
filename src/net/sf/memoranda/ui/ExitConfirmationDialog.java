@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,8 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.Configuration;
+import net.sf.memoranda.util.Local;
 
 public class ExitConfirmationDialog extends JDialog implements WindowListener {
     

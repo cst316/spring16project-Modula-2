@@ -1,8 +1,5 @@
 package net.sf.memoranda;
 
-import java.util.Date;
-import java.util.Vector;
-
 import net.sf.memoranda.date.CalendarDate;
 import nu.xom.Element;
 

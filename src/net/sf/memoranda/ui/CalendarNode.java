@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,19 +21,84 @@ import net.sf.memoranda.Event;
 import net.sf.memoranda.Task;
 
 public class CalendarNode extends JPanel {	
+	private Vector<CalendarNodeItem> queueNodes;
+
+	public static final int TYPE_INVALID = 0;
+	public static final int TYPE_EVENT = 1;
+	public static final int TYPE_TASK = 2;
+	public static final int TYPE_LABEL = 3;
 	
 	public CalendarNode() {
+		queueNodes = new Vector<CalendarNodeItem>();
+		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setOpaque(false);
 	}
 	
-	public void addTask(Task task) {
-		add(new CalendarNodeItem(task));
-		//add(Box.createRigidArea(new Dimension(12, 12)));
+	public void queueAdd(Task task) {
+		queueNodes.add(new CalendarNodeItem(task));
 	}
 	
-	public void addEvent(Event event) {
-		add(new CalendarNodeItem(event));
-		//add(Box.createRigidArea(new Dimension(12, 12)));
+	public void queueAdd(Event event) {
+		queueNodes.add(new CalendarNodeItem(event));
+	}
+	
+	private int queueRemoveLast() {
+		int type = queueNodes.get(queueNodes.size()-1).getType();
+		queueNodes.remove(queueNodes.size()-1);
+		return type;
+	}
+	
+	public void queueProcess(int maxDisplay) {
+		int curDisplay = 0;
+		int overDisplay = 0;
+		int overEventDisplay = 0;
+		int overTaskDisplay = 0;
+			
+		if(queueNodes.size() == 0)
+			return;
+				
+		for(int i = 0; i < queueNodes.size(); i++) {
+			CalendarNodeItem node = queueNodes.get(i);
+
+			if((curDisplay+1) >= maxDisplay) {
+				int queueCurType = node.getType();
+				
+				// If this is the first to go over, remove the last element and fix the overdisplay to reflect
+				if(overDisplay == 0) {
+					int queueLastType = queueRemoveLast();
+				
+					if(queueLastType == CalendarNode.TYPE_EVENT)
+						overEventDisplay++;
+					else if(queueLastType == CalendarNode.TYPE_TASK)
+						overTaskDisplay++;
+
+					overDisplay++;
+				}
+				
+				// Now process one we're adding
+				if(queueCurType == CalendarNode.TYPE_EVENT)
+					overEventDisplay++;
+				else if(queueCurType == CalendarNode.TYPE_TASK)
+					overTaskDisplay++;
+				
+				overDisplay++;
+			} else {
+        		curDisplay++;
+        		add(node);
+			}
+		}
+		
+		// Add label if some are truncated
+		if(overDisplay > 0)
+			addNotShownLabel(overEventDisplay, overTaskDisplay);
+
+
+		queueNodes.removeAllElements();
+	}
+	
+	private void addNotShownLabel(int eventCount, int taskCount) {
+		add(new CalendarNodeItem(eventCount, taskCount));
 	}
 	
 	public void clear() {
@@ -41,12 +107,13 @@ public class CalendarNode extends JPanel {
 	
 	private class CalendarNodeItem extends JPanel {
 		private GridBagConstraints c;
-		private Event event;
-		private Task task;
+		private Event _event;
+		private Task _task;
+		private int _type;
 		
 		private CalendarNodeItem() {
 			this.setLayout(new GridBagLayout());
-			this.setOpaque(true);
+			this.setOpaque(false);
 			this.setBackground(Color.WHITE);
 			
 			c = new GridBagConstraints();
@@ -56,16 +123,16 @@ public class CalendarNode extends JPanel {
 				@Override
 				public void mousePressed(MouseEvent e) {
 					if (SwingUtilities.isLeftMouseButton(e)) {
-						if (event != null)
-							new EventInformationDialog(App.getFrame(), "Event Information", event).setVisible(true);
-						else if (task != null)
-							new TaskInformationDialog(App.getFrame(), "Task Information", task).setVisible(true);
+						if (_event != null)
+							new EventInformationDialog(App.getFrame(), "Event Information", _event).setVisible(true);
+						else if (_task != null)
+							new TaskInformationDialog(App.getFrame(), "Task Information", _task).setVisible(true);
 					}
 					else if (SwingUtilities.isRightMouseButton(e)) {
-						if (event != null)
-							new CalendarItemPopupMenu(event).show(e.getComponent(), e.getX(), e.getY());
-						else if (task != null)
-							new CalendarItemPopupMenu(task).show(e.getComponent(), e.getX(), e.getY());
+						if (_event != null)
+							new CalendarItemPopupMenu(_event).show(e.getComponent(), e.getX(), e.getY());
+						else if (_task != null)
+							new CalendarItemPopupMenu(_task).show(e.getComponent(), e.getX(), e.getY());
 					}
 				}
 				
@@ -81,17 +148,53 @@ public class CalendarNode extends JPanel {
 		}
 		
 		public Event getEvent() {
-			return event;
+			return _event;
 		}
 		
 		public Task getTask() {
-			return task;
+			return _task;
+		}
+		
+		public int getType() {
+			if(_type == CalendarNode.TYPE_EVENT)
+				return _type;
+			else if(_type == CalendarNode.TYPE_TASK)
+				return _type;
+			else if(_type == CalendarNode.TYPE_LABEL)
+				return _type;
+			else
+				return CalendarNode.TYPE_INVALID;
+		}
+		
+		private CalendarNodeItem(int eventCount, int taskCount) {
+			this();
+			_type = CalendarNode.TYPE_LABEL;
+
+			c.gridx = 0;
+			c.gridy = 0;
+			
+			String text = "";
+			
+			if(eventCount > 0 && taskCount <= 0)
+				text = eventCount + " " + (eventCount == 1 ? "event" : "events") + " not shown";
+			
+			else if(eventCount <= 0 && taskCount > 0)
+				text = taskCount + " " + (taskCount == 1 ? "task" : "tasks") + " not shown";
+			
+			else if(eventCount > 0 & taskCount > 0)
+				text = eventCount + " " + (eventCount == 1 ? "event" : "events") + " and " + taskCount + " " + (taskCount == 1 ? "task" : "tasks") + " not shown";
+			
+			JLabel trimmedText = new JLabel(text);
+			trimmedText.setFont(new Font(trimmedText.getFont().getName(), Font.ITALIC, 14));
+			add(trimmedText, c);
 		}
 		
 		private CalendarNodeItem(Task task) {
 			this();
-			this.task = task;
-			
+			this._task = task;
+
+			_type = CalendarNode.TYPE_TASK;
+
 			c.gridx = 0;
 			c.gridy = 0;
 						
@@ -123,8 +226,10 @@ public class CalendarNode extends JPanel {
 		
 		private CalendarNodeItem(Event event) {
 			this();
-			this.event = event;
+			this._event = event;
 			
+			_type = CalendarNode.TYPE_EVENT;
+
 			c.gridx = 0;
 			c.gridy = 0;
 						

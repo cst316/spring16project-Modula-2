@@ -7,16 +7,17 @@
  */
 package net.sf.memoranda;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Vector;
-import java.util.Map;
 import java.util.Collections;
-
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
 import net.sf.memoranda.date.CalendarDate;
+import net.sf.memoranda.ui.EventDialog;
+import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Util;
 import nu.xom.Attribute;
@@ -482,5 +483,34 @@ public class EventsManager {
 		}
 	}
 	
-	
+    public static void buildRepeatableEvent(EventDialog dlg, int hh, int mm, String text) {
+		int rtype;
+        int period;
+        CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
+        CalendarDate ed = null;
+        if (dlg.enableEndDateCB.isSelected())
+            ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+        if (dlg.dailyRepeatRB.isSelected()) {
+            rtype = EventsManager.REPEAT_DAILY;
+            period = ((Integer) dlg.daySpin.getModel().getValue()).intValue();
+        }
+        else if (dlg.weeklyRepeatRB.isSelected()) {
+            rtype = EventsManager.REPEAT_WEEKLY;
+            period = dlg.weekdaysCB.getSelectedIndex() + 1;
+		    if (Configuration.get("FIRST_DAY_OF_WEEK").equals("mon")) {
+				if(period==7) period=1;
+				else period++;
+		    }
+        }
+		else if (dlg.yearlyRepeatRB.isSelected()) {
+		    rtype = EventsManager.REPEAT_YEARLY;
+		    period = sd.getCalendar().get(Calendar.DAY_OF_YEAR);
+		    if((sd.getYear() % 4) == 0 && sd.getCalendar().get(Calendar.DAY_OF_YEAR) > 60) period--;
+		}
+	    else {
+	        rtype = EventsManager.REPEAT_MONTHLY;
+	        period = ((Integer) dlg.dayOfMonthSpin.getModel().getValue()).intValue();
+	    }
+        EventsManager.createRepeatableEvent(rtype, sd, ed, period, hh, mm, text, dlg.workingDaysOnlyCB.isSelected(),dlg.getExceptionDates());
+    }
 }

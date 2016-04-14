@@ -26,10 +26,12 @@
 
 package net.sf.memoranda.ui;
 
-import net.sf.memoranda.Task;
 import java.awt.Color;
 import java.awt.Graphics;
+
 import javax.swing.JLabel;
+
+import net.sf.memoranda.Task;
 
 /**
  * <h1>TaskProgressLabel</h1>

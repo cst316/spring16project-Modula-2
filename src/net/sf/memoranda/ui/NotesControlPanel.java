@@ -5,10 +5,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,15 +23,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.CurrentNote;
+import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.date.CurrentDate;
-import net.sf.memoranda.util.Local;
-import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Configuration;
 //import net.sf.memoranda.ui.App;
 //import net.sf.memoranda.ui.AppFrame;
+import net.sf.memoranda.util.CurrentStorage;
+import net.sf.memoranda.util.Local;
 
 /*$Id: NotesControlPanel.java,v 1.16 2005/05/05 16:19:16 ivanrise Exp $*/
 public class NotesControlPanel extends JPanel {

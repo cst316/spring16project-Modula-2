@@ -1,23 +1,21 @@
 package net.sf.memoranda.ui;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.util.Local;
-
-import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 
 public class ProjectNewTeamMemberDialog extends JDialog {
 	/**

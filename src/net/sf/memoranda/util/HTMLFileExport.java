@@ -7,7 +7,16 @@
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
 package net.sf.memoranda.util;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -17,7 +26,6 @@ import javax.swing.text.html.HTMLDocument;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.ui.ExceptionDialog;
 import net.sf.memoranda.ui.htmleditor.AltHTMLWriter;
-
 
 import org.apache.xml.serialize.Method;
 import org.apache.xml.serialize.OutputFormat;

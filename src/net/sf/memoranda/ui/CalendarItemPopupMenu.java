@@ -47,18 +47,18 @@ public class CalendarItemPopupMenu extends JPopupMenu {
 		
 		edit.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				deleteB_actionPerformed(e);
+				editB_actionPerformed(e);
 			}
 		});
 		
 		delete.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				editB_actionPerformed(e);
+				deleteB_actionPerformed(e);
 			}
 		});
 	}
 	
-	public void deleteB_actionPerformed(ActionEvent e) {
+	public void editB_actionPerformed(ActionEvent e) {
 		if (event != null) {
 			/**
 			 * This dialog box is taken from the editEventB_actionPerformed() callback
@@ -121,8 +121,12 @@ public class CalendarItemPopupMenu extends JPopupMenu {
 	        Point loc = App.getFrame().getLocation();
 	        dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
 	        dlg.setVisible(true);
+
+	        // Don't save changes
 	        if (dlg.CANCELLED)
 	            return;
+	        
+	        // Remove current event (we're editing it)
 	        EventsManager.removeEvent(ev);
 	        
 			Calendar calendar = new GregorianCalendar(Local.getCurrentLocale());
@@ -133,7 +137,9 @@ public class CalendarItemPopupMenu extends JPopupMenu {
 	        String text = dlg.textField.getText();
 	        if (dlg.noRepeatRB.isSelected()) {
 	        	EventsManager.createEvent(CurrentDate.get(), hh, mm, text);
-	    	}
+	    	} else {
+	    		EventsManager.buildRepeatableEvent(dlg,hh,mm,text);
+	        }
 	        
 	        CurrentStorage.get().storeEventsManager();
 	        EventsScheduler.notifyChanged();
@@ -183,7 +189,7 @@ public class CalendarItemPopupMenu extends JPopupMenu {
 		}
 	}
 	
-	public void editB_actionPerformed(ActionEvent e) {
+	public void deleteB_actionPerformed(ActionEvent e) {
 		if (event != null) {
 			EventsManager.removeEvent(event);
 			EventsScheduler.notifyChanged();

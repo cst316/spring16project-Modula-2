@@ -57,8 +57,9 @@ public class CalendarPanel extends JPanel {
     void jbInit() throws Exception {
     	this.setBackground(ColorScheme.getColor("frame_secondary"));
     	mainPanel.setBackground(ColorScheme.getColor("frame_secondary"));
-    	
-		viewPanel.changeViewType(CalendarPanelView.VIEW_MONTH);
+    	viewPanel.setBackground(ColorScheme.getColor("frame_secondary"));
+
+    	viewPanel.changeViewType(CalendarPanelView.VIEW_MONTH);
 
     	// GridPanel
         gbc = new GridBagConstraints();
@@ -88,6 +89,7 @@ public class CalendarPanel extends JPanel {
 		
     	this.setBorder(null);
     	mainPanel.setBorder(null);
+    	viewPanel.setBorder(null);
 
     	// Event listeners
     	EventsScheduler.addListener(new EventNotificationListener() {

@@ -10,8 +10,6 @@ import javax.swing.table.AbstractTableModel;
 import net.sf.memoranda.Contact;
 import net.sf.memoranda.ContactListImpl;
 import net.sf.memoranda.CurrentProject;
-import net.sf.memoranda.TimeLogImpl;
-import net.sf.memoranda.ui.TimeLogTable.TimeLogTableModel;
 import net.sf.memoranda.util.Local;
 
 public class ContactListTable extends JTable {

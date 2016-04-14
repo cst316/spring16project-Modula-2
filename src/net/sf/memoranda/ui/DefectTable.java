@@ -35,15 +35,9 @@ import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
-import net.sf.memoranda.ui.TaskTable.ExpansionHandler;
-import net.sf.memoranda.ui.TaskTable.ListToTreeSelectionModelWrapper;
-import net.sf.memoranda.ui.TaskTable.TreeTableCellEditor;
-import net.sf.memoranda.ui.TaskTable.TreeTableCellRenderer;
-import net.sf.memoranda.ui.TaskTable.ListToTreeSelectionModelWrapper.ListSelectionHandler;
 import net.sf.memoranda.ui.treetable.AbstractCellEditor;
 import net.sf.memoranda.ui.treetable.TreeTableModel;
 import net.sf.memoranda.ui.treetable.TreeTableModelAdapter;
-import net.sf.memoranda.util.Local;
 
 public class DefectTable extends JTable {
 

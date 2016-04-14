@@ -11,7 +11,8 @@ package net.sf.memoranda;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import net.sf.memoranda.ui.*;
+import net.sf.memoranda.ui.App;
+import net.sf.memoranda.ui.ExceptionDialog;
 import net.sf.memoranda.util.Configuration;
 
 /**

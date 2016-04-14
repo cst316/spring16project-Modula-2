@@ -6,12 +6,12 @@ package net.sf.memoranda.util;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
-import java.util.Collections;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Event;

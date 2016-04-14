@@ -1,9 +1,7 @@
 package net.sf.memoranda;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Vector;
 
 import net.sf.memoranda.date.CalendarDate;

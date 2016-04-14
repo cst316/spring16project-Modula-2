@@ -20,6 +20,7 @@ import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.Task;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.date.DateListener;
 import net.sf.memoranda.util.ColorScheme;
 
 public class CalendarPanelView extends JPanel {
@@ -41,7 +42,14 @@ public class CalendarPanelView extends JPanel {
 	
 	public CalendarPanelView(int inType, CalendarPanel inParent) {
 		_parent = inParent;
+		
 		this.changeViewType(inType);
+		
+		CurrentDate.addDateListener(new DateListener() {
+			public void dateChange(CalendarDate d) {
+				updateView();
+			}
+		});
 	}
 	
 	public void changeViewType(int inType) {
@@ -61,6 +69,9 @@ public class CalendarPanelView extends JPanel {
 		_view.removeAll();
 		_view.revalidate();
 		_view.repaint();
+		
+		_view.setBorder(null);
+    	_view.setBackground(ColorScheme.getColor("frame_secondary"));
 		
 		// Header creation
 		if(_type == VIEW_MONTH || _type == VIEW_WEEK) {
@@ -283,16 +294,24 @@ public class CalendarPanelView extends JPanel {
 		        generateDay(panelCell,(Calendar) dayCal.clone(),tasks);
 	        }
 		}
+		
+		_view.revalidate();
+		_view.repaint();
 	}
 	
 	private void generateDay(CalendarPanelCell panelCell, Calendar calendar, Collection<Task> tasks) {
 		CalendarDate date = new CalendarDate(calendar);
 		
-		if(_type == CalendarPanelView.VIEW_WEEK || _type == CalendarPanelView.VIEW_MONTH) { 
-			if(_type != CalendarPanelView.VIEW_WEEK) {
-				panelCell.getLabel().setText(Integer.toString(date.getDay()));
-			} else {
+		int maxDisplay = 0;
+		
+		if(_type == CalendarPanelView.VIEW_WEEK || _type == CalendarPanelView.VIEW_MONTH) {
+			
+			if(_type == CalendarPanelView.VIEW_WEEK) {
 				panelCell.getLabel().setText(Integer.toString(date.getMonth()+1) + "/" + Integer.toString(date.getDay()));
+				maxDisplay = 8;
+			} else {
+				panelCell.getLabel().setText(Integer.toString(date.getDay()));
+				maxDisplay = 3;				
 			}
 	
 			panelCell.setCalendarDate(date);
@@ -301,7 +320,7 @@ public class CalendarPanelView extends JPanel {
 	        if(_parent.taskPanel.isShowEvents()) {
 	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
 	            for (Event event : events) {
-	                panelCell.getCalendarNode().addEvent(event);
+		                panelCell.getCalendarNode().queueAdd(event);
 	            }
 	        }
 	        
@@ -309,7 +328,7 @@ public class CalendarPanelView extends JPanel {
 	        if(_parent.taskPanel.isShowTasks()) {
 	            for (Task task : tasks) {
 	                if(task.getStartDate().equals(date))
-	                    panelCell.getCalendarNode().addTask(task);
+                		panelCell.getCalendarNode().queueAdd(task);
 	            }
 	        }
 	
@@ -318,13 +337,15 @@ public class CalendarPanelView extends JPanel {
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
 			} else {
 				// Why do we need this redundant red border? I dunno, but it fixes it
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+				// panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_secondary"), 1));
 			}
 			
 			panelCell.setActive(true);
 		}
 		else if(_type == CalendarPanelView.VIEW_DAY) {
+			maxDisplay = 4;
+			
 			panelCell.setCalendar(calendar);
 			
 			Calendar start = (Calendar) calendar.clone();
@@ -337,28 +358,34 @@ public class CalendarPanelView extends JPanel {
 	            Collection<Event> events = (Collection<Event>) EventsManager.getEventsForDate(date);
 	            for (Event event : events) {
 	            	if(inTimespan(event, start, end))
-	            		panelCell.getCalendarNode().addEvent(event);
+	                    panelCell.getCalendarNode().queueAdd(event);
 	            }
 	        }
 	        
 	        // Add tasks
-	        if(_parent.taskPanel.isShowTasks()) {
+	        // Tasks do not have a time associated with them, so do not display in hourly (daily) view
+	        /*if(_parent.taskPanel.isShowTasks()) {
 	            for (Task task : tasks) {
-	                if(task.getStartDate().equals(date) && inTimespan(task))
-	                    panelCell.getCalendarNode().addTask(task);
+	                if(task.getStartDate().equals(date) && inTimespan(task)) {
+	                		panelCell.getCalendarNode().queueAdd(task);
+	                }
 	            }
 	        }
+	        */
 	        
 			if(_currentHour == calendar.get(Calendar.HOUR_OF_DAY)) {
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_highlight"), 2));
 			} else {
 				// Why do we need this redundant red border? I dunno, but it fixes it
-				panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+				// But now like four weeks later it seems to not need it anymore? WHY?!
+				// panelCell.getCell().setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 				panelCell.getCell().setBorder(BorderFactory.createLineBorder(ColorScheme.getColor("frame_secondary"), 1));
 			}
 			
 	        panelCell.setActive(true);
 		}
+		
+		panelCell.getCalendarNode().queueProcess(maxDisplay);
 	}
 	
 	private boolean inTimespan(Event event, Calendar startCal, Calendar endCal) {
@@ -370,6 +397,7 @@ public class CalendarPanelView extends JPanel {
 	}
 	
 	private boolean inTimespan(Task task) {
+		// Tasks do not have a time associated with them
 		return false;
 	}
 
