@@ -10,40 +10,25 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
- 
+
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
- 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
- 
+
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.Phase;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
-import javax.swing.DefaultComboBoxModel;
-import net.sf.memoranda.Phase;
-import net.sf.memoranda.TimeEntry;
-
-import javax.swing.JTextPane;
-import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.DropMode;
-import javax.swing.SpinnerListModel;
  
 public class TimeRecordLogDialog extends JDialog {
       JPanel mPanel = new JPanel(new BorderLayout());
@@ -85,7 +70,7 @@ public class TimeRecordLogDialog extends JDialog {
         SpinnerDateModel model = new SpinnerDateModel();
        
         public JSpinner logStartTime = new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.MINUTE));
-        public JSpinner logInterruptTime = new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.MINUTE));
+        public JSpinner logInterruptTime;
         public JSpinner logEndTime= new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.MINUTE));
        
         private final JComboBox dpPhaseSelector = new JComboBox();
@@ -124,6 +109,13 @@ public class TimeRecordLogDialog extends JDialog {
                     cancelB_actionPerformed(e);
                 }
             });
+            
+            String dateString = "0:0:0";
+            SimpleDateFormat dateZeroFormat = new SimpleDateFormat("H:m:s");
+            Date dateZero = dateZeroFormat.parse(dateString + " UTC");
+                        
+            SpinnerDateModel logInterruptTimeModel = new SpinnerDateModel(dateZero, null, null, Calendar.MINUTE);
+            logInterruptTime = new JSpinner(logInterruptTimeModel);
  
             startDate = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
             okB.setMaximumSize(new Dimension(100, 26));
@@ -176,9 +168,6 @@ public class TimeRecordLogDialog extends JDialog {
             //jLabel6.setPreferredSize(new Dimension(60, 16));
             jLabel6.setMinimumSize(new Dimension(60, 16));
             jLabel6.setMaximumSize(new Dimension(100, 16));
-           
-           
-           
          
             jEndTime.setMaximumSize(new Dimension(100, 16));
             jEndTime.setMinimumSize(new Dimension(60, 16));
