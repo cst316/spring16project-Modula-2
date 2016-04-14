@@ -7,7 +7,7 @@ import nu.xom.Element;
 
 public interface TimeEntry {
 
-	CalendarDate getDate();
+	CalendarDate getCalendarDate();
 	
 	Calendar getStartTime();
 	
