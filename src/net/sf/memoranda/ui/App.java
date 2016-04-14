@@ -24,7 +24,8 @@ public class App {
 
 	static AppFrame frame = null;
 	
-	public static final String GUIDE_URL = "http://memoranda.sourceforge.net/guide.html";
+	//Agamezli - Changed the url for the Memoranda User guide to something in my public asu webspace.
+		public static final String GUIDE_URL = "http://www.public.asu.edu/~agamezli/CST316/The%20draft%20plan%20of%20manual.pdf";//http://memoranda.sourceforge.net/guide.html
 	public static final String BUGS_TRACKER_URL = "http://sourceforge.net/tracker/?group_id=90997&atid=595566";
 	public static final String WEBSITE_URL = "http://memoranda.sourceforge.net";
 
