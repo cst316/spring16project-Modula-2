@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,7 +32,7 @@ import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
  
 public class TimeRecordLogDialog extends JDialog {
-      JPanel mPanel = new JPanel(new BorderLayout());
+        JPanel mPanel = new JPanel(new BorderLayout());
         JPanel areaPanel = new JPanel();
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton cancelB = new JButton();
@@ -40,7 +41,7 @@ public class TimeRecordLogDialog extends JDialog {
         Border border2;
         JPanel dialogTitlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel header = new JLabel();
-        public boolean CANCELLED = true;
+        public boolean CANCELLED = false;
         Border border3;
         Border border4;
         JPanel jPanel2 = new JPanel();
@@ -73,7 +74,7 @@ public class TimeRecordLogDialog extends JDialog {
         public JSpinner logInterruptTime;
         public JSpinner logEndTime= new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.MINUTE));
        
-        private final JComboBox dpPhaseSelector = new JComboBox();
+        public final JComboBox dpPhaseSelector = new JComboBox();
        
         private final JLabel lblComments = new JLabel("Comments");
         private final JTextArea textArea = new JTextArea();
@@ -137,7 +138,7 @@ public class TimeRecordLogDialog extends JDialog {
             //dialogTitlePanel.setPreferredSize(new Dimension(159, 52));
             header.setFont(new java.awt.Font("Dialog", 0, 20));
             header.setForeground(new Color(0, 0, 124));
-            header.setText("New Time Entry");
+            header.setText("New Timelog Entry");
             header.setIcon(new ImageIcon(net.sf.memoranda.ui.TaskDialog.class.getResource(
                 "resources/icons/task48.png")));
             GridBagConstraints gbCon = new GridBagConstraints();
@@ -239,7 +240,7 @@ public class TimeRecordLogDialog extends JDialog {
         	CalendarDate date = new CalendarDate(day, month, year);
         	
         	Calendar startTime = Calendar.getInstance();
-        	startTime.setTime((Date) startDate.getValue());
+        	startTime.setTime((Date) logStartTime.getValue());
         	
         	Calendar endTime = Calendar.getInstance();
         	endTime.setTime((Date) logEndTime.getValue());
@@ -265,6 +266,12 @@ public class TimeRecordLogDialog extends JDialog {
         }
  
         void cancelB_actionPerformed(ActionEvent e) {
+        	CANCELLED = true;
+            this.dispose();
+        }
+        
+        public void windowClosing( WindowEvent e ) {
+            CANCELLED = true;
             this.dispose();
         }
        
