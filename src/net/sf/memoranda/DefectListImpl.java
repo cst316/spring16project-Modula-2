@@ -43,6 +43,11 @@ public class DefectListImpl implements DefectList {
 	//Used to create initial defect list when none exists
 	public DefectListImpl(Project prj) {
         _root = new Element("defectlist");
+        
+        // Legacy support, if user does not have an existing defect ID
+        if(_lastDefectId == null)
+        	_lastDefectId = "1";
+        
 		_root.addAttribute(new Attribute("lastdefectid","1"));
         _doc = new Document(_root);
         _project = prj;
@@ -145,14 +150,6 @@ public class DefectListImpl implements DefectList {
         _root.removeChild(defect.getContent());
 		elements.remove(defect.getDefectId());
 	}
-
-	/*
-	@Override
-	public void removeDefect(String number) {
-		_root.removeChild(defect.getDefectId(number).getContent());
-		elements.remove(number);
-	}
-	*/
 
 	@Override
 	public Collection getAllDefects() {
