@@ -1,5 +1,7 @@
 package net.sf.memoranda;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -148,8 +150,17 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		}
 	}
 	
-	private void sort(Vector<TaskPlanningEntry> entries) {
-		// TODO implement this method
+	private void sort(Vector<TaskPlanningEntry> entries) { /*
+		Collections.sort(_vector, new Comparator<TaskPlanningEntry>() {
+			@Override
+			public int compare(TaskPlanningEntry e1, TaskPlanningEntry e2) {
+				if (!e1.getDate().equals(e2.getDate()))
+					return e1.getDate().before(e2.getDate()) ? -1 : 1;
+				else
+					return (e1.getStartHour() * 60 + e1.getStartMinute()) - 
+					       (e2.getStartHour() * 60 + e2.getStartMinute());
+			}
+		}); */
 	}
 	
 	private void computeDerivedValues() {

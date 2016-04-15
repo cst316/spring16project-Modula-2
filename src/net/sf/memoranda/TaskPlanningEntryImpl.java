@@ -1,5 +1,7 @@
 package net.sf.memoranda;
 
+import java.util.Date;
+
 import nu.xom.Element;
 
 public class TaskPlanningEntryImpl implements TaskPlanningEntry {

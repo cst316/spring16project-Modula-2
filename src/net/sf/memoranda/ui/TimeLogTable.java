@@ -11,6 +11,7 @@ import javax.swing.table.AbstractTableModel;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.TimeEntry;
 import net.sf.memoranda.TimeLogImpl;
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Local;
 
 public class TimeLogTable extends JTable {
@@ -33,6 +34,8 @@ public class TimeLogTable extends JTable {
 		TimeLogImpl.addTimeLogListener(() -> {
 			tableChanged();
 		});
+		
+		this.getTableHeader().setBackground(ColorScheme.getColor("frame_secondary"));
 	}
 	
 	public void initTable() {
@@ -73,7 +76,7 @@ public class TimeLogTable extends JTable {
 		public Object getValueAt(int row, int col) {
 			TimeEntry e = entries.get(row);
 			switch (col) {
-				case 0: return e.getDate().getLongDateString();
+				case 0: return e.getCalendarDate().getLongDateString();
 				case 1: return getCalendarTime(e.getStartTime());
 				case 2: return getCalendarTime(e.getEndTime());
 				case 3: return e.getInterruptionTime();
@@ -103,6 +106,7 @@ public class TimeLogTable extends JTable {
 	
 	private void listSelection_actionPerformed(ListSelectionEvent e) {
 		parent.removeEntry.setEnabled(true);
+		parent.editEntry.setEnabled(true);
 	}
 	
 }

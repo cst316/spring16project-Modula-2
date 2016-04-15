@@ -16,7 +16,7 @@ public class TimeEntryImpl implements TimeEntry {
 	}
 
 	@Override
-	public CalendarDate getDate() {
+	public CalendarDate getCalendarDate() {
 		Element a = _element.getFirstChildElement("date");
 		if (a != null)
 			return new CalendarDate(a.getValue());
