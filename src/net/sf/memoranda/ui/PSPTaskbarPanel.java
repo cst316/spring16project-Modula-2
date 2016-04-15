@@ -24,6 +24,11 @@ public class PSPTaskbarPanel extends JToolBar {
 
 		private final JLabel pspLabel = new JLabel("Personal Software Process");
 		private final JPanel viewbtnPanel = new JPanel();
+		
+		public JButton btnSummary = new JButton();
+		public JButton btnTaskPlanning = new JButton();
+		public JButton btnTimeRecording = new JButton();
+		public JButton btnDefect = new JButton();
 
 		/**
 		 * Create the application.
@@ -62,7 +67,7 @@ public class PSPTaskbarPanel extends JToolBar {
 																		
 			add(viewbtnPanel);
 																		
-		    JButton btnSummary = new JButton("Summary");
+		    btnSummary.setText("Summary");
 		    btnSummary.setEnabled(false);
 		    viewbtnPanel.add(btnSummary);
 		    btnSummary.addActionListener(new ActionListener() {
@@ -70,15 +75,14 @@ public class PSPTaskbarPanel extends JToolBar {
 		    changeToSummaryView_actionPerformed(arg0);
 		    }
 		    });			
-		    
-		    
 		    btnSummary.setPreferredSize(new Dimension(96,32));
 		    btnSummary.setBackground(ColorScheme.getColor("button_primary"));
 		    btnSummary.setBorder(null);
 			btnSummary.setMargin(new Insets(5, 14, 5, 14));
-		    btnSummary.setSize(new Dimension(5, 5));																			
+		    btnSummary.setSize(new Dimension(5, 5));	
+		    btnSummary.setFocusPainted(false);
 			
-		    JButton btnTaskPlanning = new JButton("Planning Log");
+		    
 			viewbtnPanel.add(btnTaskPlanning);
 			btnTaskPlanning.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -86,15 +90,17 @@ public class PSPTaskbarPanel extends JToolBar {
 			}
 			});
 			
+			btnTaskPlanning.setText("Planning Log");
 			btnTaskPlanning.setPreferredSize(new Dimension(96,32));
 			btnTaskPlanning.setBackground(ColorScheme.getColor("button_primary"));
 			btnTaskPlanning.setBorder(null);
 			btnTaskPlanning.setMargin(new Insets(5, 14, 5, 14));
 			btnTaskPlanning.setBounds(489, 13, 373, 38);
+			btnTaskPlanning.setFocusPainted(false);
 			//add(pspLabel);
 			pspLabel.setFont(new Font("Dialog", Font.BOLD, 20));
 		    
-			JButton btnTimeRecording = new JButton("Time Log");
+			btnTimeRecording.setText("Time Log");
 			viewbtnPanel.add(btnTimeRecording);
 			btnTimeRecording.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -106,20 +112,22 @@ public class PSPTaskbarPanel extends JToolBar {
 			btnTimeRecording.setBackground(ColorScheme.getColor("button_primary"));
 			btnTimeRecording.setBorder(null);
 			btnTimeRecording.setMargin(new Insets(5, 14, 5, 14));
+			btnTimeRecording.setFocusPainted(false);
 						
-						
-			JButton btnDefect = new JButton("Defect Log");
 			viewbtnPanel.add(btnDefect);
+			
+			btnDefect.setText("Defect Log");
 			btnDefect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				changeToDefectView_actionPerformed(arg0);
 			}
 			});
-			
 		    btnDefect.setPreferredSize(new Dimension(96,32));
 			btnDefect.setBackground(ColorScheme.getColor("button_primary"));
 			btnDefect.setBorder(null);
 			btnDefect.setMargin(new Insets(5, 14, 5, 14));
+			btnDefect.setFocusPainted(false);
+			
 			pspLabel.setBounds(489, 13, 373, 38);
 			//add(pspLabel);
 			pspLabel.setFont(new Font("Dialog", Font.BOLD, 20));		   	
@@ -127,19 +135,18 @@ public class PSPTaskbarPanel extends JToolBar {
 	
 		// Change views
 		void changeToSummaryView_actionPerformed(ActionEvent e) {
-			// TODO: Show summary panel.
+			parentPanel.updateView(PSPPanel.VIEW_SUMMARY);
 		}
 
 		void changeToTimeView_actionPerformed(ActionEvent e) {
-			parentPanel.getCardLayout().show(parentPanel.getCardPanel(), "TIMELOG");
+			parentPanel.updateView(PSPPanel.VIEW_TIMELOG);
 		}
 
 		void changeToDefectView_actionPerformed(ActionEvent e) {
-			parentPanel.getCardLayout().show(parentPanel.getCardPanel(), "DEFECTLOG");
+			parentPanel.updateView(PSPPanel.VIEW_DEFECTLOG);
 		}
 		
 		void changeToTaskPlanningView_actionPerformed(ActionEvent e) {
-			parentPanel.getCardLayout().show(parentPanel.getCardPanel(), "TASKPLANNINGLOG");
+			parentPanel.updateView(PSPPanel.VIEW_TASKPLANNINGLOG);
 		}
-		
 	}
