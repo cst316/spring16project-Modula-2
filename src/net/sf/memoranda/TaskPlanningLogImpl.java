@@ -150,17 +150,16 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		}
 	}
 	
-	private void sort(Vector<TaskPlanningEntry> entries) { /*
+	private void sort(Vector<TaskPlanningEntry> entries) {
 		Collections.sort(_vector, new Comparator<TaskPlanningEntry>() {
 			@Override
 			public int compare(TaskPlanningEntry e1, TaskPlanningEntry e2) {
-				if (!e1.getDate().equals(e2.getDate()))
-					return e1.getDate().before(e2.getDate()) ? -1 : 1;
+				if (!e1.getPlannedDateWeek().equals(e2.getPlannedDateWeek()))
+					return e1.getPlannedDateWeek().before(e2.getPlannedDateWeek()) ? -1 : 1;
 				else
-					return (e1.getStartHour() * 60 + e1.getStartMinute()) - 
-					       (e2.getStartHour() * 60 + e2.getStartMinute());
+					return e1.getEV() - e2.getEV();
 			}
-		}); */
+		});
 	}
 	
 	private void computeDerivedValues() {
