@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import net.sf.memoranda.date.CalendarDate;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -22,7 +23,7 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 	
 	private HashMap<TaskPlanningEntry, Integer> pvMap = new HashMap<>();
 	private HashMap<TaskPlanningEntry, Integer> evMap = new HashMap<>();
-	private HashMap<TaskPlanningEntry, Integer> chMap = new HashMap<>();
+	private HashMap<TaskPlanningEntry, Double> chMap = new HashMap<>();
 	
 	public TaskPlanningLogImpl(Document doc, Project prj) {
 		_doc = doc;
@@ -46,7 +47,7 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 	}
 	
 	@Override
-	public int getCumulativeHours(TaskPlanningEntry entry) {
+	public double getCumulativeHours(TaskPlanningEntry entry) {
 		return chMap.get(entry);
 	}
 	
@@ -63,11 +64,11 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 	@Override
 	public TaskPlanningEntry addTaskPlanningEntry(int taskNumber, 
 			                                      String taskName, 
-			                                      int plannedHours, 
+			                                      double plannedHours, 
 			                                      int plannedValue, 
 			                                      int earnedValue,
-			                                      Date plannedDateWeek, 
-			                                      Date actualDateWeek) {
+			                                      CalendarDate plannedDateWeek, 
+			                                      CalendarDate actualDateWeek) {
 
 		Element element = new Element("taskPlanningEntry");
 		
@@ -80,7 +81,7 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		element.appendChild(tna);
 		
 		Element ph = new Element("plannedHours");
-		ph.appendChild(Integer.toString(plannedHours));
+		ph.appendChild(Double.toString(plannedHours));
 		element.appendChild(ph);
 		
 		Element pv = new Element("plannedValue");
@@ -98,6 +99,8 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		Element adw = new Element("actualDateWeek");
 		adw.appendChild(actualDateWeek.toString());
 		element.appendChild(adw);
+		
+		System.out.println(element.toXML());
 		
 		_root.appendChild(element);
 		
@@ -171,7 +174,7 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		
 		sort(_vector);
 		
-		int chCounter = 0;
+		double chCounter = 0;
 		int pvCounter = 0;
 		int evCounter = 0;
 		

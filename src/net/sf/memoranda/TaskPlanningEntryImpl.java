@@ -15,7 +15,7 @@ public class TaskPlanningEntryImpl implements TaskPlanningEntry {
 	
 	@Override
 	public int getTaskNumber() {
-		return Integer.getInteger(_element.getFirstChildElement("taskNumber").getValue());
+		return Integer.parseInt(_element.getFirstChildElement("taskNumber").getValue());
 	}
 
 	@Override
@@ -40,12 +40,13 @@ public class TaskPlanningEntryImpl implements TaskPlanningEntry {
 
 	@Override
 	public int getPV() {
-		return Integer.getInteger(_element.getFirstChildElement("plannedValue").getValue());
+		return Integer.parseInt(_element.getFirstChildElement("plannedValue").getValue());
 	}
 
 	@Override
 	public int getEV() {
-		return Integer.getInteger(_element.getFirstChildElement("earnedValue").getValue());
+		System.out.println(_element.toXML());
+		return Integer.parseInt(_element.getFirstChildElement("earnedValue").getValue());
 	}
 
 	@Override

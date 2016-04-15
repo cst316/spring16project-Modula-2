@@ -1,25 +1,25 @@
 package net.sf.memoranda;
 
-import java.util.Date;
 import java.util.List;
 
+import net.sf.memoranda.date.CalendarDate;
 import nu.xom.Document;
 
 public interface TaskPlanningLog {
 
 	public TaskPlanningEntry addTaskPlanningEntry(int taskNumber,
 	                                              String taskName,
-	                                              int plannedHours,
+	                                              double hours,
 	                                              int PV,
 	                                              int EV,
-	                                              Date plannedDateWeek,
-	                                              Date actualDateWeek);
+	                                              CalendarDate calendarDate,
+	                                              CalendarDate calendarDate2);
 	
 	public void removeTaskPlanningEntry(TaskPlanningEntry entry);
 	
 	public List<TaskPlanningEntry> getLog();
 	
-	public int getCumulativeHours(TaskPlanningEntry entry);
+	public double getCumulativeHours(TaskPlanningEntry entry);
 	
 	public int getCumulativePV(TaskPlanningEntry entry);
 	

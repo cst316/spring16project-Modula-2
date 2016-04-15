@@ -21,6 +21,8 @@ import javax.swing.JTextArea;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 
+import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
 
 public class TaskPlanningRecordLogDialog extends JDialog {
@@ -214,10 +216,25 @@ public class TaskPlanningRecordLogDialog extends JDialog {
     }
    
     void okB_actionPerformed(ActionEvent e) {
+    	
+    	Date pd = (Date) plannedDate.getValue();
+    	Date ad = (Date) actualDate.getValue();
+    	
+    	CurrentProject.getTaskPlanningLog().addTaskPlanningEntry((int) taskNum.getValue(),
+    			                                                 taskName.getText(),
+    			                                                 (double) plannedHour.getValue(),
+    			                                                 (int) plannedValue.getValue(),
+    			                                                 (int) earnedValue.getValue(),
+    			                                                 new CalendarDate(pd),
+    			                                                 new CalendarDate(ad));
+    	
         this.dispose();
     }
 
     void cancelB_actionPerformed(ActionEvent e) {
+    	
+    	
+    	
     	CANCELLED = true;
         this.dispose();
     }
