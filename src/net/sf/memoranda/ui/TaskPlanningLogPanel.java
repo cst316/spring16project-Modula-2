@@ -15,6 +15,7 @@ import javax.swing.JToolBar;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.TaskPlanningEntry;
+import net.sf.memoranda.TimeEntry;
 import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Local;
 
@@ -132,6 +133,23 @@ public class TaskPlanningLogPanel extends JPanel {
     }
 	
     private void editEntry_actionPerformed(ActionEvent e) {
-    
+    	List<TaskPlanningEntry> log = CurrentProject.getTaskPlanningLog().getLog();
+    	if(log.size() <= 0) return;
+    	
+    	TaskPlanningEntry entry = log.get(table.getSelectedRow());
+    	if(entry == null) return;
+
+    	TaskPlanningRecordLogDialog dlg = new TaskPlanningRecordLogDialog(App.getFrame(), Local.getString("Edit task planning entry"));
+    	
+    	// Fill in data
+    	
+    	Dimension frmSize = App.getFrame().getSize();
+        Point loc = App.getFrame().getLocation();
+        dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
+        dlg.setVisible(true);
+    	
+        // Remove the (before edited) entry
+        if(!dlg.CANCELLED)
+        	CurrentProject.getTaskPlanningLog().removeTaskPlanningEntry(entry);
     }
 }

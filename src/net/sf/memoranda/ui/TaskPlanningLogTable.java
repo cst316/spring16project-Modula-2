@@ -98,6 +98,7 @@ public class TaskPlanningLogTable extends JTable {
 	
 	private void listSelection_actionPerformed(ListSelectionEvent e) {
 		parent.removeEntry.setEnabled(true);
+		parent.editEntry.setEnabled(true);
 	}
 	
 }
