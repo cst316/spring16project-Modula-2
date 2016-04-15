@@ -72,7 +72,7 @@ public class PSPTaskbarPanel extends JToolBar {
 		    });			
 		    
 		    
-		    btnSummary.setPreferredSize(new Dimension(72,32));
+		    btnSummary.setPreferredSize(new Dimension(96,32));
 		    btnSummary.setBackground(ColorScheme.getColor("button_primary"));
 		    btnSummary.setBorder(null);
 			btnSummary.setMargin(new Insets(5, 14, 5, 14));
@@ -86,7 +86,7 @@ public class PSPTaskbarPanel extends JToolBar {
 			}
 			});
 			
-			btnTaskPlanning.setPreferredSize(new Dimension(72,32));
+			btnTaskPlanning.setPreferredSize(new Dimension(96,32));
 			btnTaskPlanning.setBackground(ColorScheme.getColor("button_primary"));
 			btnTaskPlanning.setBorder(null);
 			btnTaskPlanning.setMargin(new Insets(5, 14, 5, 14));
@@ -102,7 +102,7 @@ public class PSPTaskbarPanel extends JToolBar {
 			}			
 			});
 			
-			btnTimeRecording.setPreferredSize(new Dimension(72,32));
+			btnTimeRecording.setPreferredSize(new Dimension(96,32));
 			btnTimeRecording.setBackground(ColorScheme.getColor("button_primary"));
 			btnTimeRecording.setBorder(null);
 			btnTimeRecording.setMargin(new Insets(5, 14, 5, 14));
@@ -116,7 +116,7 @@ public class PSPTaskbarPanel extends JToolBar {
 			}
 			});
 			
-		    btnDefect.setPreferredSize(new Dimension(72,32));
+		    btnDefect.setPreferredSize(new Dimension(96,32));
 			btnDefect.setBackground(ColorScheme.getColor("button_primary"));
 			btnDefect.setBorder(null);
 			btnDefect.setMargin(new Insets(5, 14, 5, 14));
