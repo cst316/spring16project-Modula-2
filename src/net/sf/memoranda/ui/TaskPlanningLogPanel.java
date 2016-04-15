@@ -15,6 +15,7 @@ import javax.swing.JToolBar;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.TimeEntry;
 import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Local;
 
 public class TaskPlanningLogPanel extends JPanel {
@@ -61,6 +62,7 @@ public class TaskPlanningLogPanel extends JPanel {
         newEntry.addActionListener(e -> {
         	newEntry_actionPerformed(e);
         });
+        newEntry.setBackground(ColorScheme.getColor("taskbar_primary"));
         
         removeEntry.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/removeresource.png")));
         removeEntry.setFocusable(false);
@@ -74,17 +76,23 @@ public class TaskPlanningLogPanel extends JPanel {
         removeEntry.addActionListener(e -> {
         	removeEntry_actionPerformed(e);
         });
+        removeEntry.setBackground(ColorScheme.getColor("taskbar_primary"));
         
         toolBar.setFloatable(false);
         toolBar.add(newEntry, null);
         toolBar.add(removeEntry, null);
         toolBar.addSeparator();
+        toolBar.setBackground(ColorScheme.getColor("taskbar_primary"));
+        toolBar.setBorder(null);
+        
+        table.getTableHeader().setBackground(ColorScheme.getColor("frame_secondary"));
         
         scrollPane.getViewport().setBackground(Color.white);
         scrollPane.getViewport().add(table, null);
         
         this.add(scrollPane, BorderLayout.CENTER);
         this.add(toolBar, BorderLayout.NORTH);
+        this.setBorder(null);
     }
     
     private void newEntry_actionPerformed(ActionEvent e) {
