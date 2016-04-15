@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,6 +28,7 @@ public class TaskPlanningLogPanel extends JPanel {
 	JButton newEntry;
     TaskPlanningLogTable table;
     JButton removeEntry;
+    JButton editEntry;
     JScrollPane scrollPane;
     
     public TaskPlanningLogPanel(PSPPanel parent) {
@@ -46,11 +48,12 @@ public class TaskPlanningLogPanel extends JPanel {
     	newEntry = new JButton();
     	table = new TaskPlanningLogTable(this);
     	removeEntry = new JButton();
+    	editEntry = new JButton();
     	scrollPane = new JScrollPane();
     	
     	this.setLayout(borderLayout);
     	
-    	newEntry.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/addresource.png")));
+    	newEntry.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
     	newEntry.setEnabled(true);
         newEntry.setMaximumSize(new Dimension(24, 24));
         newEntry.setMinimumSize(new Dimension(24, 24));
@@ -64,7 +67,7 @@ public class TaskPlanningLogPanel extends JPanel {
         });
         newEntry.setBackground(ColorScheme.getColor("taskbar_primary"));
         
-        removeEntry.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/removeresource.png")));
+        removeEntry.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_remove.png")));
         removeEntry.setFocusable(false);
         removeEntry.setPreferredSize(new Dimension(24, 24));
         removeEntry.setRequestFocusEnabled(false);
@@ -78,9 +81,25 @@ public class TaskPlanningLogPanel extends JPanel {
         });
         removeEntry.setBackground(ColorScheme.getColor("taskbar_primary"));
         
+    	editEntry.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_edit.png")));
+    	editEntry.setEnabled(true);
+    	editEntry.setMaximumSize(new Dimension(24, 24));
+        editEntry.setMinimumSize(new Dimension(24, 24));
+        editEntry.setToolTipText(Local.getString("Edit time entry"));
+        editEntry.setRequestFocusEnabled(false);
+        editEntry.setPreferredSize(new Dimension(24, 24));
+        editEntry.setFocusable(false);
+        editEntry.setBorderPainted(false);
+        editEntry.setEnabled(false);
+        editEntry.addActionListener(e -> {
+        	editEntry_actionPerformed(e);
+        });
+        editEntry.setBackground(ColorScheme.getColor("taskbar_primary"));
+        
         toolBar.setFloatable(false);
         toolBar.add(newEntry, null);
         toolBar.add(removeEntry, null);
+        toolBar.add(editEntry,null);
         toolBar.addSeparator();
         toolBar.setBackground(ColorScheme.getColor("taskbar_primary"));
         toolBar.setBorder(null);
@@ -96,7 +115,7 @@ public class TaskPlanningLogPanel extends JPanel {
     }
     
     private void newEntry_actionPerformed(ActionEvent e) {
-    	TimeRecordLogDialog dlg = new TimeRecordLogDialog(App.getFrame(), Local.getString("New task planning entry"));
+    	TaskPlanningRecordLogDialog dlg = new TaskPlanningRecordLogDialog(App.getFrame(), Local.getString("New task planning entry"));
     	Dimension frmSize = App.getFrame().getSize();
         Point loc = App.getFrame().getLocation();
         dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
@@ -104,8 +123,16 @@ public class TaskPlanningLogPanel extends JPanel {
     }
     
     private void removeEntry_actionPerformed(ActionEvent e) {
-    	TimeEntry entry = CurrentProject.getTimeLog().getLog().get(table.getSelectedRow());
+    	List<TimeEntry> log = CurrentProject.getTimeLog().getLog();
+    	if(log.size() <= 0) return;
+    	
+    	TimeEntry entry = log.get(table.getSelectedRow());
+    	if(entry == null) return;
+
 		CurrentProject.getTimeLog().removeTimeEntry(entry);
     }
 	
+    private void editEntry_actionPerformed(ActionEvent e) {
+    
+    }
 }

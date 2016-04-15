@@ -117,7 +117,7 @@ public class TimeLogPanel extends JPanel {
     }
     
     private void newEntry_actionPerformed(ActionEvent e) {
-    	TimeRecordLogDialog dlg = new TimeRecordLogDialog(App.getFrame(), Local.getString("New task"));
+    	TimeRecordLogDialog dlg = new TimeRecordLogDialog(App.getFrame(), "New Timelog Entry");
     	Dimension frmSize = App.getFrame().getSize();
         Point loc = App.getFrame().getLocation();
     	dlg.startDate.getModel().setValue(CurrentDate.get().getDate());

@@ -80,15 +80,15 @@ public class TimeRecordLogDialog extends JDialog {
         private final JTextArea textArea = new JTextArea();
  
         public TimeRecordLogDialog(Frame frame, String title) {
-        super(frame, title, true);
-        try {
-            jbInit();            
-            pack();
-        }
-        catch (Exception ex) {
-            new ExceptionDialog(ex);
-        }
-    }
+	        super(frame, title, true);
+	        try {
+	            jbInit();            
+	            pack();
+	        }
+	        catch (Exception ex) {
+	            new ExceptionDialog(ex);
+	        }
+	    }
  
         void jbInit() throws Exception {
             this.setResizable(false);
