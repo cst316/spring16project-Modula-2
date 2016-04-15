@@ -6,13 +6,22 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
+
+import net.sf.memoranda.util.Local;
 
 public class TaskPlanningRecordLogDialog extends JDialog {
 	public boolean CANCELLED = false;
@@ -21,16 +30,42 @@ public class TaskPlanningRecordLogDialog extends JDialog {
 	
     public JPanel mainLayout = new JPanel(new GridBagLayout());
 
-    public JPanel taskLayout = new JPanel(new GridBagLayout());;
+    // Top tier
+    public JPanel taskLayout = new JPanel(new GridBagLayout());
     
     public JLabel taskNumLabel = new JLabel();
     public JSpinner taskNum = new JSpinner(new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1));
     
     public JLabel taskNameLabel = new JLabel();
     public JTextArea taskName = new JTextArea();
+    
+    // Middle tier
+    public JPanel logLayout = new JPanel(new GridBagLayout());
+    
+    public JLabel plannedHourLabel = new JLabel();
+    public JSpinner plannedHour = new JSpinner(new SpinnerNumberModel(1,0,Integer.MAX_VALUE,0.25));
+    
+    public JLabel plannedValueLabel = new JLabel();
+    public JSpinner plannedValue = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
 
-    public JLabel startDateLabel;
-    public JSpinner startDate;
+    public JLabel plannedDateLabel = new JLabel();
+    public JSpinner plannedDate = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
+    
+    public JLabel completedCheckboxLabel = new JLabel();
+    public JCheckBox completedCheckbox = new JCheckBox();
+    
+    public JLabel earnedValueLabel = new JLabel();
+    public JSpinner earnedValue = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
+    
+    public JLabel actualDateLabel = new JLabel();
+    public JSpinner actualDate = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
+    
+    // Bottom tier
+    public JPanel buttonLayout = new JPanel(new GridBagLayout());
+
+    JButton cancelButton = new JButton();
+    JButton okButton = new JButton();
+    
 
     
 
@@ -52,6 +87,7 @@ public class TaskPlanningRecordLogDialog extends JDialog {
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 0;
 
+        // Top tier stuff (task # / task name)
         // Task # label
         taskNumLabel.setText("Task #:");
         gbc.gridx = 0; gbc.gridy = 0;
@@ -72,8 +108,109 @@ public class TaskPlanningRecordLogDialog extends JDialog {
         gbc.gridx = 3; gbc.gridy = 0;
         taskLayout.add(taskName,gbc);
         
+        // Middle tier stuff
+        // Planned hour label
+        plannedHourLabel.setText("Planned hours:");
+        gbc.gridx = 0; gbc.gridy = 0;
+        logLayout.add(plannedHourLabel,gbc);
+        
+        // Planned hour spinner
+        gbc.gridx = 1; gbc.gridy = 0;
+        logLayout.add(plannedHour,gbc);
+        
+        // Planned value label
+        plannedValueLabel.setText("Planned value:");
+        gbc.gridx = 2; gbc.gridy = 0;
+        logLayout.add(plannedValueLabel,gbc);
+        
+        // Planned value
+        gbc.gridx = 3; gbc.gridy = 0;
+        logLayout.add(plannedValue,gbc);
+        
+        // Planned date label
+        plannedDateLabel.setText("Planned date:");
+        gbc.gridx = 4; gbc.gridy = 0;
+        logLayout.add(plannedDateLabel,gbc);
+        
+        // Planned date
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        sdf = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
+        plannedDate.setEditor(new JSpinner.DateEditor(plannedDate, sdf.toPattern()));
+        gbc.gridx = 5; gbc.gridy = 0;
+        logLayout.add(plannedDate,gbc);
+        
+        // Completed label
+        completedCheckboxLabel.setText("Completed");
+        gbc.gridx = 0; gbc.gridy = 1;
+        logLayout.add(completedCheckboxLabel,gbc);
+        
+        // Completed checkbox
+        gbc.gridx = 1; gbc.gridy = 1;
+        logLayout.add(completedCheckbox,gbc);
+        
+        // Earned value label
+        earnedValueLabel.setText("Planned value:");
+        gbc.gridx = 2; gbc.gridy = 1;
+        logLayout.add(earnedValueLabel,gbc);
+        
+        // Earned value
+        gbc.gridx = 3; gbc.gridy = 1;
+        logLayout.add(earnedValue,gbc);
+        
+        // Actual date label
+        actualDateLabel.setText("Actual date:");
+        gbc.gridx = 4; gbc.gridy = 1;
+        logLayout.add(actualDateLabel,gbc);
+        
+        // Actual date
+        sdf = new SimpleDateFormat();
+        sdf = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
+        actualDate.setEditor(new JSpinner.DateEditor(actualDate, sdf.toPattern()));
+        gbc.gridx = 5; gbc.gridy = 1;
+        logLayout.add(actualDate,gbc);
+        
+        // Bottom tier stuff (ok/cancel button)
+        // Ok button
+        okButton.setMaximumSize(new Dimension(100, 26));
+        okButton.setMinimumSize(new Dimension(100, 26));
+        okButton.setPreferredSize(new Dimension(100, 26));
+        okButton.setText(Local.getString("Ok"));
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                okB_actionPerformed(e);
+            }
+        });
+        gbc.gridx = 0; gbc.gridy = 0;
+        buttonLayout.add(okButton,gbc);
+        
+        // Cancel button
+        cancelButton.setMaximumSize(new Dimension(100, 26));
+        cancelButton.setMinimumSize(new Dimension(100, 26));
+        cancelButton.setPreferredSize(new Dimension(100, 26));
+        cancelButton.setText(Local.getString("Cancel"));
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cancelB_actionPerformed(e);
+            }
+        });
+        gbc.gridx = 1; gbc.gridy = 0;
+        buttonLayout.add(cancelButton,gbc);
+                
+        
+        // Add top tier layout to mainLayout
         gbc.gridx = 0; gbc.gridy = 0;
         mainLayout.add(taskLayout,gbc);
+        
+        // Add middle tier layout to mainLayout
+        gbc.gridx = 0; gbc.gridy = 1;
+        mainLayout.add(logLayout, gbc);
+        
+        // Add bottom tier layout to mainLayout
+        gbc.gridx = 0; gbc.gridy = 2;
+        mainLayout.add(buttonLayout, gbc);
+        
+        // Add main layout to dialog
+        this.add(mainLayout);
     }
    
     void okB_actionPerformed(ActionEvent e) {

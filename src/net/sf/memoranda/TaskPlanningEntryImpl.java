@@ -24,8 +24,8 @@ public class TaskPlanningEntryImpl implements TaskPlanningEntry {
 	}
 
 	@Override
-	public int getPlannedHours() {
-		return Integer.getInteger(_element.getFirstChildElement("plannedHours").getValue());
+	public double getPlannedHours() {
+		return Double.parseDouble(_element.getFirstChildElement("plannedHours").getValue());
 	}
 
 	@Override

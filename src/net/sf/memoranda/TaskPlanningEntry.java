@@ -9,7 +9,7 @@ public interface TaskPlanningEntry {
 	
 	public String getTaskName();
 	
-	public int getPlannedHours();
+	public double getPlannedHours();
 	
 	public CalendarDate getPlannedDateWeek();
 	
