@@ -2,6 +2,7 @@ package net.sf.memoranda;
 
 import java.util.Date;
 
+import net.sf.memoranda.date.CalendarDate;
 import nu.xom.Element;
 
 public class TaskPlanningEntryImpl implements TaskPlanningEntry {
@@ -28,13 +29,13 @@ public class TaskPlanningEntryImpl implements TaskPlanningEntry {
 	}
 
 	@Override
-	public String getPlannedDateWeek() {
-		return _element.getFirstChildElement("plannedDateWeek").getValue();
+	public CalendarDate getPlannedDateWeek() {
+		return new CalendarDate(_element.getFirstChildElement("plannedDateWeek").getValue());
 	}
 
 	@Override
-	public String getActualDateWeek() {
-		return _element.getFirstChildElement("actualDateWeek").getValue();
+	public CalendarDate getActualDateWeek() {
+		return new CalendarDate(_element.getFirstChildElement("actualDateWeek").getValue());
 	}
 
 	@Override

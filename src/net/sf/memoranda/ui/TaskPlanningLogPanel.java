@@ -13,8 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
 import net.sf.memoranda.CurrentProject;
-import net.sf.memoranda.TimeEntry;
-import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.TaskPlanningEntry;
 import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Local;
 
@@ -104,8 +103,8 @@ public class TaskPlanningLogPanel extends JPanel {
     }
     
     private void removeEntry_actionPerformed(ActionEvent e) {
-    	TimeEntry entry = CurrentProject.getTimeLog().getLog().get(table.getSelectedRow());
-		CurrentProject.getTimeLog().removeTimeEntry(entry);
+    	TaskPlanningEntry entry = CurrentProject.getTaskPlanningLog().getLog().get(table.getSelectedRow());
+		CurrentProject.getTaskPlanningLog().removeTaskPlanningEntry(entry);
     }
 	
 }

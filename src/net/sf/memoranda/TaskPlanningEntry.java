@@ -1,7 +1,6 @@
 package net.sf.memoranda;
 
-import java.util.Date;
-
+import net.sf.memoranda.date.CalendarDate;
 import nu.xom.Element;
 
 public interface TaskPlanningEntry {
@@ -12,9 +11,9 @@ public interface TaskPlanningEntry {
 	
 	public int getPlannedHours();
 	
-	public String getPlannedDateWeek();
+	public CalendarDate getPlannedDateWeek();
 	
-	public String getActualDateWeek();
+	public CalendarDate getActualDateWeek();
 	
 	public int getPV();
 	
