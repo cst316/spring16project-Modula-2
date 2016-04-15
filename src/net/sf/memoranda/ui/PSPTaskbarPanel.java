@@ -78,7 +78,22 @@ public class PSPTaskbarPanel extends JToolBar {
 			btnSummary.setMargin(new Insets(5, 14, 5, 14));
 		    btnSummary.setSize(new Dimension(5, 5));																			
 			
+		    JButton btnTaskPlanning = new JButton("Planning Log");
+			viewbtnPanel.add(btnTaskPlanning);
+			btnTaskPlanning.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				changeToTaskPlanningView_actionPerformed(arg0);
+			}
+			});
 			
+			btnTaskPlanning.setPreferredSize(new Dimension(72,32));
+			btnTaskPlanning.setBackground(ColorScheme.getColor("button_primary"));
+			btnTaskPlanning.setBorder(null);
+			btnTaskPlanning.setMargin(new Insets(5, 14, 5, 14));
+			btnTaskPlanning.setBounds(489, 13, 373, 38);
+			//add(pspLabel);
+			pspLabel.setFont(new Font("Dialog", Font.BOLD, 20));
+		    
 			JButton btnTimeRecording = new JButton("Time Log");
 			viewbtnPanel.add(btnTimeRecording);
 			btnTimeRecording.addActionListener(new ActionListener() {
@@ -107,8 +122,7 @@ public class PSPTaskbarPanel extends JToolBar {
 			btnDefect.setMargin(new Insets(5, 14, 5, 14));
 			pspLabel.setBounds(489, 13, 373, 38);
 			//add(pspLabel);
-			pspLabel.setFont(new Font("Dialog", Font.BOLD, 20));		   
-																					
+			pspLabel.setFont(new Font("Dialog", Font.BOLD, 20));		   	
 		}
 	
 		// Change views
@@ -122,6 +136,10 @@ public class PSPTaskbarPanel extends JToolBar {
 
 		void changeToDefectView_actionPerformed(ActionEvent e) {
 			parentPanel.getCardLayout().show(parentPanel.getCardPanel(), "DEFECTLOG");
+		}
+		
+		void changeToTaskPlanningView_actionPerformed(ActionEvent e) {
+			parentPanel.getCardLayout().show(parentPanel.getCardPanel(), "TASKPLANNINGLOG");
 		}
 		
 	}

@@ -10,7 +10,6 @@ public class PSPPanel extends JPanel {
 	
 	private WorkPanel parentPanel = null;
 	
-	private JPanel panel;
 	private PSPTaskbarPanel taskbar;
 	
 	// switch between PSPPanels
@@ -18,8 +17,8 @@ public class PSPPanel extends JPanel {
 	private CardLayout cardLayout;
 	
 	private TimeLogPanel timeLogPanel;
-	private CalendarPanel calendarPanel;
 	private PSPDefectPanel defectPanel;
+	private TaskPlanningLogPanel taskPlanningLogPanel;
 	
 	public PSPPanel(WorkPanel parentPanel) {
 		
@@ -38,6 +37,7 @@ public class PSPPanel extends JPanel {
 		
 		timeLogPanel = new TimeLogPanel(this);
 		defectPanel = new PSPDefectPanel(this);
+		taskPlanningLogPanel = new TaskPlanningLogPanel(this);
 		cardLayout = new CardLayout();
 		
 		taskbar = new PSPTaskbarPanel(this);
@@ -50,6 +50,7 @@ public class PSPPanel extends JPanel {
 		cardPanel.setLayout(cardLayout);
 		cardPanel.add(timeLogPanel, "TIMELOG");
 		cardPanel.add(defectPanel, "DEFECTLOG");
+		cardPanel.add(taskPlanningLogPanel, "TASKPLANNINGLOG");
 		
 		setLayout(new BorderLayout());
 		add(cardPanel, BorderLayout.CENTER);

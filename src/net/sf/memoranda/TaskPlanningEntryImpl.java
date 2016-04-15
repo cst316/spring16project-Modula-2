@@ -26,7 +26,7 @@ public class TaskPlanningEntryImpl implements TaskPlanningEntry {
 	}
 
 	@Override
-	public String getPlanDateWeek() {
+	public String getPlannedDateWeek() {
 		return _element.getFirstChildElement("plannedDateWeek").getValue();
 	}
 

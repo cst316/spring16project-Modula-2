@@ -19,6 +19,12 @@ public interface TaskPlanningLog {
 	
 	public List<TaskPlanningEntry> getLog();
 	
+	public int getCumulativeHours(TaskPlanningEntry entry);
+	
+	public int getCumulativePV(TaskPlanningEntry entry);
+	
+	public int getCumulativeEV(TaskPlanningEntry entry);
+	
 	public int size();
 	
 	public Project getProject();

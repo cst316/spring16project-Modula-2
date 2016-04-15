@@ -1,6 +1,7 @@
 package net.sf.memoranda;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -16,6 +17,10 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 	private Project _project = null;
 	private Document _doc = null;
 	private Element _root = null;
+	
+	private HashMap<TaskPlanningEntry, Integer> pvMap = new HashMap<>();
+	private HashMap<TaskPlanningEntry, Integer> evMap = new HashMap<>();
+	private HashMap<TaskPlanningEntry, Integer> chMap = new HashMap<>();
 	
 	public TaskPlanningLogImpl(Document doc, Project prj) {
 		_doc = doc;
@@ -36,6 +41,21 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		_vector = new Vector<TaskPlanningEntry>();
 		_listeners = new Vector<TaskPlanningLogListener>();
 		_project = prj;
+	}
+	
+	@Override
+	public int getCumulativeHours(TaskPlanningEntry entry) {
+		return chMap.get(entry);
+	}
+	
+	@Override
+	public int getCumulativePV(TaskPlanningEntry entry) {
+		return pvMap.get(entry);
+	}
+	
+	@Override
+	public int getCumulativeEV(TaskPlanningEntry entry) {
+		return evMap.get(entry);
 	}
 	
 	@Override
@@ -82,6 +102,7 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		TaskPlanningEntry entry = new TaskPlanningEntryImpl(element);
 		_vector.add(entry);
 		
+		computeDerivedValues();
 		notifyListeners();
 		
 		return entry;
@@ -91,11 +112,14 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 	public void removeTaskPlanningEntry(TaskPlanningEntry entry) {
 		_root.removeChild(entry.getContent());
 		_vector.remove(entry);
+		
+		computeDerivedValues();
 		notifyListeners();
 	}
 
 	@Override
 	public List<TaskPlanningEntry> getLog() {
+		sort(_vector);
 		return _vector;
 	}
 
@@ -121,6 +145,30 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 	private static void notifyListeners() {
 		for (int i = 0; i < _listeners.size(); i++) {
 			_listeners.get(i).taskPlanningLogModified();
+		}
+	}
+	
+	private void sort(Vector<TaskPlanningEntry> entries) {
+		// TODO implement this method
+	}
+	
+	private void computeDerivedValues() {
+		
+		sort(_vector);
+		
+		int chCounter = 0;
+		int pvCounter = 0;
+		int evCounter = 0;
+		
+		// compute derived values for each entry
+		for (TaskPlanningEntry entry : _vector) {
+			chCounter += entry.getPlannedHours();
+			pvCounter += entry.getPV();
+			evCounter += entry.getEV();
+			
+			chMap.put(entry, chCounter);
+			pvMap.put(entry, pvCounter);
+			evMap.put(entry, evCounter);
 		}
 	}
 	

@@ -46,7 +46,7 @@ import javax.swing.DropMode;
 import javax.swing.SpinnerListModel;
  
 public class TimeRecordLogDialog extends JDialog {
-      JPanel mPanel = new JPanel(new BorderLayout());
+      	JPanel mPanel = new JPanel(new BorderLayout());
         JPanel areaPanel = new JPanel();
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton cancelB = new JButton();

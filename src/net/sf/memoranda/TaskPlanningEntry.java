@@ -10,7 +10,7 @@ public interface TaskPlanningEntry {
 	
 	public int getPlannedHours();
 	
-	public String getPlanDateWeek();
+	public String getPlannedDateWeek();
 	
 	public String getActualDateWeek();
 	
