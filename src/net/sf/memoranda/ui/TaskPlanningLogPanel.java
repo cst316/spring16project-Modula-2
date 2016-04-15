@@ -15,7 +15,6 @@ import javax.swing.JToolBar;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.TaskPlanningEntry;
-import net.sf.memoranda.TimeEntry;
 import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Local;
 
@@ -142,7 +141,16 @@ public class TaskPlanningLogPanel extends JPanel {
     	TaskPlanningRecordLogDialog dlg = new TaskPlanningRecordLogDialog(App.getFrame(), Local.getString("Edit task planning entry"));
     	
     	// Fill in data
+    	dlg.taskNum.setValue(entry.getTaskNumber());
+    	dlg.taskName.setText(entry.getTaskName());
+    	dlg.plannedHour.setValue(entry.getPlannedHours());
+    	dlg.plannedValue.setValue(entry.getPV());
+    	dlg.plannedDate.setValue(entry.getPlannedDate().getDate());
+    	dlg.earnedValue.setValue(entry.getEV());
+    	dlg.actualDate.setValue(entry.getActualDate().getDate());
+    	dlg.completedCheckbox.setSelected(entry.isComplete());
     	
+    	// Finish frame
     	Dimension frmSize = App.getFrame().getSize();
         Point loc = App.getFrame().getLocation();
         dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);

@@ -1,6 +1,5 @@
 package net.sf.memoranda.ui;
 
-import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -11,9 +10,6 @@ import javax.swing.table.AbstractTableModel;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.TaskPlanningEntry;
 import net.sf.memoranda.TaskPlanningLogImpl;
-import net.sf.memoranda.TimeEntry;
-import net.sf.memoranda.TimeLogImpl;
-import net.sf.memoranda.ui.TimeLogTable.TimeLogTableModel;
 import net.sf.memoranda.util.Local;
 
 public class TaskPlanningLogTable extends JTable {
@@ -79,6 +75,7 @@ public class TaskPlanningLogTable extends JTable {
 		@Override
 		public Object getValueAt(int row, int col) {
 			TaskPlanningEntry e = entries.get(row);
+			
 			switch (col) {
 				case 0: return e.getTaskNumber();
 				case 1: return e.getTaskName();
@@ -86,9 +83,9 @@ public class TaskPlanningLogTable extends JTable {
 				case 3: return e.getPV();
 				case 4: return CurrentProject.getTaskPlanningLog().getCumulativeHours(e);
 				case 5: return CurrentProject.getTaskPlanningLog().getCumulativePV(e);
-				case 6: return e.getPlannedDateWeek();
-				case 7: return e.getActualDateWeek();
-				case 8: return e.getEV();
+				case 6: return e.getPlannedDate();
+				case 7: return (e.isComplete() ? e.getActualDate() : "Incomplete");
+				case 8: return (e.isComplete() ? e.getEV() : "Incomplete");
 				case 9: return CurrentProject.getTaskPlanningLog().getCumulativeEV(e);
 			}
 			

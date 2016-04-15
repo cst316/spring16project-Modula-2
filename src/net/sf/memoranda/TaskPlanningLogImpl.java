@@ -2,7 +2,6 @@ package net.sf.memoranda;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -70,7 +69,8 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 			                                      int plannedValue, 
 			                                      int earnedValue,
 			                                      CalendarDate plannedDateWeek, 
-			                                      CalendarDate actualDateWeek) {
+			                                      CalendarDate actualDateWeek,
+			                                      boolean isComplete) {
 
 		Element element = new Element("taskPlanningEntry");
 		
@@ -101,6 +101,13 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		Element adw = new Element("actualDateWeek");
 		adw.appendChild(actualDateWeek.toString());
 		element.appendChild(adw);
+		
+		Element ic = new Element("isComplete");
+		if(isComplete)
+			ic.appendChild("true");
+		else
+			ic.appendChild("false");
+		element.appendChild(ic);
 		
 		_root.appendChild(element);
 		
@@ -157,13 +164,13 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		Collections.sort(_vector, new Comparator<TaskPlanningEntry>() {
 			@Override
 			public int compare(TaskPlanningEntry e1, TaskPlanningEntry e2) {
-				if (e1.getActualDateWeek() != null && e2.getActualDateWeek() != null)
-					if (!e1.getActualDateWeek().equals(e2.getActualDateWeek()))
-						return e1.getActualDateWeek().before(e2.getActualDateWeek()) ? -1 : 1;
+				if (e1.getActualDate() != null && e2.getActualDate() != null)
+					if (!e1.getActualDate().equals(e2.getActualDate()))
+						return e1.getActualDate().before(e2.getActualDate()) ? -1 : 1;
 					else
 						return e1.getEV() - e2.getEV();
-				else if (!e1.getPlannedDateWeek().equals(e2.getPlannedDateWeek()))
-					return e1.getPlannedDateWeek().before(e2.getPlannedDateWeek()) ? -1 : 1;
+				else if (!e1.getPlannedDate().equals(e2.getPlannedDate()))
+					return e1.getPlannedDate().before(e2.getPlannedDate()) ? -1 : 1;
 				else
 					return e1.getEV() - e2.getEV();
 			}

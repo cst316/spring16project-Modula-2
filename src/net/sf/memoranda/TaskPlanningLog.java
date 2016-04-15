@@ -13,7 +13,8 @@ public interface TaskPlanningLog {
 	                                              int PV,
 	                                              int EV,
 	                                              CalendarDate calendarDate,
-	                                              CalendarDate calendarDate2);
+	                                              CalendarDate calendarDate2,
+	                                              boolean isComplete);
 	
 	public void removeTaskPlanningEntry(TaskPlanningEntry entry);
 	

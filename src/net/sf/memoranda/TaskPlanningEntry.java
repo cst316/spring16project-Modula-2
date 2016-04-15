@@ -11,14 +11,15 @@ public interface TaskPlanningEntry {
 	
 	public double getPlannedHours();
 	
-	public CalendarDate getPlannedDateWeek();
+	public CalendarDate getPlannedDate();
 	
-	public CalendarDate getActualDateWeek();
+	public CalendarDate getActualDate();
 	
 	public int getPV();
 	
 	public int getEV();
 	
 	public Element getContent();
-	
+
+	boolean isComplete();
 }

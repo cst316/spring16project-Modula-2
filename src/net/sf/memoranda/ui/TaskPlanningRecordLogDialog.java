@@ -230,14 +230,16 @@ public class TaskPlanningRecordLogDialog extends JDialog {
     	
     	Date pd = (Date) plannedDate.getValue();
     	Date ad = (Date) actualDate.getValue();
-    	
+
     	CurrentProject.getTaskPlanningLog().addTaskPlanningEntry((int) taskNum.getValue(),
     			                                                 taskName.getText(),
     			                                                 (double) plannedHour.getValue(),
     			                                                 (int) plannedValue.getValue(),
     			                                                 (int) earnedValue.getValue(),
     			                                                 new CalendarDate(pd),
-    			                                                 new CalendarDate(ad));
+    			                                                 new CalendarDate(ad),
+    			                                                 completedCheckbox.isSelected());   	
+    	
         this.dispose();
     }
     
