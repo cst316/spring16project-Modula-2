@@ -45,7 +45,6 @@ public class TaskPlanningEntryImpl implements TaskPlanningEntry {
 
 	@Override
 	public int getEV() {
-		System.out.println(_element.toXML());
 		return Integer.parseInt(_element.getFirstChildElement("earnedValue").getValue());
 	}
 

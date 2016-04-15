@@ -36,6 +36,8 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		for (int i = 0; i < elements.size(); i++) {
 			_vector.add(new TaskPlanningEntryImpl(elements.get(i)));
 		}
+		
+		computeDerivedValues();
 	}
 	
 	public TaskPlanningLogImpl(Project prj) {
@@ -99,8 +101,6 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		Element adw = new Element("actualDateWeek");
 		adw.appendChild(actualDateWeek.toString());
 		element.appendChild(adw);
-		
-		System.out.println(element.toXML());
 		
 		_root.appendChild(element);
 		
