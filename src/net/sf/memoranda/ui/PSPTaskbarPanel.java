@@ -57,7 +57,7 @@ public class PSPTaskbarPanel extends JToolBar {
 			this.setBorder(null);
 			setLayout(null);
 
-		    viewbtnPanel.setBounds(-50, 0, 464, 42);
+		    viewbtnPanel.setBounds(-32, 0, 464, 42);
 		    viewbtnPanel.setBackground(ColorScheme.getColor("taskbar_primary"));
 																		
 			add(viewbtnPanel);
