@@ -154,7 +154,12 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		Collections.sort(_vector, new Comparator<TaskPlanningEntry>() {
 			@Override
 			public int compare(TaskPlanningEntry e1, TaskPlanningEntry e2) {
-				if (!e1.getPlannedDateWeek().equals(e2.getPlannedDateWeek()))
+				if (e1.getActualDateWeek() != null && e2.getActualDateWeek() != null)
+					if (!e1.getActualDateWeek().equals(e2.getActualDateWeek()))
+						return e1.getActualDateWeek().before(e2.getActualDateWeek()) ? -1 : 1;
+					else
+						return e1.getEV() - e2.getEV();
+				else if (!e1.getPlannedDateWeek().equals(e2.getPlannedDateWeek()))
 					return e1.getPlannedDateWeek().before(e2.getPlannedDateWeek()) ? -1 : 1;
 				else
 					return e1.getEV() - e2.getEV();
