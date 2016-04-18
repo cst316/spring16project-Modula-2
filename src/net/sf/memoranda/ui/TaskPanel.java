@@ -583,7 +583,7 @@ public class TaskPanel extends JPanel {
     }
 
     void listSubTasks_actionPerformed(ActionEvent e) {
-        String parentTaskId = taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString();
+        //String parentTaskId = taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString();
 
         //XXX taskTable.setCurrentRootTask(parentTaskId);
 		taskTable.tableChanged();

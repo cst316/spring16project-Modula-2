@@ -462,10 +462,7 @@ public class DailyItemsPanel extends JPanel {
             calendar.jnCalendar.renderer.setTask(t);
        //     calendar.jnCalendar.updateUI();
         }
-        boolean isAg = pan.equals("AGENDA");
-        //agendaPanel.setActive(isAg);
-        //if (isAg)
-        //	agendaPanel.refresh(CurrentDate.get());
+
         cardLayout1.show(editorsPanel, pan);
         cardLayout2.show(mainTabsPanel, pan + "TAB");
 		calendar.jnCalendar.updateUI();
