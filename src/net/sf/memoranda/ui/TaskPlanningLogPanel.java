@@ -5,9 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -17,26 +14,23 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
 import net.sf.memoranda.CurrentProject;
-import net.sf.memoranda.TimeEntry;
-import net.sf.memoranda.TimeLog;
-import net.sf.memoranda.date.CalendarDate;
-import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.TaskPlanningEntry;
 import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Local;
 
-public class TimeLogPanel extends JPanel {
-
+public class TaskPlanningLogPanel extends JPanel {
+	
 	PSPPanel parentPanel = null;
 	
 	BorderLayout borderLayout;
 	JToolBar toolBar;
 	JButton newEntry;
-    TimeLogTable table;
+    TaskPlanningLogTable table;
     JButton removeEntry;
     JButton editEntry;
     JScrollPane scrollPane;
     
-    public TimeLogPanel(PSPPanel parent) {
+    public TaskPlanningLogPanel(PSPPanel parent) {
     	parentPanel = parent;
         try {
             jbInit();
@@ -51,7 +45,7 @@ public class TimeLogPanel extends JPanel {
     	borderLayout = new BorderLayout();
     	toolBar = new JToolBar();
     	newEntry = new JButton();
-    	table = new TimeLogTable(this);
+    	table = new TaskPlanningLogTable(this);
     	removeEntry = new JButton();
     	editEntry = new JButton();
     	scrollPane = new JScrollPane();
@@ -62,7 +56,7 @@ public class TimeLogPanel extends JPanel {
     	newEntry.setEnabled(true);
         newEntry.setMaximumSize(new Dimension(24, 24));
         newEntry.setMinimumSize(new Dimension(24, 24));
-        newEntry.setToolTipText(Local.getString("New time entry"));
+        newEntry.setToolTipText(Local.getString("New task planning entry"));
         newEntry.setRequestFocusEnabled(false);
         newEntry.setPreferredSize(new Dimension(24, 24));
         newEntry.setFocusable(false);
@@ -76,7 +70,7 @@ public class TimeLogPanel extends JPanel {
         removeEntry.setFocusable(false);
         removeEntry.setPreferredSize(new Dimension(24, 24));
         removeEntry.setRequestFocusEnabled(false);
-        removeEntry.setToolTipText(Local.getString("Remove time entry"));
+        removeEntry.setToolTipText(Local.getString("Remove task planning entry"));
         removeEntry.setMinimumSize(new Dimension(24, 24));
         removeEntry.setMaximumSize(new Dimension(24, 24));
         removeEntry.setBorderPainted(false);
@@ -104,72 +98,66 @@ public class TimeLogPanel extends JPanel {
         toolBar.setFloatable(false);
         toolBar.add(newEntry, null);
         toolBar.add(removeEntry, null);
-        toolBar.add(editEntry, null);
+        toolBar.add(editEntry,null);
         toolBar.addSeparator();
         toolBar.setBackground(ColorScheme.getColor("taskbar_primary"));
         toolBar.setBorder(null);
+        
+        table.getTableHeader().setBackground(ColorScheme.getColor("frame_secondary"));
         
         scrollPane.getViewport().setBackground(Color.white);
         scrollPane.getViewport().add(table, null);
         
         this.add(scrollPane, BorderLayout.CENTER);
         this.add(toolBar, BorderLayout.NORTH);
+        this.setBorder(null);
     }
     
     private void newEntry_actionPerformed(ActionEvent e) {
-    	TimeRecordLogDialog dlg = new TimeRecordLogDialog(App.getFrame(), "New Timelog Entry");
+    	TaskPlanningRecordLogDialog dlg = new TaskPlanningRecordLogDialog(App.getFrame(), Local.getString("New task planning entry"));
     	Dimension frmSize = App.getFrame().getSize();
         Point loc = App.getFrame().getLocation();
-    	dlg.startDate.getModel().setValue(CurrentDate.get().getDate());
         dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
         dlg.setVisible(true);
     }
     
     private void removeEntry_actionPerformed(ActionEvent e) {
-    	List<TimeEntry> log = CurrentProject.getTimeLog().getLog();
+    	List<TaskPlanningEntry> log = CurrentProject.getTaskPlanningLog().getLog();
     	if(log.size() <= 0) return;
     	
-    	TimeEntry entry = log.get(table.getSelectedRow());
+    	TaskPlanningEntry entry = log.get(table.getSelectedRow());
     	if(entry == null) return;
-    	
-		CurrentProject.getTimeLog().removeTimeEntry(entry);
-    }
-    
-    private void editEntry_actionPerformed(ActionEvent e) {
-    	List<TimeEntry> log = CurrentProject.getTimeLog().getLog();
-    	if(log.size() <= 0) return;
-    	
-    	TimeEntry entry = log.get(table.getSelectedRow());
-    	if(entry == null) return;
-    	
-    	TimeRecordLogDialog dlg = new TimeRecordLogDialog(App.getFrame(), Local.getString("New task"));
 
-        int entryInterruptTime = entry.getInterruptionTime();
-        int hour = (int) Math.floor(entryInterruptTime/60);
-        int minute = entryInterruptTime%60;
-        
-        String dateString = Integer.toString(hour) + ":" + Integer.toString(minute) + ":0";
-        SimpleDateFormat dateZeroFormat = new SimpleDateFormat("H:m:s");
-		try {
-			Date interruptDate = dateZeroFormat.parse(dateString + " UTC");
-			
-			dlg.header.setText("Edit Timelog Entry");
-	    	dlg.startDate.getModel().setValue(entry.getCalendarDate().getDate());
-	    	dlg.logStartTime.getModel().setValue(entry.getStartTime().getTime());
-	    	dlg.logInterruptTime.getModel().setValue(interruptDate);
-	    	dlg.logEndTime.getModel().setValue(entry.getEndTime().getTime());
-	    	dlg.dpPhaseSelector.getModel().setSelectedItem(entry.getPhase());
-		} catch (ParseException pe) {
-			pe.printStackTrace();
-		}
+		CurrentProject.getTaskPlanningLog().removeTaskPlanningEntry(entry);
+    }
+	
+    private void editEntry_actionPerformed(ActionEvent e) {
+    	List<TaskPlanningEntry> log = CurrentProject.getTaskPlanningLog().getLog();
+    	if(log.size() <= 0) return;
     	
+    	TaskPlanningEntry entry = log.get(table.getSelectedRow());
+    	if(entry == null) return;
+
+    	TaskPlanningRecordLogDialog dlg = new TaskPlanningRecordLogDialog(App.getFrame(), Local.getString("Edit task planning entry"));
+    	
+    	// Fill in data
+    	dlg.taskNum.setValue(entry.getTaskNumber());
+    	dlg.taskName.setText(entry.getTaskName());
+    	dlg.plannedHour.setValue(entry.getPlannedHours());
+    	dlg.plannedValue.setValue(entry.getPV());
+    	dlg.plannedDate.setValue(entry.getPlannedDate().getDate());
+    	dlg.earnedValue.setValue(entry.getEV());
+    	dlg.actualDate.setValue(entry.getActualDate().getDate());
+    	dlg.completedCheckbox.setSelected(entry.isComplete());
+    	
+    	// Finish frame
     	Dimension frmSize = App.getFrame().getSize();
         Point loc = App.getFrame().getLocation();
         dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
         dlg.setVisible(true);
-        
+    	
         // Remove the (before edited) entry
         if(!dlg.CANCELLED)
-        	CurrentProject.getTimeLog().removeTimeEntry(entry);
+        	CurrentProject.getTaskPlanningLog().removeTaskPlanningEntry(entry);
     }
 }

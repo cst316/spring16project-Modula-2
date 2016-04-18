@@ -9,7 +9,7 @@
 	<!--$Id: build.xml,v 1.18 2007/04/06 21:12:24 alexeya Exp $-->
 	<!-- set global properties for this build -->
 	<property name="name"                  value="memoranda"/>
-	<property name="version"               value="1.0-rc3.1"/>
+	<property name="version"               value="2.0"/>
 	<property name="source.dir"            value="${basedir}/src"/>
 	<property name="lib.dir"               value="${basedir}/lib"/>
 	<property name="build.dir"             value="${basedir}/build"/>
