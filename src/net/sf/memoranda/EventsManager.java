@@ -64,11 +64,11 @@ public class EventsManager {
 		for(int years = 0; years < yearElements.size(); years++) {
 			Element yearElement = yearElements.get(years);
 			//System.out.println("getUpcomingEvents(): yearElement = " + yearElement.getLocalName() + "(Size " + yearElement.getChildCount() + ")");
-			if(yearElement.getLocalName() == "repeatable") {
+			if(yearElement.getLocalName().equals("repeatable")) {
 				// Repeatable events
 				// Eat this, not processing repeatable here
 			} 
-			else if(yearElement.getLocalName() == "sticker") {
+			else if(yearElement.getLocalName().equals("sticker")) {
 				// What is this
 				// Eat this, whatever the heck this is
 			} else {
