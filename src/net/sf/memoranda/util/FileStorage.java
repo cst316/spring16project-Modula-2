@@ -121,7 +121,6 @@ public class FileStorage implements Storage {
         doc.putProperty(
             javax.swing.text.Document.TitleProperty,
             note.getTitle());        
-        CalendarDate d = note.getDate();
 
         filename += note.getId();//d.getDay() + "-" + d.getMonth() + "-" + d.getYear();
         /*DEBUG*/System.out.println("[DEBUG] Save note: "+ filename);

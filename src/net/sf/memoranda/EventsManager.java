@@ -64,11 +64,11 @@ public class EventsManager {
 		for(int years = 0; years < yearElements.size(); years++) {
 			Element yearElement = yearElements.get(years);
 			//System.out.println("getUpcomingEvents(): yearElement = " + yearElement.getLocalName() + "(Size " + yearElement.getChildCount() + ")");
-			if(yearElement.getLocalName() == "repeatable") {
+			if(yearElement.getLocalName().equals("repeatable")) {
 				// Repeatable events
 				// Eat this, not processing repeatable here
 			} 
-			else if(yearElement.getLocalName() == "sticker") {
+			else if(yearElement.getLocalName().equals("sticker")) {
 				// What is this
 				// Eat this, whatever the heck this is
 			} else {
@@ -307,12 +307,6 @@ public class EventsManager {
 				return new EventImpl(el);
 		}
 		return null;
-	}
-
-	public static void removeEvent(CalendarDate date, int hh, int mm) {
-		Day d = getDay(date);
-		if (d == null)
-			d.getElement().removeChild(getEvent(date, hh, mm).getContent());
 	}
 
 	public static void removeEvent(Event ev) {

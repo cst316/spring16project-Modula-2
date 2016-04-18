@@ -1026,7 +1026,7 @@ public class AppFrame extends JFrame {
             if (ei == 1)
                     enc = "UTF-8";
             boolean nument = (ei == 2);
-            File f = chooser.getSelectedFile();
+
             boolean xhtml =
                     chooser.getFileFilter().getDescription().indexOf("XHTML") > -1;
              CurrentProject.save();
