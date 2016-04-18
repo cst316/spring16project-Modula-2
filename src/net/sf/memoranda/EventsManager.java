@@ -277,7 +277,7 @@ public class EventsManager {
 				} else if (ev.getRepeat() == REPEAT_YEARLY) {
 					int period = ev.getPeriod();
 					//System.out.println(date.getCalendar().get(Calendar.DAY_OF_YEAR));
-					if ((date.getYear() % 4) == 0
+					if (Util.isLeapYear(date.getYear())
 						&& date.getCalendar().get(Calendar.DAY_OF_YEAR) > 60)
 						period++;
 
@@ -505,7 +505,7 @@ public class EventsManager {
 		else if (dlg.yearlyRepeatRB.isSelected()) {
 		    rtype = EventsManager.REPEAT_YEARLY;
 		    period = sd.getCalendar().get(Calendar.DAY_OF_YEAR);
-		    if((sd.getYear() % 4) == 0 && sd.getCalendar().get(Calendar.DAY_OF_YEAR) > 60) period--;
+		    if(Util.isLeapYear(sd.getYear()) && sd.getCalendar().get(Calendar.DAY_OF_YEAR) > 60) period--;
 		}
 	    else {
 	        rtype = EventsManager.REPEAT_MONTHLY;
