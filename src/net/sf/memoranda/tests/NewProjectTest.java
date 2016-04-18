@@ -8,10 +8,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectManager;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.ui.ProjectDialog;
+import net.sf.memoranda.ui.ProjectNewTeamMemberDialog;
 import net.sf.memoranda.util.Local;
 
 public class NewProjectTest {
@@ -26,9 +28,30 @@ public class NewProjectTest {
 	Project prjInjected = ProjectManager.createProject("Test", "Something About a project", startDate, endDate);
 	Project prjExpected = ProjectManager.createProject("Test", "Something About a project", startDateExpected, endDateExpected);
 	
+	static CurrentProject teamInjected = new CurrentProject();
+	static CurrentProject teamExpected = new CurrentProject();
+	
+	static String nameInjected = "bob";
+	static String phoneNumberInjected = "18008888888";
+	static String emailInjected = "bob@guy.com";
+	
+	static String nameExpected = "bob";
+	static String phoneNumberExpected = "18008888888";
+	static String emailExpected = "bob@guy.com";
+	
+	
+	
 	@BeforeClass
 	public static void setUp() throws Exception {
-
+		teamInjected.getContactList().addContact(
+				nameInjected,
+        		emailInjected,
+        		phoneNumberInjected);
+		
+		teamExpected.getContactList().addContact(
+				nameExpected,
+        		emailExpected,
+        		phoneNumberExpected);
 	}
 
 	@AfterClass
@@ -44,7 +67,16 @@ public class NewProjectTest {
 //		assertEquals(prjExpected.getStartDate().toString(), prjInjected.getStartDate().toString());
 //		assertEquals(prjExpected.getEndDate().toString(), prjInjected.getEndDate().toString());
 	}
+	@Test
 	public void deleteProject(){
-		//prjInjected.removeProject(prjInjected.getID());
+
+		
+	}
+	
+	@Test
+	public void teamMember(){
+		System.out.println(teamExpected.toString());
+		assertEquals(teamExpected.toString(),teamInjected.toString() );
 	}
 }
+
