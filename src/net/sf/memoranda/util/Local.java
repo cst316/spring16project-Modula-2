@@ -60,18 +60,21 @@ public class Local {
     		messages = null;
     		
         /*** DEBUG PURPOSES ***/
-        System.out.println("Default locale: " + currentLocale.getDisplayName());
-        if (messages != null) {
+        //System.out.println("Default locale: " + currentLocale.getDisplayName());
+        
+    	if (messages != null) {
             System.out.println(
                 "Use local messages: messages_"
                     + currentLocale.getLanguage()
                     + ".properties");
         }
         else {
+        	/*
             System.out.println(
                 "* DEBUG: Locales are disabled or not found: messages_"
                     + currentLocale.getLanguage()
                     + ".properties");
+            */
         }        
         /**********************/
     }
