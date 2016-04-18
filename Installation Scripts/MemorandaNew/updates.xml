@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updateDescriptor baseUrl="">
+  <entry targetMediaFileId="23" updatableVersionMin="" updatableVersionMax="" fileName="Memoranda_windows_2_0.exe" newVersion="2.0" newMediaFileId="23" fileSize="2673664" bundledJre="" archive="false">
+    <comment language="en" />
+  </entry>
+</updateDescriptor>
