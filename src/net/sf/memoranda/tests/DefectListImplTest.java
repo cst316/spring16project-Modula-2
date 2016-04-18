@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import net.sf.memoranda.Defect;
 import net.sf.memoranda.DefectImpl;
 import net.sf.memoranda.DefectListImpl;
 import net.sf.memoranda.Phase;
@@ -268,9 +269,110 @@ public class DefectListImplTest {
 	
 	@Test
 	public void editDefectList() {
+		
 	}
 	
 	@Test
 	public void removeDefectsFromDefectList() {
+		
+		assert(defectlist.getAllDefects().size() == 0);
+		assert(defectlist.getLastDefectId().equals("1"));
+		
+		/*	Defect 1
+		 *	ID: 1
+		 *	Description: the first defect
+		 *	Date Found: 4/14/16
+		 *	Type: 30 Build, Package
+		 *	Est Fix Time: 34
+		 *	Injection: Planning
+		 *	Status: Active
+		 */
+		Phase injphase1 = null;
+		String inj1 = "Planning";
+		
+		for (Phase p : Phase.values()) {
+			if (inj1.equals(p.toString())) {
+				injphase1 = p;
+			}
+		}
+		
+		Phase remphase1 = null;
+		
+		Defect d1 = defectlist.createDefect(new CalendarDate("4/14/16"), "30 Build, Package", injphase1, Util.getMillisFromMinutes("34"), 
+				Util.getMillisFromMinutes("0"), null, remphase1, null, "the first defect", false);
+		
+		assert(defectlist.getAllDefects().size() == 1);
+		assert(defectlist.getLastDefectId().equals("2"));
+		
+		assert(defectlist.removeDefect(d1));
+		
+		
+		/*	Defect 2
+		 *	ID: 2
+		 *	Description: the secUND defect
+		 *	Date Found: 4/20/16
+		 *	Type: 70 Data
+		 *	Est Fix Time: 2
+		 *	Injection: Test
+		 *	Status: Active
+		 */
+		Phase injphase2 = null;
+		String inj2 = "Test";
+		
+		for (Phase p : Phase.values()) {
+			if (inj2.equals(p.toString())) {
+				injphase2 = p;
+			}
+		}
+		
+		Phase remphase2 = null;
+		
+		Defect d2 = defectlist.createDefect(new CalendarDate("4/20/16"), "70 Data", injphase2, Util.getMillisFromMinutes("2"), 
+				Util.getMillisFromMinutes("0"), null, remphase2, null, "the secUND defect", false);
+		
+		assert(defectlist.getAllDefects().size() == 2);
+		assert(defectlist.getLastDefectId().equals("3"));
+		
+		assert(defectlist.removeDefect(d2));
+		
+		
+		/*	Defect 3
+		 *	ID: 3
+		 *	Description: the 3rd defect
+		 *	Date Found: 9/23/14
+		 *	Type: 50 Interface
+		 *	Est Fix Time: 1000
+		 *	Injection: Code Review
+		 *	Status: Completed
+		 *	Date Fixed: 4/14/16
+		 *	Act Time: 89
+		 *	Remove: Code Review
+		 *	Fix Reference: lazy
+		 */
+		Phase injphase3 = null;
+		String inj3 = "Code Review";
+		
+		for (Phase p : Phase.values()) {
+			if (inj3.equals(p.toString())) {
+				injphase3 = p;
+			}
+		}
+		
+		Phase remphase3 = null;
+		String rem3 = "Code Review";
+		
+		for (Phase p : Phase.values()) {
+			if (rem3.equals(p.toString())) {
+				remphase3 = p;
+			}
+		}
+		
+		Defect d3 = defectlist.createDefect(new CalendarDate("9/23/14"), "50 Interface", injphase3, Util.getMillisFromMinutes("1000"), 
+				Util.getMillisFromMinutes("89"), new CalendarDate("4/14/16"), remphase3, "lazy", "the 3rd defect", true);
+		
+		assert(defectlist.getAllDefects().size() == 3);
+		assert(defectlist.getLastDefectId().equals("4"));
+		
+		assert(defectlist.removeDefect(d3));
 	}
 }

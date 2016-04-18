@@ -146,9 +146,15 @@ public class DefectListImpl implements DefectList {
 	}
 
 	@Override
-	public void removeDefect(Defect defect) {
-        _root.removeChild(defect.getContent());
-		elements.remove(defect.getDefectId());
+	public boolean removeDefect(Defect defect) {
+        try {
+        	_root.removeChild(defect.getContent());
+    		elements.remove(defect.getDefectId());
+    		return true;
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return false;
+        }
 	}
 
 	@Override

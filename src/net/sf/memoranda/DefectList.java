@@ -15,7 +15,7 @@ public interface DefectList {
     Defect createDefect(CalendarDate datefound, String type, Phase injection, long approximatefixtime, long fixtime,
 			CalendarDate datefixed, Phase fixremoval, String fixreference, String description, boolean isCompleted);
 
-    void removeDefect(Defect defect);
+    boolean removeDefect(Defect defect);
     
     //void removeDefect(String number);
     
