@@ -69,6 +69,7 @@ public class SummaryPanel extends JPanel {
 		}
 		
 		// Planning Log
+		/*
 		List<TaskPlanningEntry> tasks = CurrentProject.getTaskPlanningLog().getLog();
 		for (TaskPlanningEntry task : tasks) {
 			int plannedWeek = task.getPlannedDate().getWeek();
@@ -86,6 +87,7 @@ public class SummaryPanel extends JPanel {
 					actualValue.put(actualWeek, task.getPV());
 			}
 		}
+		*/
 		
 		// Time Log
 		List<TimeEntry> entries = CurrentProject.getTimeLog().getLog();
