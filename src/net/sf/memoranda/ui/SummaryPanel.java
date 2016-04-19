@@ -38,6 +38,7 @@ public class SummaryPanel extends JPanel {
 	
 	private JPanel planningLayout = new JPanel(new GridBagLayout());
 	private JScrollPane planningScroll;
+	private JPanel planningScrollPanel = new JPanel(new GridBagLayout());
 	private JTable planningTotalTable;
 	
 	private JPanel phaseLayout = new JPanel(new GridBagLayout());
@@ -90,17 +91,20 @@ public class SummaryPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
 		mainLayout.add(planningLayout,gbc);
 		
-		planningScroll = new JScrollPane();
+		planningScroll = new JScrollPane(planningScrollPanel);
 		
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
 		planningLayout.add(planningScroll,gbc);
 		
 		Object planningTotalRowData[][] = { 
+								{ "Total", "Plan", "Actual", "Plan/Actual"},
 								{ "Schedule hours", "[double]", "[double]", "[double]"},
 								{ "Earned value", "[double]", "[double]", "[double]"} 
 							};
-		Object planningTotalColumnNames[] = { "Total", "Plan", "Actual", "Plan/Actual"};
+		Object planningTotalColumnNames[] = { "", "", "", ""};
 		planningTotalTable = new JTable(planningTotalRowData, planningTotalColumnNames);
+		planningTotalTable.setEnabled(false);
+		planningTotalTable.setBorder(null);
 		
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
 		planningLayout.add(planningTotalTable,gbc);
@@ -110,6 +114,7 @@ public class SummaryPanel extends JPanel {
         mainLayout.add(phaseLayout,gbc);
         
 		Object phaseRowData[][] = { 
+				{ "Time in Phase (In Minutes)", "Plan", "Actual", "To Date", "To Date %"},
 				{ "Planning", "[int]", "[int]", "[int]", "[String]"},
 				{ "Design", "[int]", "[int]", "[int]", "[String]"},
 				{ "Code", "[int]", "[int]", "[int]", "[String]"},
@@ -118,8 +123,10 @@ public class SummaryPanel extends JPanel {
 				{ "Postmortem", "[int]", "[int]", "[int]", "[String]"},
 				{ "Total", "[int]", "[int]", "[int]", "[String]"}
 			};
-		Object phaseColumnNames[] = { "Time in Phase (In Minutes)", "Plan", "Actual", "To Date", "To Date %"};
+		Object phaseColumnNames[] = { "", "", "", "", ""};
 		phaseTable = new JTable(phaseRowData, phaseColumnNames);
+		phaseTable.setEnabled(false);
+		phaseTable.setBorder(null);
         
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
 		phaseLayout.add(phaseTable,gbc);
@@ -129,6 +136,7 @@ public class SummaryPanel extends JPanel {
         mainLayout.add(injectedLayout,gbc);
         
 		Object injectRowData[][] = { 
+				{ "Time in Phase (In Minutes)", "", "Actual", "To Date", "To Date %"},
 				{ "Planning", "", "[int]", "[int]", "[String]"},
 				{ "Design", "", "[int]", "[int]", "[String]"},
 				{ "Code", "", "[int]", "[int]", "[String]"},
@@ -137,8 +145,10 @@ public class SummaryPanel extends JPanel {
 				{ "Postmortem", "", "[int]", "[int]", "[String]"},
 				{ "Total", "", "[int]", "[int]", "[String]"}
 			};
-		Object injectColumnNames[] = { "Time in Phase (In Minutes)", "", "Actual", "To Date", "To Date %"};
+		Object injectColumnNames[] = {"","","","",""};
 		injectedTable = new JTable(injectRowData, injectColumnNames);
+		injectedTable.setEnabled(false);
+		injectedTable.setBorder(null);
 
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
         injectedLayout.add(injectedTable,gbc);
@@ -148,6 +158,7 @@ public class SummaryPanel extends JPanel {
         mainLayout.add(removedLayout,gbc);
 
 		Object removedRowData[][] = { 
+				{ "Time in Phase (In Minutes)", "", "Actual", "To Date", "To Date %"},
 				{ "Planning", "", "[int]", "[int]", "[String]"},
 				{ "Design", "", "[int]", "[int]", "[String]"},
 				{ "Code", "", "[int]", "[int]", "[String]"},
@@ -156,8 +167,10 @@ public class SummaryPanel extends JPanel {
 				{ "Postmortem", "", "[int]", "[int]", "[String]"},
 				{ "Total", "", "[int]", "[int]", "[String]"}
 			};
-		Object removedColumnNames[] = { "Time in Phase (In Minutes)", "", "Actual", "To Date", "To Date %"};
+		Object removedColumnNames[] = { "","","","",""};
 		removedTable = new JTable(removedRowData, removedColumnNames);
+		removedTable.setEnabled(false);
+		removedTable.setBorder(null);
 
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
         removedLayout.add(removedTable,gbc);
