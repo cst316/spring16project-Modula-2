@@ -3,11 +3,13 @@ package net.sf.memoranda.tests;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import net.sf.memoranda.Contact;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectManager;
@@ -53,6 +55,10 @@ public class NewProjectTest {
         		emailExpected,
         		phoneNumberExpected);
 	}
+	
+	List<Contact> contactsInjected = teamInjected.getContactList().getLog();
+	List<Contact> contactsExpected = teamExpected.getContactList().getLog();
+	
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
@@ -62,21 +68,22 @@ public class NewProjectTest {
 	public void testNewProject(){
 		assertEquals(prjExpected.getTitle(), prjInjected.getTitle());
 		assertEquals(prjExpected.getDescription(), prjInjected.getDescription());
-//		System.out.println(prjInjected.getStartDate().toString());
-//		System.out.print(prjExpected.getStartDate().toString());
+
 //		assertEquals(prjExpected.getStartDate().toString(), prjInjected.getStartDate().toString());
 //		assertEquals(prjExpected.getEndDate().toString(), prjInjected.getEndDate().toString());
 	}
 	@Test
 	public void deleteProject(){
-
-		
 	}
 	
 	@Test
 	public void teamMember(){
-		System.out.println(teamExpected.toString());
-		assertEquals(teamExpected.toString(),teamInjected.toString() );
+		for(Contact contactsExpected : contactsInjected ){
+			contactsExpected.getName();
+			contactsExpected.getEmail();
+			contactsExpected.getPhone();
+			contactsExpected.getContent();
+		}
 	}
 }
 
