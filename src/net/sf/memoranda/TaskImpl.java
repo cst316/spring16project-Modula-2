@@ -50,7 +50,7 @@ public class TaskImpl implements Task, Comparable {
 
     public CalendarDate getEndDate() {
 		String ed = _element.getAttribute("endDate").getValue();
-		if (ed != "")
+		if (ed == null || !ed.equals(""))
 			return new CalendarDate(_element.getAttribute("endDate").getValue());
 		Task parent = this.getParentTask();
 		if (parent != null)
@@ -65,7 +65,8 @@ public class TaskImpl implements Task, Comparable {
     public void setEndDate(CalendarDate date) {
 		if (date == null)
 			setAttr("endDate", "");
-		setAttr("endDate", date.toString());
+		else
+			setAttr("endDate", date.toString());
     }
 
     public long getEffort() {

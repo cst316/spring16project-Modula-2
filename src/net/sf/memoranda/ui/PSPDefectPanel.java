@@ -429,7 +429,7 @@ public class PSPDefectPanel extends JPanel {
 		}
 		
 		//Conditional for enabling fix reference properties
-		if(!d.getFixReference().equals("")) {
+		if(d.getFixReference() != null) {
 			defectdialog.chkFixReference.setSelected(true);
 			defectdialog.lblFixReference.setEnabled(true);
 			defectdialog.txtFixReference.setEnabled(true);
