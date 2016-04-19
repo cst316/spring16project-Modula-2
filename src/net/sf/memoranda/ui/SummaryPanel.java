@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -45,23 +46,22 @@ public class SummaryPanel extends JPanel {
 	private double totalHoursRatio;
 	private double totalValueRatio;
 	
-	GridBagConstraints gbc;
 	private JPanel mainLayout = new JPanel(new BorderLayout());
 	private JScrollPane mainScroll;
-	private JPanel scrollLayout = new JPanel(new GridBagLayout());
+	private JPanel scrollLayout = new JPanel();
 	
-	private JPanel planningLayout = new JPanel(new GridBagLayout());
-	private JScrollPane planningScroll;
-	private JPanel planningScrollPanel = new JPanel(new GridBagLayout());
+	private JPanel planningLayout = new JPanel();
+	private JScrollPane planningWeekScrollPane;
+	private JPanel planningWeekScrollPanePanel = new JPanel();
 	private JTable planningTotalTable;
 	
-	private JPanel phaseLayout = new JPanel(new GridBagLayout());
+	private JPanel phaseLayout = new JPanel(new BorderLayout());
 	private JTable phaseTable;
 	
-	private JPanel injectedLayout = new JPanel(new GridBagLayout());
+	private JPanel injectedLayout = new JPanel(new BorderLayout());
 	private JTable injectedTable;
 
-	private JPanel removedLayout = new JPanel(new GridBagLayout());
+	private JPanel removedLayout = new JPanel(new BorderLayout());
 	private JTable removedTable;
 	
 	public SummaryPanel(PSPPanel parent) {
@@ -101,18 +101,20 @@ public class SummaryPanel extends JPanel {
 	}
 	
 	void jbInit() {
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-        		
+        scrollLayout.setLayout(new BoxLayout(scrollLayout, BoxLayout.Y_AXIS));
+        
 		// Planning layout (top)
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-		scrollLayout.add(planningLayout,gbc);
+		scrollLayout.add(planningLayout);
 		
-		planningScroll = new JScrollPane(planningScrollPanel);
+		planningLayout.setLayout(new BoxLayout(planningLayout, BoxLayout.Y_AXIS));
+		planningWeekScrollPane = new JScrollPane(planningWeekScrollPanePanel);
+		planningWeekScrollPanePanel.setLayout(new BoxLayout(planningWeekScrollPanePanel, BoxLayout.Y_AXIS));
 		
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-		planningLayout.add(planningScroll,gbc);
+		// planning layout weeks
 		
+		planningLayout.add(planningWeekScrollPane);
+		
+		// planning layout total
 		Object planningTotalRowData[][] = { 
 								{ "Total", "Plan", "Actual", "Plan/Actual"},
 								{ "Schedule hours", "[double]", "[double]", "[double]"},
@@ -123,74 +125,67 @@ public class SummaryPanel extends JPanel {
 		planningTotalTable.setEnabled(false);
 		planningTotalTable.setBorder(null);
 		
-        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-		planningLayout.add(planningTotalTable,gbc);
+		planningLayout.add(planningTotalTable);
 		
 		// Phase layout (mid)
-        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-        scrollLayout.add(phaseLayout,gbc);
+        scrollLayout.add(phaseLayout);
         
 		Object phaseRowData[][] = { 
-				{ "Time in Phase (In Minutes)", "Plan", "Actual", "To Date", "To Date %"},
-				{ "Planning", "[int]", "[int]", "[int]", "[String]"},
-				{ "Design", "[int]", "[int]", "[int]", "[String]"},
-				{ "Code", "[int]", "[int]", "[int]", "[String]"},
-				{ "Compile", "[int]", "[int]", "[int]", "[String]"},
-				{ "Test", "[int]", "[int]", "[int]", "[String]"},
-				{ "Postmortem", "[int]", "[int]", "[int]", "[String]"},
-				{ "Total", "[int]", "[int]", "[int]", "[String]"}
+				{ "Time in Phase (In Minutes)", "Plan", "Actual", "To Date %"},
+				{ "Planning", "[int]", "[int]", "[String]"},
+				{ "Design", "[int]", "[int]", "[String]"},
+				{ "Code", "[int]", "[int]", "[String]"},
+				{ "Compile", "[int]", "[int]", "[String]"},
+				{ "Test", "[int]", "[int]", "[String]"},
+				{ "Postmortem", "[int]", "[int]", "[String]"},
+				{ "Total", "[int]", "[int]", "[String]"}
 			};
-		Object phaseColumnNames[] = { "", "", "", "", ""};
+		Object phaseColumnNames[] = { "", "", "", ""};
 		phaseTable = new JTable(phaseRowData, phaseColumnNames);
 		phaseTable.setEnabled(false);
 		phaseTable.setBorder(null);
         
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-		phaseLayout.add(phaseTable,gbc);
+		phaseLayout.add(phaseTable, BorderLayout.CENTER);
 
         // Injected layout (mid)
-        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-        scrollLayout.add(injectedLayout,gbc);
+        scrollLayout.add(injectedLayout);
         
 		Object injectRowData[][] = { 
-				{ "Time in Phase (In Minutes)", "", "Actual", "To Date", "To Date %"},
-				{ "Planning", "", "[int]", "[int]", "[String]"},
-				{ "Design", "", "[int]", "[int]", "[String]"},
-				{ "Code", "", "[int]", "[int]", "[String]"},
-				{ "Compile", "", "[int]", "[int]", "[String]"},
-				{ "Test", "", "[int]", "[int]", "[String]"},
-				{ "Postmortem", "", "[int]", "[int]", "[String]"},
-				{ "Total", "", "[int]", "[int]", "[String]"}
+				{ "Defects Injected", "", "Actual", "To Date %"},
+				{ "Planning", "", "[int]", "[String]"},
+				{ "Design", "", "[int]", "[String]"},
+				{ "Code", "", "[int]", "[String]"},
+				{ "Compile", "", "[int]", "[String]"},
+				{ "Test", "", "[int]", "[String]"},
+				{ "Postmortem", "", "[int]", "[String]"},
+				{ "Total", "", "[int]", "[String]"}
 			};
-		Object injectColumnNames[] = {"","","","",""};
+		Object injectColumnNames[] = {"","","",""};
 		injectedTable = new JTable(injectRowData, injectColumnNames);
 		injectedTable.setEnabled(false);
 		injectedTable.setBorder(null);
 
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-        injectedLayout.add(injectedTable,gbc);
+        injectedLayout.add(injectedTable, BorderLayout.CENTER);
 
         // Removed layout (bottom)
-        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-        scrollLayout.add(removedLayout,gbc);
+        scrollLayout.add(removedLayout);
 
 		Object removedRowData[][] = { 
-				{ "Time in Phase (In Minutes)", "", "Actual", "To Date", "To Date %"},
-				{ "Planning", "", "[int]", "[int]", "[String]"},
-				{ "Design", "", "[int]", "[int]", "[String]"},
-				{ "Code", "", "[int]", "[int]", "[String]"},
-				{ "Compile", "", "[int]", "[int]", "[String]"},
-				{ "Test", "", "[int]", "[int]", "[String]"},
-				{ "Postmortem", "", "[int]", "[int]", "[String]"},
-				{ "Total", "", "[int]", "[int]", "[String]"}
+				{ "Defects Removed", "", "Actual", "To Date %"},
+				{ "Planning", "", "[int]", "[String]"},
+				{ "Design", "", "[int]", "[String]"},
+				{ "Code", "", "[int]", "[String]"},
+				{ "Compile", "", "[int]", "[String]"},
+				{ "Test", "", "[int]", "[String]"},
+				{ "Postmortem", "", "[int]", "[String]"},
+				{ "Total", "", "[int]", "[String]"}
 			};
-		Object removedColumnNames[] = { "","","","",""};
+		Object removedColumnNames[] = {"","","",""};
 		removedTable = new JTable(removedRowData, removedColumnNames);
 		removedTable.setEnabled(false);
 		removedTable.setBorder(null);
 
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-        removedLayout.add(removedTable,gbc);
+        removedLayout.add(removedTable, BorderLayout.CENTER);
         
         // scrollLayout
 		scrollLayout.setBackground(ColorScheme.getColor("taskbar_primary"));
