@@ -2,8 +2,10 @@ package net.sf.memoranda.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.Collection;
 import java.util.HashMap;
@@ -49,8 +51,9 @@ public class SummaryPanel extends JPanel {
 	private double totalValueRatio;
 	
 	GridBagConstraints gbc;
+	private JPanel mainLayout = new JPanel(new BorderLayout());
 	private JScrollPane mainScroll;
-	private JPanel mainLayout = new JPanel(new GridBagLayout());
+	private JPanel scrollLayout = new JPanel(new GridBagLayout());
 	
 	private JPanel planningLayout = new JPanel(new GridBagLayout());
 	private JScrollPane planningScroll;
@@ -106,12 +109,10 @@ public class SummaryPanel extends JPanel {
 	void jbInit() {
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-        
-		this.setBackground(ColorScheme.getColor("taskbar_primary"));
-		
+        		
 		// Planning layout (top)
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-		mainLayout.add(planningLayout,gbc);
+		scrollLayout.add(planningLayout,gbc);
 		
 		planningScroll = new JScrollPane(planningScrollPanel);
 		
@@ -133,7 +134,7 @@ public class SummaryPanel extends JPanel {
 		
 		// Phase layout (mid)
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-        mainLayout.add(phaseLayout,gbc);
+        scrollLayout.add(phaseLayout,gbc);
         
 		Object phaseRowData[][] = { 
 				{ "Time in Phase (In Minutes)", "Plan", "Actual", "To Date", "To Date %"},
@@ -155,7 +156,7 @@ public class SummaryPanel extends JPanel {
 
         // Injected layout (mid)
         gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-        mainLayout.add(injectedLayout,gbc);
+        scrollLayout.add(injectedLayout,gbc);
         
 		Object injectRowData[][] = { 
 				{ "Time in Phase (In Minutes)", "", "Actual", "To Date", "To Date %"},
@@ -177,7 +178,7 @@ public class SummaryPanel extends JPanel {
 
         // Removed layout (bottom)
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-        mainLayout.add(removedLayout,gbc);
+        scrollLayout.add(removedLayout,gbc);
 
 		Object removedRowData[][] = { 
 				{ "Time in Phase (In Minutes)", "", "Actual", "To Date", "To Date %"},
@@ -197,10 +198,19 @@ public class SummaryPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
         removedLayout.add(removedTable,gbc);
         
-		// Add main scroll to SummaryPanel
-		mainScroll = new JScrollPane(mainLayout);
-
-		add(mainScroll);
+        // scrollLayout
+		scrollLayout.setBackground(ColorScheme.getColor("taskbar_primary"));
+		scrollLayout.setBorder(null);
+        
+		// mainScroll
+		mainScroll = new JScrollPane(scrollLayout, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		mainScroll.setBackground(ColorScheme.getColor("taskbar_primary"));
+		mainScroll.setBorder(null);
+	
+		// SummaryPanel
+		this.setBackground(ColorScheme.getColor("taskbar_primary"));
+		this.setLayout(new BorderLayout());
+		this.add(mainScroll,BorderLayout.CENTER);
 	}
 	
 	@SuppressWarnings("unchecked")
