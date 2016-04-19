@@ -1,7 +1,5 @@
 package net.sf.memoranda.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -9,7 +7,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -33,10 +30,9 @@ public class SummaryPanel extends JPanel {
 	private HashMap<Phase, Integer> timeInPhase;
 	private HashMap<Phase, Integer> defectsInjected;
 	private HashMap<Phase, Integer> defectsRemoved;
-	private HashMap<Phase, Integer> defectsInjectedToDate;
-	private HashMap<Phase, Integer> defectsInjectedToDatePercentage;
-	private HashMap<Phase, Integer> defectsRemovedToDate;
-	private HashMap<Phase, Integer> defectsRemovedToDatePercentage;
+	private HashMap<Phase, Double> defectsInjectedPercentage;
+	private HashMap<Phase, Double> defectsRemovedPercentage;
+	private HashMap<Phase, Double> timeInPhasePercentage;
 	
 	private double totalPlannedHours;
 	private double totalActualHours;
@@ -76,10 +72,9 @@ public class SummaryPanel extends JPanel {
 		timeInPhase = new HashMap<>();
 		defectsInjected = new HashMap<>();
 		defectsRemoved = new HashMap<>();
-		defectsInjectedToDate = new HashMap<>();
-		defectsInjectedToDatePercentage = new HashMap<>();
-		defectsRemovedToDate = new HashMap<>();
-		defectsRemovedToDatePercentage = new HashMap<>();
+		defectsInjectedPercentage = new HashMap<>();
+		defectsRemovedPercentage = new HashMap<>();
+		timeInPhasePercentage = new HashMap<>();
 		
         try {
         	aggregatePSPData();
@@ -292,7 +287,12 @@ public class SummaryPanel extends JPanel {
 		totalHoursRatio = (double) totalPlannedHours / totalActualHours;
 		totalValueRatio = (double) totalPlannedValue / totalEarnedValue;
 		
-		
+		// To Date (%)
+		for (Phase phase : Phase.values()) {
+			timeInPhasePercentage.put(phase, (double) timeInPhase.get(phase) / totalActualHours);
+			defectsInjectedPercentage.put(phase, (double) defectsInjected.get(phase) / totalDefectsInjected);
+			defectsRemovedPercentage.put(phase, (double) defectsRemoved.get(phase) / totalDefectsRemoved);
+		}
 	}
 	
 }
