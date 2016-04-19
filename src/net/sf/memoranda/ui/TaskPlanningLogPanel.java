@@ -150,6 +150,11 @@ public class TaskPlanningLogPanel extends JPanel {
     	dlg.actualDate.setValue(entry.getActualDate().getDate());
     	dlg.completedCheckbox.setSelected(entry.isComplete());
     	
+    	if(entry.isComplete()) {
+    		dlg.earnedValue.setEnabled(true);
+    		dlg.actualDate.setEnabled(true);
+    	}
+    	
     	// Finish frame
     	Dimension frmSize = App.getFrame().getSize();
         Point loc = App.getFrame().getLocation();
