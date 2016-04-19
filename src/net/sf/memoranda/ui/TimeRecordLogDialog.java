@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -260,9 +261,15 @@ public class TimeRecordLogDialog extends JDialog {
         	
         	String comments = textArea.getText();
         	
-        	CurrentProject.getTimeLog().addTimeEntry(date, startTime, endTime, interruptionTime, phase, comments);
-        	
-            this.dispose();
+        	// Validate input and display message to user if invalid
+        	if (startTime.after(endTime))
+        		JOptionPane.showMessageDialog(this, "Invalid start/end time.");
+        	else if (interruptionTime * 1000 > (endTime.getTimeInMillis() - startTime.getTimeInMillis()))
+        		JOptionPane.showMessageDialog(this, "Invalid interruption time.");
+        	else {
+	        	CurrentProject.getTimeLog().addTimeEntry(date, startTime, endTime, interruptionTime, phase, comments);
+	            this.dispose();
+        	}
         }
  
         void cancelB_actionPerformed(ActionEvent e) {
