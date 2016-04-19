@@ -46,14 +46,13 @@ public class SummaryPanel extends JPanel {
 	private double totalHoursRatio;
 	private double totalValueRatio;
 	
-	GridBagConstraints gbc;
 	private JPanel mainLayout = new JPanel(new BorderLayout());
 	private JScrollPane mainScroll;
 	private JPanel scrollLayout = new JPanel();
 	
-	private JPanel planningLayout = new JPanel(new GridBagLayout());
-	private JScrollPane planningScroll;
-	private JPanel planningScrollPanel = new JPanel(new BorderLayout());
+	private JPanel planningLayout = new JPanel();
+	private JScrollPane planningWeekScrollPane;
+	private JPanel planningWeekScrollPanePanel = new JPanel();
 	private JTable planningTotalTable;
 	
 	private JPanel phaseLayout = new JPanel(new BorderLayout());
@@ -102,20 +101,20 @@ public class SummaryPanel extends JPanel {
 	}
 	
 	void jbInit() {
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-        		
         scrollLayout.setLayout(new BoxLayout(scrollLayout, BoxLayout.Y_AXIS));
         
 		// Planning layout (top)
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
 		scrollLayout.add(planningLayout);
 		
-		planningScroll = new JScrollPane(planningScrollPanel);
+		planningLayout.setLayout(new BoxLayout(planningLayout, BoxLayout.Y_AXIS));
+		planningWeekScrollPane = new JScrollPane(planningWeekScrollPanePanel);
+		planningWeekScrollPanePanel.setLayout(new BoxLayout(planningWeekScrollPanePanel, BoxLayout.Y_AXIS));
 		
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-		planningLayout.add(planningScroll,gbc);
+		// planning layout weeks
 		
+		planningLayout.add(planningWeekScrollPane);
+		
+		// planning layout total
 		Object planningTotalRowData[][] = { 
 								{ "Total", "Plan", "Actual", "Plan/Actual"},
 								{ "Schedule hours", "[double]", "[double]", "[double]"},
@@ -126,11 +125,9 @@ public class SummaryPanel extends JPanel {
 		planningTotalTable.setEnabled(false);
 		planningTotalTable.setBorder(null);
 		
-        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-		planningLayout.add(planningTotalTable,gbc);
+		planningLayout.add(planningTotalTable);
 		
 		// Phase layout (mid)
-        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
         scrollLayout.add(phaseLayout);
         
 		Object phaseRowData[][] = { 
@@ -148,11 +145,9 @@ public class SummaryPanel extends JPanel {
 		phaseTable.setEnabled(false);
 		phaseTable.setBorder(null);
         
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
 		phaseLayout.add(phaseTable, BorderLayout.CENTER);
 
         // Injected layout (mid)
-        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
         scrollLayout.add(injectedLayout);
         
 		Object injectRowData[][] = { 
@@ -170,11 +165,9 @@ public class SummaryPanel extends JPanel {
 		injectedTable.setEnabled(false);
 		injectedTable.setBorder(null);
 
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
         injectedLayout.add(injectedTable, BorderLayout.CENTER);
 
         // Removed layout (bottom)
-        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
         scrollLayout.add(removedLayout);
 
 		Object removedRowData[][] = { 
@@ -192,7 +185,6 @@ public class SummaryPanel extends JPanel {
 		removedTable.setEnabled(false);
 		removedTable.setBorder(null);
 
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
         removedLayout.add(removedTable, BorderLayout.CENTER);
         
         // scrollLayout
