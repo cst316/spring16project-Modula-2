@@ -1677,12 +1677,15 @@ public class HTMLEditor extends JPanel {
 		dlg.setVisible(true);
 
 		if (!dlg.CANCELLED) {
+			/*
 			String parentname =
 				document
 					.getParagraphElement(editor.getCaretPosition())
 					.getParentElement()
 					.getName();
-			//HTML.Tag parentTag = HTML.getTag(parentname);
+			HTML.Tag parentTag = HTML.getTag(parentname);
+			 */
+			
 			String urlString = dlg.fileField.getText();
 			String path = urlString;
 			if (imagesDir != null) {

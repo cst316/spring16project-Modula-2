@@ -63,8 +63,7 @@ public class App {
 			System.out.println("Minimized mode");
 		if (!Configuration.get("SHOW_SPLASH").equals("no"))
 			showSplash();
-		System.out.println(VERSION_INFO);
-		System.out.println(Configuration.get("LOOK_AND_FEEL"));
+		System.out.println("Memoranda version " + VERSION_INFO);
 		try {
 			if (Configuration.get("LOOK_AND_FEEL").equals("system"))
 				UIManager.setLookAndFeel(
@@ -88,8 +87,6 @@ public class App {
 				fdow = "sun";
 			Configuration.put("FIRST_DAY_OF_WEEK", fdow);
 			Configuration.saveConfig();
-			/* DEBUG */
-			System.out.println("[DEBUG] first day of week is set to " + fdow);
 		}
 
 		EventsScheduler.init();

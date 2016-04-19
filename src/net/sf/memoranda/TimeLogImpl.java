@@ -138,8 +138,8 @@ public class TimeLogImpl implements TimeLog {
 		Collections.sort(_vector, new Comparator<TimeEntry>() {
 			@Override
 			public int compare(TimeEntry e1, TimeEntry e2) {
-				if (!e1.getDate().equals(e2.getDate()))
-					return e1.getDate().before(e2.getDate()) ? -1 : 1;
+				if (!e1.getCalendarDate().equals(e2.getCalendarDate()))
+					return e1.getCalendarDate().before(e2.getCalendarDate()) ? -1 : 1;
 				else
 					return (e1.getStartHour() * 60 + e1.getStartMinute()) - 
 					       (e2.getStartHour() * 60 + e2.getStartMinute());

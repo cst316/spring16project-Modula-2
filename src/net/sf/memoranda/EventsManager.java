@@ -64,11 +64,11 @@ public class EventsManager {
 		for(int years = 0; years < yearElements.size(); years++) {
 			Element yearElement = yearElements.get(years);
 			//System.out.println("getUpcomingEvents(): yearElement = " + yearElement.getLocalName() + "(Size " + yearElement.getChildCount() + ")");
-			if(yearElement.getLocalName() == "repeatable") {
+			if(yearElement.getLocalName().equals("repeatable")) {
 				// Repeatable events
 				// Eat this, not processing repeatable here
 			} 
-			else if(yearElement.getLocalName() == "sticker") {
+			else if(yearElement.getLocalName().equals("sticker")) {
 				// What is this
 				// Eat this, whatever the heck this is
 			} else {
@@ -277,7 +277,7 @@ public class EventsManager {
 				} else if (ev.getRepeat() == REPEAT_YEARLY) {
 					int period = ev.getPeriod();
 					//System.out.println(date.getCalendar().get(Calendar.DAY_OF_YEAR));
-					if ((date.getYear() % 4) == 0
+					if (Util.isLeapYear(date.getYear())
 						&& date.getCalendar().get(Calendar.DAY_OF_YEAR) > 60)
 						period++;
 
@@ -307,12 +307,6 @@ public class EventsManager {
 				return new EventImpl(el);
 		}
 		return null;
-	}
-
-	public static void removeEvent(CalendarDate date, int hh, int mm) {
-		Day d = getDay(date);
-		if (d == null)
-			d.getElement().removeChild(getEvent(date, hh, mm).getContent());
 	}
 
 	public static void removeEvent(Event ev) {
@@ -505,7 +499,7 @@ public class EventsManager {
 		else if (dlg.yearlyRepeatRB.isSelected()) {
 		    rtype = EventsManager.REPEAT_YEARLY;
 		    period = sd.getCalendar().get(Calendar.DAY_OF_YEAR);
-		    if((sd.getYear() % 4) == 0 && sd.getCalendar().get(Calendar.DAY_OF_YEAR) > 60) period--;
+		    if(Util.isLeapYear(sd.getYear()) && sd.getCalendar().get(Calendar.DAY_OF_YEAR) > 60) period--;
 		}
 	    else {
 	        rtype = EventsManager.REPEAT_MONTHLY;
