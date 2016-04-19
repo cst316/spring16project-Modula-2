@@ -83,8 +83,8 @@ public class TaskPlanningLogTable extends JTable {
 				case 3: return e.getPV();
 				case 4: return CurrentProject.getTaskPlanningLog().getCumulativeHours(e);
 				case 5: return CurrentProject.getTaskPlanningLog().getCumulativePV(e);
-				case 6: return e.getPlannedDate();
-				case 7: return (e.isComplete() ? e.getActualDate() : "Incomplete");
+				case 6: return e.getPlannedDate().getMediumDateString();
+				case 7: return (e.isComplete() ? e.getActualDate().getMediumDateString() : "Incomplete");
 				case 8: return (e.isComplete() ? e.getEV() : "Incomplete");
 				case 9: return CurrentProject.getTaskPlanningLog().getCumulativeEV(e);
 			}
