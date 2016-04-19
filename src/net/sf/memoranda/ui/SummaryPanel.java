@@ -1,6 +1,7 @@
 package net.sf.memoranda.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -8,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,16 +33,21 @@ public class SummaryPanel extends JPanel {
 	private HashMap<Phase, Integer> defectsRemoved;
 	
 	GridBagConstraints gbc;
-	private JScrollPane mainScroll = new JScrollPane();
+	private JScrollPane mainScroll;
 	private JPanel mainLayout = new JPanel(new GridBagLayout());
 	
 	private JPanel planningLayout = new JPanel(new GridBagLayout());
-	private JScrollPane planningScroll = new JScrollPane();
-	private JTable planningTotal;
+	private JScrollPane planningScroll;
+	private JTable planningTotalTable;
 	
 	private JPanel phaseLayout = new JPanel(new GridBagLayout());
+	private JTable phaseTable;
+	
 	private JPanel injectedLayout = new JPanel(new GridBagLayout());
+	private JTable injectedTable;
+
 	private JPanel removedLayout = new JPanel(new GridBagLayout());
+	private JTable removedTable;
 	
 	public SummaryPanel(PSPPanel parent) {
 		parentPanel = parent;
@@ -83,6 +90,8 @@ public class SummaryPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
 		mainLayout.add(planningLayout,gbc);
 		
+		planningScroll = new JScrollPane();
+		
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
 		planningLayout.add(planningScroll,gbc);
 		
@@ -91,25 +100,71 @@ public class SummaryPanel extends JPanel {
 								{ "Earned value", "[double]", "[double]", "[double]"} 
 							};
 		Object planningTotalColumnNames[] = { "Total", "Plan", "Actual", "Plan/Actual"};
-		planningTotal = new JTable(planningTotalRowData, planningTotalColumnNames);
+		planningTotalTable = new JTable(planningTotalRowData, planningTotalColumnNames);
 		
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
-		planningLayout.add(planningTotal,gbc);
+		planningLayout.add(planningTotalTable,gbc);
 		
 		// Phase layout (mid)
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
         mainLayout.add(phaseLayout,gbc);
         
+		Object phaseRowData[][] = { 
+				{ "Planning", "[int]", "[int]", "[int]", "[String]"},
+				{ "Design", "[int]", "[int]", "[int]", "[String]"},
+				{ "Code", "[int]", "[int]", "[int]", "[String]"},
+				{ "Compile", "[int]", "[int]", "[int]", "[String]"},
+				{ "Test", "[int]", "[int]", "[int]", "[String]"},
+				{ "Postmortem", "[int]", "[int]", "[int]", "[String]"},
+				{ "Total", "[int]", "[int]", "[int]", "[String]"}
+			};
+		Object phaseColumnNames[] = { "Time in Phase (In Minutes)", "Plan", "Actual", "To Date", "To Date %"};
+		phaseTable = new JTable(phaseRowData, phaseColumnNames);
+        
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
+		phaseLayout.add(phaseTable,gbc);
+
         // Injected layout (mid)
         gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
         mainLayout.add(injectedLayout,gbc);
         
+		Object injectRowData[][] = { 
+				{ "Planning", "", "[int]", "[int]", "[String]"},
+				{ "Design", "", "[int]", "[int]", "[String]"},
+				{ "Code", "", "[int]", "[int]", "[String]"},
+				{ "Compile", "", "[int]", "[int]", "[String]"},
+				{ "Test", "", "[int]", "[int]", "[String]"},
+				{ "Postmortem", "", "[int]", "[int]", "[String]"},
+				{ "Total", "", "[int]", "[int]", "[String]"}
+			};
+		Object injectColumnNames[] = { "Time in Phase (In Minutes)", "", "Actual", "To Date", "To Date %"};
+		injectedTable = new JTable(injectRowData, injectColumnNames);
+
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
+        injectedLayout.add(injectedTable,gbc);
+
         // Removed layout (bottom)
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
         mainLayout.add(removedLayout,gbc);
-		
+
+		Object removedRowData[][] = { 
+				{ "Planning", "", "[int]", "[int]", "[String]"},
+				{ "Design", "", "[int]", "[int]", "[String]"},
+				{ "Code", "", "[int]", "[int]", "[String]"},
+				{ "Compile", "", "[int]", "[int]", "[String]"},
+				{ "Test", "", "[int]", "[int]", "[String]"},
+				{ "Postmortem", "", "[int]", "[int]", "[String]"},
+				{ "Total", "", "[int]", "[int]", "[String]"}
+			};
+		Object removedColumnNames[] = { "Time in Phase (In Minutes)", "", "Actual", "To Date", "To Date %"};
+		removedTable = new JTable(removedRowData, removedColumnNames);
+
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
+        removedLayout.add(removedTable,gbc);
+        
 		// Add main scroll to SummaryPanel
-		mainScroll.add(mainLayout);
+		mainScroll = new JScrollPane(mainLayout);
+
 		add(mainScroll);
 	}
 	
