@@ -261,7 +261,7 @@ public class DefectListImplTest {
 			}
 		}
 		
-		defectlist.createDefect(new CalendarDate("4/14/4$"), "50 Interface", injphase4, Util.getMillisFromMinutes("55"),
+		defectlist.createDefect(new CalendarDate("4/14/42"), "50 Interface", injphase4, Util.getMillisFromMinutes("55"),
 				Util.getMillisFromMinutes("0"), new CalendarDate("4/14/16"), remphase4, "stan", "the 4 defect", true);
 		
 		assert(defectlist.getAllDefects().size() == 4);
