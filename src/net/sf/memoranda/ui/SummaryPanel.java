@@ -1,10 +1,16 @@
 package net.sf.memoranda.ui;
 
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Defect;
@@ -12,6 +18,7 @@ import net.sf.memoranda.Phase;
 import net.sf.memoranda.TaskPlanningEntry;
 import net.sf.memoranda.TimeEntry;
 import net.sf.memoranda.TimeLogImpl;
+import net.sf.memoranda.util.ColorScheme;
 
 public class SummaryPanel extends JPanel {
 
@@ -22,6 +29,18 @@ public class SummaryPanel extends JPanel {
 	private HashMap<Phase, Integer> timeInPhase;
 	private HashMap<Phase, Integer> defectsInjected;
 	private HashMap<Phase, Integer> defectsRemoved;
+	
+	GridBagConstraints gbc;
+	private JScrollPane mainScroll = new JScrollPane();
+	private JPanel mainLayout = new JPanel(new GridBagLayout());
+	
+	private JPanel planningLayout = new JPanel(new GridBagLayout());
+	private JScrollPane planningScroll = new JScrollPane();
+	private JTable planningTotal;
+	
+	private JPanel phaseLayout = new JPanel(new GridBagLayout());
+	private JPanel injectedLayout = new JPanel(new GridBagLayout());
+	private JPanel removedLayout = new JPanel(new GridBagLayout());
 	
 	public SummaryPanel(PSPPanel parent) {
 		parentPanel = parent;
@@ -55,7 +74,43 @@ public class SummaryPanel extends JPanel {
 	}
 	
 	void jbInit() {
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
+        
+		this.setBackground(ColorScheme.getColor("taskbar_primary"));
 		
+		// Planning layout (top)
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
+		mainLayout.add(planningLayout,gbc);
+		
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
+		planningLayout.add(planningScroll,gbc);
+		
+		Object planningTotalRowData[][] = { 
+								{ "Schedule hours", "[double]", "[double]", "[double]"},
+								{ "Earned value", "[double]", "[double]", "[double]"} 
+							};
+		Object planningTotalColumnNames[] = { "Total", "Plan", "Actual", "Plan/Actual"};
+		planningTotal = new JTable(planningTotalRowData, planningTotalColumnNames);
+		
+        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
+		planningLayout.add(planningTotal,gbc);
+		
+		// Phase layout (mid)
+        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
+        mainLayout.add(phaseLayout,gbc);
+        
+        // Injected layout (mid)
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
+        mainLayout.add(injectedLayout,gbc);
+        
+        // Removed layout (bottom)
+        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 0; gbc.gridheight = 0; gbc.insets = new Insets(0,0,0,0);
+        mainLayout.add(removedLayout,gbc);
+		
+		// Add main scroll to SummaryPanel
+		mainScroll.add(mainLayout);
+		add(mainScroll);
 	}
 	
 	@SuppressWarnings("unchecked")
