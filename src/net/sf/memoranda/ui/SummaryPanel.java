@@ -456,7 +456,7 @@ public class SummaryPanel extends JPanel {
 			if (actualHours.containsKey(week))
 				actualHours.put(week, actualHours.get(week) + entry.getDeltaTime());
 			else
-				actualHours.put(week, (double) entry.getDeltaTime() / 60);
+				actualHours.put(week, (double) entry.getDeltaTime());
 		}
 		
 		// Defect Log
