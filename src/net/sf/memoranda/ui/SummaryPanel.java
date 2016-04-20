@@ -101,7 +101,7 @@ public class SummaryPanel extends JPanel {
 			jbInit();
 		});
         
-        PSPDefectPanel.addDefectListListener(() -> {
+        DefectPanel.addDefectListListener(() -> {
         	jbInit();
         });
         
@@ -111,6 +111,9 @@ public class SummaryPanel extends JPanel {
 	}
 	
 	void jbInit() {
+		this.removeAll();
+		this.revalidate();
+		
 		this.aggregatePSPData();
 		
         scrollLayout.setLayout(new BoxLayout(scrollLayout, BoxLayout.Y_AXIS));

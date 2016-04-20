@@ -46,7 +46,7 @@ import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.Util;
 
-public class PSPDefectPanel extends JPanel {
+public class DefectPanel extends JPanel {
 	
 	private PSPPanel parentPanel = null;
 	
@@ -72,7 +72,7 @@ public class PSPDefectPanel extends JPanel {
 	
 	private static Vector<DefectListListener> defectListListeners = new Vector<DefectListListener>();
 	
-	public PSPDefectPanel(PSPPanel pspPanel) {
+	public DefectPanel(PSPPanel pspPanel) {
 		setLayout(null);
         try {
             parentPanel = pspPanel;
