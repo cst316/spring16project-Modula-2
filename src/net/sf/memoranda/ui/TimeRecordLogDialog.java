@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -141,25 +142,14 @@ public class TimeRecordLogDialog extends JDialog {
             header.setText("New Timelog Entry");
             header.setIcon(new ImageIcon(net.sf.memoranda.ui.TaskDialog.class.getResource(
                 "resources/icons/task48.png")));
-            GridBagConstraints gbCon = new GridBagConstraints();
-            gbCon.gridwidth = GridBagConstraints.REMAINDER;
-            gbCon.weighty = 1;
-            gbCon = new GridBagConstraints();
-            gbCon.gridwidth = GridBagConstraints.REMAINDER;
-            gbCon.weighty = 1;
-            gbCon.anchor = GridBagConstraints.WEST;
-            gbCon = new GridBagConstraints();
-            gbCon.gridwidth = GridBagConstraints.REMAINDER;
-            gbCon.weighty = 3;
  
             jInteruptionTime.setMaximumSize(new Dimension(100, 16));
             jInteruptionTime.setMinimumSize(new Dimension(60, 16));
             jInteruptionTime.setText("Interruption Time");
  
             startDate.setBorder(border8);
-            startDate.setPreferredSize(new Dimension(80, 24));                
-            SimpleDateFormat sdf = new SimpleDateFormat();
-            sdf = (SimpleDateFormat)DateFormat.getDateInstance(DateFormat.SHORT);
+            startDate.setPreferredSize(new Dimension(80, 24));
+            SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateInstance(DateFormat.SHORT);
             // //Added by (jcscoobyrs) on 14-Nov-2003 at 10:45:16 PM
             startDate.setEditor(new JSpinner.DateEditor(startDate, sdf.toPattern()));
  
@@ -260,9 +250,15 @@ public class TimeRecordLogDialog extends JDialog {
         	
         	String comments = textArea.getText();
         	
-        	CurrentProject.getTimeLog().addTimeEntry(date, startTime, endTime, interruptionTime, phase, comments);
-        	
-            this.dispose();
+        	// Validate input and display message to user if invalid
+        	if (startTime.after(endTime))
+        		JOptionPane.showMessageDialog(this, "Invalid start/end time.");
+        	else if (interruptionTime * 1000L > (endTime.getTimeInMillis() - startTime.getTimeInMillis()))
+        		JOptionPane.showMessageDialog(this, "Invalid interruption time.");
+        	else {
+	        	CurrentProject.getTimeLog().addTimeEntry(date, startTime, endTime, interruptionTime, phase, comments);
+	            this.dispose();
+        	}
         }
  
         void cancelB_actionPerformed(ActionEvent e) {

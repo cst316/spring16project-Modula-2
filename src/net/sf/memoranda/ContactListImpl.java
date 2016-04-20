@@ -13,7 +13,7 @@ import nu.xom.Elements;
 
 public class ContactListImpl implements ContactList {
 
-	private static Vector<ContactListener> _listeners;
+	private static Vector<ContactListener> _listeners = new Vector<ContactListener>();;
 	
 	private Vector<Contact> _vector;
 	private Project _project = null;
@@ -24,7 +24,6 @@ public class ContactListImpl implements ContactList {
 		_doc = doc;
 		_root = _doc.getRootElement();
 		_vector = new Vector<Contact>();
-		_listeners = new Vector<ContactListener>();
 		
 		// populate _vector with Contact objects
 		Elements elements = _root.getChildElements();
@@ -37,7 +36,6 @@ public class ContactListImpl implements ContactList {
 		_root = new Element("contactlist");
 		_doc = new Document(_root);
 		_vector = new Vector<Contact>();
-		_listeners = new Vector<ContactListener>();
 		_project = prj;
 	}
 

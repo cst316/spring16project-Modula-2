@@ -145,7 +145,7 @@ public class TimeLogPanel extends JPanel {
     	TimeRecordLogDialog dlg = new TimeRecordLogDialog(App.getFrame(), Local.getString("New task"));
 
         int entryInterruptTime = entry.getInterruptionTime();
-        int hour = (int) Math.floor(entryInterruptTime/60);
+        int hour = (int) Math.floor(entryInterruptTime / 60.0);
         int minute = entryInterruptTime%60;
         
         String dateString = Integer.toString(hour) + ":" + Integer.toString(minute) + ":0";

@@ -93,8 +93,8 @@ public class TimeLogTable extends JTable {
 		
 		StringBuilder sb = new StringBuilder();
 		
-		String hour = new Integer(calendar.get(Calendar.HOUR_OF_DAY)).toString();
-		String min = new Integer(calendar.get(Calendar.MINUTE)).toString();
+		String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+		String min = String.valueOf(calendar.get(Calendar.MINUTE));
 		
 		sb.append(hour);
 		sb.append(":");
