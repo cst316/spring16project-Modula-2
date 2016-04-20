@@ -22,6 +22,7 @@ import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Defect;
 import net.sf.memoranda.Phase;
 import net.sf.memoranda.TaskPlanningEntry;
+import net.sf.memoranda.TaskPlanningLogImpl;
 import net.sf.memoranda.TimeEntry;
 import net.sf.memoranda.TimeLogImpl;
 import net.sf.memoranda.util.ColorScheme;
@@ -105,7 +106,7 @@ public class SummaryPanel extends JPanel {
         	jbInit();
         });
         
-        TimeLogImpl.addTimeLogListener(() -> {
+        TaskPlanningLogImpl.addTaskPlanningLogListener(() -> {
         	jbInit();
         });
 	}
