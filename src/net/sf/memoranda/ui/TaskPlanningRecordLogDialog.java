@@ -157,7 +157,7 @@ public class TaskPlanningRecordLogDialog extends JDialog {
         logLayout.add(completedCheckbox,gbc);
         
         // Earned value label
-        earnedValueLabel.setText("Planned value:");
+        earnedValueLabel.setText("Earned value:");
         gbc.gridx = 3; gbc.gridy = 1; gbc.insets = new Insets(32,8,0,16);
         logLayout.add(earnedValueLabel,gbc);
         
