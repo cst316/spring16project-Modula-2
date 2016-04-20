@@ -209,6 +209,7 @@ public class SummaryPanel extends JPanel {
 
 		planningWeekScrollPane = new JScrollPane(planningWeekScrollPanePanel);
 		planningWeekScrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE,128));
+		planningWeekScrollPane.setPreferredSize(new Dimension(1152,128));
 		planningWeekScrollPane.setBackground(ColorScheme.getColor("taskbar_primary"));
 		planningWeekScrollPane.setBorder(null);
 		
@@ -267,6 +268,7 @@ public class SummaryPanel extends JPanel {
 		phaseTable.setDefaultRenderer(Object.class, cellRenderer);
 		phaseTable.setBackground(ColorScheme.getColor("taskbar_primary"));
         
+		phaseLayout.setMaximumSize(new Dimension(1152,Integer.MAX_VALUE));
 		phaseLayout.add(phaseTable, BorderLayout.CENTER);
 
         // Injected layout (mid)
@@ -297,6 +299,8 @@ public class SummaryPanel extends JPanel {
 		}
 		injectedTable.setDefaultRenderer(Object.class, cellRenderer);
 		injectedTable.setBackground(ColorScheme.getColor("taskbar_primary"));
+		
+		injectedLayout.setMaximumSize(new Dimension(1152,Integer.MAX_VALUE));
         injectedLayout.add(injectedTable, BorderLayout.CENTER);
 
         // Removed layout (bottom)
@@ -328,6 +332,7 @@ public class SummaryPanel extends JPanel {
 		removedTable.setDefaultRenderer(Object.class, cellRenderer);
 		removedTable.setBackground(ColorScheme.getColor("taskbar_primary"));
 		
+		removedLayout.setMaximumSize(new Dimension(1152,Integer.MAX_VALUE));
         removedLayout.add(removedTable, BorderLayout.CENTER);
         
         // scrollLayout
