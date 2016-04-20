@@ -51,7 +51,7 @@ public class SummaryPanel extends JPanel {
 	
 	private JPanel planningLayout = new JPanel();
 	private JScrollPane planningWeekScrollPane;
-	private JPanel planningWeekScrollPanePanel = new JPanel();
+	private JPanel planningWeekScrollPanePanel;
 	private JTable planningTotalTable;
 	
 	private JPanel phaseLayout = new JPanel(new BorderLayout());
@@ -107,7 +107,8 @@ public class SummaryPanel extends JPanel {
 		scrollLayout.add(planningLayout, BorderLayout.CENTER);
 		
 		planningLayout.setLayout(new BoxLayout(planningLayout, BoxLayout.Y_AXIS));
-		planningWeekScrollPane = new JScrollPane(planningWeekScrollPanePanel);
+		
+		planningWeekScrollPanePanel = new JPanel();
 		planningWeekScrollPanePanel.setLayout(new BoxLayout(planningWeekScrollPanePanel, BoxLayout.Y_AXIS));
 		
 		// planning layout weeks
@@ -118,7 +119,7 @@ public class SummaryPanel extends JPanel {
 		if(union.size() > 0) {
 			JTable tempTable;
 			
-			for(int i = 0; i < union.size(); i++) {
+			for(int i : union) {
 				Object tempRowData[][] = new String[3][4];
 				Object tempColumnNames[] = {"","","",""};
 				
@@ -175,7 +176,7 @@ public class SummaryPanel extends JPanel {
 			}
 		}
 
-		planningWeekScrollPane.add(planningWeekScrollPanePanel);
+		planningWeekScrollPane = new JScrollPane(planningWeekScrollPanePanel);
 		planningLayout.add(planningWeekScrollPane, BorderLayout.CENTER);
 		
 		// planning layout total
