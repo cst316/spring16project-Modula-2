@@ -6,21 +6,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import net.sf.memoranda.date.CalendarDate;
 
-public class TasksTest {
-//start dates
+public class EventTest {
+//event dates
 	private CalendarDate sd1;
 	private CalendarDate sd2;
 	private CalendarDate sd3;
-//end dates
-	
-	private CalendarDate ed1;
-	private CalendarDate ed2;
-	private CalendarDate ed3;
+
 	
 //descriptions
-	private String des1;
-	private String des2;	
-	private String des3;
+	private String text1;
+	private String text2;	
+	private String text3;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -37,23 +33,22 @@ public class TasksTest {
 		sd2 = new CalendarDate(11,2,2016);
 		sd3 = new CalendarDate(10,2,2016);
 		
-//end date declarations
-		sd1 = new CalendarDate(10,2,2016);
-		sd2 = new CalendarDate(11,2,2016);
-		sd3 = new CalendarDate(10,2,2016);
 		
-//description declarations
-		des1 = "This is description 1!";
-		des2 = "This is description 2!";
-		des3 = "This is description 3!";
+//text declarations
+		text1 = "This is text 1!";
+		text2 = "This text 2!";
+		text3 = "This text 3!";
 	}
-	public void testTaskCreation() {
+	public void testEventCreation() {
 		//todo
 	}
-	public void testTaskDeletion(){
+	public void testEventRemoval(){
 		//todo
 	}
-	public void testTaskEdit(){
+	public void testEventEdit(){
+		//todo
+	}
+	public void testIsRepeatable(){
 		//todo
 	}
 
