@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -21,14 +22,17 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Defect;
 import net.sf.memoranda.DefectList;
+import net.sf.memoranda.DefectListImpl;
 import net.sf.memoranda.DefectListListener;
 import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Phase;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectListener;
 import net.sf.memoranda.ResourcesList;
@@ -36,6 +40,7 @@ import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
+import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
@@ -47,7 +52,7 @@ public class PSPDefectPanel extends JPanel {
 	
     BorderLayout borderLayout1 = new BorderLayout();
 
-	JToolBar defectsToolBar = new JToolBar();
+	JToolBar defectsToolbar = new JToolBar();
 	JButton newDefectB = new JButton();
     JButton subDefectB = new JButton();
     JButton editDefectB = new JButton();
@@ -80,7 +85,9 @@ public class PSPDefectPanel extends JPanel {
     
     void jbInit() throws Exception {
     	
-    	defectsToolBar.setFloatable(false);
+    	defectsToolbar.setFloatable(false);
+    	defectsToolbar.setBackground(ColorScheme.getColor("taskbar_primary"));
+    	defectsToolbar.setBorder(null);
     		
     	newDefectB.setIcon(
                 new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
@@ -96,6 +103,7 @@ public class PSPDefectPanel extends JPanel {
                 newDefectB_actionPerformed(e);
             }
         });
+        newDefectB.setBackground(ColorScheme.getColor("taskbar_primary"));
         newDefectB.setBorderPainted(false);
 		
         editDefectB.setIcon(
@@ -112,6 +120,7 @@ public class PSPDefectPanel extends JPanel {
         editDefectB.setToolTipText(Local.getString("Edit defect"));
         editDefectB.setMinimumSize(new Dimension(24, 24));
         editDefectB.setMaximumSize(new Dimension(24, 24));
+        editDefectB.setBackground(ColorScheme.getColor("taskbar_primary"));
         
         removeDefectB.setIcon(
                 new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_remove.png")));
@@ -127,6 +136,7 @@ public class PSPDefectPanel extends JPanel {
         removeDefectB.setToolTipText(Local.getString("Remove defect"));
         removeDefectB.setMinimumSize(new Dimension(24, 24));
         removeDefectB.setMaximumSize(new Dimension(24, 24));
+        removeDefectB.setBackground(ColorScheme.getColor("taskbar_primary"));
         
         completeDefectB.setIcon(
                 new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
@@ -142,6 +152,7 @@ public class PSPDefectPanel extends JPanel {
         completeDefectB.setToolTipText(Local.getString("Complete defect"));
         completeDefectB.setMinimumSize(new Dimension(24, 24));
         completeDefectB.setMaximumSize(new Dimension(24, 24));
+        completeDefectB.setBackground(ColorScheme.getColor("taskbar_primary"));
         
         ppShowActiveOnlyChB.setFont(new java.awt.Font("Dialog", 1, 11));
 		ppShowActiveOnlyChB.setText(
@@ -217,13 +228,13 @@ public class PSPDefectPanel extends JPanel {
 		scrollPane.getViewport().setBackground(Color.white);
 		scrollPane.getViewport().add(defectTable, null);
 		this.add(scrollPane, BorderLayout.CENTER);
-        defectsToolBar.add(newDefectB, null);
-        defectsToolBar.add(removeDefectB, null);
-        defectsToolBar.addSeparator(new Dimension(8, 24));
-        defectsToolBar.add(editDefectB, null);
-        defectsToolBar.add(completeDefectB, null);
+        defectsToolbar.add(newDefectB, null);
+        defectsToolbar.add(removeDefectB, null);
+        defectsToolbar.addSeparator(new Dimension(8, 24));
+        defectsToolbar.add(editDefectB, null);
+        defectsToolbar.add(completeDefectB, null);
 
-        this.add(defectsToolBar, BorderLayout.NORTH);
+        this.add(defectsToolbar, BorderLayout.NORTH);
 
         PopupListener ppListener = new PopupListener();
         scrollPane.addMouseListener(ppListener);
@@ -310,7 +321,8 @@ public class PSPDefectPanel extends JPanel {
     }
 
 	protected void newDefectB_actionPerformed(ActionEvent arg0) {
-		DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("New Defect"));
+		DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("Record New Defect: " ) + (CurrentProject.getDefectList().getLastDefectId()));
+		
         defectdialog.spnDateFound.getModel().setValue(CurrentDate.get().getDate());
         defectdialog.setLocationRelativeTo(this);
         defectdialog.pack();
@@ -320,22 +332,35 @@ public class PSPDefectPanel extends JPanel {
             return;
         
         CalendarDate sd = new CalendarDate((Date) defectdialog.spnDateFound.getModel().getValue());
-        CalendarDate ed;
- 		
-        if(defectdialog.chkDateFixed.isSelected())
- 			ed = new CalendarDate((Date) defectdialog.spnDateFixed.getModel().getValue());
- 		else
- 			ed = null;
         
         long esttime = Util.getMillisFromMinutes(defectdialog.txtEstFixTime.getText());
         
+        String inj = defectdialog.cmbInjection.getSelectedItem().toString();
+    	Phase injphase = null;
+    	for (Phase p : Phase.values()) {
+			if (inj.equals(p.toString())) {
+				injphase = p;
+			}
+		}
+    	
+    	CalendarDate ed;
         long acttime;
+        String rem;
+        Phase remphase = null;
         boolean iscompleted;
         if(defectdialog.chkDateFixed.isSelected()) {
+        	ed = new CalendarDate((Date) defectdialog.spnDateFixed.getModel().getValue());
         	acttime = Util.getMillisFromMinutes(defectdialog.txtActFixTime.getText());
+        	rem = defectdialog.cmbRemove.getSelectedItem().toString();
+        	for (Phase p : Phase.values()) {
+    			if (rem.equals(p.toString())) {
+    				remphase = p;
+    			}
+    		}
         	iscompleted = true;
         }
         else {
+ 			ed = null;
         	acttime = 0;
         	iscompleted = false;
         }
@@ -346,9 +371,9 @@ public class PSPDefectPanel extends JPanel {
         else
         	fixref = null;
         	
-        Defect newDefect = CurrentProject.getDefectList().createDefect(sd, defectdialog.tfNumber.getText(), 
-        		defectdialog.cmbType.getSelectedItem().toString(), defectdialog.txtInjection.getText(), 
-        		esttime, acttime, ed, defectdialog.txtRemove.getText(), fixref, defectdialog.txtaDescription.getText(), iscompleted);
+        Defect newDefect = CurrentProject.getDefectList().createDefect(sd, defectdialog.cmbType.getSelectedItem().toString(), 
+        		injphase, esttime, acttime, ed, remphase, fixref, 
+        		defectdialog.txtaDescription.getText(), iscompleted);
         CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
         defectTable.tableChanged();
         
@@ -377,23 +402,19 @@ public class PSPDefectPanel extends JPanel {
 		Defect d =
 	            CurrentProject.getDefectList().getDefect(
 	                defectTable.getModel().getValueAt(defectTable.getSelectedRow(), DefectTable.DEFECT_ID).toString());
-	        DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("Edit Defect"));
+	        DefectDialog defectdialog = new DefectDialog(App.getFrame(), Local.getString("Edit Defect: ") + d.getDefectId());
 	        Dimension frmSize = App.getFrame().getSize();
 	        Point loc = App.getFrame().getLocation();
 	        defectdialog.setLocation((frmSize.width - defectdialog.getSize().width) / 2 + loc.x, (frmSize.height - defectdialog.getSize().height) / 2 + loc.y);
-	        defectdialog.tfNumber.setText(d.getDefectId());
-	        defectdialog.tfNumber.setEnabled(false);
 	        defectdialog.txtaDescription.setText(d.getDescription());
 	        defectdialog.spnDateFound.getModel().setValue(d.getDateFound().getDate());
 	        defectdialog.txtEstFixTime.setText(Long.toString(Util.getMinsFromMillis(d.getApproximateFixTimeInMillis())));
-	        defectdialog.txtInjection.setText(d.getInjection());
+	        defectdialog.cmbInjection.setSelectedItem(d.getInjection().toString());
 	        defectdialog.cmbType.setSelectedItem(d.getType());
-	        defectdialog.chkFixReference.setSelected(false);
-		
-		if(d.getIsCompleted() == false) {
-			defectdialog.chkDateFixed.setSelected(false);
-		}
-		else {
+	        
+	    
+		//Conditional for enabling defect completion properties
+		if(d.getIsCompleted() == true) {
 			defectdialog.chkDateFixed.setSelected(true);
 			defectdialog.lblDateFixed.setEnabled(true);
 			defectdialog.btnSetDateFixed.setEnabled(true);
@@ -403,41 +424,52 @@ public class PSPDefectPanel extends JPanel {
 			defectdialog.txtActFixTime.setEnabled(true);
 	        defectdialog.txtActFixTime.setText(Long.toString(Util.getMinsFromMillis(d.getFixTimeInMillis())));
 			defectdialog.lblRemove.setEnabled(true);
-			defectdialog.txtRemove.setEnabled(true);
-			defectdialog.txtRemove.setText(d.getRemove());
+			defectdialog.cmbRemove.setEnabled(true);
+			defectdialog.cmbRemove.setSelectedItem(d.getRemove().toString());
 		}
 		
+		//Conditional for enabling fix reference properties
 		if(d.getFixReference() != null) {
+			defectdialog.chkFixReference.setSelected(true);
 			defectdialog.lblFixReference.setEnabled(true);
 			defectdialog.txtFixReference.setEnabled(true);
-			defectdialog.chkFixReference.setSelected(true);
 	        defectdialog.txtFixReference.setText(d.getFixReference());
 		}
 		
-		defectdialog.setVisible(true);    
+		defectdialog.setVisible(true);
 	        
+		//Conditional when user closed application
         if (defectdialog.CANCELLED)
             return;
         
         CalendarDate sd = new CalendarDate((Date) defectdialog.spnDateFound.getModel().getValue());
-        CalendarDate ed;
- 		
-        if(defectdialog.chkDateFixed.isSelected()) {
- 			ed = new CalendarDate((Date) defectdialog.spnDateFixed.getModel().getValue());
-        }
-        else {
- 			ed = null;
- 		}
-        
         long esttime = Util.getMillisFromMinutes(defectdialog.txtEstFixTime.getText());
         
+        String inj = defectdialog.cmbInjection.getSelectedItem().toString();
+    	Phase injphase = null;
+    	for (Phase p : Phase.values()) {
+			if (inj.equals(p.toString())) {
+				injphase = p;
+			}
+		}
+        
+        CalendarDate ed;
         long acttime;
+        String rem = defectdialog.cmbRemove.getSelectedItem().toString();
+        Phase remphase = null;
         boolean iscompleted;
         if(defectdialog.chkDateFixed.isSelected()) {
+ 			ed = new CalendarDate((Date) defectdialog.spnDateFixed.getModel().getValue());
+ 			for (Phase p : Phase.values()) {
+ 				if (rem.equals(p.toString())) {
+ 					remphase = p;
+ 				}
+ 			}
         	acttime = Util.getMillisFromMinutes(defectdialog.txtActFixTime.getText());
         	iscompleted = true;
         }
         else {
+ 			ed = null;
         	acttime = 0;
         	iscompleted = false;
         }
@@ -448,13 +480,15 @@ public class PSPDefectPanel extends JPanel {
         else
         	fixref = null;
         	
-        d.editInjection(defectdialog.txtInjection.getText());
+        
+        
+        d.editInjection(injphase);
         d.editDateFound(sd);
         d.editType(defectdialog.cmbType.getSelectedItem().toString());
         d.editApproximateFixTimeInMillis(esttime);
         d.editFixTimeInMillis(acttime);
         d.editDateRemoved(ed);
-        d.editRemove(defectdialog.txtRemove.getText());
+        d.editRemove(remphase);
         d.editFixReference(fixref);
         d.editDescription(defectdialog.txtaDescription.getText());
         d.editCompleted(iscompleted);
@@ -470,6 +504,7 @@ public class PSPDefectPanel extends JPanel {
 	            CurrentProject.getDefectList().getDefect(
 	                defectTable.getModel().getValueAt(defectTable.getSelectedRow(), DefectTable.DEFECT_ID).toString());
 		d.editCompleted(true);
+		d.editDateRemoved(CalendarDate.today());
 		
 		CurrentStorage.get().storeDefectList(CurrentProject.getDefectList(), CurrentProject.get());
         defectTable.tableChanged();
@@ -515,9 +550,11 @@ public class PSPDefectPanel extends JPanel {
 		
 	}
 	
+	/*
 	protected void calcDefect_actionPerformed(ActionEvent e) {
 		
 	}
+	*/
 	
 	class PopupListener extends MouseAdapter {
 
@@ -553,7 +590,9 @@ public class PSPDefectPanel extends JPanel {
 	    newDefectB_actionPerformed(e);
 	  }
 	
+	  /*
 	  void ppCalcDefect_actionPerformed(ActionEvent e) {
 	      calcDefect_actionPerformed(e);
 	  }
+	  */
 }

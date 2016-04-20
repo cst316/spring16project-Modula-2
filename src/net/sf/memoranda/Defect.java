@@ -28,17 +28,17 @@ public interface Defect {
     String getType();
     
     //PHASE, NOT STRING
-    void setInjection(String injection);
+    void setInjection(Phase injection);
     
-    void editInjection(String injection);
+    void editInjection(Phase injection);
     
-    String getInjection();
+    Phase getInjection();
 
-    void setRemove(String remove);
+    void setRemove(Phase remove);
     
-    void editRemove(String remove);
+    void editRemove(Phase remove);
     
-    String getRemove();
+    Phase getRemove();
     
     void setApproximateFixTimeInMillis(long approx);
     
