@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,20 +19,21 @@ import net.sf.memoranda.ui.ProjectDialog;
 import net.sf.memoranda.ui.ProjectNewTeamMemberDialog;
 import net.sf.memoranda.util.Local;
 
-public class NewProjectTest {
-	ProjectDialog dlg = new ProjectDialog(null, Local.getString("New project"));
-	CalendarDate startDate = new CalendarDate((Date) dlg.startDate.getModel().getValue());
+public class ProjectTest {
+	
+	ProjectDialog dlg;
+	CalendarDate startDate = null;
     CalendarDate endDate = null;
     
-    ProjectDialog dlg1 = new ProjectDialog(null, Local.getString("New project"));
-	CalendarDate startDateExpected = new CalendarDate((Date) dlg1.startDate.getModel().getValue());
+    ProjectDialog dlg1;
+	CalendarDate startDateExpected = null;
     CalendarDate endDateExpected = null;
     
-	Project prjInjected = ProjectManager.createProject("Test", "Something About a project", startDate, endDate);
-	Project prjExpected = ProjectManager.createProject("Test", "Something About a project", startDateExpected, endDateExpected);
+	Project prjInjected;
+	Project prjExpected;
 	
-	static CurrentProject teamInjected = new CurrentProject();
-	static CurrentProject teamExpected = new CurrentProject();
+	static CurrentProject teamInjected = null;
+	static CurrentProject teamExpected = null;
 	
 	static String nameInjected = "bob";
 	static String phoneNumberInjected = "18008888888";
@@ -41,10 +43,9 @@ public class NewProjectTest {
 	static String phoneNumberExpected = "18008888888";
 	static String emailExpected = "bob@guy.com";
 	
-	
-	
 	@BeforeClass
 	public static void setUp() throws Exception {
+		
 		teamInjected.getContactList().addContact(
 				nameInjected,
         		emailInjected,
@@ -59,25 +60,38 @@ public class NewProjectTest {
 	List<Contact> contactsInjected = teamInjected.getContactList().getLog();
 	List<Contact> contactsExpected = teamExpected.getContactList().getLog();
 	
-
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
 	
+	@Before
+	public void setUpBefore() throws Exception {
+		dlg = new ProjectDialog(null, Local.getString("New project"));
+		startDate= new CalendarDate((Date) dlg.startDate.getModel().getValue());
+		dlg1 = new ProjectDialog(null, Local.getString("New project"));
+		startDateExpected = new CalendarDate((Date) dlg1.startDate.getModel().getValue());
+		prjInjected = ProjectManager.createProject("Test", "Something About a project", startDate, endDate);
+		prjExpected = ProjectManager.createProject("Test", "Something About a project", startDateExpected, endDateExpected);
+		teamInjected = new CurrentProject();
+		teamExpected = new CurrentProject();
+	}
+	
 	@Test
-	public void testNewProject(){
+	public void testNewProject() {
+		
 		assertEquals(prjExpected.getTitle(), prjInjected.getTitle());
 		assertEquals(prjExpected.getDescription(), prjInjected.getDescription());
 
 //		assertEquals(prjExpected.getStartDate().toString(), prjInjected.getStartDate().toString());
 //		assertEquals(prjExpected.getEndDate().toString(), prjInjected.getEndDate().toString());
 	}
+	
 	@Test
-	public void deleteProject(){
+	public void deleteProject() {
 	}
 	
 	@Test
-	public void teamMember(){
+	public void teamMember() {
 		for(Contact contactsExpected : contactsInjected ){
 			contactsExpected.getName();
 			contactsExpected.getEmail();

@@ -13,7 +13,7 @@ import net.sf.memoranda.TaskListImpl;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Util;
 
-public class TasksTest {
+public class TaskListImplTest {
 	
 	static TaskListImpl tasklist;
 	
