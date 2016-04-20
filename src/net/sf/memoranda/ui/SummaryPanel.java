@@ -2,6 +2,8 @@ package net.sf.memoranda.ui;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -178,11 +180,14 @@ public class SummaryPanel extends JPanel {
 				tempTable = new JTable(tempRowData, tempColumnNames);
 				tempTable.setEnabled(false);
 				tempTable.setBorder(null);
+				tempTable.setFont(new Font("Tahoma", Font.PLAIN, 16));
+				
 				planningWeekScrollPanePanel.add(tempTable, BorderLayout.CENTER);
 			}
 		}
 
 		planningWeekScrollPane = new JScrollPane(planningWeekScrollPanePanel);
+		planningWeekScrollPane.setMaximumSize(new Dimension(1920,128));
 		planningLayout.add(planningWeekScrollPane, BorderLayout.CENTER);
 		
 		// planning layout total
@@ -195,6 +200,7 @@ public class SummaryPanel extends JPanel {
 		planningTotalTable = new JTable(planningTotalRowData, planningTotalColumnNames);
 		planningTotalTable.setEnabled(false);
 		planningTotalTable.setBorder(null);
+		planningTotalTable.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
 		planningLayout.add(planningTotalTable, BorderLayout.CENTER);
 		
@@ -215,6 +221,7 @@ public class SummaryPanel extends JPanel {
 		phaseTable = new JTable(phaseRowData, phaseColumnNames);
 		phaseTable.setEnabled(false);
 		phaseTable.setBorder(null);
+		phaseTable.setFont(new Font("Tahoma", Font.PLAIN, 16));
         
 		phaseLayout.add(phaseTable, BorderLayout.CENTER);
 
@@ -235,6 +242,7 @@ public class SummaryPanel extends JPanel {
 		injectedTable = new JTable(injectRowData, injectColumnNames);
 		injectedTable.setEnabled(false);
 		injectedTable.setBorder(null);
+		injectedTable.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
         injectedLayout.add(injectedTable, BorderLayout.CENTER);
 
@@ -255,6 +263,7 @@ public class SummaryPanel extends JPanel {
 		removedTable = new JTable(removedRowData, removedColumnNames);
 		removedTable.setEnabled(false);
 		removedTable.setBorder(null);
+		removedTable.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
         removedLayout.add(removedTable, BorderLayout.CENTER);
         
@@ -271,6 +280,9 @@ public class SummaryPanel extends JPanel {
 		this.setBackground(ColorScheme.getColor("taskbar_primary"));
 		this.setLayout(new BorderLayout());
 		this.add(mainScroll,BorderLayout.CENTER);
+		
+		this.revalidate();
+		this.repaint();
 	}
 	
 	@SuppressWarnings("unchecked")
