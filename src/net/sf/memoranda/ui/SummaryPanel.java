@@ -406,8 +406,8 @@ public class SummaryPanel extends JPanel {
 		// Defect Log
 		Collection<Defect> defects = CurrentProject.getDefectList().getAllDefects();
 		for (Defect defect : defects) {
-			Phase injectionPhase = Phase.valueOf(defect.getInjection());
-			Phase removalPhase = Phase.valueOf(defect.getRemove());
+			Phase injectionPhase = defect.getInjection();
+			Phase removalPhase = defect.getRemove();
 			
 			if (injectionPhase != null)
 				defectsInjected.put(injectionPhase, defectsInjected.get(injectionPhase) + 1);
