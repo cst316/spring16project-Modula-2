@@ -1,12 +1,11 @@
 package net.sf.memoranda.ui;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -79,7 +78,6 @@ public class SummaryPanel extends JPanel {
 		timeInPhasePercentage = new HashMap<>();
 		
         try {
-        	aggregatePSPData();
             jbInit();
         }
         catch (Exception ex) {
@@ -101,6 +99,8 @@ public class SummaryPanel extends JPanel {
 	}
 	
 	void jbInit() {
+		this.aggregatePSPData();
+		
         scrollLayout.setLayout(new BoxLayout(scrollLayout, BoxLayout.Y_AXIS));
         
 		// Planning layout (top)
@@ -111,7 +111,70 @@ public class SummaryPanel extends JPanel {
 		planningWeekScrollPanePanel.setLayout(new BoxLayout(planningWeekScrollPanePanel, BoxLayout.Y_AXIS));
 		
 		// planning layout weeks
-		
+		Set<Integer> union = new HashSet<Integer>();
+		union.addAll(plannedValue.keySet());
+		union.addAll(actualValue.keySet());
+
+		if(union.size() > 0) {
+			JTable tempTable;
+			for(int i = 0; i < union.size(); i++) {
+				Object tempRowData[][] = new String[3][4];
+				Object tempColumnNames[] = {"","","",""};
+				
+				tempRowData[0][0] = "Week #" + Integer.toString(i);
+				tempRowData[0][1] = "Plan";
+				tempRowData[0][2] = "Actual";
+				tempRowData[0][3] = "Plan / Actual";
+				
+				tempRowData[1][0] = "Schedule hours for this week";
+				tempRowData[2][0] = "Earned value for this week";
+				
+				if(plannedHours.containsKey(i)) {
+					tempRowData[1][1] = Double.toString(plannedHours.get(i));
+				} else {
+					tempRowData[1][1] = "0";
+				}
+
+				if(plannedValue.containsKey(i)) {
+					tempRowData[2][1] = Double.toString(plannedValue.get(i));
+				} else {
+					tempRowData[2][1] = "0";
+				}
+				
+				if(actualHours.containsKey(i)) {
+					tempRowData[1][2] = Double.toString(actualHours.get(i));
+				} else {
+					tempRowData[1][2] = "0";
+				}
+
+				if(actualValue.containsKey(i)) {
+					tempRowData[2][2] = Double.toString(actualValue.get(i));
+				} else {
+					tempRowData[2][2] = "0";
+				}
+
+				if(actualHours.containsKey(i)) {
+					double temp = (plannedHours.containsKey(i) ? plannedHours.get(i) : 0);
+					tempRowData[1][3] = Double.toString(temp/actualHours.get(i));
+				} else {
+					tempRowData[1][3] = "Not applicable";
+				}
+
+				if(actualValue.containsKey(i)) {
+					double temp = (plannedValue.containsKey(i) ? plannedValue.get(i) : 0);
+					tempRowData[2][3] = Double.toString(temp/actualValue.get(i));
+				} else {
+					tempRowData[2][3] = "Not applicable";
+				}
+
+				tempTable = new JTable(tempRowData, tempColumnNames);
+				tempTable.setEnabled(false);
+				tempTable.setBorder(null);
+				planningWeekScrollPanePanel.add(tempTable);
+			}
+		}
+
+		planningWeekScrollPane.add(planningWeekScrollPanePanel);
 		planningLayout.add(planningWeekScrollPane);
 		
 		// planning layout total
