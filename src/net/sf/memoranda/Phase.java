@@ -8,7 +8,8 @@ public enum Phase {
 	CODE_REVIEW("Code Review"),
 	COMPILE("Compile"),
 	TEST("Test"),
-	POSTMORTEM("Postmortem");
+	POSTMORTEM("Postmortem"),
+	INVALID("Invalid");
 	
 	private String phaseName;
 	

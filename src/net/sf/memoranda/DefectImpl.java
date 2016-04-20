@@ -81,15 +81,27 @@ public class DefectImpl implements Defect {
 
 	@Override
 	public void setInjection(Phase injection) {
+		String injectionString;
+		if(injection == null) 
+			injectionString = Phase.INVALID.toString();
+		else 
+			injectionString = injection.toString();
+		
 		Element inj = new Element("injection");
-		inj.appendChild(injection.toString());
+		inj.appendChild(injectionString);
 		_element.appendChild(inj);
 	}
 	
 	@Override
 	public void editInjection(Phase injection) {
+		String injectionString;
+		if(injection == null) 
+			injectionString = Phase.INVALID.toString();
+		else 
+			injectionString = injection.toString();
+		
 		Element inj = new Element("injection");
-		inj.appendChild(injection.toString());
+		inj.appendChild(injectionString);
 		Elements old = _element.getChildElements("injection");
 		Element old2 = old.get(0);
 		_element.replaceChild(old2, inj);
@@ -111,7 +123,7 @@ public class DefectImpl implements Defect {
 	public void setRemove(Phase remove) {
 		String removeString;
 		if(remove == null) 
-			removeString = "";
+			removeString = Phase.INVALID.toString();
 		else 
 			removeString = remove.toString();
 		
@@ -124,7 +136,7 @@ public class DefectImpl implements Defect {
 	public void editRemove(Phase remove) {
 		String removeString;
 		if(remove == null) 
-			removeString = "";
+			removeString = Phase.INVALID.toString();
 		else 
 			removeString = remove.toString();
 		
