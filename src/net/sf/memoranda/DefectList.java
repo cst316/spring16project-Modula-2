@@ -10,12 +10,12 @@ public interface DefectList {
 	
 	Defect getDefect(String thisDefectId);
 	
-	int getNextDefectNumber();
+	String getLastDefectId();
+	
+    Defect createDefect(CalendarDate datefound, String type, Phase injection, long approximatefixtime, long fixtime,
+			CalendarDate datefixed, Phase fixremoval, String fixreference, String description, boolean isCompleted);
 
-    Defect createDefect(CalendarDate datefound, String number, String type, String injection, long approximatefixtime, long fixtime,
-			CalendarDate datefixed, String fixremoval, String fixreference, String description, boolean isCompleted);
-
-    void removeDefect(Defect defect);
+    boolean removeDefect(Defect defect);
     
     //void removeDefect(String number);
     
