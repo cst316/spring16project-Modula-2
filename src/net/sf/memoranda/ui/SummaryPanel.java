@@ -178,14 +178,14 @@ public class SummaryPanel extends JPanel {
 
 				if(actualHours.containsKey(i)) {
 					double temp = (plannedHours.containsKey(i) ? plannedHours.get(i) : 0);
-					tempRowData[1][3] = Double.toString(temp/actualHours.get(i));
+					tempRowData[1][3] = Double.toString(Math.round(temp/actualHours.get(i)*100.0)/100.0);
 				} else {
 					tempRowData[1][3] = "Not applicable";
 				}
 
 				if(actualValue.containsKey(i)) {
 					double temp = (plannedValue.containsKey(i) ? plannedValue.get(i) : 0);
-					tempRowData[2][3] = Double.toString(temp/actualValue.get(i));
+					tempRowData[2][3] = Double.toString(Math.round(temp/actualValue.get(i)*100.0)/100.0);
 				} else {
 					tempRowData[2][3] = "Not applicable";
 				}
@@ -225,6 +225,15 @@ public class SummaryPanel extends JPanel {
 								{ "Earned value", "[double]", "[double]", "[double]"} 
 							};
 		Object planningTotalColumnNames[] = { "", "", "", ""};
+		
+		planningTotalRowData[1][1] = totalPlannedHours;
+		planningTotalRowData[1][2] = totalActualHours;
+		planningTotalRowData[1][3] = Double.toString(Math.round(totalHoursRatio*100.0)/100.0);
+
+		planningTotalRowData[2][1] = totalPlannedValue;
+		planningTotalRowData[2][2] = totalEarnedValue;
+		planningTotalRowData[2][3] = Double.toString(Math.round(totalValueRatio*100.0)/100.0);
+		
 		planningTotalTable = new JTable(planningTotalRowData, planningTotalColumnNames);
 		planningTotalTable.setEnabled(false);
 		planningTotalTable.setBorder(null);
