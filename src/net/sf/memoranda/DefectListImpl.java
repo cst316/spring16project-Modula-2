@@ -16,7 +16,7 @@ public class DefectListImpl implements DefectList {
 	private Project _project = null;
     private Document _doc = null;
     private Element _root = null;
-    private int _pspdefectcount = 0;
+    private String _lastDefectId = null;
     
     /*
 	 * Hastable of "task" XOM elements for quick searching them by ID's
@@ -24,20 +24,34 @@ public class DefectListImpl implements DefectList {
 	 */
 	private Hashtable elements = new Hashtable();
 	
+	
+	//Used to loads current defect list from doc file
 	public DefectListImpl(Document doc, Project prj) {
         _doc = doc;
         _root = _doc.getRootElement();
+        _lastDefectId = _root.getAttributeValue("lastdefectid");
+        
+        // Legacy support, if user does not have an existing defect ID
+        if(_lastDefectId == null)
+        	_lastDefectId = "1";
+        
         _project = prj;
 		buildElements(_root);
-		_pspdefectcount = _root.getChildCount();
     }
 	
+	
+	//Used to create initial defect list when none exists
 	public DefectListImpl(Project prj) {
         _root = new Element("defectlist");
+        
+        // Legacy support, if user does not have an existing defect ID
+        if(_lastDefectId == null)
+        	_lastDefectId = "1";
+        
+		_root.addAttribute(new Attribute("lastdefectid","1"));
         _doc = new Document(_root);
         _project = prj;
-}
-	
+	}
 	
 	private void buildElements(Element parent) {
 		Elements els = parent.getChildElements("defect");
@@ -59,24 +73,24 @@ public class DefectListImpl implements DefectList {
 	}
 
 	@Override
-	public int getNextDefectNumber() {
-		return _pspdefectcount+1;
+	public String getLastDefectId() {
+		return _lastDefectId;
 	}
 
 	//PHASE for injection and remove, not Strings
 	@Override
-	public Defect createDefect(CalendarDate datefound, String id, String type, String injection,
-			long approximatefixtime, long fixtime, CalendarDate datefixed, String remove, String fixreference, 
+	public Defect createDefect(CalendarDate datefound, String type, Phase injection,
+			long approximatefixtime, long fixtime, CalendarDate datefixed, Phase remove, String fixreference,
 			String description, boolean isCompleted) {
 		
 		Element el = new Element("defect");
 		
-        el.addAttribute(new Attribute("id", id));
+        el.addAttribute(new Attribute("id", _lastDefectId));
         
         el.addAttribute(new Attribute("isCompleted", Boolean.toString(isCompleted)));
         
         Element inj = new Element("injection");
-        inj.appendChild(injection);
+        inj.appendChild(injection.toString());
         el.appendChild(inj);
                 
         Element dfou = new Element("dateFound");
@@ -100,7 +114,13 @@ public class DefectListImpl implements DefectList {
         el.appendChild(dfix);
         
         Element fixrem = new Element("remove");
-        fixrem.appendChild(remove != null? remove:"");
+        
+        if(remove == null) {
+        	fixrem.appendChild("");
+        }
+        else {
+        	fixrem.appendChild(remove.toString());
+        }
         el.appendChild(fixrem);
         
         Element fixref = new Element("fixReference");
@@ -111,27 +131,31 @@ public class DefectListImpl implements DefectList {
         desc.appendChild(description);
         el.appendChild(desc);
         
-		elements.put(id, el);
+		elements.put(_lastDefectId, el);
 		_root.appendChild(el);
 		
-		_pspdefectcount += 1;
-        
+		_lastDefectId = Integer.toString(Integer.parseInt(_lastDefectId) + 1);
+		
+		// Legacy support, if they don't have a previous defect ID
+		if(_root.getAttribute("lastdefectid") != null)
+			_root.removeAttribute(_root.getAttribute("lastdefectid"));
+
+		_root.addAttribute(new Attribute("lastdefectid", _lastDefectId));
+		
         return new DefectImpl(el, this);
 	}
 
 	@Override
-	public void removeDefect(Defect defect) {
-        _root.removeChild(defect.getContent());
-		elements.remove(defect.getDefectId());
+	public boolean removeDefect(Defect defect) {
+        try {
+        	_root.removeChild(defect.getContent());
+    		elements.remove(defect.getDefectId());
+    		return true;
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return false;
+        }
 	}
-
-	/*
-	@Override
-	public void removeDefect(String number) {
-		_root.removeChild(defect.getDefectId(number).getContent());
-		elements.remove(number);
-	}
-	*/
 
 	@Override
 	public Collection getAllDefects() {
