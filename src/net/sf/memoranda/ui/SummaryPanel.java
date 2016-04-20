@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -53,17 +54,21 @@ public class SummaryPanel extends JPanel {
 	private JScrollPane mainScroll;
 	private JPanel scrollLayout = new JPanel();
 	
+	private JLabel planningLabel = new JLabel();
 	private JPanel planningLayout = new JPanel();
 	private JScrollPane planningWeekScrollPane;
 	private JPanel planningWeekScrollPanePanel;
 	private JTable planningTotalTable;
 	
+	private JLabel phaseLabel = new JLabel();
 	private JPanel phaseLayout = new JPanel(new BorderLayout());
 	private JTable phaseTable;
 	
+	private JLabel injectedLabel = new JLabel();
 	private JPanel injectedLayout = new JPanel(new BorderLayout());
 	private JTable injectedTable;
 
+	private JLabel removedLabel = new JLabel();
 	private JPanel removedLayout = new JPanel(new BorderLayout());
 	private JTable removedTable;
 	
@@ -108,6 +113,10 @@ public class SummaryPanel extends JPanel {
         scrollLayout.setLayout(new BoxLayout(scrollLayout, BoxLayout.Y_AXIS));
         
 		// Planning layout (top)
+        planningLabel.setText("Planning Week Summary");
+        planningLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
+        planningLabel.setForeground(ColorScheme.getColor("taskbar_text"));
+        scrollLayout.add(planningLabel);
 		scrollLayout.add(planningLayout, BorderLayout.CENTER);
 		
 		planningLayout.setLayout(new BoxLayout(planningLayout, BoxLayout.Y_AXIS));
@@ -205,6 +214,10 @@ public class SummaryPanel extends JPanel {
 		planningLayout.add(planningTotalTable, BorderLayout.CENTER);
 		
 		// Phase layout (mid)
+        phaseLabel.setText("Phase Summary");
+        phaseLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
+        phaseLabel.setForeground(ColorScheme.getColor("taskbar_text"));
+        scrollLayout.add(phaseLabel);
         scrollLayout.add(phaseLayout);
         
 		Object phaseRowData[][] = { 
@@ -226,6 +239,10 @@ public class SummaryPanel extends JPanel {
 		phaseLayout.add(phaseTable, BorderLayout.CENTER);
 
         // Injected layout (mid)
+        injectedLabel.setText("Injected Bugs");
+        injectedLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
+        injectedLabel.setForeground(ColorScheme.getColor("taskbar_text"));
+        scrollLayout.add(injectedLabel);
         scrollLayout.add(injectedLayout);
         
 		Object injectRowData[][] = { 
@@ -247,6 +264,10 @@ public class SummaryPanel extends JPanel {
         injectedLayout.add(injectedTable, BorderLayout.CENTER);
 
         // Removed layout (bottom)
+        removedLabel.setText("Removed Bugs");
+        removedLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
+        removedLabel.setForeground(ColorScheme.getColor("taskbar_text"));
+        scrollLayout.add(removedLabel);
         scrollLayout.add(removedLayout);
 
 		Object removedRowData[][] = { 
