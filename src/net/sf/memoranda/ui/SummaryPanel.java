@@ -240,22 +240,38 @@ public class SummaryPanel extends JPanel {
 		planningLayout.add(planningTotalTable, BorderLayout.WEST);
 		
 		// Phase layout (mid)
-        phaseLabel.setText("Phase Summary");
+		Phase [] phases = Phase.values();
+		
+		phaseLabel.setText("Phase Summary");
         phaseLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
         phaseLabel.setForeground(ColorScheme.getColor("taskbar_text"));
         scrollLayout.add(phaseLabel);
         scrollLayout.add(phaseLayout);
         
 		Object phaseRowData[][] = { 
-				{ "Time in Phase (In Minutes)", "Plan", "Actual", "To Date %"},
-				{ "Planning", "[int]", "[int]", "[String]"},
-				{ "Design", "[int]", "[int]", "[String]"},
-				{ "Code", "[int]", "[int]", "[String]"},
-				{ "Compile", "[int]", "[int]", "[String]"},
-				{ "Test", "[int]", "[int]", "[String]"},
-				{ "Postmortem", "[int]", "[int]", "[String]"},
-				{ "Total", "[int]", "[int]", "[String]"}
+				{ "Time in Phase (In Minutes)", "", "Actual", "To Date %"},
+				{ "Planning", "", "[int]", "[String]"},
+				{ "Design", "", "[int]", "[String]"},
+				{ "Code", "", "[int]", "[String]"},
+				{ "Code Review", "", "[int]", "[String]"},
+				{ "Compile", "", "[int]", "[String]"},
+				{ "Test", "", "[int]", "[String]"},
+				{ "Postmortem", "", "[int]", "[String]"},
+				{ "Total", "", "[int]", "[String]"}
 			};
+		
+		// populate table
+		for (int i = 0; i < phases.length; i++) {
+			phaseRowData[i+1][2] = timeInPhase.get(phases[i]);
+			if (timeInPhasePercentage.get(phases[i]) == null)
+				phaseRowData[i+1][3] = timeInPhasePercentage.get(phases[i]) + "%";
+			else
+				phaseRowData[i+1][3] = "0%";
+		}
+		
+		phaseRowData[8][2] = totalActualHours;
+		phaseRowData[8][3] = "100%";
+		
 		Object phaseColumnNames[] = { "", "", "", ""};
 		phaseTable = new JTable(phaseRowData, phaseColumnNames);
 		phaseTable.setEnabled(false);
@@ -283,11 +299,25 @@ public class SummaryPanel extends JPanel {
 				{ "Planning", "", "[int]", "[String]"},
 				{ "Design", "", "[int]", "[String]"},
 				{ "Code", "", "[int]", "[String]"},
+				{ "Code Review", "", "[int]", "[String]"},
 				{ "Compile", "", "[int]", "[String]"},
 				{ "Test", "", "[int]", "[String]"},
 				{ "Postmortem", "", "[int]", "[String]"},
 				{ "Total", "", "[int]", "[String]"}
 			};
+		
+		// populate table
+		for (int i = 0; i < phases.length; i++) {
+			injectRowData[i+1][2] = defectsInjected.get(phases[i]);
+			if (defectsInjectedPercentage.get(phases[i]) == null)
+				injectRowData[i+1][3] = defectsInjectedPercentage.get(phases[i]) + "%";
+			else
+				injectRowData[i+1][3] = "0%";
+		}
+		
+		injectRowData[8][2] = totalDefectsInjected;
+		injectRowData[8][3] = "100%";
+		
 		Object injectColumnNames[] = {"","","",""};
 		injectedTable = new JTable(injectRowData, injectColumnNames);
 		injectedTable.setEnabled(false);
@@ -315,11 +345,25 @@ public class SummaryPanel extends JPanel {
 				{ "Planning", "", "[int]", "[String]"},
 				{ "Design", "", "[int]", "[String]"},
 				{ "Code", "", "[int]", "[String]"},
+				{ "Code Review", "", "[int]", "[String]"},
 				{ "Compile", "", "[int]", "[String]"},
 				{ "Test", "", "[int]", "[String]"},
 				{ "Postmortem", "", "[int]", "[String]"},
 				{ "Total", "", "[int]", "[String]"}
 			};
+		
+		// populate table
+		for (int i = 0; i < phases.length; i++) {
+			removedRowData[i+1][2] = defectsRemoved.get(phases[i]);
+			if (defectsRemovedPercentage.get(phases[i]) == null)
+				removedRowData[i+1][3] = defectsRemovedPercentage.get(phases[i]) + "%";
+			else
+				removedRowData[i+1][3] = "0%";
+		}
+		
+		removedRowData[8][2] = totalDefectsRemoved;
+		removedRowData[8][3] = "100%";
+		
 		Object removedColumnNames[] = {"","","",""};
 		removedTable = new JTable(removedRowData, removedColumnNames);
 		removedTable.setEnabled(false);
@@ -400,7 +444,7 @@ public class SummaryPanel extends JPanel {
 			if (actualHours.containsKey(week))
 				actualHours.put(week, actualHours.get(week) + entry.getDeltaTime());
 			else
-				actualHours.put(week, (double) entry.getDeltaTime());
+				actualHours.put(week, (double) entry.getDeltaTime() / 60);
 		}
 		
 		// Defect Log
