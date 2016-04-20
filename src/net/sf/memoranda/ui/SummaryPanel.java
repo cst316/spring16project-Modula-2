@@ -101,7 +101,7 @@ public class SummaryPanel extends JPanel {
 			jbInit();
 		});
         
-        PSPDefectPanel.addDefectListListener(() -> {
+        DefectPanel.addDefectListListener(() -> {
         	jbInit();
         });
         
@@ -111,6 +111,9 @@ public class SummaryPanel extends JPanel {
 	}
 	
 	void jbInit() {
+		this.removeAll();
+		this.revalidate();
+		
 		this.aggregatePSPData();
 		
         scrollLayout.setLayout(new BoxLayout(scrollLayout, BoxLayout.Y_AXIS));
@@ -272,8 +275,8 @@ public class SummaryPanel extends JPanel {
 		// populate table
 		for (int i = 0; i < phases.length; i++) {
 			phaseRowData[i+1][2] = timeInPhase.get(phases[i]);
-			if (timeInPhasePercentage.get(phases[i]) == null)
-				phaseRowData[i+1][3] = timeInPhasePercentage.get(phases[i]) + "%";
+			if (timeInPhasePercentage.get(phases[i]) != null)
+				phaseRowData[i+1][3] =  Math.round(timeInPhasePercentage.get(phases[i])*100d) + "%";
 			else
 				phaseRowData[i+1][3] = "0%";
 		}
@@ -318,8 +321,8 @@ public class SummaryPanel extends JPanel {
 		// populate table
 		for (int i = 0; i < phases.length; i++) {
 			injectRowData[i+1][2] = defectsInjected.get(phases[i]);
-			if (defectsInjectedPercentage.get(phases[i]) == null)
-				injectRowData[i+1][3] = defectsInjectedPercentage.get(phases[i]) + "%";
+			if (defectsInjectedPercentage.get(phases[i]) != null)
+				injectRowData[i+1][3] =  Math.round(defectsInjectedPercentage.get(phases[i])*100d) + "%";
 			else
 				injectRowData[i+1][3] = "0%";
 		}
@@ -364,8 +367,8 @@ public class SummaryPanel extends JPanel {
 		// populate table
 		for (int i = 0; i < phases.length; i++) {
 			removedRowData[i+1][2] = defectsRemoved.get(phases[i]);
-			if (defectsRemovedPercentage.get(phases[i]) == null)
-				removedRowData[i+1][3] = defectsRemovedPercentage.get(phases[i]) + "%";
+			if (defectsRemovedPercentage.get(phases[i]) != null)
+				removedRowData[i+1][3] =  Math.round(defectsRemovedPercentage.get(phases[i])*100d) + "%";
 			else
 				removedRowData[i+1][3] = "0%";
 		}
@@ -453,7 +456,7 @@ public class SummaryPanel extends JPanel {
 			if (actualHours.containsKey(week))
 				actualHours.put(week, actualHours.get(week) + entry.getDeltaTime());
 			else
-				actualHours.put(week, (double) entry.getDeltaTime() / 60);
+				actualHours.put(week, (double) entry.getDeltaTime());
 		}
 		
 		// Defect Log
@@ -464,8 +467,9 @@ public class SummaryPanel extends JPanel {
 			
 			if (injectionPhase != null)
 				defectsInjected.put(injectionPhase, defectsInjected.get(injectionPhase) + 1);
-			if (removalPhase != null)
-				defectsRemoved.put(removalPhase, defectsInjected.get(removalPhase) + 1);
+			if (removalPhase != null) {
+				defectsRemoved.put(removalPhase, defectsRemoved.get(removalPhase) + 1);
+			}
 		}
 		
 		// Totals
@@ -482,7 +486,7 @@ public class SummaryPanel extends JPanel {
 			totalActualHours += actualHours.get(key);
 		for (Phase key : defectsInjected.keySet())
 			totalDefectsInjected += defectsInjected.get(key);
-		for (Phase key : defectsRemoved.keySet())
+		for (Phase key : defectsRemoved.keySet()) 
 			totalDefectsRemoved += defectsRemoved.get(key);
 		for (int key : plannedValue.keySet())
 			totalPlannedValue += plannedValue.get(key);

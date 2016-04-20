@@ -109,15 +109,27 @@ public class DefectImpl implements Defect {
 
 	@Override
 	public void setRemove(Phase remove) {
+		String removeString;
+		if(remove == null) 
+			removeString = "";
+		else 
+			removeString = remove.toString();
+		
 		Element rem = new Element("remove");
-		rem.appendChild(remove.toString());
+		rem.appendChild(removeString);
 		_element.appendChild(rem);
 	}
 	
 	@Override
 	public void editRemove(Phase remove) {
+		String removeString;
+		if(remove == null) 
+			removeString = "";
+		else 
+			removeString = remove.toString();
+		
 		Element rem = new Element("remove");
-		rem.appendChild(remove.toString());
+		rem.appendChild(removeString);
 		Elements old = _element.getChildElements("remove");
 		Element old2 = old.get(0);
 		_element.replaceChild(old2, rem);
