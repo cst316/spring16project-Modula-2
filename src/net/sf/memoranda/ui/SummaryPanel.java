@@ -1,7 +1,9 @@
 package net.sf.memoranda.ui;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -112,14 +114,18 @@ public class SummaryPanel extends JPanel {
 		planningWeekScrollPanePanel.setLayout(new BoxLayout(planningWeekScrollPanePanel, BoxLayout.Y_AXIS));
 		
 		// planning layout weeks
-		Set<Integer> union = new HashSet<Integer>();
-		union.addAll(plannedValue.keySet());
-		union.addAll(actualValue.keySet());
+		Set<Integer> weeks = new HashSet<Integer>();
+		weeks.addAll(plannedValue.keySet());
+		weeks.addAll(actualValue.keySet());
 
-		if(union.size() > 0) {
+		if(weeks.size() > 0) {
 			JTable tempTable;
 			
-			for(int i : union) {
+			List<Integer> sortedWeeks = new ArrayList<>(weeks);
+			Collections.sort(sortedWeeks);
+			
+			for(int i : sortedWeeks) {
+				System.out.println(i);
 				Object tempRowData[][] = new String[3][4];
 				Object tempColumnNames[] = {"","","",""};
 				
