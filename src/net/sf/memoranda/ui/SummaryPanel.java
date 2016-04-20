@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -49,6 +50,8 @@ public class SummaryPanel extends JPanel {
 	
 	private double totalHoursRatio;
 	private double totalValueRatio;
+	
+	private SummaryPanelCellRenderer cellRenderer = new SummaryPanelCellRenderer();
 	
 	private JPanel mainLayout = new JPanel(new BorderLayout());
 	private JScrollPane mainScroll;
@@ -117,12 +120,14 @@ public class SummaryPanel extends JPanel {
         planningLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
         planningLabel.setForeground(ColorScheme.getColor("taskbar_text"));
         scrollLayout.add(planningLabel);
-		scrollLayout.add(planningLayout, BorderLayout.CENTER);
+		scrollLayout.add(planningLayout, BorderLayout.WEST);
 		
 		planningLayout.setLayout(new BoxLayout(planningLayout, BoxLayout.Y_AXIS));
 		
 		planningWeekScrollPanePanel = new JPanel();
 		planningWeekScrollPanePanel.setLayout(new BoxLayout(planningWeekScrollPanePanel, BoxLayout.Y_AXIS));
+		planningWeekScrollPanePanel.setBackground(ColorScheme.getColor("taskbar_primary"));
+		planningWeekScrollPanePanel.setBorder(null);
 		
 		// planning layout weeks
 		Set<Integer> weeks = new HashSet<Integer>();
@@ -136,7 +141,6 @@ public class SummaryPanel extends JPanel {
 			Collections.sort(sortedWeeks);
 			
 			for(int i : sortedWeeks) {
-				System.out.println(i);
 				Object tempRowData[][] = new String[3][4];
 				Object tempColumnNames[] = {"","","",""};
 				
@@ -189,15 +193,29 @@ public class SummaryPanel extends JPanel {
 				tempTable = new JTable(tempRowData, tempColumnNames);
 				tempTable.setEnabled(false);
 				tempTable.setBorder(null);
-				tempTable.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				
-				planningWeekScrollPanePanel.add(tempTable, BorderLayout.CENTER);
+				tempTable.getColumnModel().getColumn(0).setMaxWidth(384);
+				for(int j = 1; j < 4; j++) {
+					tempTable.getColumnModel().getColumn(j).setMaxWidth(128);
+					tempTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+				}
+				tempTable.setDefaultRenderer(Object.class, cellRenderer);
+				tempTable.setBackground(ColorScheme.getColor("taskbar_primary"));
+				
+				planningWeekScrollPanePanel.add(tempTable, BorderLayout.WEST);
+				planningWeekScrollPanePanel.add(Box.createRigidArea(new Dimension(8,8)));
 			}
 		}
 
 		planningWeekScrollPane = new JScrollPane(planningWeekScrollPanePanel);
-		planningWeekScrollPane.setMaximumSize(new Dimension(1920,128));
-		planningLayout.add(planningWeekScrollPane, BorderLayout.CENTER);
+		planningWeekScrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE,128));
+		planningWeekScrollPane.setBackground(ColorScheme.getColor("taskbar_primary"));
+		planningWeekScrollPane.setBorder(null);
+		
+		planningLayout.setMaximumSize(new Dimension(1152,Integer.MAX_VALUE));
+		planningLayout.add(planningWeekScrollPane, BorderLayout.WEST);
+		
+		planningLayout.add(Box.createRigidArea(new Dimension(16,16)));
 		
 		// planning layout total
 		Object planningTotalRowData[][] = { 
@@ -209,9 +227,16 @@ public class SummaryPanel extends JPanel {
 		planningTotalTable = new JTable(planningTotalRowData, planningTotalColumnNames);
 		planningTotalTable.setEnabled(false);
 		planningTotalTable.setBorder(null);
-		planningTotalTable.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		planningTotalTable.getColumnModel().getColumn(0).setMaxWidth(384);
+		for(int j = 1; j < 4; j++) {
+			planningTotalTable.getColumnModel().getColumn(j).setMaxWidth(128);
+			planningTotalTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		}
+		planningTotalTable.setDefaultRenderer(Object.class, cellRenderer);
+		planningTotalTable.setBackground(ColorScheme.getColor("taskbar_primary"));
 		
-		planningLayout.add(planningTotalTable, BorderLayout.CENTER);
+		planningLayout.setBackground(ColorScheme.getColor("taskbar_primary"));
+		planningLayout.add(planningTotalTable, BorderLayout.WEST);
 		
 		// Phase layout (mid)
         phaseLabel.setText("Phase Summary");
@@ -234,7 +259,13 @@ public class SummaryPanel extends JPanel {
 		phaseTable = new JTable(phaseRowData, phaseColumnNames);
 		phaseTable.setEnabled(false);
 		phaseTable.setBorder(null);
-		phaseTable.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		phaseTable.getColumnModel().getColumn(0).setMaxWidth(384);
+		for(int j = 1; j < 4; j++) {
+			phaseTable.getColumnModel().getColumn(j).setMaxWidth(128);
+			phaseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		}
+		phaseTable.setDefaultRenderer(Object.class, cellRenderer);
+		phaseTable.setBackground(ColorScheme.getColor("taskbar_primary"));
         
 		phaseLayout.add(phaseTable, BorderLayout.CENTER);
 
@@ -259,8 +290,13 @@ public class SummaryPanel extends JPanel {
 		injectedTable = new JTable(injectRowData, injectColumnNames);
 		injectedTable.setEnabled(false);
 		injectedTable.setBorder(null);
-		injectedTable.setFont(new Font("Tahoma", Font.PLAIN, 16));
-
+		injectedTable.getColumnModel().getColumn(0).setMaxWidth(384);
+		for(int j = 1; j < 4; j++) {
+			injectedTable.getColumnModel().getColumn(j).setMaxWidth(128);
+			injectedTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		}
+		injectedTable.setDefaultRenderer(Object.class, cellRenderer);
+		injectedTable.setBackground(ColorScheme.getColor("taskbar_primary"));
         injectedLayout.add(injectedTable, BorderLayout.CENTER);
 
         // Removed layout (bottom)
@@ -284,8 +320,14 @@ public class SummaryPanel extends JPanel {
 		removedTable = new JTable(removedRowData, removedColumnNames);
 		removedTable.setEnabled(false);
 		removedTable.setBorder(null);
-		removedTable.setFont(new Font("Tahoma", Font.PLAIN, 16));
-
+		removedTable.getColumnModel().getColumn(0).setMaxWidth(384);
+		for(int j = 1; j < 4; j++) {
+			removedTable.getColumnModel().getColumn(j).setMaxWidth(128);
+			removedTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		}
+		removedTable.setDefaultRenderer(Object.class, cellRenderer);
+		removedTable.setBackground(ColorScheme.getColor("taskbar_primary"));
+		
         removedLayout.add(removedTable, BorderLayout.CENTER);
         
         // scrollLayout
@@ -301,9 +343,6 @@ public class SummaryPanel extends JPanel {
 		this.setBackground(ColorScheme.getColor("taskbar_primary"));
 		this.setLayout(new BorderLayout());
 		this.add(mainScroll,BorderLayout.CENTER);
-		
-		this.revalidate();
-		this.repaint();
 	}
 	
 	@SuppressWarnings("unchecked")
