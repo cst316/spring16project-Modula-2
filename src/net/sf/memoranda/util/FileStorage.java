@@ -33,6 +33,8 @@ import net.sf.memoranda.ResourcesList;
 import net.sf.memoranda.ResourcesListImpl;
 import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskListImpl;
+import net.sf.memoranda.TaskPlanningLog;
+import net.sf.memoranda.TaskPlanningLogImpl;
 import net.sf.memoranda.TimeLog;
 import net.sf.memoranda.TimeLogImpl;
 import net.sf.memoranda.date.CalendarDate;
@@ -119,7 +121,6 @@ public class FileStorage implements Storage {
         doc.putProperty(
             javax.swing.text.Document.TitleProperty,
             note.getTitle());        
-        CalendarDate d = note.getDate();
 
         filename += note.getId();//d.getDay() + "-" + d.getMonth() + "-" + d.getYear();
         /*DEBUG*/System.out.println("[DEBUG] Save note: "+ filename);
@@ -420,6 +421,42 @@ public class FileStorage implements Storage {
         Document contactListDoc = list.getXMLContent();
         saveDocument(contactListDoc,JN_DOCPATH + prj.getID() + File.separator + ".contactList");
 	}
+	
+	@Override
+	public TaskPlanningLog openTaskPlanningLog(Project prj) {
+		String fn = JN_DOCPATH + prj.getID() + File.separator + ".taskplanninglog";
+
+        if (documentExists(fn)) {
+            /*DEBUG*/
+            System.out.println(
+                "[DEBUG] Open task planning log: "
+                    + JN_DOCPATH
+                    + prj.getID()
+                    + File.separator
+                    + ".taskplanninglog");
+            
+            Document taskPlanningLogDoc = openDocument(fn);
+            return new TaskPlanningLogImpl(taskPlanningLogDoc, prj);
+        }
+        else {
+            /*DEBUG*/
+            System.out.println("[DEBUG] New task planning log created");
+            return new TaskPlanningLogImpl(prj);
+        }
+	}
+
+	@Override
+	public void storeTaskPlanningLog(TaskPlanningLog log, Project prj) {
+		/*DEBUG*/
+        System.out.println(
+            "[DEBUG] Save task planning log: "
+                + JN_DOCPATH
+                + prj.getID()
+                + File.separator
+                + ".taskplanninglog");
+        Document taskPlanningLogDoc = log.getXMLContent();
+        saveDocument(taskPlanningLogDoc,JN_DOCPATH + prj.getID() + File.separator + ".taskplanninglog");
+	}
     
     /**
      * @see net.sf.memoranda.util.Storage#createProjectStorage(net.sf.memoranda.Project)
@@ -586,5 +623,5 @@ public class FileStorage implements Storage {
                 "");
         }
     }
-
+    
 }

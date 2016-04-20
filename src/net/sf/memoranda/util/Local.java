@@ -27,7 +27,7 @@ public class Local {
 	    	String fn = "messages_"
 	                    + currentLocale.getLanguage()
 	                    + ".properties";
-	        if (Configuration.get("LOCALES_DIR") != "") {
+	        if (!Configuration.get("LOCALES_DIR").equals("") || Configuration.get("LOCALES_DIR") == null) {
 	        	System.out.print("Look "+fn+" at: "+Configuration.get("LOCALES_DIR")+" ");
 	        	try {
 	        		messages.load(new FileInputStream(
@@ -60,18 +60,21 @@ public class Local {
     		messages = null;
     		
         /*** DEBUG PURPOSES ***/
-        System.out.println("Default locale: " + currentLocale.getDisplayName());
-        if (messages != null) {
+        //System.out.println("Default locale: " + currentLocale.getDisplayName());
+        
+    	if (messages != null) {
             System.out.println(
                 "Use local messages: messages_"
                     + currentLocale.getLanguage()
                     + ".properties");
         }
         else {
+        	/*
             System.out.println(
                 "* DEBUG: Locales are disabled or not found: messages_"
                     + currentLocale.getLanguage()
                     + ".properties");
+            */
         }        
         /**********************/
     }

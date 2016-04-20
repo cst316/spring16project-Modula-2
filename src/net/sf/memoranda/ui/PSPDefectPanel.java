@@ -407,7 +407,7 @@ public class PSPDefectPanel extends JPanel {
 			defectdialog.txtRemove.setText(d.getRemove());
 		}
 		
-		if(!d.getFixReference().equals(null)) {
+		if(d.getFixReference() != null) {
 			defectdialog.lblFixReference.setEnabled(true);
 			defectdialog.txtFixReference.setEnabled(true);
 			defectdialog.chkFixReference.setSelected(true);

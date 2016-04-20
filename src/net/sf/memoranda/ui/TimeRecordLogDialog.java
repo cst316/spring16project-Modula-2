@@ -32,7 +32,7 @@ import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
  
 public class TimeRecordLogDialog extends JDialog {
-        JPanel mPanel = new JPanel(new BorderLayout());
+      	JPanel mPanel = new JPanel(new BorderLayout());
         JPanel areaPanel = new JPanel();
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton cancelB = new JButton();
@@ -80,15 +80,15 @@ public class TimeRecordLogDialog extends JDialog {
         private final JTextArea textArea = new JTextArea();
  
         public TimeRecordLogDialog(Frame frame, String title) {
-        super(frame, title, true);
-        try {
-            jbInit();            
-            pack();
-        }
-        catch (Exception ex) {
-            new ExceptionDialog(ex);
-        }
-    }
+	        super(frame, title, true);
+	        try {
+	            jbInit();            
+	            pack();
+	        }
+	        catch (Exception ex) {
+	            new ExceptionDialog(ex);
+	        }
+	    }
  
         void jbInit() throws Exception {
             this.setResizable(false);
