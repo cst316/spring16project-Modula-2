@@ -18,12 +18,6 @@ import net.sf.memoranda.util.Util;
 public class DefectListImplTest {
 	
 	static DefectListImpl defectlist;
-	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		String[] starter = {"m", "e", "m", "o", "r", "a", "n", "d", "a"};
-		Start.main(starter);
-	}
 		
 	@Before
 	public void setUpBefore() throws Exception {
