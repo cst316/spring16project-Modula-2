@@ -362,10 +362,14 @@ public class DefectDialog extends JDialog {
         lblInjection.setLabelFor(cmbInjection);
         jpEstFixTime.add(lblInjection);
         jpEstFixTime.add(cmbInjection);
-        cmbInjection.setModel(new DefaultComboBoxModel(Phase.values()));
         
+        DefaultComboBoxModel cmbInjectionMdl = new DefaultComboBoxModel();
+        for(int i = 0; i < Phase.values().length; i++) {
+        	if(!Phase.values()[i].equals(Phase.INVALID))
+        		cmbInjectionMdl.addElement(Phase.values()[i]);
+        }
+        cmbInjection.setModel(cmbInjectionMdl);
         cmbInjection.setFont(new java.awt.Font("Dialog", 0, 11));
-        
         cmbInjection.setSelectedItem(Local.getString("Normal"));
        
         jPanel2.add(jpActFixTime, null);
@@ -378,14 +382,18 @@ public class DefectDialog extends JDialog {
         jpActFixTime.add(lblRemove);
         lblRemove.setEnabled(false);
         jpActFixTime.add(cmbRemove);
-        cmbRemove.setModel(new DefaultComboBoxModel(Phase.values()));
         
+        DefaultComboBoxModel cmbRemoveMdl = new DefaultComboBoxModel();
+        for(int i = 0; i < Phase.values().length; i++) {
+        	if(!Phase.values()[i].equals(Phase.INVALID))
+        		cmbRemoveMdl.addElement(Phase.values()[i]);
+        }
+        cmbRemove.setModel(cmbRemoveMdl);        
         cmbRemove.setFont(new java.awt.Font("Dialog", 0, 11));
-        
         cmbRemove.setSelectedItem(Local.getString("Normal"));
         cmbRemove.setEnabled(false);
-        
         lblRemove.setLabelFor(cmbRemove);
+        
         jPanel2.add(jpSetNotification, null);
         
         jpSetNotification.add(btnSetNotification, null);
