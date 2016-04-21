@@ -273,7 +273,7 @@ public class StickerDialog extends JDialog {
 			}
 		});
 		if (Context.get("TEXT_COLOR") != null) {
-			Color d = new Color(new Integer(Context.get("TEXT_COLOR").toString()).intValue());
+			Color d = new Color(Integer.parseInt(Context.get("TEXT_COLOR").toString()));
 			stickerText.setForeground(d);
 			int i = findColorIndex(d);
 			if (i > -1){

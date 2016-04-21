@@ -250,7 +250,7 @@ public class Local {
             return null;
         }
         try {
-            time[1] = new Integer(m).intValue();
+            time[1] = Integer.parseInt(m);
             if ((time[1] < 0) || (time[1] > 59)) {
                 time[1] = 0;
             }
