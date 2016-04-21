@@ -124,8 +124,6 @@ public class SummaryPanel extends JPanel {
         planningLabel.setText("Planning Week Summary");
         planningLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
         planningLabel.setForeground(ColorScheme.getColor("taskbar_text"));
-        scrollLayout.add(planningLabel);
-		scrollLayout.add(planningLayout, BorderLayout.WEST);
 		
 		planningLayout.setLayout(new BoxLayout(planningLayout, BoxLayout.Y_AXIS));
 		
@@ -252,7 +250,12 @@ public class SummaryPanel extends JPanel {
 		
 		planningLayout.setBackground(ColorScheme.getColor("taskbar_primary"));
 		planningLayout.add(planningTotalTable, BorderLayout.WEST);
-		
+
+		if(weeks.size() > 0) {
+			scrollLayout.add(planningLabel);
+			scrollLayout.add(planningLayout, BorderLayout.WEST);
+		}
+
 		// Phase layout (mid)
 		Phase [] phases = Phase.values();
 		
