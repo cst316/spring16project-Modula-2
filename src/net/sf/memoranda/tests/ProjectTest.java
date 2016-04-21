@@ -21,12 +21,10 @@ import net.sf.memoranda.util.Local;
 
 public class ProjectTest {
 	
-	ProjectDialog dlg;
-	CalendarDate startDate = null;
+	CalendarDate startDate = CalendarDate.today();
     CalendarDate endDate = null;
     
-    ProjectDialog dlg1;
-	CalendarDate startDateExpected = null;
+	static CalendarDate startDateExpected = null;
     CalendarDate endDateExpected = null;
     
 	Project prjInjected;
@@ -45,6 +43,8 @@ public class ProjectTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
+		
+
 		
 		teamInjected.getContactList().addContact(
 				nameInjected,
@@ -66,10 +66,7 @@ public class ProjectTest {
 	
 	@Before
 	public void setUpBefore() throws Exception {
-		dlg = new ProjectDialog(null, Local.getString("New project"));
-		startDate= new CalendarDate((Date) dlg.startDate.getModel().getValue());
-		dlg1 = new ProjectDialog(null, Local.getString("New project"));
-		startDateExpected = new CalendarDate((Date) dlg1.startDate.getModel().getValue());
+		
 		prjInjected = ProjectManager.createProject("Test", "Something About a project", startDate, endDate);
 		prjExpected = ProjectManager.createProject("Test", "Something About a project", startDateExpected, endDateExpected);
 		teamInjected = new CurrentProject();
@@ -81,9 +78,7 @@ public class ProjectTest {
 		
 		assertEquals(prjExpected.getTitle(), prjInjected.getTitle());
 		assertEquals(prjExpected.getDescription(), prjInjected.getDescription());
-
-//		assertEquals(prjExpected.getStartDate().toString(), prjInjected.getStartDate().toString());
-//		assertEquals(prjExpected.getEndDate().toString(), prjInjected.getEndDate().toString());
+		//assertEquals(prjExpected.getStartDate().toString(), prjInjected.getStartDate().toString());
 	}
 	
 	@Test
