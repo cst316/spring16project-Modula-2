@@ -624,8 +624,8 @@ public class AppFrame extends JFrame {
         Object fwo = Context.get("FRAME_WIDTH");
         Object fho = Context.get("FRAME_HEIGHT");
         if ((fwo != null) && (fho != null)) {
-            int w = new Integer((String) fwo).intValue();
-            int h = new Integer((String) fho).intValue();
+            int w = Integer.parseInt((String) fwo);
+            int h = Integer.parseInt((String) fho);
             this.setSize(w, h);
         }
         else

@@ -241,7 +241,7 @@ public class Local {
         }
         int[] time = new int[2];
         try {
-            time[0] = new Integer(h).intValue();
+            time[0] = Integer.parseInt(h);
             if ((time[0] < 0) || (time[0] > 23)) {
                 time[0] = 0;
             }

@@ -247,7 +247,7 @@ public class StickerDialog extends JDialog {
 		jPanel1.add(priorityList);
 		
 		if (Context.get("STICKER_COLOR") != null) {
-			Color c = new Color(new Integer(Context.get("STICKER_COLOR").toString()).intValue());
+			Color c = new Color(Integer.parseInt(Context.get("STICKER_COLOR").toString()));
 			stickerText.setBackground(c);
 			int i = findColorIndex(c);
 			if (i > -1)
