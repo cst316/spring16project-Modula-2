@@ -72,7 +72,7 @@ public class JNCalendar extends JTable {
 						return;
 					_date =
 						new CalendarDate(
-							new Integer(val.toString()).intValue(),
+							Integer.parseInt(val.toString()),
 							_date.getMonth(),
 							_date.getYear());
 					notifyListeners();
@@ -139,7 +139,7 @@ public class JNCalendar extends JTable {
 		if (d != null)
 			renderer.setDate(
 				new CalendarDate(
-					new Integer(d.toString()).intValue(),
+					Integer.parseInt(d.toString()),
 					_date.getMonth(),
 					_date.getYear()));
 		else
