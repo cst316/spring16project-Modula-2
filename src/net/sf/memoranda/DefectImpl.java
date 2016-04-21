@@ -116,7 +116,7 @@ public class DefectImpl implements Defect {
 				return phase;
 			}
 		}
-		return null;
+		return Phase.INVALID;
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class DefectImpl implements Defect {
 				return phase;
 			}
 		}
-		return null;
+		return Phase.INVALID;
 	}
 
 	@Override
