@@ -240,6 +240,14 @@ public class TimeRecordLogDialog extends JDialog {
         	it.setTime((Date) logInterruptTime.getValue());
         	interruptionTime += it.get(Calendar.HOUR_OF_DAY) * 60 + it.get(Calendar.MINUTE);
         	
+        	Calendar start = Calendar.getInstance();
+        	start.setTime((Date) logStartTime.getValue());
+        	int st = start.get(Calendar.HOUR_OF_DAY) * 60 + start.get(Calendar.MINUTE);
+        	
+        	Calendar end = Calendar.getInstance();
+        	end.setTime((Date) logEndTime.getValue());
+        	int et = end.get(Calendar.HOUR_OF_DAY) * 60 + end.get(Calendar.MINUTE);
+        	
         	String ps = dpPhaseSelector.getSelectedItem().toString();
         	Phase phase = null;
         	for (Phase p : Phase.values()) {
@@ -251,10 +259,11 @@ public class TimeRecordLogDialog extends JDialog {
         	String comments = textArea.getText();
         	
         	// Validate input and display message to user if invalid
-        	if (startTime.after(endTime))
+        	if (st > et)
         		JOptionPane.showMessageDialog(this, "Invalid start/end time.");
-        	else if (interruptionTime * 1000L > (endTime.getTimeInMillis() - startTime.getTimeInMillis()))
-        		JOptionPane.showMessageDialog(this, "Invalid interruption time.");
+        	else if (interruptionTime > et - st)
+        		JOptionPane.showMessageDialog(this, "Invalid interruption time. ");
+        	
         	else {
 	        	CurrentProject.getTimeLog().addTimeEntry(date, startTime, endTime, interruptionTime, phase, comments);
 	            this.dispose();
