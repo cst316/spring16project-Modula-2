@@ -22,6 +22,7 @@ import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Defect;
 import net.sf.memoranda.Phase;
 import net.sf.memoranda.TaskPlanningEntry;
+import net.sf.memoranda.TaskPlanningLogImpl;
 import net.sf.memoranda.TimeEntry;
 import net.sf.memoranda.TimeLogImpl;
 import net.sf.memoranda.util.ColorScheme;
@@ -51,43 +52,32 @@ public class SummaryPanel extends JPanel {
 	private double totalHoursRatio;
 	private double totalValueRatio;
 	
-	private SummaryPanelCellRenderer cellRenderer = new SummaryPanelCellRenderer();
+	private SummaryPanelCellRenderer cellRenderer;
 	
-	private JPanel mainLayout = new JPanel(new BorderLayout());
+	private JPanel mainLayout;
 	private JScrollPane mainScroll;
-	private JPanel scrollLayout = new JPanel();
+	private JPanel scrollLayout;
 	
-	private JLabel planningLabel = new JLabel();
-	private JPanel planningLayout = new JPanel();
+	private JLabel planningLabel;
+	private JPanel planningLayout;
 	private JScrollPane planningWeekScrollPane;
 	private JPanel planningWeekScrollPanePanel;
 	private JTable planningTotalTable;
 	
-	private JLabel phaseLabel = new JLabel();
-	private JPanel phaseLayout = new JPanel(new BorderLayout());
+	private JLabel phaseLabel;
+	private JPanel phaseLayout;
 	private JTable phaseTable;
 	
-	private JLabel injectedLabel = new JLabel();
-	private JPanel injectedLayout = new JPanel(new BorderLayout());
+	private JLabel injectedLabel;
+	private JPanel injectedLayout;
 	private JTable injectedTable;
 
-	private JLabel removedLabel = new JLabel();
-	private JPanel removedLayout = new JPanel(new BorderLayout());
+	private JLabel removedLabel;
+	private JPanel removedLayout;
 	private JTable removedTable;
 	
 	public SummaryPanel(PSPPanel parent) {
 		parentPanel = parent;
-		
-		plannedHours = new HashMap<>();
-		actualHours = new HashMap<>();
-		plannedValue = new HashMap<>();
-		actualValue = new HashMap<>();
-		timeInPhase = new HashMap<>();
-		defectsInjected = new HashMap<>();
-		defectsRemoved = new HashMap<>();
-		defectsInjectedPercentage = new HashMap<>();
-		defectsRemovedPercentage = new HashMap<>();
-		timeInPhasePercentage = new HashMap<>();
 		
         try {
             jbInit();
@@ -105,7 +95,7 @@ public class SummaryPanel extends JPanel {
         	jbInit();
         });
         
-        TimeLogImpl.addTimeLogListener(() -> {
+        TaskPlanningLogImpl.addTaskPlanningLogListener(() -> {
         	jbInit();
         });
 	}
@@ -113,6 +103,18 @@ public class SummaryPanel extends JPanel {
 	void jbInit() {
 		this.removeAll();
 		this.revalidate();
+		
+		cellRenderer = new SummaryPanelCellRenderer();
+		mainLayout = new JPanel(new BorderLayout());
+		scrollLayout = new JPanel();
+		planningLabel = new JLabel();
+		planningLayout = new JPanel();
+		phaseLabel = new JLabel();
+		phaseLayout = new JPanel(new BorderLayout());
+		injectedLabel = new JLabel();
+		injectedLayout = new JPanel(new BorderLayout());
+		removedLabel = new JLabel();
+		removedLayout = new JPanel(new BorderLayout());
 		
 		this.aggregatePSPData();
 		
@@ -408,6 +410,17 @@ public class SummaryPanel extends JPanel {
 	
 	@SuppressWarnings("unchecked")
 	private void aggregatePSPData() {
+		
+		plannedHours = new HashMap<>();
+		actualHours = new HashMap<>();
+		plannedValue = new HashMap<>();
+		actualValue = new HashMap<>();
+		timeInPhase = new HashMap<>();
+		defectsInjected = new HashMap<>();
+		defectsRemoved = new HashMap<>();
+		defectsInjectedPercentage = new HashMap<>();
+		defectsRemovedPercentage = new HashMap<>();
+		timeInPhasePercentage = new HashMap<>();
 		
 		// initialize maps
 		for (Phase phase : Phase.values()) {
