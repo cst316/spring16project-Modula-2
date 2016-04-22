@@ -39,8 +39,6 @@ public class ProjectManager {
         CurrentStorage.get().openProjectManager();
         if (_doc == null) {
             _root = new Element("projects-list");
-//            _root.addNamespaceDeclaration("jnotes", NS_JNPROJECT);
-//            _root.appendChild(new Comment("This is JNotes 2 data file. Do not modify."));
             _doc = new Document(_root);
             createProject("__default", Local.getString("Default project"), CalendarDate.today(), null);
         }

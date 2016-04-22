@@ -36,23 +36,25 @@ public class CurrentProject {
 
         
     static {
-        String prjId = (String)Context.get("LAST_OPENED_PROJECT_ID");
+        String prjId = (String) Context.get("LAST_OPENED_PROJECT_ID");
         if (prjId == null) {
             prjId = "__default";
             Context.put("LAST_OPENED_PROJECT_ID", prjId);
         }
-        //ProjectManager.init();
+        
         _project = ProjectManager.getProject(prjId);
 		
+        // Check if project fails to load
 		if (_project == null) {
-			// alexeya: Fixed bug with NullPointer when LAST_OPENED_PROJECT_ID
-			// references to missing project
-			_project = ProjectManager.getProject("__default");
-			if (_project == null) 
-				_project = (Project)ProjectManager.getActiveProjects().get(0);						
-            Context.put("LAST_OPENED_PROJECT_ID", _project.getID());
+			ProjectManager.init();
 			
-		}		
+			_project = ProjectManager.getProject("__default");
+			
+			if (_project == null) 
+				_project = (Project) ProjectManager.getActiveProjects().get(0);						
+
+			Context.put("LAST_OPENED_PROJECT_ID", _project.getID());
+		}
 		
 		_contactlist = CurrentStorage.get().openContactList(_project);
         _tasklist = CurrentStorage.get().openTaskList(_project);
@@ -78,7 +80,7 @@ public class CurrentProject {
     }
     
     public static TaskList getTaskList() {
-            return _tasklist;
+        return _tasklist;
     }
     
     public static DefectList getDefectList() {
@@ -86,7 +88,7 @@ public class CurrentProject {
     }
 
     public static NoteList getNoteList() {
-            return _notelist;
+        return _notelist;
     }
     
     public static TimeLog getTimeLog() {
@@ -98,7 +100,7 @@ public class CurrentProject {
     }
     
     public static ResourcesList getResourcesList() {
-            return _resources;
+        return _resources;
     }
 
     public static void set(Project project) {
