@@ -8,6 +8,7 @@
 #define MyAppExeName "Memoranda.jar"
 #define MyAppIcoName "memoranda_icon_32.ico"
 #define MyAppIcoNameUninstall "MemorandaUninstall.ico"
+#
 
 [Setup]
 AppId={{D62148CC-5565-410F-878C-EAF0D6A36626}
@@ -21,8 +22,8 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile=C:\Users\Eric\Desktop\MemorandaNew\Licence.txt
-InfoBeforeFile=C:\Users\Eric\Desktop\MemorandaNew\BeforeInstalltion.txt
+LicenseFile={#SourcePath}\Licence.txt
+InfoBeforeFile={#SourcePath}\BeforeInstalltion.txt
 OutputBaseFilename=setup
 Compression=lzma
 SolidCompression=yes
@@ -35,8 +36,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; \
     GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\Eric\Desktop\MemorandaNew\Memoranda.jar"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Eric\Desktop\MemorandaNew\{#MyAppIcoName}"; DestDir: "{app}"
+Source: "{#SourcePath}\Memoranda.jar"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}\{#MyAppIcoName}"; DestDir: "{app}"
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
