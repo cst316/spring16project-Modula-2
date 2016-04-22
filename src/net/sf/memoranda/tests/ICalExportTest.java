@@ -42,6 +42,9 @@ public class ICalExportTest {
 
 	@Test
 	public void iCalEventCountTest() {
+		// Checks if the iCal object has the correct number of VEvents.
+		// It should be the nonrecurring events + the recurring events + number of exception dates
+		// (Because an exception date splits a recurring event in two)
 		assertTrue(iCal.getComponents().size() == recurringCount+nonrecurringCount+exceptionDateCount);
 	}
 	
@@ -49,13 +52,16 @@ public class ICalExportTest {
 	public void iCalEventNameTest() {
 		ComponentList<CalendarComponent> iCalComponents = iCal.getComponents();
 		
+		// Not testing the count
 		if(iCalComponents.size() == 0)
 			return;
 		
+		// Get all the events (recurring + nonrecurring)
 		Vector<Event> allEvents = new Vector<Event>();
 		allEvents.addAll(EventsManager.getRepeatableEvents());
 		allEvents.addAll(EventsManager.getNonrecurringEvents());
 		
+		// Iterate through each iCal VEvent and check if it has a corresponding Memoranda Event
 		for(int i = 0; i < iCalComponents.size(); i++) {
 			boolean found = false;
 			String name = iCalComponents.get(i).getProperties().getProperty(Property.SUMMARY).getValue();
@@ -67,6 +73,7 @@ public class ICalExportTest {
 				}
 			}
 			
+			// Fail if it's not found
 			assertTrue(found);
 		}
 	}
