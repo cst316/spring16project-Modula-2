@@ -330,7 +330,9 @@ public class PreferencesDialog extends JDialog {
 		// Build appearance
 		String colorSetting = (String) Configuration.get("APPEAR_COLOR");
 		int colorSettingValue;
-		if(colorSetting.equals("")) {
+		
+		// If there's no preset (legacy support) set it to the default 220
+		if(colorSetting == null || colorSetting.equals("")) {
 			colorSettingValue = 220;
 		} else {
 			try {
@@ -374,6 +376,7 @@ public class PreferencesDialog extends JDialog {
 		gbc.gridy = 1;
 		appearPanel.add(appearHueB,gbc);
 	
+		// Hue color spinner (set to preset color and set the color as that)
 		appearHueSpinner.setValue(Math.max(0,colorSettingValue));
 		appearHueSpinner.getEditor().getComponent(0).setForeground(Color.getHSBColor((int) appearHueSpinner.getValue()/360f, 1f, 1f));
 		gbc = new GridBagConstraints();
@@ -388,6 +391,7 @@ public class PreferencesDialog extends JDialog {
 	        }
 	    });
 		
+		// If classic color scheme is set (-1) set it as selected
 		if(colorSetting.equals("-1")) {
 			appearDefaultB.setSelected(true);
 			appearHueB.setSelected(false);

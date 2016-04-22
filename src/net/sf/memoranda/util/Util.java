@@ -62,9 +62,9 @@ public class Util {
         int i1 = s.indexOf("/");
         int i2 = s.indexOf("/", i1 + 1);
         int[] date = new int[3];
-        date[0] = new Integer(s.substring(0, i1)).intValue();
-        date[1] = new Integer(s.substring(i1 + 1, i2)).intValue();
-        date[2] = new Integer(s.substring(i2 + 1)).intValue();
+        date[0] = Integer.parseInt(s.substring(0, i1));
+        date[1] = Integer.parseInt(s.substring(i1 + 1, i2));
+        date[2] = Integer.parseInt(s.substring(i2 + 1));
         return date;
     }
 
