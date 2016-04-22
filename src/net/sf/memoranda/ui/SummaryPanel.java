@@ -281,7 +281,7 @@ public class SummaryPanel extends JPanel {
 		// populate table
 		for (int i = 0; i < phases.length; i++) {
 			phaseRowData[i+1][2] = timeInPhase.get(phases[i]);
-			if (timeInPhasePercentage.get(phases[i]) != null)
+			if (timeInPhasePercentage.get(phases[i]) != null && !timeInPhasePercentage.get(phases[i]).isNaN())
 				phaseRowData[i+1][3] =  new DecimalFormat("#.#").format(timeInPhasePercentage.get(phases[i])*100d) + "%";
 			else
 				phaseRowData[i+1][3] = "0%";
@@ -327,7 +327,7 @@ public class SummaryPanel extends JPanel {
 		// populate table
 		for (int i = 0; i < phases.length; i++) {
 			injectRowData[i+1][2] = defectsInjected.get(phases[i]);
-			if (defectsInjectedPercentage.get(phases[i]) != null)
+			if (defectsInjectedPercentage.get(phases[i]) != null && !defectsInjectedPercentage.get(phases[i]).isNaN())
 				injectRowData[i+1][3] =  new DecimalFormat("#.#").format(defectsInjectedPercentage.get(phases[i])*100d) + "%";
 			else
 				injectRowData[i+1][3] = "0%";
@@ -373,7 +373,7 @@ public class SummaryPanel extends JPanel {
 		// populate table
 		for (int i = 0; i < phases.length; i++) {
 			removedRowData[i+1][2] = defectsRemoved.get(phases[i]);
-			if (defectsRemovedPercentage.get(phases[i]) != null)
+			if (defectsRemovedPercentage.get(phases[i]) != null && !defectsRemovedPercentage.get(phases[i]).isNaN())
 				removedRowData[i+1][3] =  new DecimalFormat("#.#").format(defectsRemovedPercentage.get(phases[i])*100d) + "%";
 			else
 				removedRowData[i+1][3] = "0%";
