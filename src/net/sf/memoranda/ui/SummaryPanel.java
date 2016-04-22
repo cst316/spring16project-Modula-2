@@ -21,7 +21,13 @@ import javax.swing.JTable;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Defect;
+import net.sf.memoranda.DefectList;
+import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Phase;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectListener;
+import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskPlanningEntry;
 import net.sf.memoranda.TaskPlanningLogImpl;
 import net.sf.memoranda.TimeEntry;
@@ -99,6 +105,19 @@ public class SummaryPanel extends JPanel {
         TaskPlanningLogImpl.addTaskPlanningLogListener(() -> {
         	jbInit();
         });
+        
+		CurrentProject.addProjectListener(new ProjectListener() {
+			public void projectChange(
+					Project prj,
+					NoteList nl,
+					TaskList tl,
+					DefectList dl,
+					ResourcesList rl) {
+			}
+
+			public void projectWasChanged() {
+			}}
+		);
 	}
 	
 	void jbInit() {
