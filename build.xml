@@ -142,15 +142,6 @@
 			<fileset dir="." includes="README.txt"/>
 		</copy>
 		<copy todir="${dist.content.dir}">
-			<fileset dir="." includes="FAQ.txt"/>
-		</copy>
-		<copy todir="${dist.content.dir}">
-			<fileset dir="." includes="CHANGES.txt"/>
-		</copy>
-		<copy todir="${dist.content.dir}">
-			<fileset dir="." includes="BUILD.txt"/>
-		</copy>
-		<copy todir="${dist.content.dir}">
 			<fileset dir="." includes="tasklist.dtd"/>
 		</copy>
 		<zip zipfile="${dist.dir}/${name}${version}-${DSTAMP}.zip">
