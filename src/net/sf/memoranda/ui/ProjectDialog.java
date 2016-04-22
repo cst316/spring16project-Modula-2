@@ -33,6 +33,7 @@ import javax.swing.event.ChangeListener;
 import net.sf.memoranda.Contact;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectManager;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
@@ -460,9 +461,8 @@ public class ProjectDialog extends JDialog {
         if (dlg.endDateChB.isSelected())
             endD = new CalendarDate((Date) dlg.endDate.getModel().getValue());
         
-        //Project prj = ProjectManager.createProject(title, description, startD, endD);
-        /*if (dlg.freezeChB.isSelected())
-            prj.freeze();*/
+        ProjectManager.createProject(title, description, startD, endD);
+        
         CurrentStorage.get().storeProjectManager();
     }
 }
