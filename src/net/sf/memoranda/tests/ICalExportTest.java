@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.Vector;
 
+import net.fortuna.ical4j.model.ComponentList;
+import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.component.CalendarComponent;
 import net.sf.memoranda.Event;
 import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.util.ICalExporter;
@@ -40,5 +43,31 @@ public class ICalExportTest {
 	@Test
 	public void iCalEventCountTest() {
 		assertTrue(iCal.getComponents().size() == recurringCount+nonrecurringCount+exceptionDateCount);
+	}
+	
+	@Test
+	public void iCalEventNameTest() {
+		ComponentList<CalendarComponent> iCalComponents = iCal.getComponents();
+		
+		if(iCalComponents.size() == 0)
+			return;
+		
+		Vector<Event> allEvents = new Vector<Event>();
+		allEvents.addAll(EventsManager.getRepeatableEvents());
+		allEvents.addAll(EventsManager.getNonrecurringEvents());
+		
+		for(int i = 0; i < iCalComponents.size(); i++) {
+			boolean found = false;
+			String name = iCalComponents.get(i).getProperties().getProperty(Property.SUMMARY).getValue();
+			
+			for(int j = 0; j < allEvents.size(); j++) {
+				if(allEvents.get(j).getText().equals(name)) {
+					found = true;
+					break;
+				}
+			}
+			
+			assertTrue(found);
+		}
 	}
 }
