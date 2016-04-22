@@ -247,7 +247,6 @@ public class AgendaPanel extends JPanel {
 			}
 		});
 		CurrentProject.addProjectListener(new ProjectListener() {
-
 			public void projectChange(
 					Project prj,
 					NoteList nl,
@@ -259,7 +258,9 @@ public class AgendaPanel extends JPanel {
 			public void projectWasChanged() {
 				if (isActive)
 					refresh(CurrentDate.get());
-			}});
+			}}
+		);
+		
 		EventsScheduler.addListener(new EventNotificationListener() {
 			public void eventIsOccured(net.sf.memoranda.Event ev) {
 				if (isActive)

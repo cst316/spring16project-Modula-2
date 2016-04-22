@@ -21,7 +21,13 @@ import javax.swing.JTable;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Defect;
+import net.sf.memoranda.DefectList;
+import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Phase;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectListener;
+import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskPlanningEntry;
 import net.sf.memoranda.TaskPlanningLogImpl;
 import net.sf.memoranda.TimeEntry;
@@ -99,6 +105,21 @@ public class SummaryPanel extends JPanel {
         TaskPlanningLogImpl.addTaskPlanningLogListener(() -> {
         	jbInit();
         });
+        
+		CurrentProject.addProjectListener(new ProjectListener() {
+			public void projectChange(
+					Project prj,
+					NoteList nl,
+					TaskList tl,
+					DefectList dl,
+					ResourcesList rl) {
+				// intentionally empty
+			}
+
+			public void projectWasChanged() {
+				jbInit();
+			}}
+		);
 	}
 	
 	void jbInit() {
@@ -281,7 +302,7 @@ public class SummaryPanel extends JPanel {
 		// populate table
 		for (int i = 0; i < phases.length; i++) {
 			phaseRowData[i+1][2] = timeInPhase.get(phases[i]);
-			if (timeInPhasePercentage.get(phases[i]) != null)
+			if (timeInPhasePercentage.get(phases[i]) != null && !timeInPhasePercentage.get(phases[i]).isNaN())
 				phaseRowData[i+1][3] =  new DecimalFormat("#.#").format(timeInPhasePercentage.get(phases[i])*100d) + "%";
 			else
 				phaseRowData[i+1][3] = "0%";
@@ -327,7 +348,7 @@ public class SummaryPanel extends JPanel {
 		// populate table
 		for (int i = 0; i < phases.length; i++) {
 			injectRowData[i+1][2] = defectsInjected.get(phases[i]);
-			if (defectsInjectedPercentage.get(phases[i]) != null)
+			if (defectsInjectedPercentage.get(phases[i]) != null && !defectsInjectedPercentage.get(phases[i]).isNaN())
 				injectRowData[i+1][3] =  new DecimalFormat("#.#").format(defectsInjectedPercentage.get(phases[i])*100d) + "%";
 			else
 				injectRowData[i+1][3] = "0%";
@@ -373,7 +394,7 @@ public class SummaryPanel extends JPanel {
 		// populate table
 		for (int i = 0; i < phases.length; i++) {
 			removedRowData[i+1][2] = defectsRemoved.get(phases[i]);
-			if (defectsRemovedPercentage.get(phases[i]) != null)
+			if (defectsRemovedPercentage.get(phases[i]) != null && !defectsRemovedPercentage.get(phases[i]).isNaN())
 				removedRowData[i+1][3] =  new DecimalFormat("#.#").format(defectsRemovedPercentage.get(phases[i])*100d) + "%";
 			else
 				removedRowData[i+1][3] = "0%";
