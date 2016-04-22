@@ -624,8 +624,8 @@ public class AppFrame extends JFrame {
         Object fwo = Context.get("FRAME_WIDTH");
         Object fho = Context.get("FRAME_HEIGHT");
         if ((fwo != null) && (fho != null)) {
-            int w = new Integer((String) fwo).intValue();
-            int h = new Integer((String) fho).intValue();
+            int w = Integer.parseInt((String) fwo);
+            int h = Integer.parseInt((String) fho);
             this.setSize(w, h);
         }
         else
@@ -634,8 +634,8 @@ public class AppFrame extends JFrame {
         Object xo = Context.get("FRAME_XPOS");
         Object yo = Context.get("FRAME_YPOS");
         if ((xo != null) && (yo != null)) {
-            int x = new Integer((String) xo).intValue();
-            int y = new Integer((String) yo).intValue();
+            int x = Integer.parseInt((String) xo);
+            int y = Integer.parseInt((String) yo);
             this.setLocation(x, y);
         }
 

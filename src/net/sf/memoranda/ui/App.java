@@ -24,7 +24,7 @@ public class App {
 
 	static AppFrame frame = null;
 	
-	public static final String GUIDE_URL = "http://memoranda.sourceforge.net/guide.html";
+	public static final String GUIDE_URL = "http://www.public.asu.edu/~agamezli/CST316/Memoranda_Revamped.pdf"; //"http://memoranda.sourceforge.net/guide.html";
 	public static final String BUGS_TRACKER_URL = "https://github.com/cst316/spring16project-Modula-2/issues";
 	public static final String WEBSITE_URL = "https://github.com/cst316/spring16project-Modula-2";
 

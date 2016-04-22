@@ -18,8 +18,6 @@ import javax.swing.JToolBar;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.TimeEntry;
-import net.sf.memoranda.TimeLog;
-import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Local;

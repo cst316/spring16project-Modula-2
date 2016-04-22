@@ -37,7 +37,6 @@ import net.sf.memoranda.TaskPlanningLog;
 import net.sf.memoranda.TaskPlanningLogImpl;
 import net.sf.memoranda.TimeLog;
 import net.sf.memoranda.TimeLogImpl;
-import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.ui.ExceptionDialog;
 import net.sf.memoranda.ui.htmleditor.AltHTMLWriter;
 import nu.xom.Builder;

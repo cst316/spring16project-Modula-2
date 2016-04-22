@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -22,14 +21,12 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Defect;
 import net.sf.memoranda.DefectList;
-import net.sf.memoranda.DefectListImpl;
 import net.sf.memoranda.DefectListListener;
 import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Phase;

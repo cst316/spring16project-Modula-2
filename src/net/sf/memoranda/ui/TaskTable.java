@@ -20,40 +20,45 @@
 
 package net.sf.memoranda.ui;
 
-import net.sf.memoranda.util.*;
-
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
-
 import java.util.EventObject;
-import java.util.Collection;
-import java.util.Vector;
 import java.util.Iterator;
-import java.util.Hashtable;
-import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.tree.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
-import net.sf.memoranda.*;
+import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.DefectList;
+import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectListener;
+import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
-import net.sf.memoranda.ui.treetable.*;
+import net.sf.memoranda.ui.treetable.AbstractCellEditor;
+import net.sf.memoranda.ui.treetable.TreeTableModel;
+import net.sf.memoranda.ui.treetable.TreeTableModelAdapter;
+import net.sf.memoranda.util.Local;
 
 /**
  * JAVADOC:
