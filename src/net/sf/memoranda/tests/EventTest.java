@@ -10,10 +10,15 @@ import net.sf.memoranda.date.CalendarDate;
 
 public class EventTest {
 	
-	//event dates
+	//start event dates
 	private CalendarDate sd1;
 	private CalendarDate sd2;
 	private CalendarDate sd3;
+	
+	//end event dates
+	private CalendarDate ed1;
+	private CalendarDate ed2;
+	private CalendarDate ed3;
 	
 	//descriptions
 	private String text1;
@@ -21,17 +26,22 @@ public class EventTest {
 	private String text3;
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUpBefore() throws Exception {
 		
 		//start date declarations
 		sd1 = new CalendarDate(10,2,2016);
 		sd2 = new CalendarDate(11,2,2016);
 		sd3 = new CalendarDate(10,2,2016);
 		
+		//end date declarations
+		ed1 = new CalendarDate(10,2,2016);
+		ed2 = new CalendarDate(11,2,2016);
+		ed3 = new CalendarDate(10,2,2016);
+		
 		//text declarations
 		text1 = "This is text 1!";
-		text2 = "This text 2!";
-		text3 = "This text 3!";
+		text2 = "This is text 2!";
+		text3 = "This is text 3!";
 	}
 	
 	@Test
