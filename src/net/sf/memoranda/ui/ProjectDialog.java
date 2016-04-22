@@ -428,8 +428,6 @@ public class ProjectDialog extends JDialog {
     
     void sdButton_actionPerformed(ActionEvent e) {
         //startCalFrame.setLocation(sdButton.getLocation());
-        this.getContentPane().getHeight();
-        this.getLayeredPane().add(startCalFrame);
         startCalFrame.setTitle(Local.getString("Start date"));
         startCalFrame.show();
     }
@@ -458,8 +456,7 @@ public class ProjectDialog extends JDialog {
         String description = dlg.descriptionTextArea.getText();
         CalendarDate startD = new CalendarDate((Date) dlg.startDate.getModel().getValue());
         CalendarDate endD = null;
-        if (dlg.endDateChB.isSelected())
-            endD = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+        
         
         ProjectManager.createProject(title, description, startD, endD);
         
