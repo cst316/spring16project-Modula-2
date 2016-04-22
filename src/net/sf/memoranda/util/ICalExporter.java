@@ -57,7 +57,7 @@ public class ICalExporter {
         }
         
         // Recurring events
-        Vector<Event> eventsRecurring = EventsManager.getRepeatableEvents();
+        Vector<Event> eventsRecurring = EventsManager.getRecurringEvents();
         CalendarDate today = new CalendarDate();
         
         for(int e = 0; e < eventsRecurring.size(); e++) {

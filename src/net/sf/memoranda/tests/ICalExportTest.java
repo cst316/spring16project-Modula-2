@@ -24,7 +24,7 @@ public class ICalExportTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		Vector<Event> recurringEvents = EventsManager.getRepeatableEvents();
+		Vector<Event> recurringEvents = EventsManager.getRecurringEvents();
 		recurringCount = recurringEvents.size();
 		nonrecurringCount = EventsManager.getNonrecurringEvents().size();
 		iCal = ICalExporter.getICalCalendar();
@@ -58,7 +58,7 @@ public class ICalExportTest {
 		
 		// Get all the events (recurring + nonrecurring)
 		Vector<Event> allEvents = new Vector<Event>();
-		allEvents.addAll(EventsManager.getRepeatableEvents());
+		allEvents.addAll(EventsManager.getRecurringEvents());
 		allEvents.addAll(EventsManager.getNonrecurringEvents());
 		
 		// Iterate through each iCal VEvent and check if it has a corresponding Memoranda Event
