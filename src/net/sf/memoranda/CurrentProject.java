@@ -47,8 +47,6 @@ public class CurrentProject {
 		
         // Check if project fails to load
 		if (_project == null) {
-			ProjectManager.init();
-			
 			_project = ProjectManager.getProject("__default");
 			
 			if (_project == null) 
