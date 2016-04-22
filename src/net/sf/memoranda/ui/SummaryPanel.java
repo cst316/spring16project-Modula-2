@@ -1,9 +1,9 @@
 package net.sf.memoranda.ui;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;

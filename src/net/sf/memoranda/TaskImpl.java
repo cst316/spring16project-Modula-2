@@ -8,9 +8,9 @@
  */
 package net.sf.memoranda;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Vector;
-import java.util.Calendar;
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
