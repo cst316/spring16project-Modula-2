@@ -8,7 +8,6 @@
 #define MyAppExeName "Memoranda.jar"
 #define MyAppIcoName "memoranda_icon_32.ico"
 #define MyAppIcoNameUninstall "MemorandaUninstall.ico"
-#
 
 [Setup]
 AppId={{D62148CC-5565-410F-878C-EAF0D6A36626}
