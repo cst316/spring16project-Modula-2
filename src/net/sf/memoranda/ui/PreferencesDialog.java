@@ -24,10 +24,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -172,9 +172,9 @@ public class PreferencesDialog extends JDialog {
 	JRadioButton appearDefaultB = new JRadioButton();
 	JLabel appearHueLabel = new JLabel();
 	JRadioButton appearHueB = new JRadioButton();
-	JLabel appearHueValue = new JLabel();
-	JSlider appearHueSlider = new JSlider();
-
+	JSpinner appearHueSpinner = new JSpinner(new SpinnerNumberModel(0,0,359,1));
+	JPanel appearSwatchPanel = new JPanel();
+	
 	public PreferencesDialog(Frame frame) {
 		super(frame, Local.getString("Preferences"), true);
 		try {
@@ -330,7 +330,9 @@ public class PreferencesDialog extends JDialog {
 		// Build appearance
 		String colorSetting = (String) Configuration.get("APPEAR_COLOR");
 		int colorSettingValue;
-		if(colorSetting.equals("")) {
+		
+		// If there's no preset (legacy support) set it to the default 220
+		if(colorSetting == null || colorSetting.equals("")) {
 			colorSettingValue = 220;
 		} else {
 			try {
@@ -373,43 +375,62 @@ public class PreferencesDialog extends JDialog {
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		appearPanel.add(appearHueB,gbc);
+	
+		// Hue color spinner (set to preset color and set the color as that)
+		appearHueSpinner.setValue(Math.max(0,colorSettingValue));
+		appearHueSpinner.getEditor().getComponent(0).setForeground(Color.getHSBColor((int) appearHueSpinner.getValue()/360f, 1f, 1f));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 4;
+		gbc.gridy = 1;
+		appearPanel.add(appearHueSpinner,gbc);
 		
-		appearHueSlider = new JSlider(JSlider.HORIZONTAL, 0, 359, Math.max(0,colorSettingValue));
-		appearHueSlider.setPaintTicks(false);
-		appearHueSlider.setPaintLabels(false);
-		appearHueSlider.addChangeListener(new ChangeListener() {
-	         public void stateChanged(ChangeEvent e) {
-	        	 appearHueSlider_stateChanged(e);
-	         }
+		appearHueSpinner.addChangeListener(new ChangeListener() {
+	        @Override
+	        public void stateChanged(ChangeEvent e) {
+	        	appearHueSpinner_stateChanged(e, (int) appearHueSpinner.getValue());
+	        }
 	    });
-		gbc = new GridBagConstraints();
-		gbc.gridx = 2;
-		gbc.gridy = 1;
-		appearPanel.add(appearHueSlider,gbc);
 		
-		appearHueValue.setMinimumSize(new Dimension(48,24));
-		appearHueValue.setPreferredSize(new Dimension(48,24));
-		appearHueValue.setText(Integer.toString(Math.max(0,colorSettingValue)));
-		appearHueValue.setForeground(Color.getHSBColor(appearHueSlider.getValue()/360f, 1f, 1f));
-		gbc = new GridBagConstraints();
-		gbc.gridx = 3;
-		gbc.gridy = 1;
-		appearPanel.add(appearHueValue,gbc);
-		
+		// If classic color scheme is set (-1) set it as selected
 		if(colorSetting.equals("-1")) {
 			appearDefaultB.setSelected(true);
 			appearHueB.setSelected(false);
-			appearHueSlider.setEnabled(false);
+			appearHueSpinner.setEnabled(false);
 		} else {
 			appearDefaultB.setSelected(false);
 			appearHueB.setSelected(true);
+			appearHueSpinner.setEnabled(true);
 		}
 		
+		// Swatches
+		appearSwatchPanel.setLayout(new FlowLayout());
+		for(int i = 0; i < 16; i++) {
+			JButton temp = new JButton("");
+			temp.setFocusPainted(false);
+			temp.setBorder(null);
+			temp.setMinimumSize(new Dimension(12,12));
+			temp.setPreferredSize(new Dimension(12,12));
+			temp.setBackground(Color.getHSBColor((360f/16f*i)/360f, 1f, 1f));
+			temp.setBounds(0, 0, 16, 12);
+			
+			temp.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					swatchColor_actionPerformed(e, temp.getBackground());
+				}
+			});
+
+			appearSwatchPanel.add(temp);
+		}
+
+		gbc = new GridBagConstraints();
+		gbc.gridx = 2; gbc.gridy = 1; gbc.gridwidth = 2;
+		appearPanel.add(appearSwatchPanel,gbc);
+		
+		// Restart text
 		appearRestartLabel.setText("Color scheme changes are applied on restart.");
 		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
+		gbc.gridx = 0; gbc.gridy = 2;
 		gbc.gridwidth = 4;
-		gbc.gridy = 4;
 		appearPanel.add(appearRestartLabel,gbc);
 		
 		// Build TabbedPanel
@@ -453,6 +474,7 @@ public class PreferencesDialog extends JDialog {
 
 	}
 
+
 	void setValues() {
 		enL10nChB.setSelected(!Configuration.get("DISABLE_L10N").toString()
 				.equalsIgnoreCase("yes"));
@@ -489,7 +511,6 @@ public class PreferencesDialog extends JDialog {
 			// this.askConfirmChB.setEnabled(false);
 		}
 
-		String onmin = Configuration.get("ON_MINIMIZE").toString();
 		this.minTaskbarRB.setSelected(true);
 
 		if (!System.getProperty("os.name").startsWith("Win"))
@@ -644,7 +665,7 @@ public class PreferencesDialog extends JDialog {
 		if(appearDefaultB.isSelected())
 			Configuration.put("APPEAR_COLOR", "-1");
 		else if(appearHueB.isSelected())
-			Configuration.put("APPEAR_COLOR", appearHueValue.getText());
+			Configuration.put("APPEAR_COLOR", Integer.toString((int) appearHueSpinner.getValue()));
 		
 		Configuration.saveConfig();
 		
@@ -817,21 +838,28 @@ public class PreferencesDialog extends JDialog {
 	}
 
     public void appearDefaultB_actionPerformed(ActionEvent e) {
-    	appearHueSlider.setEnabled(false);
+    	appearHueSpinner.setEnabled(false);
     	appearDefaultB.setSelected(true);
     	appearHueB.setSelected(false);
     }
     
     public void appearHueB_actionPerformed(ActionEvent e) {
-    	appearHueSlider.setEnabled(true);
+    	appearHueSpinner.setEnabled(true);
     	appearDefaultB.setSelected(false);
     	appearHueB.setSelected(true);
     }
     
-    public void appearHueSlider_stateChanged(ChangeEvent e) {
-    	appearHueValue.setText(Integer.toString(appearHueSlider.getValue()));
-    	appearHueValue.setForeground(Color.getHSBColor(appearHueSlider.getValue()/360f, 1f, 1f));
+    public void appearHueSpinner_stateChanged(ChangeEvent e, int value) {
+		appearHueSpinner.getEditor().getComponent(0).setForeground(Color.getHSBColor((int) appearHueSpinner.getValue()/360f, 1f, 1f));
     }
+    
+
+	public void swatchColor_actionPerformed(ActionEvent e, Color bg) {
+		if(!appearHueB.isSelected()) return;
+		
+		float[] hsbvals = Color.RGBtoHSB(bg.getRed(), bg.getGreen(), bg.getBlue(), null);
+		appearHueSpinner.setValue(Math.round(hsbvals[0]*360f));
+	}
     
 	Vector getFontNames() {
 		GraphicsEnvironment gEnv = 

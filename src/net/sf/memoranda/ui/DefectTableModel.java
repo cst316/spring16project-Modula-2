@@ -2,6 +2,7 @@ package net.sf.memoranda.ui;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Defect;
+import net.sf.memoranda.Phase;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.ui.treetable.AbstractTreeTableModel;
@@ -55,7 +56,7 @@ public class DefectTableModel extends AbstractTreeTableModel implements TreeTabl
             else
                 return d.getDateRemoved().getDate();       
         case 4:
-            return d.getInjection();
+            return d.getInjection().toString();
         case 5:
         	return d.getType();
         case 6:    
@@ -73,10 +74,10 @@ public class DefectTableModel extends AbstractTreeTableModel implements TreeTabl
         case 9:
             return getStatusString(d.getCompleted(CurrentDate.get()));
         case 10:            
-        	if (d.getRemove() == null)
+        	if (d.getRemove() == null || d.getRemove() == Phase.INVALID)
         		return null;
         	else
-        		return d.getRemove();
+        		return d.getRemove().toString();
         case DefectTable.DEFECT_ID:
             return d.getDefectId();
         case DefectTable.DEFECT:

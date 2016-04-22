@@ -1,32 +1,27 @@
 package net.sf.memoranda.ui;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.GregorianCalendar;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.DefectList;
 import net.sf.memoranda.Event;
 import net.sf.memoranda.EventNotificationListener;
-import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.EventsScheduler;
-import net.sf.memoranda.Task;
+import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectListener;
+import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskListListener;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.util.ColorScheme;
-
-import java.awt.Insets;
 
 public class CalendarPanel extends JPanel {
 	WorkPanel parentPanel = null;
@@ -107,6 +102,20 @@ public class CalendarPanel extends JPanel {
 				updateCalendarPanelView();
 			}
 		});
+		
+		CurrentProject.addProjectListener(new ProjectListener() {
+			public void projectChange(
+					Project prj,
+					NoteList nl,
+					TaskList tl,
+					DefectList dl,
+					ResourcesList rl) {
+			}
+
+			public void projectWasChanged() {
+				updateCalendarPanelView();
+			}}
+		);
 	}
 
     public void updateCalendarPanelView() {

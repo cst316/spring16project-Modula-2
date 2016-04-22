@@ -32,8 +32,8 @@ public class CalendarTaskbarPanel extends JToolBar {
 		JLabel lblMonth = new JLabel("New label");
 		JLabel lblYear = new JLabel("New label");
 
-		JCheckBox chckbxTasks = new JCheckBox("Show Tasks");
-		JCheckBox chckbxEvents = new JCheckBox("Show Events");
+		JCheckBox checkboxTasks = new JCheckBox("Show Tasks");
+		JCheckBox checkboxEvents = new JCheckBox("Show Events");
 
 		CalendarPanel parentPanel = null;
 		CalendarDate date;
@@ -97,6 +97,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnMonthly.setBorder(null);
 			btnMonthly.setMargin(new Insets(5, 14, 5, 14));
 			btnMonthly.setSize(new Dimension(5, 5));
+			btnMonthly.setFocusPainted(false);
 			add(btnMonthly);
 
 			JButton btnWeekly = new JButton("Week");
@@ -109,6 +110,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnWeekly.setBackground(ColorScheme.getColor("button_primary"));
 			btnWeekly.setBorder(null);
 			btnWeekly.setMargin(new Insets(5, 14, 5, 14));
+			btnWeekly.setFocusPainted(false);
 			add(btnWeekly);
 
 			JButton btnDaily = new JButton("Day");
@@ -121,6 +123,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnDaily.setBackground(ColorScheme.getColor("button_primary"));
 			btnDaily.setBorder(null);
 			btnDaily.setMargin(new Insets(5, 14, 5, 14));
+			btnDaily.setFocusPainted(false);
 			add(btnDaily);
 
 			Image leftArrowSmall = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow_small.gif"));
@@ -128,16 +131,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 
 			Image leftArrowBig = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow.gif"));
 			Image resizedLeftArrowBig = leftArrowBig.getScaledInstance(20, 20, 0);
-			btnLittleStepBack.setIcon(new ImageIcon(resizedLeftArrowSmall));
-			btnLittleStepBack.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					changeSmallStepBackward_actionPerformed(arg0);
-				}
-			});
-			btnLittleStepBack.setPreferredSize(new Dimension(32,32));
-			btnLittleStepBack.setBackground(ColorScheme.getColor("button_primary"));
-			btnLittleStepBack.setBorder(null);
-			panel_1.add(btnLittleStepBack);
+
 			btnBigStepBack.setIcon(new ImageIcon(resizedLeftArrowBig));
 			btnBigStepBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -147,7 +141,21 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnBigStepBack.setPreferredSize(new Dimension(32,32));
 			btnBigStepBack.setBackground(ColorScheme.getColor("button_primary"));
 			btnBigStepBack.setBorder(null);
+			btnBigStepBack.setFocusPainted(false);
 			panel_1.add(btnBigStepBack);
+			
+			btnLittleStepBack.setIcon(new ImageIcon(resizedLeftArrowSmall));
+			btnLittleStepBack.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					changeSmallStepBackward_actionPerformed(arg0);
+				}
+			});
+			btnLittleStepBack.setPreferredSize(new Dimension(32,32));
+			btnLittleStepBack.setBackground(ColorScheme.getColor("button_primary"));
+			btnLittleStepBack.setBorder(null);
+			btnLittleStepBack.setFocusPainted(false);
+			panel_1.add(btnLittleStepBack);
+
 			panel_1.setBackground(ColorScheme.getColor("taskbar_primary"));
 			add(panel_1);
 
@@ -173,19 +181,10 @@ public class CalendarTaskbarPanel extends JToolBar {
 
 			Image rightArrowSmall = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow_small.gif"));
 			Image resizedRightArrowSmall = rightArrowSmall.getScaledInstance(20, 20, 0);
-			btnLittleStepForward.setIcon(new ImageIcon(resizedRightArrowSmall));
-			btnLittleStepForward.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					changeSmallStepForward_actionPerformed(arg0);
-				}
-			});
-			btnLittleStepForward.setPreferredSize(new Dimension(32,32));
-			btnLittleStepForward.setBackground(ColorScheme.getColor("button_primary"));
-			btnLittleStepForward.setBorder(null);
-			panel_2.add(btnBigStepForward);
-
+			
 			Image rightArrowBig = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow.gif"));
 			Image resizedRightArrowBig = rightArrowBig.getScaledInstance(20, 20, 0);
+
 			btnBigStepForward.setIcon(new ImageIcon(resizedRightArrowBig));
 			btnBigStepForward.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg1) {
@@ -195,28 +194,43 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnBigStepForward.setPreferredSize(new Dimension(32,32));
 			btnBigStepForward.setBackground(ColorScheme.getColor("button_primary"));
 			btnBigStepForward.setBorder(null);
+			btnBigStepForward.setFocusPainted(false);
 			panel_2.add(btnLittleStepForward);
 
-			chckbxEvents.setSelected(true);
-			chckbxEvents.addActionListener(new ActionListener() {
+			btnLittleStepForward.setIcon(new ImageIcon(resizedRightArrowSmall));
+			btnLittleStepForward.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					changeSmallStepForward_actionPerformed(arg0);
+				}
+			});
+			btnLittleStepForward.setPreferredSize(new Dimension(32,32));
+			btnLittleStepForward.setBackground(ColorScheme.getColor("button_primary"));
+			btnLittleStepForward.setBorder(null);
+			btnLittleStepForward.setFocusPainted(false);
+			panel_2.add(btnBigStepForward);
+			
+			checkboxEvents.setSelected(true);
+			checkboxEvents.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg1) {
 					changeShowEvents_actionPerformed(arg1);
 				}
 			});
 			
-			chckbxEvents.setForeground(ColorScheme.getColor("taskbar_text"));
-			chckbxEvents.setBackground(ColorScheme.getColor("taskbar_primary"));
-			add(chckbxEvents);
+			checkboxEvents.setForeground(ColorScheme.getColor("taskbar_text"));
+			checkboxEvents.setBackground(ColorScheme.getColor("taskbar_primary"));
+			checkboxEvents.setFocusPainted(false);
+			add(checkboxEvents);
 
-			chckbxTasks.setSelected(true);
-			chckbxTasks.addActionListener(new ActionListener() {
+			checkboxTasks.setSelected(true);
+			checkboxTasks.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg1) {
 					changeShowTasks_actionPerformed(arg1);
 				}
 			});
-			chckbxTasks.setBackground(ColorScheme.getColor("taskbar_primary"));
-			chckbxTasks.setForeground(ColorScheme.getColor("taskbar_text"));
-			add(chckbxTasks);
+			checkboxTasks.setBackground(ColorScheme.getColor("taskbar_primary"));
+			checkboxTasks.setForeground(ColorScheme.getColor("taskbar_text"));
+			checkboxTasks.setFocusPainted(false);
+			add(checkboxTasks);
 			
 			lblDay.setForeground(ColorScheme.getColor("taskbar_text"));
 			lblMonth.setForeground(ColorScheme.getColor("taskbar_text"));
@@ -312,10 +326,10 @@ public class CalendarTaskbarPanel extends JToolBar {
 	    }
 
 		public boolean isShowEvents() {
-			return chckbxEvents.isSelected();
+			return checkboxEvents.isSelected();
 		}
 
 		public boolean isShowTasks() {
-			return chckbxTasks.isSelected();
+			return checkboxTasks.isSelected();
 		}
 	}

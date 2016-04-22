@@ -24,7 +24,7 @@ public class App {
 
 	static AppFrame frame = null;
 	
-	public static final String GUIDE_URL = "http://memoranda.sourceforge.net/guide.html";
+	public static final String GUIDE_URL = "http://www.public.asu.edu/~agamezli/CST316/Memoranda_Revamped.pdf"; //"http://memoranda.sourceforge.net/guide.html";
 	public static final String BUGS_TRACKER_URL = "https://github.com/cst316/spring16project-Modula-2/issues";
 	public static final String WEBSITE_URL = "https://github.com/cst316/spring16project-Modula-2";
 
@@ -61,8 +61,7 @@ public class App {
 			System.out.println("Minimized mode");
 		if (!Configuration.get("SHOW_SPLASH").equals("no"))
 			showSplash();
-		System.out.println(VERSION_INFO);
-		System.out.println(Configuration.get("LOOK_AND_FEEL"));
+		System.out.println("Memoranda version " + VERSION_INFO);
 		try {
 			if (Configuration.get("LOOK_AND_FEEL").equals("system"))
 				UIManager.setLookAndFeel(
@@ -86,8 +85,6 @@ public class App {
 				fdow = "sun";
 			Configuration.put("FIRST_DAY_OF_WEEK", fdow);
 			Configuration.saveConfig();
-			/* DEBUG */
-			System.out.println("[DEBUG] first day of week is set to " + fdow);
 		}
 
 		EventsScheduler.init();

@@ -139,16 +139,25 @@ public class TaskListImpl implements TaskList {
      * @see net.sf.memoranda.TaskList#removeTask(import net.sf.memoranda.Task)
      */
 
-    public void removeTask(Task task) {
-        String parentTaskId = task.getParentId();
-        if (parentTaskId == null) {
-            _root.removeChild(task.getContent());            
-        }
-        else {
-            Element parentNode = getTaskElement(parentTaskId);
-            parentNode.removeChild(task.getContent());
-        }
-		elements.remove(task.getID());
+    public boolean removeTask(Task task) {
+    	try {
+    		
+	        String parentTaskId = task.getParentId();
+	        if (parentTaskId == null) {
+	            _root.removeChild(task.getContent());            
+	        }
+	        else {
+	            Element parentNode = getTaskElement(parentTaskId);
+	            parentNode.removeChild(task.getContent());
+	        }
+			elements.remove(task.getID());
+			return true;
+			
+    	} catch (NullPointerException e) {
+    		e.printStackTrace();
+    		return false;
+    	}
+    	
     }
 
     public boolean hasSubTasks(String id) {

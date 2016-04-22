@@ -272,15 +272,15 @@ public class AppFrame extends JFrame {
     //Component initialization
     private void jbInit() throws Exception {
         this.setIconImage(new ImageIcon(AppFrame.class.getResource(
-                "resources/icons/jnotes16.png"))
+                "resources/icons/memoranda_taskbar32.png"))
                 .getImage());
         contentPane = (JPanel) this.getContentPane();
         contentPane.setLayout(borderLayout1);
         //this.setSize(new Dimension(800, 500));
         this.setTitle("Memoranda - " + CurrentProject.get().getTitle());
         //Added a space to App.VERSION_INFO to make it look some nicer
-        statusBar.setText(" Version:" + App.VERSION_INFO + " (Build "
-                + App.BUILD_INFO + " )");
+        statusBar.setText(" Version: " + App.VERSION_INFO + " (Build "
+                + App.BUILD_INFO + ")");
         statusBar.setForeground(ColorScheme.getColor("taskbar_text"));
 
         jMenuFile.setText(Local.getString("File"));
@@ -624,8 +624,8 @@ public class AppFrame extends JFrame {
         Object fwo = Context.get("FRAME_WIDTH");
         Object fho = Context.get("FRAME_HEIGHT");
         if ((fwo != null) && (fho != null)) {
-            int w = new Integer((String) fwo).intValue();
-            int h = new Integer((String) fho).intValue();
+            int w = Integer.parseInt((String) fwo);
+            int h = Integer.parseInt((String) fho);
             this.setSize(w, h);
         }
         else
@@ -634,8 +634,8 @@ public class AppFrame extends JFrame {
         Object xo = Context.get("FRAME_XPOS");
         Object yo = Context.get("FRAME_YPOS");
         if ((xo != null) && (yo != null)) {
-            int x = new Integer((String) xo).intValue();
-            int y = new Integer((String) yo).intValue();
+            int x = Integer.parseInt((String) xo);
+            int y = Integer.parseInt((String) yo);
             this.setLocation(x, y);
         }
 
@@ -1026,7 +1026,7 @@ public class AppFrame extends JFrame {
             if (ei == 1)
                     enc = "UTF-8";
             boolean nument = (ei == 2);
-            File f = chooser.getSelectedFile();
+
             boolean xhtml =
                     chooser.getFileFilter().getDescription().indexOf("XHTML") > -1;
              CurrentProject.save();

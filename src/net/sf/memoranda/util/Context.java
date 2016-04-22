@@ -15,7 +15,7 @@ import net.sf.memoranda.ui.AppFrame;
 /*$Id: Context.java,v 1.3 2004/01/30 12:17:42 alexeya Exp $*/
 public class Context {
     
-  public static LoadableProperties context = new LoadableProperties();
+  public final static LoadableProperties context = new LoadableProperties();
   
   static {
     CurrentStorage.get().restoreContext();

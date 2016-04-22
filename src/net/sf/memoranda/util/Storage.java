@@ -15,6 +15,7 @@ import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ResourcesList;
 import net.sf.memoranda.TaskList;
+import net.sf.memoranda.TaskPlanningLog;
 import net.sf.memoranda.TimeLog;
 /**
  * 
@@ -36,6 +37,9 @@ public interface Storage {
     
     TimeLog openTimeLog(Project prj);
     void storeTimeLog(TimeLog log, Project prj);
+    
+    TaskPlanningLog openTaskPlanningLog(Project prj);
+    void storeTaskPlanningLog(TaskPlanningLog log, Project prj);
     
     void storeNote(Note note, javax.swing.text.Document doc);    
     javax.swing.text.Document openNote(Note note);

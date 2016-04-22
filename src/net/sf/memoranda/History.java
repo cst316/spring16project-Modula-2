@@ -134,8 +134,8 @@ public class History {
                  ((HistoryListener) historyListeners.get(i)).historyWasRolledTo(n);
     }
 
-    public static HistoryBackAction historyBackAction = new HistoryBackAction();
-    public static HistoryForwardAction historyForwardAction = new HistoryForwardAction();
+    public final static HistoryBackAction historyBackAction = new HistoryBackAction();
+    public final static HistoryForwardAction historyForwardAction = new HistoryForwardAction();
 
     static class HistoryBackAction extends AbstractAction {
 
@@ -161,7 +161,7 @@ public class History {
                 setEnabled(true);
 
 		SimpleDateFormat sdf = new SimpleDateFormat();
-		sdf = (SimpleDateFormat)DateFormat.getDateInstance(DateFormat.SHORT);
+		sdf = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
 		Date date = ((HistoryItem) prev).getDate().getDate();
 		    putValue(
                     Action.SHORT_DESCRIPTION,

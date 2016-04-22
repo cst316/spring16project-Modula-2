@@ -26,7 +26,7 @@ public class DefectTableSorter extends DefectTableModel {
 		int sorting_column = -1;
 		
 		// sort opposite direction
-		boolean opposite = false;
+		boolean sortDescending = false;
 		
 		Comparator comparator = new Comparator(){
 			public int compare(Object o1, Object o2){
@@ -72,19 +72,16 @@ public class DefectTableSorter extends DefectTableModel {
 				else c = CurrentProject.getDefectList().getAllDefects();
 			}
 			
-			Object array[] = null;
-			
-			if (c != null) {
-				array = c.toArray();
-				Arrays.sort(array, comparator);
-				return array[index];
-			}
-			else if(opposite) {
-				return array[ array.length - index - 1];
-			}
-			else {
+			if (c == null)
 				return null;
-			}
+			
+			Object array[] = c.toArray();
+			Arrays.sort(array, comparator);
+
+			if(sortDescending)
+				return array[ array.length - index - 1];
+			else
+				return array[index];				
 		}
 		
 
@@ -102,7 +99,7 @@ public class DefectTableSorter extends DefectTableModel {
 			if(column == 0) sorting_column = 4;
 			
 			if(e.isControlDown()) sorting_column = -1;
-			else opposite = !opposite;
+			else sortDescending = !sortDescending;
 			
 			DefectTable treetable = ( (DefectTable) h.getTable());
 						

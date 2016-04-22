@@ -15,7 +15,7 @@ import nu.xom.Elements;
 
 public class TimeLogImpl implements TimeLog {
 
-	private static Vector<TimeLogListener> _listeners;
+	private static Vector<TimeLogListener> _listeners = new Vector<TimeLogListener>();
 	
 	private Vector<TimeEntry> _vector;
 	private Project _project = null;
@@ -26,7 +26,6 @@ public class TimeLogImpl implements TimeLog {
 		_doc = doc;
 		_root = _doc.getRootElement();
 		_vector = new Vector<TimeEntry>();
-		_listeners = new Vector<TimeLogListener>();
 		
 		// populate _vector with TimeEntry objects
 		Elements elements = _root.getChildElements();
@@ -39,7 +38,6 @@ public class TimeLogImpl implements TimeLog {
 		_root = new Element("timelog");
 		_doc = new Document(_root);
 		_vector = new Vector<TimeEntry>();
-		_listeners = new Vector<TimeLogListener>();
 		_project = prj;
 	}
 	
@@ -138,8 +136,8 @@ public class TimeLogImpl implements TimeLog {
 		Collections.sort(_vector, new Comparator<TimeEntry>() {
 			@Override
 			public int compare(TimeEntry e1, TimeEntry e2) {
-				if (!e1.getDate().equals(e2.getDate()))
-					return e1.getDate().before(e2.getDate()) ? -1 : 1;
+				if (!e1.getCalendarDate().equals(e2.getCalendarDate()))
+					return e1.getCalendarDate().before(e2.getCalendarDate()) ? -1 : 1;
 				else
 					return (e1.getStartHour() * 60 + e1.getStartMinute()) - 
 					       (e2.getStartHour() * 60 + e2.getStartMinute());

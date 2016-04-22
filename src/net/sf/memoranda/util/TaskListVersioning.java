@@ -106,7 +106,7 @@ public class TaskListVersioning {
 //                }
                 
                 Attribute parentAttr = task.getAttribute("parent");
-            	if ((parentAttr == null) || (parentAttr.getValue() == "")) {
+            	if ((parentAttr == null) || (parentAttr.getValue().equals(""))) {
             		// no parent, do nothing here
             	}
             	else {

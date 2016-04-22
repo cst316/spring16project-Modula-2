@@ -119,6 +119,10 @@ public class CalendarDate implements Comparable<CalendarDate> {
     public int getYear() {
         return _year;
     }
+    
+    public int getWeek() {
+    	return this.getCalendar().get(Calendar.WEEK_OF_YEAR);
+    }
 
     public boolean equals(Object object) {
         if (object.getClass().isInstance(CalendarDate.class)) {

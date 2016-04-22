@@ -1,14 +1,12 @@
 package net.sf.memoranda;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.Vector;
 
 import net.sf.memoranda.date.CalendarDate;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
-import nu.xom.Node;
 
 public class DefectImpl implements Defect {
 	
@@ -80,45 +78,83 @@ public class DefectImpl implements Defect {
 	}
 
 	@Override
-	public void setInjection(String injection) {
+	public void setInjection(Phase injection) {
+		String injectionString;
+		if(injection == null) 
+			injectionString = Phase.INVALID.toString();
+		else 
+			injectionString = injection.toString();
+		
 		Element inj = new Element("injection");
-		inj.appendChild(injection);
+		inj.appendChild(injectionString);
 		_element.appendChild(inj);
 	}
 	
 	@Override
-	public void editInjection(String injection) {
+	public void editInjection(Phase injection) {
+		String injectionString;
+		if(injection == null) 
+			injectionString = Phase.INVALID.toString();
+		else 
+			injectionString = injection.toString();
+		
 		Element inj = new Element("injection");
-		inj.appendChild(injection);
+		inj.appendChild(injectionString);
 		Elements old = _element.getChildElements("injection");
 		Element old2 = old.get(0);
 		_element.replaceChild(old2, inj);
 	}
 
 	@Override
-	public String getInjection() {
-		return _element.getFirstChildElement("injection").getValue();
+	public Phase getInjection() {
+		String injphase = _element.getFirstChildElement("injection").getValue();
+		
+		for (Phase phase : Phase.values()) {
+			if (injphase.equals(phase.toString())) {
+				return phase;
+			}
+		}
+		return Phase.INVALID;
 	}
 
 	@Override
-	public void setRemove(String remove) {
+	public void setRemove(Phase remove) {
+		String removeString;
+		if(remove == null) 
+			removeString = Phase.INVALID.toString();
+		else 
+			removeString = remove.toString();
+		
 		Element rem = new Element("remove");
-		rem.appendChild(remove);
+		rem.appendChild(removeString);
 		_element.appendChild(rem);
 	}
 	
 	@Override
-	public void editRemove(String remove) {
+	public void editRemove(Phase remove) {
+		String removeString;
+		if(remove == null) 
+			removeString = Phase.INVALID.toString();
+		else 
+			removeString = remove.toString();
+		
 		Element rem = new Element("remove");
-		rem.appendChild(remove);
+		rem.appendChild(removeString);
 		Elements old = _element.getChildElements("remove");
 		Element old2 = old.get(0);
 		_element.replaceChild(old2, rem);
 	}
 
 	@Override
-	public String getRemove() {
-		return _element.getFirstChildElement("remove").getValue();
+	public Phase getRemove() {
+		String remphase = _element.getFirstChildElement("remove").getValue();
+		
+		for (Phase phase : Phase.values()) {
+			if (remphase.equals(phase.toString())) {
+				return phase;
+			}
+		}
+		return Phase.INVALID;
 	}
 
 	@Override
@@ -255,27 +291,18 @@ public class DefectImpl implements Defect {
 
 	@Override
 	public int getCompleted(CalendarDate d) {
-		CalendarDate start = getDateFound();
-        CalendarDate end = getDateRemoved();
-        
-		if (d.inPeriod(start, end) || start.after(end)) {
-            return Defect.ACTIVE;
+		if (getIsCompleted()) {
+            return Defect.COMPLETED;
         }
 		else {
-			return Defect.COMPLETED;
+            return Defect.ACTIVE;
 		}
 	}
 	
 	@Override
 	public boolean getIsCompleted() {
 		String comp = _element.getAttribute("isCompleted").getValue();
-		
-		if (Boolean.parseBoolean(comp) == true) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return Boolean.parseBoolean(comp);
 	}
 	
 	

@@ -4,49 +4,35 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
- 
+
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
- 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
- 
+
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.Phase;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Local;
-import javax.swing.DefaultComboBoxModel;
-import net.sf.memoranda.Phase;
-import net.sf.memoranda.TimeEntry;
-
-import javax.swing.JTextPane;
-import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.DropMode;
-import javax.swing.SpinnerListModel;
  
 public class TimeRecordLogDialog extends JDialog {
-      JPanel mPanel = new JPanel(new BorderLayout());
+      	JPanel mPanel = new JPanel(new BorderLayout());
         JPanel areaPanel = new JPanel();
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton cancelB = new JButton();
@@ -55,7 +41,7 @@ public class TimeRecordLogDialog extends JDialog {
         Border border2;
         JPanel dialogTitlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel header = new JLabel();
-        public boolean CANCELLED = true;
+        public boolean CANCELLED = false;
         Border border3;
         Border border4;
         JPanel jPanel2 = new JPanel();
@@ -85,24 +71,24 @@ public class TimeRecordLogDialog extends JDialog {
         SpinnerDateModel model = new SpinnerDateModel();
        
         public JSpinner logStartTime = new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.MINUTE));
-        public JSpinner logInterruptTime = new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.MINUTE));
+        public JSpinner logInterruptTime;
         public JSpinner logEndTime= new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.MINUTE));
        
-        private final JComboBox dpPhaseSelector = new JComboBox();
+        public final JComboBox dpPhaseSelector = new JComboBox();
        
         private final JLabel lblComments = new JLabel("Comments");
         private final JTextArea textArea = new JTextArea();
  
         public TimeRecordLogDialog(Frame frame, String title) {
-        super(frame, title, true);
-        try {
-            jbInit();            
-            pack();
-        }
-        catch (Exception ex) {
-            new ExceptionDialog(ex);
-        }
-    }
+	        super(frame, title, true);
+	        try {
+	            jbInit();            
+	            pack();
+	        }
+	        catch (Exception ex) {
+	            new ExceptionDialog(ex);
+	        }
+	    }
  
         void jbInit() throws Exception {
             this.setResizable(false);
@@ -124,6 +110,13 @@ public class TimeRecordLogDialog extends JDialog {
                     cancelB_actionPerformed(e);
                 }
             });
+            
+            String dateString = "0:0:0";
+            SimpleDateFormat dateZeroFormat = new SimpleDateFormat("H:m:s");
+            Date dateZero = dateZeroFormat.parse(dateString + " UTC");
+                        
+            SpinnerDateModel logInterruptTimeModel = new SpinnerDateModel(dateZero, null, null, Calendar.MINUTE);
+            logInterruptTime = new JSpinner(logInterruptTimeModel);
  
             startDate = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
             okB.setMaximumSize(new Dimension(100, 26));
@@ -145,28 +138,17 @@ public class TimeRecordLogDialog extends JDialog {
             //dialogTitlePanel.setPreferredSize(new Dimension(159, 52));
             header.setFont(new java.awt.Font("Dialog", 0, 20));
             header.setForeground(new Color(0, 0, 124));
-            header.setText("New Time Entry");
+            header.setText("New Timelog Entry");
             header.setIcon(new ImageIcon(net.sf.memoranda.ui.TaskDialog.class.getResource(
                 "resources/icons/task48.png")));
-            GridBagConstraints gbCon = new GridBagConstraints();
-            gbCon.gridwidth = GridBagConstraints.REMAINDER;
-            gbCon.weighty = 1;
-            gbCon = new GridBagConstraints();
-            gbCon.gridwidth = GridBagConstraints.REMAINDER;
-            gbCon.weighty = 1;
-            gbCon.anchor = GridBagConstraints.WEST;
-            gbCon = new GridBagConstraints();
-            gbCon.gridwidth = GridBagConstraints.REMAINDER;
-            gbCon.weighty = 3;
  
             jInteruptionTime.setMaximumSize(new Dimension(100, 16));
             jInteruptionTime.setMinimumSize(new Dimension(60, 16));
             jInteruptionTime.setText("Interruption Time");
  
             startDate.setBorder(border8);
-            startDate.setPreferredSize(new Dimension(80, 24));                
-            SimpleDateFormat sdf = new SimpleDateFormat();
-            sdf = (SimpleDateFormat)DateFormat.getDateInstance(DateFormat.SHORT);
+            startDate.setPreferredSize(new Dimension(80, 24));
+            SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateInstance(DateFormat.SHORT);
             // //Added by (jcscoobyrs) on 14-Nov-2003 at 10:45:16 PM
             startDate.setEditor(new JSpinner.DateEditor(startDate, sdf.toPattern()));
  
@@ -176,9 +158,6 @@ public class TimeRecordLogDialog extends JDialog {
             //jLabel6.setPreferredSize(new Dimension(60, 16));
             jLabel6.setMinimumSize(new Dimension(60, 16));
             jLabel6.setMaximumSize(new Dimension(100, 16));
-           
-           
-           
          
             jEndTime.setMaximumSize(new Dimension(100, 16));
             jEndTime.setMinimumSize(new Dimension(60, 16));
@@ -250,7 +229,7 @@ public class TimeRecordLogDialog extends JDialog {
         	CalendarDate date = new CalendarDate(day, month, year);
         	
         	Calendar startTime = Calendar.getInstance();
-        	startTime.setTime((Date) startDate.getValue());
+        	startTime.setTime((Date) logStartTime.getValue());
         	
         	Calendar endTime = Calendar.getInstance();
         	endTime.setTime((Date) logEndTime.getValue());
@@ -259,6 +238,14 @@ public class TimeRecordLogDialog extends JDialog {
         	Calendar it = Calendar.getInstance();
         	it.setTime((Date) logInterruptTime.getValue());
         	interruptionTime += it.get(Calendar.HOUR_OF_DAY) * 60 + it.get(Calendar.MINUTE);
+        	
+        	Calendar start = Calendar.getInstance();
+        	start.setTime((Date) logStartTime.getValue());
+        	int st = start.get(Calendar.HOUR_OF_DAY) * 60 + start.get(Calendar.MINUTE);
+        	
+        	Calendar end = Calendar.getInstance();
+        	end.setTime((Date) logEndTime.getValue());
+        	int et = end.get(Calendar.HOUR_OF_DAY) * 60 + end.get(Calendar.MINUTE);
         	
         	String ps = dpPhaseSelector.getSelectedItem().toString();
         	Phase phase = null;
@@ -270,12 +257,25 @@ public class TimeRecordLogDialog extends JDialog {
         	
         	String comments = textArea.getText();
         	
-        	CurrentProject.getTimeLog().addTimeEntry(date, startTime, endTime, interruptionTime, phase, comments);
+        	// Validate input and display message to user if invalid
+        	if (st > et)
+        		JOptionPane.showMessageDialog(this, "Invalid start/end time.");
+        	else if (interruptionTime > et - st)
+        		JOptionPane.showMessageDialog(this, "Invalid interruption time. ");
         	
-            this.dispose();
+        	else {
+	        	CurrentProject.getTimeLog().addTimeEntry(date, startTime, endTime, interruptionTime, phase, comments);
+	            this.dispose();
+        	}
         }
  
         void cancelB_actionPerformed(ActionEvent e) {
+        	CANCELLED = true;
+            this.dispose();
+        }
+        
+        public void windowClosing( WindowEvent e ) {
+            CANCELLED = true;
             this.dispose();
         }
        
