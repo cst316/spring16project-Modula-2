@@ -280,16 +280,7 @@ public class FileStorage implements Storage {
                     + ".tasklist");
             
             Document tasklistDoc = openDocument(fn);
-            /*DocType tasklistDoctype = tasklistDoc.getDocType();
-            String publicId = null;
-            if (tasklistDoctype != null) {
-                publicId = tasklistDoctype.getPublicID();
-            }
-            boolean upgradeOccurred = TaskListVersioning.upgradeTaskList(publicId);
-            if (upgradeOccurred) {
-                // reload from new file
-                tasklistDoc = openDocument(fn);
-            }*/
+
             return new TaskListImpl(tasklistDoc, prj);   
         }
         else {
@@ -596,8 +587,7 @@ public class FileStorage implements Storage {
     public void restoreContext() {
         try {
             /*DEBUG*/
-            System.out.println(
-                "[DEBUG] Open context: " + JN_DOCPATH + ".context");
+            System.out.println("[DEBUG] Open context: " + JN_DOCPATH + ".context");
             Context.context.load(new FileInputStream(JN_DOCPATH + ".context"));
         }
         catch (Exception ex) {
