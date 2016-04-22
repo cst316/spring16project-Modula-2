@@ -176,5 +176,6 @@ public class EventTest {
 	
 	@Test
 	public void testIsRepeatable() {
+		
 	}
 }
