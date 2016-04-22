@@ -78,6 +78,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 	JButton ppOpenB = new JButton();
 	ProjectsTablePanel prjTablePanel = new ProjectsTablePanel();
 
+	@SuppressWarnings("serial")
 	public Action newProjectAction =
 		new AbstractAction(
 			Local.getString("New project") + "...",
