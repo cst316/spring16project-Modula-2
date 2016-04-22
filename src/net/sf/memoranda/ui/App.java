@@ -37,7 +37,7 @@ public class App {
 
 	public static final String VERSION_INFO = "@VERSION@";
 	public static final String BUILD_INFO = "@BUILD@";
-	
+	public static final String BUILD_INFO_BACKUP = "201604221200";
 	/*========================================================================*/
 
 	public static AppFrame getFrame() {
@@ -169,8 +169,8 @@ public class App {
 	}
 	
 	public static String getBuild() {
-		if(App.BUILD_INFO.equals("@VERSION@")) {
-			return "2.0";
+		if(App.BUILD_INFO.equals("@BUILD@")) {
+			return App.BUILD_INFO_BACKUP;
 		}
 		return App.BUILD_INFO;
 	}
