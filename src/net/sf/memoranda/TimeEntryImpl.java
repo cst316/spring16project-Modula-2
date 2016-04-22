@@ -44,12 +44,12 @@ public class TimeEntryImpl implements TimeEntry {
 
 	@Override
 	public int getInterruptionTime() {
-		return Integer.parseInt(_element.getFirstChildElement("interruptTime").getValue());
+		return new Integer(_element.getFirstChildElement("interruptTime").getValue()).intValue();
 	}
 
 	@Override
 	public int getDeltaTime() {
-		return Integer.parseInt(_element.getFirstChildElement("deltaTime").getValue());
+		return new Integer(_element.getFirstChildElement("deltaTime").getValue()).intValue();
 	}
 
 	@Override
@@ -70,22 +70,22 @@ public class TimeEntryImpl implements TimeEntry {
 
 	@Override
 	public int getStartHour() {
-		return Integer.parseInt(_element.getFirstChildElement("startHour").getValue());
+		return new Integer(_element.getFirstChildElement("startHour").getValue()).intValue();
 	}
 
 	@Override
 	public int getStartMinute() {
-		return Integer.parseInt(_element.getFirstChildElement("startMinute").getValue());
+		return new Integer(_element.getFirstChildElement("startMinute").getValue()).intValue();
 	}
 
 	@Override
 	public int getEndHour() {
-		return Integer.parseInt(_element.getFirstChildElement("endHour").getValue());
+		return new Integer(_element.getFirstChildElement("endHour").getValue()).intValue();
 	}
 
 	@Override
 	public int getEndMinute() {
-		return Integer.parseInt(_element.getFirstChildElement("endMinute").getValue());
+		return new Integer(_element.getFirstChildElement("endMinute").getValue()).intValue();
 	}
 
 	@Override

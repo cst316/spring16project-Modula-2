@@ -13,7 +13,7 @@ import nu.xom.Elements;
 
 public class TaskPlanningLogImpl implements TaskPlanningLog {
 
-	private static Vector<TaskPlanningLogListener> _listeners = new Vector<TaskPlanningLogListener>();
+	private static Vector<TaskPlanningLogListener> _listeners;
 	
 	private Vector<TaskPlanningEntry> _vector;
 	private Project _project = null;
@@ -28,6 +28,7 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 		_doc = doc;
 		_root = _doc.getRootElement();
 		_vector = new Vector<>();
+		_listeners = new Vector<TaskPlanningLogListener>();
 		
 		// populate _vector with TimeEntry objects
 		Elements elements = _root.getChildElements();
@@ -41,6 +42,8 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 	public TaskPlanningLogImpl(Project prj) {
 		_root = new Element("taskplanninglog");
 		_doc = new Document(_root);
+		_vector = new Vector<TaskPlanningEntry>();
+		_listeners = new Vector<TaskPlanningLogListener>();
 		_project = prj;
 	}
 	
