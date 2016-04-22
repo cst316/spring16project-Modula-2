@@ -28,7 +28,7 @@ public class AppFrame_AboutBox extends JDialog implements ActionListener {
   JLabel imageLabel = new JLabel();
   JLabel lblText = new JLabel();
   
-  String product = "Version "+App.VERSION_INFO + " (Build " + App.BUILD_INFO + ")";
+  String product = "Version "+App.getVersion() + " (Build " + App.getBuild() + ")";
   String copyright = "Copyright (c) 2016 ASU CST316 Modula-2 Memoranda team";
   String url = App.WEBSITE_URL;
   String developersHead = Local.getString("Developers") + ":";

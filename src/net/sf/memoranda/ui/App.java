@@ -160,4 +160,18 @@ public class App {
 		splash.setUndecorated(true);
 		splash.setVisible(true);
 	}
+	
+	public static String getVersion() {
+		if(App.VERSION_INFO.equals("@VERSION@")) {
+			return "2.0";
+		}
+		return App.VERSION_INFO;
+	}
+	
+	public static String getBuild() {
+		if(App.BUILD_INFO.equals("@VERSION@")) {
+			return "2.0";
+		}
+		return App.BUILD_INFO;
+	}
 }
