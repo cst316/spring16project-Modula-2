@@ -189,7 +189,7 @@ public class EventsManager {
 			for (int i = 0; i < els.size(); i++)
 				v.add(new EventImpl(els.get(i)));
 		}
-		Collection r = getRepeatableEventsForDate(date);
+		Collection r = getRecurringEventsForDate(date);
 		if (r.size() > 0)
 			v.addAll(r);
 		//EventsVectorSorter.sort(v);
@@ -216,7 +216,7 @@ public class EventsManager {
 		return event;
 	}
 
-	public static Event createRepeatableEvent(
+	public static Event createRecurringEvent(
 		int type,
 		CalendarDate startDate,
 		CalendarDate endDate,
@@ -258,7 +258,7 @@ public class EventsManager {
 		return event;
 	}
 
-	public static Vector<Event> getRepeatableEvents() {
+	public static Vector<Event> getRecurringEvents() {
 		Vector<Event> v = new Vector<Event>();
 		Element rep = _root.getFirstChildElement("repeatable");
 
@@ -271,8 +271,8 @@ public class EventsManager {
 		return v;
 	}
 
-	public static Collection getRepeatableEventsForDate(CalendarDate date) {
-		Vector reps = (Vector) getRepeatableEvents();
+	public static Collection getRecurringEventsForDate(CalendarDate date) {
+		Vector reps = (Vector) getRecurringEvents();
 		Vector v = new Vector();
 		for (int i = 0; i < reps.size(); i++) {
 			Event ev = (Event) reps.get(i);
@@ -502,7 +502,7 @@ public class EventsManager {
 		}
 	}
 	
-    public static void buildRepeatableEvent(EventDialog dlg, int hh, int mm, String text) {
+    public static void buildRecurringEvent(EventDialog dlg, int hh, int mm, String text) {
 		int rtype;
         int period;
         CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
@@ -530,6 +530,6 @@ public class EventsManager {
 	        rtype = EventsManager.REPEAT_MONTHLY;
 	        period = ((Integer) dlg.dayOfMonthSpin.getModel().getValue()).intValue();
 	    }
-        EventsManager.createRepeatableEvent(rtype, sd, ed, period, hh, mm, text, dlg.workingDaysOnlyCB.isSelected(),dlg.getExceptionDates());
+        EventsManager.createRecurringEvent(rtype, sd, ed, period, hh, mm, text, dlg.workingDaysOnlyCB.isSelected(),dlg.getExceptionDates());
     }
 }

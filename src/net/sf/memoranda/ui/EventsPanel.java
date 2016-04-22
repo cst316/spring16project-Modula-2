@@ -308,7 +308,7 @@ public class EventsPanel extends JPanel {
         if (dlg.noRepeatRB.isSelected()) {
         	EventsManager.createEvent(CurrentDate.get(), hh, mm, text);
     	} else {
-    		EventsManager.buildRepeatableEvent(dlg,hh,mm,text);
+    		EventsManager.buildRecurringEvent(dlg,hh,mm,text);
         }
         
         saveEvents();
@@ -358,7 +358,7 @@ public class EventsPanel extends JPanel {
     	if (dlg.noRepeatRB.isSelected())
     		EventsManager.createEvent(eventCalendarDate, hh, mm, text);
     	else {
-    		EventsManager.buildRepeatableEvent(dlg,hh,mm,text);
+    		EventsManager.buildRecurringEvent(dlg,hh,mm,text);
     	}
     	saveEvents();
     }
