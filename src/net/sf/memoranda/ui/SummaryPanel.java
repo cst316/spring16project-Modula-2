@@ -113,9 +113,11 @@ public class SummaryPanel extends JPanel {
 					TaskList tl,
 					DefectList dl,
 					ResourcesList rl) {
+				// intentionally empty
 			}
 
 			public void projectWasChanged() {
+				jbInit();
 			}}
 		);
 	}

@@ -117,19 +117,6 @@ public class TaskPlanningLogPanel extends JPanel {
         this.add(scrollPane, BorderLayout.CENTER);
         this.add(toolBar, BorderLayout.NORTH);
         this.setBorder(null);
-        
-		CurrentProject.addProjectListener(new ProjectListener() {
-			public void projectChange(
-					Project prj,
-					NoteList nl,
-					TaskList tl,
-					DefectList dl,
-					ResourcesList rl) {
-			}
-
-			public void projectWasChanged() {
-			}}
-		);
     }
     
     private void newEntry_actionPerformed(ActionEvent e) {

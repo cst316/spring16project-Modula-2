@@ -8,6 +8,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.AbstractTableModel;
 
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.DefectList;
+import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectListener;
+import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskPlanningEntry;
 import net.sf.memoranda.TaskPlanningLogImpl;
 import net.sf.memoranda.util.Local;
@@ -28,6 +34,21 @@ public class TaskPlanningLogTable extends JTable {
 		selectionModel.addListSelectionListener(e -> {
 			listSelection_actionPerformed(e);
 		});
+		
+		CurrentProject.addProjectListener(new ProjectListener() {
+			public void projectChange(
+					Project prj,
+					NoteList nl,
+					TaskList tl,
+					DefectList dl,
+					ResourcesList rl) {
+				// intentionally empty
+			}
+
+			public void projectWasChanged() {
+				tableChanged();
+			}}
+		);
 		
 		TaskPlanningLogImpl.addTaskPlanningLogListener(() -> {
 			tableChanged();
