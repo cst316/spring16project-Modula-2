@@ -60,6 +60,8 @@ public class EventsManager {
 		Vector<EventExpanded> nonrecurringEvents = new Vector<EventExpanded>();
 		
 		Elements yearElements = _root.getChildElements();
+		if(yearElements.size() == 0)
+			return nonrecurringEvents;
 		
 		for(int years = 0; years < yearElements.size(); years++) {
 			Element yearElement = yearElements.get(years);
@@ -74,11 +76,18 @@ public class EventsManager {
 			} else {
 				// Year
 				Elements monthElements = yearElement.getChildElements();
+				if(monthElements.size() == 0)
+					continue;
+				
 				for(int months = 0; months < monthElements.size(); months++) {
 					// Month
 					Element monthElement = monthElements.get(months);
 					//System.out.println("getNonrecurringEvents(): monthElement = " + monthElement.getLocalName() + "(Size " + monthElement.getChildCount() + ")");
+
 					Elements dayElements = monthElement.getChildElements();
+					if(dayElements.size() == 0)
+						continue;
+					
 					for(int days = 0; days < dayElements.size(); days++) {
 						// Day
 						Element dayElement = dayElements.get(days);
@@ -91,6 +100,9 @@ public class EventsManager {
 						CalendarDate date = new CalendarDate(dateDay,dateMonth,dateYear);
 
 						Elements eventElements = dayElement.getChildElements();
+						if(eventElements.size() == 0)
+							continue;
+						
 						for(int e = 0; e < eventElements.size(); e++) {
 							// Event
 							Element eventElement = eventElements.get(e);
@@ -114,6 +126,9 @@ public class EventsManager {
 		Vector<EventExpanded> futureNonrecurringEvents = new Vector<EventExpanded>();
 		
 		CalendarDate today = new CalendarDate();
+		
+		if(nonrecurringEvents.size() == 0)
+			return futureNonrecurringEvents;
 		
 		for(int i = 0; i < nonrecurringEvents.size(); i++) {
 			EventExpanded event = nonrecurringEvents.get(i);
