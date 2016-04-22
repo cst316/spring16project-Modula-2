@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Vector;
 
+import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.ui.AppFrame;
 import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.CurrentStorage;
@@ -51,7 +52,10 @@ public class CurrentProject {
 			_project = ProjectManager.getProject("__default");
 			
 			if (_project == null) 
-				_project = (Project) ProjectManager.getActiveProjects().get(0);						
+				_project = (Project) ProjectManager.getActiveProjects().get(0);
+			
+			if(_project == null)
+				_project = (Project) ProjectManager.createProject("Default", "", new CalendarDate(), null);
 
 			Context.put("LAST_OPENED_PROJECT_ID", _project.getID());
 		}
