@@ -131,17 +131,7 @@ public class CalendarTaskbarPanel extends JToolBar {
 
 			Image leftArrowBig = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/left_arrow.gif"));
 			Image resizedLeftArrowBig = leftArrowBig.getScaledInstance(20, 20, 0);
-			btnLittleStepBack.setIcon(new ImageIcon(resizedLeftArrowSmall));
-			btnLittleStepBack.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					changeSmallStepBackward_actionPerformed(arg0);
-				}
-			});
-			btnLittleStepBack.setPreferredSize(new Dimension(32,32));
-			btnLittleStepBack.setBackground(ColorScheme.getColor("button_primary"));
-			btnLittleStepBack.setBorder(null);
-			btnLittleStepBack.setFocusPainted(false);
-			panel_1.add(btnLittleStepBack);
+
 			btnBigStepBack.setIcon(new ImageIcon(resizedLeftArrowBig));
 			btnBigStepBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -153,6 +143,19 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnBigStepBack.setBorder(null);
 			btnBigStepBack.setFocusPainted(false);
 			panel_1.add(btnBigStepBack);
+			
+			btnLittleStepBack.setIcon(new ImageIcon(resizedLeftArrowSmall));
+			btnLittleStepBack.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					changeSmallStepBackward_actionPerformed(arg0);
+				}
+			});
+			btnLittleStepBack.setPreferredSize(new Dimension(32,32));
+			btnLittleStepBack.setBackground(ColorScheme.getColor("button_primary"));
+			btnLittleStepBack.setBorder(null);
+			btnLittleStepBack.setFocusPainted(false);
+			panel_1.add(btnLittleStepBack);
+
 			panel_1.setBackground(ColorScheme.getColor("taskbar_primary"));
 			add(panel_1);
 
@@ -178,20 +181,10 @@ public class CalendarTaskbarPanel extends JToolBar {
 
 			Image rightArrowSmall = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow_small.gif"));
 			Image resizedRightArrowSmall = rightArrowSmall.getScaledInstance(20, 20, 0);
-			btnLittleStepForward.setIcon(new ImageIcon(resizedRightArrowSmall));
-			btnLittleStepForward.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					changeSmallStepForward_actionPerformed(arg0);
-				}
-			});
-			btnLittleStepForward.setPreferredSize(new Dimension(32,32));
-			btnLittleStepForward.setBackground(ColorScheme.getColor("button_primary"));
-			btnLittleStepForward.setBorder(null);
-			btnLittleStepForward.setFocusPainted(false);
-			panel_2.add(btnBigStepForward);
-
+			
 			Image rightArrowBig = ImageIO.read(CalendarTaskbarPanel.class.getResource("/net/sf/memoranda/ui/resources/icons/right_arrow.gif"));
 			Image resizedRightArrowBig = rightArrowBig.getScaledInstance(20, 20, 0);
+
 			btnBigStepForward.setIcon(new ImageIcon(resizedRightArrowBig));
 			btnBigStepForward.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg1) {
@@ -204,6 +197,18 @@ public class CalendarTaskbarPanel extends JToolBar {
 			btnBigStepForward.setFocusPainted(false);
 			panel_2.add(btnLittleStepForward);
 
+			btnLittleStepForward.setIcon(new ImageIcon(resizedRightArrowSmall));
+			btnLittleStepForward.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					changeSmallStepForward_actionPerformed(arg0);
+				}
+			});
+			btnLittleStepForward.setPreferredSize(new Dimension(32,32));
+			btnLittleStepForward.setBackground(ColorScheme.getColor("button_primary"));
+			btnLittleStepForward.setBorder(null);
+			btnLittleStepForward.setFocusPainted(false);
+			panel_2.add(btnBigStepForward);
+			
 			checkboxEvents.setSelected(true);
 			checkboxEvents.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg1) {

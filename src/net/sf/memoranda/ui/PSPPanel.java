@@ -27,8 +27,9 @@ public class PSPPanel extends JPanel {
 	private CardLayout cardLayout;
 	
 	private TimeLogPanel timeLogPanel;
-	private PSPDefectPanel defectPanel;
+	private DefectPanel defectPanel;
 	private TaskPlanningLogPanel taskPlanningLogPanel;
+	private SummaryPanel summaryPanel;
 	
 	public PSPPanel(WorkPanel parentPanel) {
 		
@@ -45,8 +46,10 @@ public class PSPPanel extends JPanel {
 	
 	void jbInit() {
 		timeLogPanel = new TimeLogPanel(this);
-		defectPanel = new PSPDefectPanel(this);
+		defectPanel = new DefectPanel(this);
 		taskPlanningLogPanel = new TaskPlanningLogPanel(this);
+		summaryPanel = new SummaryPanel(this);
+		
 		cardLayout = new CardLayout();
 		
 		taskbar = new PSPTaskbarPanel(this);
@@ -57,7 +60,7 @@ public class PSPPanel extends JPanel {
 		
 		cardPanel = new JPanel();
 		cardPanel.setLayout(cardLayout);
-		//cardPanel.add(summaryPanel, "SUMMARY");
+		cardPanel.add(summaryPanel, "SUMMARY");
 		cardPanel.add(timeLogPanel, "TIMELOG");
 		cardPanel.add(defectPanel, "DEFECTLOG");
 		cardPanel.add(taskPlanningLogPanel, "TASKPLANNINGLOG");

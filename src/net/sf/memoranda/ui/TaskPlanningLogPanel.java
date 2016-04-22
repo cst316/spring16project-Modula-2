@@ -14,6 +14,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.DefectList;
+import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectListener;
+import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskPlanningEntry;
 import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Local;
@@ -149,6 +155,11 @@ public class TaskPlanningLogPanel extends JPanel {
     	dlg.earnedValue.setValue(entry.getEV());
     	dlg.actualDate.setValue(entry.getActualDate().getDate());
     	dlg.completedCheckbox.setSelected(entry.isComplete());
+    	
+    	if(entry.isComplete()) {
+    		dlg.earnedValue.setEnabled(true);
+    		dlg.actualDate.setEnabled(true);
+    	}
     	
     	// Finish frame
     	Dimension frmSize = App.getFrame().getSize();

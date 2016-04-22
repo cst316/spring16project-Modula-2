@@ -1,19 +1,16 @@
 package net.sf.memoranda.ui;
 
-import java.io.*;
-import java.nio.*;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
 
 import net.sf.memoranda.EventsManager;
-import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
-import nu.xom.Document;
 import nu.xom.Element;
-import nu.xom.Elements;
 
 public class ExportSticker {
 
@@ -44,7 +41,7 @@ public class ExportSticker {
          */
         public static String remove1(String input) {
             
-            String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
+            String original = "Ã¡Ã Ã¤Ã©Ã¨Ã«Ã­Ã¬Ã¯Ã³Ã²Ã¶ÃºÃ¹uÃ±Ã�Ã€Ã„Ã‰ÃˆÃ‹Ã�ÃŒÃ�Ã“Ã’Ã–ÃšÃ™ÃœÃ‘Ã§Ã‡";
             
             String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
             String output = input;
@@ -57,7 +54,6 @@ public class ExportSticker {
         
         public boolean export(String src){
                 boolean result = true;
-                String fs = System.getProperty("file.separator");
                 
                 String contents = getSticker();
                 try {

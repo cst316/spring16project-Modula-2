@@ -24,11 +24,17 @@ public class App {
 
 	static AppFrame frame = null;
 	
+<<<<<<< HEAD
 
 	//Agamezli - Changed the url for the Memoranda User guide to something in my public asu webspace.
 	public static final String GUIDE_URL = "http://www.public.asu.edu/~agamezli/CST316/The%20draft%20plan%20of%20manual.pdf";//http://memoranda.sourceforge.net/guide.html
 	public static final String BUGS_TRACKER_URL = "http://sourceforge.net/tracker/?group_id=90997&atid=595566";
 	public static final String WEBSITE_URL = "http://memoranda.sourceforge.net";
+=======
+	public static final String GUIDE_URL = "http://www.public.asu.edu/~agamezli/CST316/Memoranda_Revamped.pdf"; //"http://memoranda.sourceforge.net/guide.html";
+	public static final String BUGS_TRACKER_URL = "https://github.com/cst316/spring16project-Modula-2/issues";
+	public static final String WEBSITE_URL = "https://github.com/cst316/spring16project-Modula-2";
+>>>>>>> cdf029c724e7f5b5671d8dd75e740428d3dd0531
 
 	private JFrame splash = null;
 
@@ -63,8 +69,7 @@ public class App {
 			System.out.println("Minimized mode");
 		if (!Configuration.get("SHOW_SPLASH").equals("no"))
 			showSplash();
-		System.out.println(VERSION_INFO);
-		System.out.println(Configuration.get("LOOK_AND_FEEL"));
+		System.out.println("Memoranda version " + VERSION_INFO);
 		try {
 			if (Configuration.get("LOOK_AND_FEEL").equals("system"))
 				UIManager.setLookAndFeel(
@@ -88,8 +93,6 @@ public class App {
 				fdow = "sun";
 			Configuration.put("FIRST_DAY_OF_WEEK", fdow);
 			Configuration.saveConfig();
-			/* DEBUG */
-			System.out.println("[DEBUG] first day of week is set to " + fdow);
 		}
 
 		EventsScheduler.init();

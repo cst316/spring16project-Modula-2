@@ -136,8 +136,7 @@ public class TaskPlanningRecordLogDialog extends JDialog {
         logLayout.add(plannedDateLabel,gbc);
         
         // Planned date
-        SimpleDateFormat sdf = new SimpleDateFormat();
-        sdf = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
+        SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
         plannedDate.setEditor(new JSpinner.DateEditor(plannedDate, sdf.toPattern()));
         gbc.gridx = 6; gbc.gridy = 0; gbc.insets = new Insets(16,8,0,16);
         logLayout.add(plannedDate,gbc);
@@ -158,7 +157,7 @@ public class TaskPlanningRecordLogDialog extends JDialog {
         logLayout.add(completedCheckbox,gbc);
         
         // Earned value label
-        earnedValueLabel.setText("Planned value:");
+        earnedValueLabel.setText("Earned value:");
         gbc.gridx = 3; gbc.gridy = 1; gbc.insets = new Insets(32,8,0,16);
         logLayout.add(earnedValueLabel,gbc);
         
@@ -173,7 +172,6 @@ public class TaskPlanningRecordLogDialog extends JDialog {
         logLayout.add(actualDateLabel,gbc);
         
         // Actual date
-        sdf = new SimpleDateFormat();
         sdf = (SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT);
         actualDate.setEditor(new JSpinner.DateEditor(actualDate, sdf.toPattern()));
         actualDate.setEnabled(completedCheckbox.isSelected());

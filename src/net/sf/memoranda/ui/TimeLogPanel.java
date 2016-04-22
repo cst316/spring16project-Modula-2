@@ -17,9 +17,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.DefectList;
+import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectListener;
+import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TimeEntry;
-import net.sf.memoranda.TimeLog;
-import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.util.ColorScheme;
 import net.sf.memoranda.util.Local;
@@ -145,7 +149,7 @@ public class TimeLogPanel extends JPanel {
     	TimeRecordLogDialog dlg = new TimeRecordLogDialog(App.getFrame(), Local.getString("New task"));
 
         int entryInterruptTime = entry.getInterruptionTime();
-        int hour = (int) Math.floor(entryInterruptTime/60);
+        int hour = (int) Math.floor(entryInterruptTime / 60.0);
         int minute = entryInterruptTime%60;
         
         String dateString = Integer.toString(hour) + ":" + Integer.toString(minute) + ":0";

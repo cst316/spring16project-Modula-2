@@ -74,6 +74,8 @@ public class ProjectDialog extends JDialog {
     ContactListTable tableTeam = new ContactListTable(this);
     JScrollPane teamPabelScrollPane = new JScrollPane();
     
+    private Project selectedProject;
+    
     String columnNames[] = {"Name", "Phone Number", "Email" };
     
     static String dataValues[][] =
@@ -83,6 +85,23 @@ public class ProjectDialog extends JDialog {
     
     public ProjectDialog(Frame frame, String title) {
         super(frame, title, true);
+        gbl_centerPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0};
+        gbl_centerPanel.rowHeights = new int[]{0, 0, 0, 66, 22, 0, 0, 0, 0};
+        gbl_centerPanel.columnWeights = new double[]{1.0, 0.0, 0.0, 1.0, 0.0, 0.0};
+        try {
+            jbInit();
+            pack();
+        }
+        catch(Exception ex) {
+            new ExceptionDialog(ex);
+        }
+    }
+    
+    public ProjectDialog(Frame frame, String title, Project selectedProject) {
+    	super(frame, title, true);
+    	
+    	this.selectedProject = selectedProject;
+    	
         gbl_centerPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0};
         gbl_centerPanel.rowHeights = new int[]{0, 0, 0, 66, 22, 0, 0, 0, 0};
         gbl_centerPanel.columnWeights = new double[]{1.0, 0.0, 0.0, 1.0, 0.0, 0.0};
@@ -303,7 +322,6 @@ public class ProjectDialog extends JDialog {
         gbc_teamLabel.insets = new Insets(0, 0, 5, 5);
         gbc_teamLabel.gridx = 0;
         gbc_teamLabel.gridy = 5;
-        centerPanel.add(teamLabel, gbc_teamLabel);
         
         GridBagConstraints gbc_teamPanel = new GridBagConstraints();
         gbc_teamPanel.gridheight = 3;
@@ -312,10 +330,6 @@ public class ProjectDialog extends JDialog {
         gbc_teamPanel.fill = GridBagConstraints.BOTH;
         gbc_teamPanel.gridx = 0;
         gbc_teamPanel.gridy = 6;
-        centerPanel.add(teamPanel, gbc_teamPanel);
-        
-        
-        
         
         //Settings for the tableTeam
 		setTitle( "Project Dialog" );
@@ -323,9 +337,8 @@ public class ProjectDialog extends JDialog {
 		// Add the table to a scrolling pane
         teamPabelScrollPane = new JScrollPane( tableTeam );
         teamPabelScrollPane.setPreferredSize(new Dimension(452, 120));
-        teamPanel.add(teamPabelScrollPane);
         
-
+        teamPanel.add(teamPabelScrollPane);
         
         GridBagConstraints gbc_buttonAddTeam = new GridBagConstraints();
         gbc_buttonAddTeam.anchor = GridBagConstraints.WEST;
@@ -344,7 +357,6 @@ public class ProjectDialog extends JDialog {
         		dlg.setVisible(true);
         	}
         });
-        centerPanel.add(buttonAddTeam, gbc_buttonAddTeam);
         
         GridBagConstraints gbc_buttonRemoveTeam = new GridBagConstraints();
         gbc_buttonRemoveTeam.gridx = 5;
@@ -355,7 +367,6 @@ public class ProjectDialog extends JDialog {
         		CurrentProject.getContactList().removeContact(contact);
         	}
         });
-        centerPanel.add(buttonRemoveTeam, gbc_buttonRemoveTeam);
         
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 2;
@@ -376,6 +387,20 @@ public class ProjectDialog extends JDialog {
                 endDate.getModel().setValue(endCalFrame.cal.get().getCalendar().getTime());
             }
         });
+        
+        JPanel currentProjectNotSelectedPanel = new JPanel();
+        JLabel currentProjectNotSelected = new JLabel("Open the project to view the contact list.");
+        currentProjectNotSelectedPanel.add(currentProjectNotSelected);
+        
+        if (selectedProject != null && selectedProject.getID().equals(CurrentProject.get().getID()))
+        {
+        	centerPanel.add(teamLabel, gbc_teamLabel);
+        	centerPanel.add(teamPanel, gbc_teamPanel);
+        	centerPanel.add(buttonAddTeam, gbc_buttonAddTeam);
+        	centerPanel.add(buttonRemoveTeam, gbc_buttonRemoveTeam);
+        }
+        else
+        	centerPanel.add(currentProjectNotSelected, gbc_teamPanel);
     }
     
     /** Used to generate team stats
@@ -435,9 +460,9 @@ public class ProjectDialog extends JDialog {
         CalendarDate endD = null;
         if (dlg.endDateChB.isSelected())
             endD = new CalendarDate((Date) dlg.endDate.getModel().getValue());
-        Project prj = ProjectManager.createProject(title, description, startD, endD);
-        /*if (dlg.freezeChB.isSelected())
-            prj.freeze();*/
+        
+        ProjectManager.createProject(title, description, startD, endD);
+        
         CurrentStorage.get().storeProjectManager();
     }
 }

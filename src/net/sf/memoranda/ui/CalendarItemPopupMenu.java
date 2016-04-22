@@ -138,7 +138,7 @@ public class CalendarItemPopupMenu extends JPopupMenu {
 	        if (dlg.noRepeatRB.isSelected()) {
 	        	EventsManager.createEvent(CurrentDate.get(), hh, mm, text);
 	    	} else {
-	    		EventsManager.buildRepeatableEvent(dlg,hh,mm,text);
+	    		EventsManager.buildRecurringEvent(dlg,hh,mm,text);
 	        }
 	        
 	        CurrentStorage.get().storeEventsManager();

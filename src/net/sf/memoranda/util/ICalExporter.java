@@ -25,25 +25,14 @@ import net.sf.memoranda.ui.ExceptionDialog;
 public class ICalExporter {
 	static private File output;
 	
-	public static void export(Project prj, File f) {
-        if (f.isDirectory())
-            output = new File(f.getPath() + "/memoranda_events.ical");
-        else
-            output = f;
-
-        String filePath = output.getAbsolutePath();
-        if(!filePath.endsWith(".ical") && !filePath.endsWith(".ics")) 
-            output = new File(filePath + ".ical");
-        
-        
-        
+	public static net.fortuna.ical4j.model.Calendar getICalCalendar() {
         Calendar icalCalendar = new net.fortuna.ical4j.model.Calendar();
         icalCalendar.getProperties().add(new ProdId("-//Ben Fortuna//iCal4j 1.0//EN"));
         icalCalendar.getProperties().add(Version.VERSION_2_0);
         icalCalendar.getProperties().add(CalScale.GREGORIAN);
         
         // Nonrecurring events
-        Vector<EventExpanded> eventsNonrecurring = EventsManager.getFutureNonrecurringEvents();
+        Vector<EventExpanded> eventsNonrecurring = EventsManager.getNonrecurringEvents();
         for(int e = 0; e < eventsNonrecurring.size(); e++) {
         	
         	EventExpanded event = eventsNonrecurring.get(e);
@@ -68,7 +57,7 @@ public class ICalExporter {
         }
         
         // Recurring events
-        Vector<Event> eventsRecurring = EventsManager.getRepeatableEvents();
+        Vector<Event> eventsRecurring = EventsManager.getRecurringEvents();
         CalendarDate today = new CalendarDate();
         
         for(int e = 0; e < eventsRecurring.size(); e++) {
@@ -214,7 +203,32 @@ public class ICalExporter {
         	}
         	while(exceptionNum <= exceptionDates.size());
         }
-       
+        
+        return icalCalendar;
+	}
+	
+	public static void export(Project prj, File f) {
+        // Ensure file isn't a directory
+		if (f.isDirectory())
+            output = new File(f.getPath() + "/memoranda_events.ical");
+        else
+            output = f;
+
+        // Get path
+        String filePath = output.getAbsolutePath();
+        if(!filePath.endsWith(".ical") && !filePath.endsWith(".ics")) 
+            output = new File(filePath + ".ical");
+        
+        // Generate iCal calendar
+        net.fortuna.ical4j.model.Calendar icalCalendar = null;
+        try {
+        	 icalCalendar = ICalExporter.getICalCalendar();
+	    }
+	    catch (Exception ex) {
+	        new ExceptionDialog(ex, "Failed convert Events to iCal format", "");
+	        return;
+	    }
+    
         // Output
         try {
             CalendarOutputter outputter = new CalendarOutputter();
@@ -222,7 +236,7 @@ public class ICalExporter {
             outputter.output(icalCalendar, fw);
 	    }
 	    catch (Exception ex) {
-	        new ExceptionDialog(ex, "Failed to write to " + output, "");
+	        new ExceptionDialog(ex, "Failed to write iCal export file to " + output, "");
 	        return;
 	    }
 	}

@@ -7,13 +7,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
 import java.util.Date;
 import java.util.Vector;
 
@@ -44,7 +43,10 @@ import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
-import net.sf.memoranda.util.*;
+import net.sf.memoranda.util.ColorScheme;
+import net.sf.memoranda.util.Context;
+import net.sf.memoranda.util.CurrentStorage;
+import net.sf.memoranda.util.Local;
 
 /*$Id: ProjectsPanel.java,v 1.14 2005/01/04 09:59:22 pbielen Exp $*/
 public class ProjectsPanel extends JPanel implements ExpandablePanel {
@@ -406,7 +408,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 	void ppProperties_actionPerformed(ActionEvent e) {
 		Project prj = prjTablePanel.getSelectedProject();
 		ProjectDialog dlg =
-			new ProjectDialog(null, Local.getString("Project properties"));
+			new ProjectDialog(null, Local.getString("Project properties"), prj);
 		Dimension dlgSize = dlg.getSize();
 		Dimension frmSize = App.getFrame().getSize();
 		Point loc = App.getFrame().getLocation();

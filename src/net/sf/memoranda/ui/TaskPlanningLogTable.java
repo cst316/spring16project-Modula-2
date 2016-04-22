@@ -8,6 +8,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.AbstractTableModel;
 
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.DefectList;
+import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectListener;
+import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskPlanningEntry;
 import net.sf.memoranda.TaskPlanningLogImpl;
 import net.sf.memoranda.util.Local;
@@ -28,6 +34,21 @@ public class TaskPlanningLogTable extends JTable {
 		selectionModel.addListSelectionListener(e -> {
 			listSelection_actionPerformed(e);
 		});
+		
+		CurrentProject.addProjectListener(new ProjectListener() {
+			public void projectChange(
+					Project prj,
+					NoteList nl,
+					TaskList tl,
+					DefectList dl,
+					ResourcesList rl) {
+				// intentionally empty
+			}
+
+			public void projectWasChanged() {
+				tableChanged();
+			}}
+		);
 		
 		TaskPlanningLogImpl.addTaskPlanningLogListener(() -> {
 			tableChanged();
@@ -83,8 +104,8 @@ public class TaskPlanningLogTable extends JTable {
 				case 3: return e.getPV();
 				case 4: return CurrentProject.getTaskPlanningLog().getCumulativeHours(e);
 				case 5: return CurrentProject.getTaskPlanningLog().getCumulativePV(e);
-				case 6: return e.getPlannedDate();
-				case 7: return (e.isComplete() ? e.getActualDate() : "Incomplete");
+				case 6: return e.getPlannedDate().getMediumDateString();
+				case 7: return (e.isComplete() ? e.getActualDate().getMediumDateString() : "Incomplete");
 				case 8: return (e.isComplete() ? e.getEV() : "Incomplete");
 				case 9: return CurrentProject.getTaskPlanningLog().getCumulativeEV(e);
 			}

@@ -56,33 +56,42 @@ public class EventsManager {
 			_root = _doc.getRootElement();
 	}
 	
-	public static Vector<EventExpanded> getFutureNonrecurringEvents() {
+	public static Vector<EventExpanded> getNonrecurringEvents() {
 		Vector<EventExpanded> nonrecurringEvents = new Vector<EventExpanded>();
 		
 		Elements yearElements = _root.getChildElements();
+		if(yearElements.size() == 0)
+			return nonrecurringEvents;
 		
 		for(int years = 0; years < yearElements.size(); years++) {
 			Element yearElement = yearElements.get(years);
-			//System.out.println("getUpcomingEvents(): yearElement = " + yearElement.getLocalName() + "(Size " + yearElement.getChildCount() + ")");
-			if(yearElement.getLocalName() == "repeatable") {
+			//System.out.println("getNonrecurringEvents(): yearElement = " + yearElement.getLocalName() + "(Size " + yearElement.getChildCount() + ")");
+			if(yearElement.getLocalName().equals("repeatable")) {
 				// Repeatable events
 				// Eat this, not processing repeatable here
 			} 
-			else if(yearElement.getLocalName() == "sticker") {
+			else if(yearElement.getLocalName().equals("sticker")) {
 				// What is this
 				// Eat this, whatever the heck this is
 			} else {
 				// Year
 				Elements monthElements = yearElement.getChildElements();
+				if(monthElements.size() == 0)
+					continue;
+				
 				for(int months = 0; months < monthElements.size(); months++) {
 					// Month
 					Element monthElement = monthElements.get(months);
-					//System.out.println("getUpcomingEvents(): monthElement = " + monthElement.getLocalName() + "(Size " + monthElement.getChildCount() + ")");
+					//System.out.println("getNonrecurringEvents(): monthElement = " + monthElement.getLocalName() + "(Size " + monthElement.getChildCount() + ")");
+
 					Elements dayElements = monthElement.getChildElements();
+					if(dayElements.size() == 0)
+						continue;
+					
 					for(int days = 0; days < dayElements.size(); days++) {
 						// Day
 						Element dayElement = dayElements.get(days);
-						//System.out.println("getUpcomingEvents(): dayElement = " + dayElement.getLocalName() + "(Size " + dayElement.getChildCount() + ")");
+						//System.out.println("getNonrecurringEvents(): dayElement = " + dayElement.getLocalName() + "(Size " + dayElement.getChildCount() + ")");
 					
 						int dateYear = Integer.parseInt(yearElement.getAttributeValue("year"));
 						int dateMonth = Integer.parseInt(monthElement.getAttributeValue("month"));
@@ -91,17 +100,15 @@ public class EventsManager {
 						CalendarDate date = new CalendarDate(dateDay,dateMonth,dateYear);
 
 						Elements eventElements = dayElement.getChildElements();
+						if(eventElements.size() == 0)
+							continue;
+						
 						for(int e = 0; e < eventElements.size(); e++) {
 							// Event
 							Element eventElement = eventElements.get(e);
-							//System.out.println("getUpcomingEvents(): Added event (" + singletonEvents.size() + " total)");
 							
+							//System.out.println("getNonrecurringEvents(): Added event (" + singletonEvents.size() + " total)");
 							EventExpanded event = new EventExpanded(eventElement, date);
-							CalendarDate today = new CalendarDate();
-							
-							// Only get events today or in the future
-							if(date.before(today) && !date.equals(today))
-								continue;
 							
 							nonrecurringEvents.add(event);
 						}
@@ -109,9 +116,29 @@ public class EventsManager {
 				}
 			}
 		}
-		
-		//System.out.println("getUpcomingEvents() returning " + singletonEvents.size());
+
 		return nonrecurringEvents;
+	}
+
+	
+	public static Vector<EventExpanded> getFutureNonrecurringEvents() {
+		Vector<EventExpanded> nonrecurringEvents = getNonrecurringEvents();
+		Vector<EventExpanded> futureNonrecurringEvents = new Vector<EventExpanded>();
+		
+		CalendarDate today = new CalendarDate();
+		
+		if(nonrecurringEvents.size() == 0)
+			return futureNonrecurringEvents;
+		
+		for(int i = 0; i < nonrecurringEvents.size(); i++) {
+			EventExpanded event = nonrecurringEvents.get(i);
+			
+			// Only future events
+			if(event.getDate().after(today) || event.getDate().equals(today))
+				futureNonrecurringEvents.add(event);
+		}
+		
+		return futureNonrecurringEvents;
 	}
 
 	public static void createSticker(String text, int prior) {
@@ -162,7 +189,7 @@ public class EventsManager {
 			for (int i = 0; i < els.size(); i++)
 				v.add(new EventImpl(els.get(i)));
 		}
-		Collection r = getRepeatableEventsForDate(date);
+		Collection r = getRecurringEventsForDate(date);
 		if (r.size() > 0)
 			v.addAll(r);
 		//EventsVectorSorter.sort(v);
@@ -189,7 +216,7 @@ public class EventsManager {
 		return event;
 	}
 
-	public static Event createRepeatableEvent(
+	public static Event createRecurringEvent(
 		int type,
 		CalendarDate startDate,
 		CalendarDate endDate,
@@ -231,7 +258,7 @@ public class EventsManager {
 		return event;
 	}
 
-	public static Vector<Event> getRepeatableEvents() {
+	public static Vector<Event> getRecurringEvents() {
 		Vector<Event> v = new Vector<Event>();
 		Element rep = _root.getFirstChildElement("repeatable");
 
@@ -244,8 +271,8 @@ public class EventsManager {
 		return v;
 	}
 
-	public static Collection getRepeatableEventsForDate(CalendarDate date) {
-		Vector reps = (Vector) getRepeatableEvents();
+	public static Collection getRecurringEventsForDate(CalendarDate date) {
+		Vector reps = (Vector) getRecurringEvents();
 		Vector v = new Vector();
 		for (int i = 0; i < reps.size(); i++) {
 			Event ev = (Event) reps.get(i);
@@ -277,7 +304,7 @@ public class EventsManager {
 				} else if (ev.getRepeat() == REPEAT_YEARLY) {
 					int period = ev.getPeriod();
 					//System.out.println(date.getCalendar().get(Calendar.DAY_OF_YEAR));
-					if ((date.getYear() % 4) == 0
+					if (Util.isLeapYear(date.getYear())
 						&& date.getCalendar().get(Calendar.DAY_OF_YEAR) > 60)
 						period++;
 
@@ -300,19 +327,13 @@ public class EventsManager {
 		Elements els = d.getElement().getChildElements("event");
 		for (int i = 0; i < els.size(); i++) {
 			Element el = els.get(i);
-			if ((new Integer(el.getAttribute("hour").getValue()).intValue()
+			if ((Integer.parseInt(el.getAttribute("hour").getValue())
 				== hh)
-				&& (new Integer(el.getAttribute("min").getValue()).intValue()
+				&& (Integer.parseInt(el.getAttribute("min").getValue())
 					== mm))
 				return new EventImpl(el);
 		}
 		return null;
-	}
-
-	public static void removeEvent(CalendarDate date, int hh, int mm) {
-		Day d = getDay(date);
-		if (d == null)
-			d.getElement().removeChild(getEvent(date, hh, mm).getContent());
 	}
 
 	public static void removeEvent(Event ev) {
@@ -368,8 +389,7 @@ public class EventsManager {
 		}
 
 		public int getValue() {
-			return new Integer(yearElement.getAttribute("year").getValue())
-				.intValue();
+			return Integer.parseInt(yearElement.getAttribute("year").getValue());
 		}
 
 		public Month getMonth(int m) {
@@ -411,8 +431,7 @@ public class EventsManager {
 		}
 
 		public int getValue() {
-			return new Integer(mElement.getAttribute("month").getValue())
-				.intValue();
+			return Integer.parseInt(mElement.getAttribute("month").getValue());
 		}
 
 		public Day getDay(int d) {
@@ -436,11 +455,11 @@ public class EventsManager {
 					new CalendarDate(
 						d,
 						getValue(),
-						new Integer(
+						Integer.parseInt(
 							((Element) mElement.getParent())
 								.getAttribute("year")
 								.getValue())
-							.intValue())
+						)
 						.toString()));
 
 			mElement.appendChild(el);
@@ -471,7 +490,7 @@ public class EventsManager {
 		}
 
 		public int getValue() {
-			return new Integer(dEl.getAttribute("day").getValue()).intValue();
+			return Integer.parseInt(dEl.getAttribute("day").getValue());
 		}
 
 		/*
@@ -483,7 +502,7 @@ public class EventsManager {
 		}
 	}
 	
-    public static void buildRepeatableEvent(EventDialog dlg, int hh, int mm, String text) {
+    public static void buildRecurringEvent(EventDialog dlg, int hh, int mm, String text) {
 		int rtype;
         int period;
         CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
@@ -505,12 +524,12 @@ public class EventsManager {
 		else if (dlg.yearlyRepeatRB.isSelected()) {
 		    rtype = EventsManager.REPEAT_YEARLY;
 		    period = sd.getCalendar().get(Calendar.DAY_OF_YEAR);
-		    if((sd.getYear() % 4) == 0 && sd.getCalendar().get(Calendar.DAY_OF_YEAR) > 60) period--;
+		    if(Util.isLeapYear(sd.getYear()) && sd.getCalendar().get(Calendar.DAY_OF_YEAR) > 60) period--;
 		}
 	    else {
 	        rtype = EventsManager.REPEAT_MONTHLY;
 	        period = ((Integer) dlg.dayOfMonthSpin.getModel().getValue()).intValue();
 	    }
-        EventsManager.createRepeatableEvent(rtype, sd, ed, period, hh, mm, text, dlg.workingDaysOnlyCB.isSelected(),dlg.getExceptionDates());
+        EventsManager.createRecurringEvent(rtype, sd, ed, period, hh, mm, text, dlg.workingDaysOnlyCB.isSelected(),dlg.getExceptionDates());
     }
 }

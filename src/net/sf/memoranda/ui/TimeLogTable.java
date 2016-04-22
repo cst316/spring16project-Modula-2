@@ -9,6 +9,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.AbstractTableModel;
 
 import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.DefectList;
+import net.sf.memoranda.NoteList;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.ProjectListener;
+import net.sf.memoranda.ResourcesList;
+import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TimeEntry;
 import net.sf.memoranda.TimeLogImpl;
 import net.sf.memoranda.util.ColorScheme;
@@ -30,6 +36,21 @@ public class TimeLogTable extends JTable {
 		selectionModel.addListSelectionListener(e -> {
 			listSelection_actionPerformed(e);
 		});
+		
+		CurrentProject.addProjectListener(new ProjectListener() {
+			public void projectChange(
+					Project prj,
+					NoteList nl,
+					TaskList tl,
+					DefectList dl,
+					ResourcesList rl) {
+				// intentionally empty
+			}
+
+			public void projectWasChanged() {
+				tableChanged();
+			}}
+		);
 		
 		TimeLogImpl.addTimeLogListener(() -> {
 			tableChanged();
@@ -93,8 +114,8 @@ public class TimeLogTable extends JTable {
 		
 		StringBuilder sb = new StringBuilder();
 		
-		String hour = new Integer(calendar.get(Calendar.HOUR_OF_DAY)).toString();
-		String min = new Integer(calendar.get(Calendar.MINUTE)).toString();
+		String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+		String min = String.valueOf(calendar.get(Calendar.MINUTE));
 		
 		sb.append(hour);
 		sb.append(":");
