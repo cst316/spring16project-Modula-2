@@ -158,6 +158,8 @@ public class TaskPlanningLogImpl implements TaskPlanningLog {
 	}
 	
 	private void sort(Vector<TaskPlanningEntry> entries) {
+		if(entries == null) return;
+		
 		Collections.sort(_vector, new Comparator<TaskPlanningEntry>() {
 			@Override
 			public int compare(TaskPlanningEntry e1, TaskPlanningEntry e2) {
