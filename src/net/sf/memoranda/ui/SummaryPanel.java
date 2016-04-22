@@ -484,7 +484,7 @@ public class SummaryPanel extends JPanel {
 			
 			if (injectionPhase != null)
 				defectsInjected.put(injectionPhase, defectsInjected.get(injectionPhase) + 1);
-			if (removalPhase != null)
+			if (removalPhase != null && removalPhase != Phase.INVALID)
 				defectsRemoved.put(removalPhase, defectsRemoved.get(removalPhase) + 1);
 		}
 		
