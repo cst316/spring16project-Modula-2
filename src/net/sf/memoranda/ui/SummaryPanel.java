@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -158,32 +159,32 @@ public class SummaryPanel extends JPanel {
 				tempRowData[2][0] = "Earned value for this week";
 				
 				if(plannedHours.containsKey(i)) {
-					tempRowData[1][1] = Double.toString(plannedHours.get(i));
+					tempRowData[1][1] = new DecimalFormat("#.##").format(plannedHours.get(i));
 				} else {
 					tempRowData[1][1] = "0";
 				}
 
 				if(plannedValue.containsKey(i)) {
-					tempRowData[2][1] = Double.toString(plannedValue.get(i));
+					tempRowData[2][1] = new DecimalFormat("#.##").format(plannedValue.get(i));
 				} else {
 					tempRowData[2][1] = "0";
 				}
 				
 				if(actualHours.containsKey(i)) {
-					tempRowData[1][2] = Double.toString(actualHours.get(i));
+					tempRowData[1][2] = new DecimalFormat("#.##").format(actualHours.get(i) / 60.0);
 				} else {
 					tempRowData[1][2] = "0";
 				}
 
 				if(actualValue.containsKey(i)) {
-					tempRowData[2][2] = Double.toString(actualValue.get(i));
+					tempRowData[2][2] = new DecimalFormat("#.##").format(actualValue.get(i));
 				} else {
 					tempRowData[2][2] = "0";
 				}
 
 				if(actualHours.containsKey(i)) {
 					double temp = (plannedHours.containsKey(i) ? plannedHours.get(i) : 0);
-					tempRowData[1][3] = Double.toString(Math.round(temp/actualHours.get(i)*100.0)/100.0);
+					tempRowData[1][3] = Double.toString(Math.round(temp/actualHours.get(i)*100.0)/100.0*60.0);
 				} else {
 					tempRowData[1][3] = "Not applicable";
 				}
@@ -231,12 +232,12 @@ public class SummaryPanel extends JPanel {
 							};
 		Object planningTotalColumnNames[] = { "", "", "", ""};
 		
-		planningTotalRowData[1][1] = totalPlannedHours;
-		planningTotalRowData[1][2] = totalActualHours;
-		planningTotalRowData[1][3] = Double.toString(Math.round(totalHoursRatio*100.0)/100.0);
+		planningTotalRowData[1][1] = new DecimalFormat("#.##").format(totalPlannedHours);
+		planningTotalRowData[1][2] = new DecimalFormat("#.##").format(totalActualHours/60.0);
+		planningTotalRowData[1][3] = Double.toString(Math.round(totalHoursRatio*100.0)/100.0*60.0);
 
-		planningTotalRowData[2][1] = totalPlannedValue;
-		planningTotalRowData[2][2] = totalEarnedValue;
+		planningTotalRowData[2][1] = new DecimalFormat("#.##").format(totalPlannedValue);
+		planningTotalRowData[2][2] = new DecimalFormat("#.##").format(totalEarnedValue);
 		planningTotalRowData[2][3] = Double.toString(Math.round(totalValueRatio*100.0)/100.0);
 		
 		planningTotalTable = new JTable(planningTotalRowData, planningTotalColumnNames);
@@ -278,12 +279,12 @@ public class SummaryPanel extends JPanel {
 		for (int i = 0; i < phases.length; i++) {
 			phaseRowData[i+1][2] = timeInPhase.get(phases[i]);
 			if (timeInPhasePercentage.get(phases[i]) != null)
-				phaseRowData[i+1][3] =  Math.round(timeInPhasePercentage.get(phases[i])*100d) + "%";
+				phaseRowData[i+1][3] =  new DecimalFormat("#.#").format(timeInPhasePercentage.get(phases[i])*100d) + "%";
 			else
 				phaseRowData[i+1][3] = "0%";
 		}
 		
-		phaseRowData[8][2] = totalActualHours;
+		phaseRowData[8][2] = new DecimalFormat("#.#").format(totalActualHours);
 		phaseRowData[8][3] = "100%";
 		
 		Object phaseColumnNames[] = { "", "", "", ""};
@@ -324,7 +325,7 @@ public class SummaryPanel extends JPanel {
 		for (int i = 0; i < phases.length; i++) {
 			injectRowData[i+1][2] = defectsInjected.get(phases[i]);
 			if (defectsInjectedPercentage.get(phases[i]) != null)
-				injectRowData[i+1][3] =  Math.round(defectsInjectedPercentage.get(phases[i])*100d) + "%";
+				injectRowData[i+1][3] =  new DecimalFormat("#.#").format(defectsInjectedPercentage.get(phases[i])*100d) + "%";
 			else
 				injectRowData[i+1][3] = "0%";
 		}
@@ -370,7 +371,7 @@ public class SummaryPanel extends JPanel {
 		for (int i = 0; i < phases.length; i++) {
 			removedRowData[i+1][2] = defectsRemoved.get(phases[i]);
 			if (defectsRemovedPercentage.get(phases[i]) != null)
-				removedRowData[i+1][3] =  Math.round(defectsRemovedPercentage.get(phases[i])*100d) + "%";
+				removedRowData[i+1][3] =  new DecimalFormat("#.#").format(defectsRemovedPercentage.get(phases[i])*100d) + "%";
 			else
 				removedRowData[i+1][3] = "0%";
 		}
@@ -463,11 +464,11 @@ public class SummaryPanel extends JPanel {
 			
 			// Time Spent in Phases
 			if (phase != null)
-				timeInPhase.put(phase, timeInPhase.get(phase) + entry.getDeltaTime());
+				timeInPhase.put(phase, timeInPhase.get(phase) + (int) (entry.getDeltaTime()));
 			
 			// Time Spent Per Week
 			if (actualHours.containsKey(week))
-				actualHours.put(week, actualHours.get(week) + entry.getDeltaTime());
+				actualHours.put(week, actualHours.get(week) + (int) (entry.getDeltaTime()));
 			else
 				actualHours.put(week, (double) entry.getDeltaTime());
 		}
