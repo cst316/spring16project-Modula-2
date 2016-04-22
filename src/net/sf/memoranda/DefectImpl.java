@@ -1,14 +1,12 @@
 package net.sf.memoranda;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.Vector;
 
 import net.sf.memoranda.date.CalendarDate;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
-import nu.xom.Node;
 
 public class DefectImpl implements Defect {
 	
@@ -116,7 +114,7 @@ public class DefectImpl implements Defect {
 				return phase;
 			}
 		}
-		return null;
+		return Phase.INVALID;
 	}
 
 	@Override
@@ -156,7 +154,7 @@ public class DefectImpl implements Defect {
 				return phase;
 			}
 		}
-		return null;
+		return Phase.INVALID;
 	}
 
 	@Override

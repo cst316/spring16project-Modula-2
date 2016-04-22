@@ -43,7 +43,7 @@ public class ICalExporter {
         icalCalendar.getProperties().add(CalScale.GREGORIAN);
         
         // Nonrecurring events
-        Vector<EventExpanded> eventsNonrecurring = EventsManager.getFutureNonrecurringEvents();
+        Vector<EventExpanded> eventsNonrecurring = EventsManager.getNonrecurringEvents();
         for(int e = 0; e < eventsNonrecurring.size(); e++) {
         	
         	EventExpanded event = eventsNonrecurring.get(e);

@@ -8,9 +8,9 @@
  */
 package net.sf.memoranda;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Vector;
-import java.util.Calendar;
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
@@ -262,7 +262,7 @@ public class TaskImpl implements Task, Comparable {
      * @see net.sf.memoranda.Task#getProgress()
      */
     public int getProgress() {
-        return new Integer(_element.getAttribute("progress").getValue()).intValue();
+        return Integer.parseInt(_element.getAttribute("progress").getValue());
     }
     /**
      * @see net.sf.memoranda.Task#setProgress(int)
@@ -278,7 +278,7 @@ public class TaskImpl implements Task, Comparable {
         Attribute pa = _element.getAttribute("priority");
         if (pa == null)
             return Task.PRIORITY_NORMAL;
-        return new Integer(pa.getValue()).intValue();
+        return Integer.parseInt(pa.getValue());
     }
     /**
      * @see net.sf.memoranda.Task#setPriority(int)

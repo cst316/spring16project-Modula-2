@@ -20,17 +20,16 @@
 
 package net.sf.memoranda.ui;
 
-import javax.swing.event.*;
-import javax.swing.tree.TreePath;
+import javax.swing.event.EventListenerList;
 
-import net.sf.memoranda.*;
+import net.sf.memoranda.CurrentProject;
+import net.sf.memoranda.Project;
+import net.sf.memoranda.Task;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.ui.treetable.AbstractTreeTableModel;
 import net.sf.memoranda.ui.treetable.TreeTableModel;
-import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.Context;
-
-import java.util.Hashtable;
+import net.sf.memoranda.util.Local;
 
 /**
  * JAVADOC:

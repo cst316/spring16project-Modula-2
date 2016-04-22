@@ -1,19 +1,16 @@
 package net.sf.memoranda.ui;
 
-import java.io.*;
-import java.nio.*;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
 
 import net.sf.memoranda.EventsManager;
-import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
-import nu.xom.Document;
 import nu.xom.Element;
-import nu.xom.Elements;
 
 public class ExportSticker {
 

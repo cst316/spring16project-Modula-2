@@ -76,10 +76,6 @@ public class ExceptionDialog extends JDialog {
       this(exc, "", "");
   }
 
-  public ExceptionDialog() {
-    this(null, "", "");
-  }
-
   private void jbInit() throws Exception {    
     panel1.setLayout(borderLayout1);    
     jPanel1.setBackground(Color.white);
